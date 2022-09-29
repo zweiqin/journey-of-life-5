@@ -1,0 +1,7 @@
+node_modules/
+http.http
+.vscode
+.idea
+unpackage/
+wxcomponents
+text.html
