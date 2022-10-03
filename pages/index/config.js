@@ -22,13 +22,13 @@ export const homeNavs = {
     {
       label: "衣服配饰",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/z3bskqk44mhl2nxq01yf.png",
-      background: "linear-gradient(148deg, #00B578, rgba(9,161,110,0))",
+      background: "linear-gradient(137deg, #00B578, rgba(9,161,110,0))",
       width: "45upx",
     },
     {
       label: "大健康",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/m84ik0e747f4m8ec3ai3.png",
-      background: "linear-gradient(144deg, #07B9B9, rgba(13,158,158,0) 100%)",
+      background: "linear-gradient(137deg, #07B9B9, rgba(13,158,158,0) 100%)",
       width: "45upx",
     },
     {
@@ -40,7 +40,7 @@ export const homeNavs = {
     {
       label: "美妆护肤",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/kmyyrrz3oc6n6c1qcvyz.png",
-      background: "linear-gradient(139deg, #FA5151, rgba(204,27,27,0))",
+      background: "linear-gradient(137deg, #FA5151, rgba(204,27,27,0))",
       width: "50upx",
     },
     {
@@ -70,7 +70,7 @@ export const homeNavs = {
     {
       label: "特惠专区",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/bil0fjlgzj1qvp3fnhok.png",
-      background: "linear-gradient(139deg, #00B578, #FFFFFF)",
+      background: "linear-gradient(137deg, #00B578, #FFFFFF)",
       width: "50upx",
     },
   ],

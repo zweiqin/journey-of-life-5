@@ -14,8 +14,15 @@
     </view>
 
     <!-- 轮播 -->
-    <view class="banner">
+    <view
+      class="banner"
+      :style="{
+        background: isShowItemPane ? currentNav.background : '',
+        borderRadius: isShowItemPane ? '0' : '',
+      }"
+    >
       <swiper
+        ref="swipperRef"
         class="swiper"
         indicator-dots
         autoplay
@@ -24,7 +31,7 @@
       >
         <swiper-item>
           <img
-            src="https://img0.baidu.com/it/u=281212525,3135931031&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+            src="https://img0.baidu.com/it/u=3866459166,2693507635&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=667"
             alt=""
           />
         </swiper-item>
@@ -43,55 +50,74 @@
       </swiper>
     </view>
 
-    <view class="main">
-      <JNavs :navs="navs"></JNavs>
+    <view
+      class="main"
+      :style="{
+        top: isShowItemPane ? '-418upx' : '',
+      }"
+    >
+      <JNavs
+        class="navs"
+        :style="{
+          padding: isShowItemPane ? '20upx' : '',
+        }"
+        @nav-click="handleNavItemClick"
+        :navs="navs"
+      ></JNavs>
 
-      <!-- 活动面板 -->
-      <view class="active-wrapper">
-        <Active
-          icon="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/eorq9fz6tsncy7tsi3l9.png"
-          title="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/3sgn8nqyuhc244p73ms2.png"
-          background="linear-gradient(180deg, #FFE5CC, rgba(255,255,255,0))"
-        ></Active>
-        <Active
-          title="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/fopsiop6q7gh6l9pyomb.png"
-          background="linear-gradient(180deg, #FCDBDB, rgba(255,255,255,0))"
-          icon="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/raoa68uwyb2emu7mocv9.png"
-        >
-          <view class="active-slot">跟榜购好物</view>
-        </Active>
-      </view>
-
-      <!-- 活动banner -->
-      <view class="home-banner">
-        <img
-          class="img"
-          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6kn9oln5hpuexgpebtrj.png"
-          alt=""
-        />
-
-        <button class="btn">立即开通</button>
-      </view>
-
-      <!-- 附近联盟商家 -->
-      <Panel title="附近联盟商家" routeText="更多">
-        <view class="store-wrapper">
-          <Goods></Goods>
-          <Goods></Goods>
-          <Goods></Goods>
-          <Goods></Goods>
-          <Goods></Goods>
-          <Goods></Goods>
-          <Goods></Goods>
-          <Goods></Goods>
-          <Goods></Goods>
-          <Goods></Goods>
-          <Goods></Goods>
-          <Goods></Goods>
-          <Goods></Goods>
-          <Goods>v</Goods>
+      <view v-show="!isShowItemPane">
+        <!-- 活动面板 -->
+        <view class="active-wrapper">
+          <Active
+            icon="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/eorq9fz6tsncy7tsi3l9.png"
+            title="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/3sgn8nqyuhc244p73ms2.png"
+            background="linear-gradient(180deg, #FFE5CC, rgba(255,255,255,0))"
+          ></Active>
+          <Active
+            title="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/fopsiop6q7gh6l9pyomb.png"
+            background="linear-gradient(180deg, #FCDBDB, rgba(255,255,255,0))"
+            icon="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/raoa68uwyb2emu7mocv9.png"
+          >
+            <view class="active-slot">跟榜购好物</view>
+          </Active>
         </view>
-      </Panel>
+
+        <!-- 活动banner -->
+        <view class="home-banner">
+          <img
+            class="img"
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6kn9oln5hpuexgpebtrj.png"
+            alt=""
+          />
+
+          <button class="btn">立即开通</button>
+        </view>
+
+        <!-- 附近联盟商家 -->
+        <Panel title="附近联盟商家" routeText="更多">
+          <view class="store-wrapper">
+            <Goods></Goods>
+            <Goods></Goods>
+            <Goods></Goods>
+          </view>
+        </Panel>
+      </view>
+
+      <view v-if="isShowItemPane">
+        <JTabs
+          @change="handleChangeCurrentPane"
+          :activeIndex="currentActive"
+          :tabs="labelList"
+          class="j-tabs"
+        ></JTabs>
+
+        <JSwipper
+          @change="handleChangeCurrentPane"
+          :activeIndex="currentActive"
+          :tabs="labelList"
+          :data="data"
+        ></JSwipper>
+      </view>
     </view>
   </view>
 </template>
@@ -111,7 +137,65 @@ export default {
   data() {
     return {
       navs: homeNavs,
+      isShowItemPane: false,
+      currentNav: {},
+      labelList: [
+        {
+          name: "综合",
+          value: 0,
+        },
+        {
+          name: "美妆",
+          value: 1,
+        },
+        {
+          name: "送礼优品",
+          value: 2,
+        },
+        {
+          name: "优选产品",
+          value: 3,
+        },
+      ],
+      currentActive: 0,
+      data: [
+        {
+          name: "操了",
+        },
+        {
+          name: "操了1",
+        },
+        {
+          name: "操了2",
+        },
+        {
+          name: "操了3",
+        },
+        {
+          name: "操了4",
+        },
+        {
+          name: "操了5",
+        },
+        {
+          name: "操了6",
+        },
+      ],
     };
+  },
+
+  methods: {
+    handleNavItemClick(nav) {
+      this.$refs.swipperRef.$el.style.height = 0;
+      nav.background = nav.background.replace("137deg", "to bottom");
+      this.currentNav = nav;
+
+      this.isShowItemPane = true;
+    },
+
+    handleChangeCurrentPane(index) {
+      this.currentActive = index;
+    },
   },
 };
 </script>
@@ -122,6 +206,8 @@ export default {
 
 .index-container {
   padding-bottom: 180upx;
+  height: 100vh;
+
   // 搜索
   .search-bar {
     box-sizing: border-box;
@@ -166,11 +252,12 @@ export default {
     width: 100%;
     height: 552upx;
     border-radius: 0 0 20upx 20upx;
-    overflow: hidden;
+    transition: all 350ms 100ms;
 
     .swiper {
       width: 100%;
       height: 552upx;
+      transition: all 350ms;
 
       /deep/ .uni-swiper-dot-active {
         border-radius: 0;
@@ -194,6 +281,18 @@ export default {
   .main {
     padding: 34upx 16upx;
     box-sizing: border-box;
+    // background-color: #fff;
+    position: relative;
+    top: 0;
+    transition: all 350ms;
+
+    .navs {
+      background-color: #fff;
+      border-radius: 20upx;
+      box-sizing: border-box;
+      box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
+      padding-bottom: 0 !important;
+    }
 
     // 活动面板
     .active-wrapper {
@@ -234,6 +333,11 @@ export default {
       padding-top: 8px;
       flex-wrap: wrap;
     }
+  }
+
+  .j-tabs {
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
 </style>

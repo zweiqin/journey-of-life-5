@@ -38,11 +38,11 @@
         <view class="footer">
           <text class="desc">综合体验</text>
           <view class="rate">
-            <img src="../../static/images/index/star-active.png" alt="" />
-            <img src="../../static/images/index/star-active.png" alt="" />
-            <img src="../../static/images/index/star-active.png" alt="" />
-            <img src="../../static/images/index/star-active.png" alt="" />
-            <img src="../../static/images/index/star.png" alt="" />
+            <img src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6pfw0ql11tpiw1plmyba.png" alt="" />
+            <img src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6pfw0ql11tpiw1plmyba.png" alt="" />
+            <img src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6pfw0ql11tpiw1plmyba.png" alt="" />
+            <img src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6pfw0ql11tpiw1plmyba.png" alt="" />
+            <img src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/79gzmwafa4xkndbn75k1.png" alt="" />
           </view>
           <text class="desc">粉丝数1025万</text>
         </view>

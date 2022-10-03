@@ -8,6 +8,7 @@
         :style="{
           'margin-bottom': navs.styles.rowBottom,
         }"
+        @click="handleNavItemClick(nav)"
       >
         <view
           :style="{
@@ -46,6 +47,12 @@ export default {
     };
   },
 
+  methods: {
+    handleNavItemClick(nav) {
+      this.$emit("nav-click", JSON.parse(JSON.stringify(nav)));
+    },
+  },
+
   watch: {
     navs: {
       handler(navs) {
@@ -77,13 +84,11 @@ export default {
 
   .rows {
     .flex();
-
     .item {
       .flex();
       flex-direction: column;
     }
   }
-
   .icon-wrapper {
     .flex(center, center);
   }
