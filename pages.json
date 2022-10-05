@@ -422,23 +422,6 @@
 			]
 		},
 		{
-			"root": "home",
-			"pages": [
-				{
-					"path": "design-detail",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				{
-					"path": "styles",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				}
-			]
-		},
-		{
 			"root": "user",
 			"pages": [
 				{
@@ -587,6 +570,14 @@
 				},
 				{
 					"path": "store/index"
+				}
+			]
+		},
+		{
+			"root": "store",
+			"pages": [
+				{
+					"path": "store/store-detail"
 				}
 			]
 		}

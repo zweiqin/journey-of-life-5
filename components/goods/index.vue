@@ -63,6 +63,7 @@ export default {
 
   .img {
     width: 100%;
+    height: 290upx;
   }
 
   .body {

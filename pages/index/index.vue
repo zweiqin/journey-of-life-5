@@ -1,5 +1,5 @@
 <template>
-  <view class="index-container">
+  <view class="index-container" ref="indexPageRef">
     <view class="search-bar">
       <view class="local-wrapper">
         <img
@@ -96,9 +96,18 @@
         <!-- 附近联盟商家 -->
         <Panel title="附近联盟商家" routeText="更多">
           <view class="store-wrapper">
-            <Goods></Goods>
-            <Goods></Goods>
-            <Goods></Goods>
+            <Goods
+              url="https://img1.baidu.com/it/u=670451069,3459565546&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=375"
+            ></Goods>
+            <Goods
+              url="https://img1.baidu.com/it/u=507085158,3711398526&fm=253&fmt=auto&app=138&f=JPEG?w=550&h=365"
+            ></Goods>
+            <Goods
+              url="https://img2.baidu.com/it/u=3702410722,3935560281&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200"
+            ></Goods>
+            <Goods
+              url="https://img0.baidu.com/it/u=907067917,2151411446&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=479"
+            ></Goods>
           </view>
         </Panel>
       </view>
@@ -119,6 +128,12 @@
         ></JSwipper>
       </view>
     </view>
+    <JAside
+      @op="handleOp"
+      :style="{
+        right: isShowItemPane ? '40upx' : '',
+      }"
+    ></JAside>
   </view>
 </template>
 
@@ -127,12 +142,14 @@ import { homeNavs } from "./config";
 import Active from "./components/Active.vue";
 import Panel from "../../components/panel";
 import Goods from "../../components/goods";
+import JAside from "./components/Aside.vue";
 
 export default {
   components: {
     Active,
     Panel,
     Goods,
+    JAside,
   },
   data() {
     return {
@@ -189,12 +206,35 @@ export default {
       this.$refs.swipperRef.$el.style.height = 0;
       nav.background = nav.background.replace("137deg", "to bottom");
       this.currentNav = nav;
-
       this.isShowItemPane = true;
     },
 
     handleChangeCurrentPane(index) {
       this.currentActive = index;
+    },
+
+    // aside 两个操作icon
+    handleOp(eventName) {
+      if (eventName === "home") {
+        this.$refs.swipperRef.$el.style.height = "";
+        this.isShowItemPane = false;
+      } else {
+        uni.pageScrollTo({
+          scrollTop: 0,
+          duration: 300,
+        });
+      }
+    },
+  },
+
+  watch: {
+    isShowItemPane(value) {
+      if (value) {
+        uni.pageScrollTo({
+          scrollTop: 0,
+          duration: 300,
+        });
+      }
     },
   },
 };
@@ -339,5 +379,12 @@ export default {
     padding-left: 10px;
     padding-right: 10px;
   }
+}
+
+.aside-container {
+  position: fixed;
+  bottom: 140upx;
+  right: -100%;
+  transition: all 350ms 350ms;
 }
 </style>
