@@ -577,7 +577,15 @@
 			"root": "store",
 			"pages": [
 				{
-					"path": "store/store-detail"
+					"path": "store-detail"
+				}
+			]
+		},
+		{
+			"root": "goods",
+			"pages": [
+				{
+					"path": "goods-detail"
 				}
 			]
 		}

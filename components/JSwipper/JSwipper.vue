@@ -12,9 +12,15 @@
       v-for="(item, index) in tabs"
       :key="index"
     >
-      <view class="swiper-item" v-for="(goods, index) in data" :key="index"
-        ><JGoods></JGoods
-      ></view>
+      <slot v-if="isSlot" :name="item.slotName"></slot>
+      <view
+        v-else
+        class="swiper-item"
+        v-for="(goods, index) in data"
+        :key="index"
+      >
+        <JGoods></JGoods>
+      </view>
     </swiper-item>
   </swiper>
 </template>
@@ -33,17 +39,15 @@ export default {
     data: {
       type: Array,
     },
+    isSlot: {
+      type: Boolean,
+      default: false,
+    },
+    height: [Number, String],
   },
 
   mounted() {
-    this.$nextTick(() => {
-      let number = 0;
-      number = Math.floor(this.data.length / 2);
-      if (this.data.length - number * 2 !== 0) {
-        number++;
-      }
-      this.swiperHeight = number * 480;
-    });
+    this.setSwiperHeight();
   },
 
   data() {
@@ -52,10 +56,30 @@ export default {
     };
   },
 
+  watch: {
+    height() {
+      this.setSwiperHeight();
+    },
+  },
+
   methods: {
     handleAwipperChange(e) {
       const current = e.detail.current;
       this.$emit("change", current);
+    },
+
+    setSwiperHeight() {
+      this.$nextTick(() => {
+        let number = 0;
+        if (this.data && this.data.length) {
+          number = Math.floor(this.data.length / 2);
+          if (this.data.length - number * 2 !== 0) {
+            number++;
+          }
+        }
+
+        this.swiperHeight = this.height ? this.height : number * 480;
+      });
     },
   },
 };

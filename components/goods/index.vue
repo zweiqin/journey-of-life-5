@@ -43,11 +43,11 @@ export default {
 
   methods: {
     handeViewDetail() {
-      if (!this.id) {
-        return;
-      }
+      // if (!this.id) {
+      //   return;
+      // }
       uni.navigateTo({
-        url: `/pages/prod/prod?goodsId=${this.id}`,
+        url: `/store/store-detail`,
       });
     },
   },

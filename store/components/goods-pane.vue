@@ -1,19 +1,19 @@
 <template>
-  <view class="j-goods-container" @click="handleToViewGoodsDetail">
-    <image
-      class="img"
-      src="https://img1.baidu.com/it/u=2665200862,3572141497&fm=253&fmt=auto?w=750&h=500"
-      alt=""
-    />
-    <view class="info">
-      <view class="name">我要核试验的回复那话是</view>
-      <view class="tags">
-        <view class="tag">七天无理由退货</view>
-        <view class="tag">品牌正品</view>
-      </view>
+  <view class="goods-pane">
+    <JAvatar
+      :radius="10"
+      :size="120"
+      src="https://img2.baidu.com/it/u=1443258330,1345238306&fm=253&fmt=auto&app=138&f=JPEG?w=310&h=230"
+    ></JAvatar>
 
-      <view class="op">
-        <view class="j-goods-price">￥30</view>
+    <view class="goods-pane-right">
+      <view class="goods-pane-name">BILLY 毕利 / OXBERG 奥克伯家具餐桌奥克伯家具餐桌奥克伯家具餐桌</view>
+      <view class="goods-pane-desc-content">
+        <text class="goods-pane-desc">家庭餐桌带椅子</text>
+        <text class="goods-pane-desc">灰色</text>
+      </view>
+      <view class="goods-pane-footer">
+        <text class="goods-pane-price">￥300</text>
         <view ref="numbersRef" class="numbers">
           <view class="item" @click="changeNumber(-1)">-</view>
           <view class="currentNumber">{{ goodsNumber }}</view>
@@ -27,6 +27,7 @@
     </view>
   </view>
 </template>
+
 <script>
 export default {
   data() {
@@ -51,13 +52,6 @@ export default {
         this.goodsNumber = 0;
       }
     },
-
-    // 点击查看详情
-    handleToViewGoodsDetail() {
-      uni.navigateTo({
-        url: "/goods/goods-detail",
-      });
-    },
   },
 };
 </script>
@@ -66,54 +60,40 @@ export default {
 @import "../../style/var.less";
 @import "../../style/mixin.less";
 
-.j-goods-container {
-  width: 348upx;
-  height: 480upx;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 40upx;
-  overflow: hidden;
+.goods-pane {
+  .flex();
+  width: 100%;
 
-  .img {
+  .goods-pane-right {
     width: 100%;
-    height: 300upx;
-    border-radius: 40upx 40upx 0 0;
-  }
+    margin-left: 30upx;
+    font-size: @f12;
+    color: @c0;
 
-  .info {
-    width: 100%;
-    padding: 10upx;
-    box-sizing: border-box;
-    /* background-color: #f40; */
-
-    .name {
-      width: 308upx;
+    .goods-pane-name {
+      width: 520upx;
+      white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-      white-space: nowrap;
-      font-size: 24upx;
-      color: #3d3d3d;
     }
 
-    .tags {
-      display: flex;
-      margin: 12upx 0 23upx 0;
-
-      .tag {
-        border: 1upx solid #777777;
-        font-size: 20upx;
-        padding: 4upx 8upx;
-        border-radius: 10px;
-        margin-right: 10upx;
-      }
+    .goods-pane-desc-content {
+      margin: 14upx 0 10upx 0;
     }
 
-    .op {
+    .goods-pane-desc {
+      font-size: 20upx;
+      margin-right: 10upx;
+    }
+
+    .goods-pane-footer {
       .flex();
-      .j-goods-price {
-        font-size: 36upx;
+
+      .goods-pane-price {
         color: #fa5151;
+        font-size: 28upx;
       }
+
       .numbers {
         .flex(center, flex-end);
         opacity: 0;
