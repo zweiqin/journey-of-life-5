@@ -1,6 +1,13 @@
 <template>
-  <view class="j-line-title">
-    <text ref="textRef" class="text">{{ title }}</text>
+  <view
+    class="j-line-title"
+    :style="{
+      background: color,
+    }"
+  >
+    <text :style="{ color: color }" ref="textRef" class="text">{{
+      title
+    }}</text>
   </view>
 </template>
 
@@ -11,6 +18,8 @@ export default {
       type: String,
       required: true,
     },
+
+    color: String,
   },
   mounted() {
     this.$nextTick(() => {

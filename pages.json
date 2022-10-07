@@ -9,6 +9,9 @@
 			}
 		},
 		{
+			"path": "pages/marketing-treasure-house/marketing-treasure-house"
+		},
+		{
 			"path": "pages/pre-order/pre-order",
 			"style": {
 				"usingComponents": {
@@ -241,7 +244,7 @@
 				"selectedIconPath": "/static/images/tabbar/red-pack.png"
 			},
 			{
-				"pagePath": "pages/logistics/logistics",
+				"pagePath": "pages/marketing-treasure-house/marketing-treasure-house",
 				"text": "营销宝库",
 				"iconPath": "/static/images/tabbar/books.png",
 				"selectedIconPath": "/static/images/tabbar/books.png"
