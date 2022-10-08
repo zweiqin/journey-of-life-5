@@ -1,279 +1,188 @@
 <template>
-  <view class="store">
-    <!-- 头部搜索 -->
-    <view class="search-top">
-      <img
-        @click="back"
-        class="back"
-        src="../../static/images/store/chevron-states.png"
-        alt=""
-      />
-      <view class="search-input" :class="{ 'search-active': isSearch }">
+  <view class="store-detail">
+    <view class="search-bar">
+      <view class="local-wrapper">
         <img
-          @click="showSearch"
-          class="search-icon"
-          src="../../static/images/store/search.png"
-          alt="icon"
+          class="location"
+          src="../../static/images/index/location.png"
+          alt=""
         />
-
-        <input
-          ref="inputRef"
-          @blur="handleSearchBlur"
-          type="text"
-          v-model="searchKey"
-        />
-      </view>
+        <text class="locale">佛山市</text></view
+      >
+      <input type="text" />
+      <img class="location" src="../../static/images/store/search.png" alt="" />
     </view>
 
-    <!-- 社区信息 -->
-    <view class="community-info">
-      <img
-        class="avatar"
-        src="https://img0.baidu.com/it/u=3608430476,1945954109&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=494"
-        alt=""
-      />
-
-      <view class="wrapper">
-        <view class="name">GIVENCHY团蜂家具社区旗舰店</view>
-        <view class="footer">
-          <text class="desc">综合体验</text>
-          <view class="rate">
-            <img src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6pfw0ql11tpiw1plmyba.png" alt="" />
-            <img src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6pfw0ql11tpiw1plmyba.png" alt="" />
-            <img src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6pfw0ql11tpiw1plmyba.png" alt="" />
-            <img src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6pfw0ql11tpiw1plmyba.png" alt="" />
-            <img src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/79gzmwafa4xkndbn75k1.png" alt="" />
-          </view>
-          <text class="desc">粉丝数1025万</text>
-        </view>
-
-        <view class="tags">
-          <view class="item">热销门店</view>
-          <view class="item">品牌老店</view>
-        </view>
-      </view>
-
-      <button class="subscribe">订阅</button>
+    <view class="banner">
+      <swiper
+        ref="swipperRef"
+        class="swiper"
+        indicator-dots
+        autoplay
+        indicator-color="#fff"
+        indicator-active-color="#fff"
+      >
+        <swiper-item>
+          <img
+            src="https://img0.baidu.com/it/u=3866459166,2693507635&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=667"
+            alt=""
+          />
+        </swiper-item>
+        <swiper-item>
+          <img
+            src="https://img2.baidu.com/it/u=2075742647,1178517082&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=428"
+            alt=""
+          />
+        </swiper-item>
+        <swiper-item>
+          <img
+            src="https://img2.baidu.com/it/u=3592206539,1858276708&fm=253&fmt=auto&app=138&f=JPEG?w=600&h=354"
+            alt=""
+          />
+        </swiper-item>
+      </swiper>
     </view>
 
-    <!-- 主区域 -->
-    <view class="main">
-      <view class="navs">
-        <view
-          class="item"
-          @click="handleSwitchTab(0)"
-          :class="{ active: currentTab === 0 }"
-          >推荐</view
-        >
-        <view
-          class="item"
-          @click="handleSwitchTab(1)"
-          :class="{ active: currentTab === 1 }"
-          >宝贝</view
-        >
-      </view>
+    <JTabs
+      @change="handleChangeCurrentPane"
+      :activeIndex="currentActive"
+      :tabs="storeLabelList"
+      class="j-tabs"
+    ></JTabs>
 
-      <Recommend v-if="currentTab === 0"></Recommend>
-      <Baby v-else></Baby>
+    <view class="list-wrapper">
+      <JSwipper
+        @change="handleChangeCurrentPane"
+        :activeIndex="currentActive"
+        :tabs="storeLabelList"
+        :data="[{}, {}, {}, {}]"
+        type="store"
+      ></JSwipper>
     </view>
   </view>
 </template>
 
 <script>
-import Recommend from "./components/recommend/index.vue";
-import Baby from "./components/baby/index.vue";
-
 export default {
-  components: {
-    Recommend,
-    Baby,
-  },
   data() {
     return {
-      isSearch: false,
-      searchKey: "",
-      currentTab: 0,
+      storeLabelList: [
+        {
+          name: "综合",
+          value: 0,
+        },
+        {
+          name: "家具店",
+          value: 1,
+        },
+        {
+          name: "日用百货",
+          value: 2,
+        },
+        {
+          name: "汽车店",
+          value: 3,
+        },
+        {
+          name: "酒店",
+          value: 4,
+        },
+      ],
+      currentActive: 0,
     };
   },
+
   methods: {
-    /**
-     * @description 返回上一级
-     */
-    back() {
-      uni.navigateBack();
-    },
-
-    /**
-     * @description 点击搜索
-     */
-    showSearch() {
-      this.isSearch = true;
-    },
-
-    /**
-     * @description 输入框失去焦点
-     */
-    handleSearchBlur() {
-      if (!this.searchKey.trim()) {
-        this.isSearch = false;
-      }
-    },
-
-    /**
-     * @description 点击切换tab
-     */
-    handleSwitchTab(tab) {
-      this.currentTab = tab;
+    handleChangeCurrentPane(index) {
+      this.currentActive = index;
     },
   },
 };
 </script>
 
 <style lang="less" scoped>
-.store {
-  padding: 28upx;
+.search-bar {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  width: 95%;
+  height: 72upx;
+  top: 54upx;
+  left: 50%;
+  padding: 16upx 24upx;
+  transform: translateX(-50%);
+  background-color: #fff;
+  color: #000000;
+  font-size: 24upx;
+  border-radius: 50upx;
+  z-index: 200;
 
-  .search-top {
+  .local-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    .back {
-      width: 48upx;
-    }
-
-    .search-input {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10upx;
-      background-color: #fff;
-      flex: 0;
-      border-radius: 40upx;
-      transition: all 350ms;
-
-      &.search-active {
-        flex: 1;
-        background-color: #efefef;
-      }
-
-      input {
-        flex: 1;
-        margin-left: 20upx;
-      }
-    }
-
-    .search-icon {
-      width: 40upx;
+    .locale {
+      padding: 0 10upx;
+      border-right: 1px solid #ccc;
     }
   }
 
-  .community-info {
-    display: flex;
-    align-items: flex-start;
-    margin: 26upx 0 24upx 0;
-
-    .avatar {
-      width: 80upx;
-      height: 80upx;
-      border-radius: 50%;
-      margin-right: 28upx;
-    }
-
-    .wrapper {
-      flex: 1;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-direction: column;
-
-      .tags {
-        display: flex;
-
-        .item {
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          margin-right: 10upx;
-          padding: 2upx 34upx;
-          font-size: 24upx;
-          background: linear-gradient(to right, #ffd2b4, #ff1810);
-          border-radius: 10upx;
-          color: #fff;
-          font-weight: 100;
-        }
-      }
-
-      .name {
-        color: #3d3d3d;
-        font-size: 28upx;
-        font-weight: bold;
-      }
-
-      .desc {
-        color: #3d3d3d;
-        font-size: 18upx;
-        font-weight: 100;
-        margin-right: 8upx;
-      }
-
-      .footer {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        margin: 4upx 0 12upx 0;
-
-        .rate {
-          margin-right: 8upx;
-
-          img {
-            width: 20upx;
-            height: 20upx;
-            vertical-align: 4upx;
-            margin: 0 2upx;
-          }
-        }
-      }
-    }
-
-    .subscribe {
-      margin-top: 16upx;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100upx;
-      height: 36upx;
-      color: #ff8f1f;
-      padding: 4upx 16upx;
-      font-size: 20upx;
-      background-color: #fff;
-      border: 1upx solid #ff8f1f;
-      border-radius: 40upx;
-      font-weight: 100;
-    }
+  .location {
+    width: 40upx;
   }
 
-  .main {
-    .navs {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      color: #3d3d3d;
-      font-size: 24upx;
+  input {
+    flex: 1;
+    padding: 0 30upx;
+  }
+}
 
-      .item {
-        margin-right: 50upx;
-        padding-bottom: 8upx;
-        border-bottom: 4upx solid transparent;
-        transition: all 350ms;
+.banner {
+  width: 100%;
+  height: 552upx;
+  border-radius: 0 0 40upx 40upx;
+  transition: all 350ms 100ms;
+  overflow: hidden;
 
-        &.active {
-          border-bottom: 4upx solid #3662ec;
-          border-radius: 2upx;
-          font-weight: bold;
-        }
-      }
+  .swiper {
+    width: 100%;
+    height: 552upx;
+    transition: all 350ms;
+    border-radius: 0 0 40upx 40upx;
+
+    /deep/ .uni-swiper-dot-active {
+      border-radius: 0;
+      width: 40upx !important;
+    }
+
+    /deep/ .uni-swiper-dot {
+      border-radius: 0px;
+      height: 4upx;
+      width: 4upx;
+      margin-right: 6upx;
+    }
+
+    img {
+      width: 100%;
+      height: 552upx;
     }
   }
+}
+
+.j-tabs {
+  padding: 0 16upx;
+  box-sizing: border-box;
+}
+
+.list-wrapper {
+  padding: 22upx;
+  box-sizing: border-box;
+}
+
+/deep/ .scroll-wrapper-container{
+  justify-content: space-between;
 }
 </style>

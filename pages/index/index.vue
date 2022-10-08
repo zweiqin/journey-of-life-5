@@ -125,6 +125,7 @@
           :activeIndex="currentActive"
           :tabs="labelList"
           :data="data"
+          type="goods"
         ></JSwipper>
       </view>
     </view>
@@ -291,8 +292,9 @@ export default {
   .banner {
     width: 100%;
     height: 552upx;
-    border-radius: 0 0 20upx 20upx;
+    border-radius: 0 0 40upx 40upx;
     transition: all 350ms 100ms;
+    overflow: hidden;
 
     .swiper {
       width: 100%;

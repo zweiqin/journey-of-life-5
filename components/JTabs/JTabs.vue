@@ -79,6 +79,10 @@ export default {
       font-size: 24upx;
       color: #3d3d3d;
       margin-right: 52upx;
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
 
     .item-active {

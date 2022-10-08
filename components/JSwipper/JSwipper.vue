@@ -13,13 +13,11 @@
       :key="index"
     >
       <slot v-if="isSlot" :name="item.slotName"></slot>
-      <view
-        v-else
-        class="swiper-item"
-        v-for="(goods, index) in data"
-        :key="index"
-      >
-        <JGoods></JGoods>
+      <view class="flex" v-else>
+        <view class="swiper-item" v-for="(goods, index) in data" :key="index">
+          <JGoods v-if="type === 'goods'"></JGoods>
+          <JStorePane ref="jStoreDetailRef" v-else></JStorePane>
+        </view>
       </view>
     </swiper-item>
   </swiper>
@@ -44,6 +42,10 @@ export default {
       default: false,
     },
     height: [Number, String],
+    type: {
+      type: String,
+      default: "goods",
+    },
   },
 
   mounted() {
@@ -71,14 +73,25 @@ export default {
     setSwiperHeight() {
       this.$nextTick(() => {
         let number = 0;
+        let itemHeight = 0;
+
         if (this.data && this.data.length) {
-          number = Math.floor(this.data.length / 2);
-          if (this.data.length - number * 2 !== 0) {
+          itemHeight =
+            this.type === "goods"
+              ? 480
+              : (this.$refs.jStoreDetailRef[0].$el.clientHeight + 10) * 2;
+
+          number =
+            this.type === "goods"
+              ? Math.floor(this.data.length / 2)
+              : this.data.length;
+
+          if (this.type === "goods" && this.data.length - number * 2 !== 0) {
             number++;
           }
         }
 
-        this.swiperHeight = this.height ? this.height : number * 480;
+        this.swiperHeight = this.height ? this.height : number * itemHeight;
       });
     },
   },
@@ -93,5 +106,12 @@ export default {
     justify-content: space-between;
     flex-wrap: wrap;
   }
+}
+
+.flex {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 </style>

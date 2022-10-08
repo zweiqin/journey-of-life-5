@@ -21,16 +21,6 @@
 			}
 		},
 		{
-			"path": "pages/stuff/stuff",
-			"style": {}
-		},
-		{
-			"path": "pages/community-center/community-center",
-			"style": {
-				"navigationBarTitleText": "社区服务中心"
-			}
-		},
-		{
 			"path": "pages/logs/logs",
 			"style": {
 				"navigationBarTitleText": "查看启动日志"
@@ -43,12 +33,6 @@
 			}
 		},
 		{
-			"path": "pages/logistics/logistics",
-			"style": {
-				"navigationBarTitleText": "物流"
-			}
-		},
-		{
 			"path": "pages/basket/basket",
 			"style": {
 				"backgroundTextStyle": "light",
@@ -57,15 +41,6 @@
 				"navigationBarTextStyle": "black"
 			}
 		},
-		// {
-		// 	"path": "pages/category/category",
-		// 	"style": {
-		// 		"backgroundTextStyle": "light",
-		// 		"navigationBarBackgroundColor": "#fff",
-		// 		"navigationBarTitleText": "分类商品",
-		// 		"navigationBarTextStyle": "black"
-		// 	}
-		// },
 		{
 			"path": "pages/search-page/search-page",
 			"style": {
@@ -232,7 +207,7 @@
 				"selectedIconPath": "/static/images/tabbar/home.png"
 			},
 			{
-				"pagePath": "pages/stuff/stuff",
+				"pagePath": "pages/store/store",
 				"text": "附近门店",
 				"iconPath": "/static/images/tabbar/store.png",
 				"selectedIconPath": "/static/images/tabbar/store.png"
@@ -269,161 +244,6 @@
 		}
 	},
 	"subPackages": [
-		{
-			"root": "community-center",
-			"pages": [
-				{
-					"path": "install",
-					"style": {
-						"navigationBarTitleText": "上门安装"
-					}
-				},
-				{
-					"path": "serve-detail",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				{
-					"path": "confirm-order",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				{
-					"path": "order",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				{
-					"path": "site/home"
-				},
-				{
-					"path": "site/more-site"
-				},
-				{
-					"path": "site/union"
-				},
-				{
-					"path": "delivery-install"
-				},
-				{
-					"path": "delivery"
-				},
-				{
-					"path": "consignee"
-				},
-				{
-					"path": "goods",
-					"usingComponents": {
-						"van-uploader": "/wxcomponents/vant/dist/uploader/index.vue"
-					}
-				},
-				{
-					"path": "repair"
-				},
-				{
-					"path": "repair-goods",
-					"usingComponents": {
-						"van-uploader": "/wxcomponents/vant/dist/uploader/index.vue"
-					}
-				},
-				{
-					"path": "order"
-				},
-				{
-					"path": "pay"
-				}
-			]
-		},
-		{
-			"root": "logistics",
-			"pages": [
-				{
-					"path": "mail",
-					"style": {
-						"navigationBarTitleText": "",
-						"usingComponents": {
-							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
-							"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog",
-							"uni-collapse": "/uni_modules/uni-collapse/components/uni-collapse/uni-collapse",
-							"uni-collapse-item": "/uni_modules/uni-collapse/components/uni-collapse-item/uni-collapse-item"
-						}
-					}
-				},
-				{
-					"path": "value-added-services",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				{
-					"path": "goods-info",
-					"style": {
-						"navigationBarTitleText": "",
-						"usingComponents": {
-							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
-						}
-					}
-				},
-				{
-					"path": "appoint",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				{
-					"path": "collect-package",
-					"style": {
-						"navigationBarTitleText": "",
-						"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
-					}
-				},
-				{
-					"path": "collect-package-detail",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				{
-					"path": "find-logistics",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				{
-					"path": "wuliu-detail",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				{
-					"path": "search-wuliu",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				{
-					"path": "warehouse",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				{
-					"path": "sender",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				},
-				{
-					"path": "consignee",
-					"style": {
-						"navigationBarTitleText": ""
-					}
-				}
-			]
-		},
 		{
 			"root": "user",
 			"pages": [
@@ -553,26 +373,6 @@
 						"navigationBarTitleText": "",
 						"usingComponents": {}
 					}
-				}
-			]
-		},
-		{
-			"root": "stuff",
-			"pages": [
-				{
-					"path": "detail",
-					"usingComponents": {
-						"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
-					}
-				},
-				{
-					"path": "industry/infomation-list"
-				},
-				{
-					"path": "industry/infomation-detail"
-				},
-				{
-					"path": "store/index"
 				}
 			]
 		},

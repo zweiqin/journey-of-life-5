@@ -17,9 +17,6 @@
     <view class="main">
       <JNavs
         class="navs"
-        :style="{
-          padding: isShowItemPane ? '20upx' : '',
-        }"
         @nav-click="handleNavItemClick"
         :navs="navs"
       ></JNavs>
