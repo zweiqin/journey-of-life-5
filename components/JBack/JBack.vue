@@ -6,7 +6,11 @@
         height: height * 1 + 'upx',
       }"
       @click="handleBack"
-      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/eo1rayuh8vu1qtnbdj0l.png"
+      :src="
+        dark
+          ? 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/qt4o7j0jglkweyicy1fw.png'
+          : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/eo1rayuh8vu1qtnbdj0l.png'
+      "
       mode=""
     />
   </view>
@@ -25,8 +29,9 @@ export default {
     },
     height: {
       type: [Number, String],
-      default: 28
-    }
+      default: 28,
+    },
+    dark: Boolean
   },
   methods: {
     handleBack() {

@@ -391,6 +391,17 @@
 					"path": "goods-detail"
 				}
 			]
+		},
+		{
+			"root": "marketing-treasure-house",
+			"pages": [
+				{
+					"path": "article-list"
+				},
+				{
+					"path": "article-detail"
+				}
+			]
 		}
 	]
 }

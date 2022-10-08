@@ -15,11 +15,7 @@
     </view>
 
     <view class="main">
-      <JNavs
-        class="navs"
-        @nav-click="handleNavItemClick"
-        :navs="navs"
-      ></JNavs>
+      <JNavs class="navs" @nav-click="handleNavItemClick" :navs="navs"></JNavs>
 
       <img
         style="width: 100%"
@@ -46,6 +42,13 @@ export default {
     return {
       navs,
     };
+  },
+  methods: {
+    handleNavItemClick(nav) {
+      uni.navigateTo({
+        url: nav.url,
+      });
+    },
   },
 };
 </script>
