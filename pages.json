@@ -402,6 +402,20 @@
 					"path": "article-detail"
 				}
 			]
+		},
+		{
+			"root": "home",
+			"pages": [
+				{
+					"path": "activity-recommendation"
+				},
+				{
+					"path": "activity-detail"
+				},
+				{
+					"path": "ranking-list"
+				}
+			]
 		}
 	]
 }

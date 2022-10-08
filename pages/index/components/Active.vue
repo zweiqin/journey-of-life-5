@@ -4,6 +4,7 @@
     :style="{
       background: background,
     }"
+    @click="handleTo"
   >
     <view class="header">
       <img v-if="title" class="title" :src="title" alt="" />
@@ -34,6 +35,15 @@ export default {
     title: String,
     icon: String,
     background: String,
+    url: String,
+  },
+
+  methods: {
+    handleTo() {
+      uni.navigateTo({
+        url: this.url,
+      });
+    },
   },
 };
 </script>

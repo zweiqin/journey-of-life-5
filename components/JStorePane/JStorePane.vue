@@ -132,6 +132,7 @@ export default {
       width: 496upx;
       height: 300upx;
       border-radius: 20upx 0 0 20upx;
+      margin-right: 6upx;
     }
 
     .right {

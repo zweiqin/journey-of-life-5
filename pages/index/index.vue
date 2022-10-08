@@ -69,11 +69,14 @@
         <!-- 活动面板 -->
         <view class="active-wrapper">
           <Active
+            url="/home/activity-recommendation"
             icon="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/eorq9fz6tsncy7tsi3l9.png"
             title="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/3sgn8nqyuhc244p73ms2.png"
             background="linear-gradient(180deg, #FFE5CC, rgba(255,255,255,0))"
           ></Active>
+
           <Active
+            url="/home/ranking-list"
             title="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/fopsiop6q7gh6l9pyomb.png"
             background="linear-gradient(180deg, #FCDBDB, rgba(255,255,255,0))"
             icon="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/raoa68uwyb2emu7mocv9.png"
