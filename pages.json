@@ -9,6 +9,9 @@
 			}
 		},
 		{
+			"path": "pages/red-envelope/red-envelope"
+		},
+		{
 			"path": "pages/marketing-treasure-house/marketing-treasure-house"
 		},
 		{
@@ -213,7 +216,7 @@
 				"selectedIconPath": "/static/images/tabbar/store.png"
 			},
 			{
-				"pagePath": "pages/community-center/community-center",
+				"pagePath": "pages/red-envelope/red-envelope",
 				"text": "地图红包",
 				"iconPath": "/static/images/tabbar/red-pack.png",
 				"selectedIconPath": "/static/images/tabbar/red-pack.png"
