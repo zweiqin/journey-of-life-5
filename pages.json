@@ -219,19 +219,19 @@
 				"pagePath": "pages/red-envelope/red-envelope",
 				"text": "地图红包",
 				"iconPath": "/static/images/tabbar/red-pack.png",
-				"selectedIconPath": "/static/images/tabbar/red-pack.png"
+				"selectedIconPath": "/static/images/tabbar/red-pack-active.png"
 			},
 			{
 				"pagePath": "pages/marketing-treasure-house/marketing-treasure-house",
 				"text": "营销宝库",
 				"iconPath": "/static/images/tabbar/books.png",
-				"selectedIconPath": "/static/images/tabbar/books.png"
+				"selectedIconPath": "/static/images/tabbar/books-active.png"
 			},
 			{
 				"pagePath": "pages/user/user",
 				"text": "会员中心",
 				"iconPath": "/static/images/tabbar/vip.png",
-				"selectedIconPath": "/static/images/tabbar/vip.png"
+				"selectedIconPath": "/static/images/tabbar/vip-active.png"
 			}
 		]
 	},
@@ -384,6 +384,12 @@
 			"pages": [
 				{
 					"path": "store-detail"
+				},
+				{
+					"path": "activity-list"
+				},
+				{
+					"path": "explosives-list"
 				}
 			]
 		},

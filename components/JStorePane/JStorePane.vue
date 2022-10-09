@@ -50,7 +50,7 @@ export default {
      */
     handleEnterStore() {
       uni.navigateTo({
-        url: "/pages/store/store",
+        url: "/store/store-detail",
       });
     },
   },

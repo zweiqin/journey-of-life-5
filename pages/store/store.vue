@@ -57,13 +57,24 @@
         :tabs="storeLabelList"
         :data="[{}, {}, {}, {}]"
         type="store"
-      ></JSwipper>
+      >
+        <template #store-title>
+          <view class="active-pane">
+            <ActivePane></ActivePane>
+            <ActivePane type="recommend"></ActivePane>
+          </view>
+        </template>
+      </JSwipper>
     </view>
   </view>
 </template>
 
 <script>
+import ActivePane from "./components/active-pane.vue";
 export default {
+  components: {
+    ActivePane,
+  },
   data() {
     return {
       storeLabelList: [
@@ -101,6 +112,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "../../style/mixin.less";
 .search-bar {
   box-sizing: border-box;
   display: flex;
@@ -178,11 +190,17 @@ export default {
 }
 
 .list-wrapper {
-  padding: 22upx;
+  padding: 0 22upx 22upx 22upx;
   box-sizing: border-box;
 }
 
-/deep/ .scroll-wrapper-container{
+/deep/ .scroll-wrapper-container {
   justify-content: space-between;
+}
+
+.active-pane {
+  width: 100%;
+  .flex();
+  margin-bottom: 20upx;
 }
 </style>

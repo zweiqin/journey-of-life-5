@@ -14,6 +14,7 @@
     >
       <slot v-if="isSlot" :name="item.slotName"></slot>
       <view class="flex" v-else>
+        <slot name="store-title"></slot>
         <view class="swiper-item" v-for="(goods, index) in data" :key="index">
           <JGoods v-if="type === 'goods'"></JGoods>
           <JStorePane ref="jStoreDetailRef" v-else></JStorePane>
