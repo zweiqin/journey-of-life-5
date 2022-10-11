@@ -8,6 +8,15 @@ const request = (base_url) => {
         data,
         method,
         success: (res) => {
+          if (res.data.errno !== 0) {
+            uni.showToast({
+              title: res.data.errmsg,
+              duration: 2000,
+              icon: "none",
+            });
+            reject(res.data.errmsg);
+            return;
+          }
           resolve(res.data);
         },
         fail: (error) => {
@@ -24,4 +33,4 @@ const request = (base_url) => {
 
 export const GyRequest = request(BASE_URL);
 export const RuanRequest = request(RUAN_URL);
-export const LTRequest = request(LANG_FEE_URL)
+export const LTRequest = request(LANG_FEE_URL);

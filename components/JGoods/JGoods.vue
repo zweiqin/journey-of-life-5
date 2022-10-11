@@ -2,18 +2,18 @@
   <view class="j-goods-container" @click="handleToViewGoodsDetail">
     <image
       class="img"
-      src="https://img1.baidu.com/it/u=2665200862,3572141497&fm=253&fmt=auto?w=750&h=500"
+      :src="data.picUrl"
       alt=""
     />
     <view class="info">
-      <view class="name">我要核试验的回复那话是</view>
+      <view class="name">{{ data.name }}</view>
       <view class="tags">
         <view class="tag">七天无理由退货</view>
         <view class="tag">品牌正品</view>
       </view>
 
       <view class="op">
-        <view class="j-goods-price">￥30</view>
+        <view class="j-goods-price">￥{{data.counterPrice}}</view>
         <view ref="numbersRef" class="numbers">
           <view class="item" @click="changeNumber(-1)">-</view>
           <view class="currentNumber">{{ goodsNumber }}</view>
@@ -29,6 +29,12 @@
 </template>
 <script>
 export default {
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       goodsNumber: 1,
@@ -71,7 +77,7 @@ export default {
   height: 480upx;
   display: flex;
   flex-direction: column;
-  margin-bottom: 40upx;
+  margin-bottom: 20upx;
   overflow: hidden;
 
   .img {

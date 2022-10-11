@@ -73,6 +73,8 @@
             icon="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/eorq9fz6tsncy7tsi3l9.png"
             title="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/3sgn8nqyuhc244p73ms2.png"
             background="linear-gradient(180deg, #FFE5CC, rgba(255,255,255,0))"
+            left="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1y72hcdwczhnctxghono.png"
+            right="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/p97jz8ckatuf5g6jhhnq.png"
           ></Active>
 
           <Active
@@ -80,6 +82,8 @@
             title="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/fopsiop6q7gh6l9pyomb.png"
             background="linear-gradient(180deg, #FCDBDB, rgba(255,255,255,0))"
             icon="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/raoa68uwyb2emu7mocv9.png"
+            left="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/fo37zvx4ociws9zr1uzu.png"
+            right="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/z9cyu6zondn6mlmo4un2.png"
           >
             <view class="active-slot">跟榜购好物</view>
           </Active>
@@ -100,16 +104,11 @@
         <Panel title="附近联盟商家" routeText="更多">
           <view class="store-wrapper">
             <Goods
-              url="https://img1.baidu.com/it/u=670451069,3459565546&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=375"
-            ></Goods>
-            <Goods
-              url="https://img1.baidu.com/it/u=507085158,3711398526&fm=253&fmt=auto&app=138&f=JPEG?w=550&h=365"
-            ></Goods>
-            <Goods
-              url="https://img2.baidu.com/it/u=3702410722,3935560281&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200"
-            ></Goods>
-            <Goods
-              url="https://img0.baidu.com/it/u=907067917,2151411446&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=479"
+              v-for="store in storeList"
+              :key="store.id"
+              :url="store.picUrl"
+              :desc="store.desc"
+              :name="store.name"
             ></Goods>
           </view>
         </Panel>
@@ -129,6 +128,7 @@
           :tabs="labelList"
           :data="data"
           type="goods"
+          :status="listLoading"
         ></JSwipper>
       </view>
     </view>
@@ -147,6 +147,12 @@ import Active from "./components/Active.vue";
 import Panel from "../../components/panel";
 import Goods from "../../components/goods";
 import JAside from "./components/Aside.vue";
+import { getSroreListApi } from "../../api/store";
+import {
+  getTypeDetailList,
+  getGoodsById,
+  getAllCategoryList,
+} from "../../api/home";
 
 export default {
   components: {
@@ -160,61 +166,56 @@ export default {
       navs: homeNavs,
       isShowItemPane: false,
       currentNav: {},
-      labelList: [
-        {
-          name: "综合",
-          value: 0,
-        },
-        {
-          name: "美妆",
-          value: 1,
-        },
-        {
-          name: "送礼优品",
-          value: 2,
-        },
-        {
-          name: "优选产品",
-          value: 3,
-        },
-      ],
+      labelList: [],
       currentActive: 0,
-      data: [
-        {
-          name: "操了",
-        },
-        {
-          name: "操了1",
-        },
-        {
-          name: "操了2",
-        },
-        {
-          name: "操了3",
-        },
-        {
-          name: "操了4",
-        },
-        {
-          name: "操了5",
-        },
-        {
-          name: "操了6",
-        },
-      ],
+      data: [{}, {}, {}, {}, {}],
+
+      storeList: [],
+      totalPages: 1,
+
+      // 分类类目
+      currentCategoryId: 0,
+      currentCategoryList: [],
+
+      // 请求数据
+      queryInfo: {
+        page: 1,
+        size: 10,
+        totalPage: 0,
+      },
+      listLoading: "loading",
     };
   },
 
+  onLoad() {
+    this.getStoreList();
+  },
+
   methods: {
+    // 点击navs
     handleNavItemClick(nav) {
+      this.currentCategoryId = nav.id;
+      this.getOrderList();
       this.$refs.swipperRef.$el.style.height = 0;
       nav.background = nav.background.replace("137deg", "to bottom");
       this.currentNav = nav;
+      this.currentActive = 0;
+      this.queryInfo = {
+        page: 1,
+        size: 10,
+        totalPage: 0,
+      };
       this.isShowItemPane = true;
     },
 
     handleChangeCurrentPane(index) {
       this.currentActive = index;
+      this.queryInfo = {
+        page: 1,
+        size: 10,
+        totalPage: 0,
+      };
+      this.getOrderList();
     },
 
     // aside 两个操作icon
@@ -229,6 +230,38 @@ export default {
         });
       }
     },
+
+    // 获取首页门店
+    async getStoreList() {
+      const res = await getSroreListApi({
+        page: 1,
+        size: 10,
+      });
+
+      this.totalPages = res.data.totalPages;
+      this.storeList = res.data.brandList;
+    },
+
+    // 根据一级类目查询二级类目
+    async getOrderList(isLoadMore) {
+      const res = await getTypeDetailList({ id: this.currentCategoryId });
+      this.labelList = res.data.currentSubCategory;
+
+      const listRes = await getGoodsById({
+        categoryId: this.labelList[this.currentActive].id,
+        page: this.queryInfo.page,
+        size: this.queryInfo.size,
+      });
+
+      if (isLoadMore) {
+        this.data.push(...listRes.data.goodsList);
+      } else {
+        this.data = listRes.data.goodsList;
+      }
+
+      this.queryInfo.totalPage = listRes.data.totalPages;
+      this.listLoading = "";
+    },
   },
 
   watch: {
@@ -240,6 +273,16 @@ export default {
         });
       }
     },
+  },
+
+  onReachBottom() {
+    if (this.queryInfo.page >= this.queryInfo.totalPage) {
+      this.listLoading = "nomore";
+      return;
+    }
+    this.listLoading = "loading";
+    this.queryInfo.page++;
+    this.getOrderList(true);
   },
 };
 </script>

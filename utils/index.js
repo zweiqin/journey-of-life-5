@@ -16,5 +16,6 @@ export {
   checkWhoami,
   useCopy,
   handleDebounce,
+  getRandom,
 } from "./DWHutils";
 export { formatTime } from "./util";

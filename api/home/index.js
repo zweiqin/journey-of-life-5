@@ -6,8 +6,7 @@
  * @FilePath: \团蜂商城 - 副本\tuan-uniapp\api\home\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { request } from "../../utils";
-import { getUserId, RuanRequest } from "../../utils";
+import { RuanRequest } from "../../utils";
 
 /**
  * 获取首页商品列表
@@ -45,7 +44,10 @@ export const getGoodsById = (data) => {
   return RuanRequest("/goods/list", data, "get");
 };
 
-
 export const getUserCouponApi = (data) => {
-  return RuanRequest('/coupon/getUserCoupon', data, 'get')
-}
+  return RuanRequest("/coupon/getUserCoupon", data, "get");
+};
+
+export const getAllCategoryList = () => {
+  return RuanRequest("/catalog/all", {}, 'get');
+};

@@ -1,77 +1,150 @@
 <template>
-  <AuthForm
-    :btn-top="185"
-    btn-text="提交"
-    @submit="submit"
-    type="register"
-    routeText="已有帐号?"
-    route="/pages/login/login"
-  ></AuthForm>
+  <view class="register-container">
+    <h2>{{ pageInfo.title }}</h2>
+    <JField
+      v-for="item in registerFields"
+      :key="item.label"
+      :label="item.label"
+      :type="item.type"
+      :placeholder="item.placeholder"
+      v-model="formData[item.field]"
+    ></JField>
+
+    <JAuthButton @click="handleSubmit" :text="pageInfo.btnTxt"></JAuthButton>
+  </view>
 </template>
 
 <script>
-import AuthForm from "../../components/auth-form";
-import { userRegisterApi } from "../../api/auth";
-export default {
-  components: {
-    AuthForm,
-  },
+import { registerFields, mapText } from "./config";
+import { resetPasswodApi, userRegisterApi } from "../../api/auth";
 
+export default {
   data() {
     return {
-      timer: null,
+      registerFields,
+      formData: {
+        mobile: "",
+        code: "",
+        password: "",
+        validatePdw: "",
+      },
+      pageInfo: {},
     };
   },
 
   methods: {
-    async submit(form) {
-      if (form.mobile.length !== 11) {
+    async handleSubmit() {
+      const { mobile, password, validatePdw } = this.formData;
+      if (!mobile || !password || !validatePdw) {
         uni.showToast({
-          title: "手机号格式错误",
+          title: "请入完整信息",
           duration: 2000,
           icon: "none",
         });
 
         return;
       }
-      const data = {
-        username: form.mobile,
-        password: form.password,
-        mobile: form.mobile,
-      };
-      try {
-        const res = await userRegisterApi(data);
-        if (res.errno === 0) {
-          uni.showToast({
-            title: "注册成功",
-            duration: 2000,
-          });
 
-          this.timer = setTimeout(() => {
-            uni.navigateTo({
-              url: "/pages/login/login",
-            });
-          }, 1000);
-        } else {
-          uni.showToast({
-            title: res.errmsg,
-            duration: 2000,
-            icon: "none",
-          });
-        }
-      } catch (error) {
+      if (
+        !/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(
+          mobile
+        )
+      ) {
         uni.showToast({
-          title: "注册失败",
+          title: "手机号格式不正确",
           duration: 2000,
           icon: "none",
         });
+
+        return;
       }
+
+      if (password.trim() !== validatePdw.trim()) {
+        uni.showToast({
+          title: "两次密码输入不一致",
+          duration: 2000,
+          icon: "none",
+        });
+
+        return;
+      }
+
+      if (password.trim().length < 6) {
+        uni.showToast({
+          title: "密码至少为6位",
+          duration: 2000,
+          icon: "none",
+        });
+
+        return;
+      }
+
+      const api = this.type === "register" ? userRegisterApi : resetPasswodApi;
+      const data =
+        this.type === "register"
+          ? {
+              username: mobile,
+              password,
+              mobile,
+            }
+          : {
+              mobile,
+              password,
+            };
+
+      try {
+        await api(data);
+
+        uni.showToast({
+          title: "注册成功",
+          duration: 2000,
+        });
+
+        uni.navigateTo({
+          url: "/pages/login/login?type=register&redirect=/pages/index/index&tabbar=1",
+        });
+      } catch (error) {}
     },
   },
 
-  deactivated() {
-    clearTimeout(this.timer);
-    this.timer = null;
+  onLoad(options) {
+    this.type = options.type;
+    this.pageInfo = mapText[options.type];
   },
 };
 </script>
+
+<style lang="less" scoped>
+@import "../../style/mixin.less";
+
+.register-container {
+  position: relative;
+  color: #3d3d3d;
+  .flex(center, center);
+  flex-direction: column;
+  padding: 192upx 60upx 0 60upx;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    display: block;
+    background: url("https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/720ysa3uh3ynjg10htcv.png")
+      no-repeat;
+    background-size: cover;
+    width: 172%;
+    height: 200upx;
+    margin-top: 100upx;
+  }
+
+  h2 {
+    font-size: 36upx;
+    font-weight: normal;
+    margin-bottom: 100upx;
+  }
+
+  .j-auth-button {
+    border-radius: 20upx;
+    margin-top: 120upx;
+  }
+}
+</style>

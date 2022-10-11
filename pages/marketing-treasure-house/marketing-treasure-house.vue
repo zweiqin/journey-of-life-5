@@ -25,7 +25,7 @@
 
       <JLineTitle color="#FA5151" title="免费案例"></JLineTitle>
 
-      <ArticlePane></ArticlePane>
+      <ArticlePane :status="loadingStatus" :data="allList"></ArticlePane>
     </view>
   </view>
 </template>
@@ -33,21 +33,63 @@
 <script>
 import { navs } from "./config";
 import ArticlePane from "./components/article-pane.vue";
+import { getIndustryInformationListApi } from "../../api/marketing-treasure-house";
 
 export default {
   components: {
     ArticlePane,
   },
+  onLoad() {
+    this.getArticleList();
+  },
   data() {
     return {
       navs,
+      allList: [],
+      queryInfo: {
+        page: 1,
+        size: 10,
+        isVip: false,
+      },
+      total: 0,
+      loadingStatus: "loading",
+      isLoading: false,
     };
+  },
+  onReachBottom() {
+    console.log("我好累");
+    if (this.allList.length >= this.queryInfo.total) {
+      this.loadingStatus = "noMore";
+      return;
+    }
+
+    if (this.isLoading) {
+      return;
+    }
+
+    this.queryInfo.page++;
+    this.loadingStatus = 'loading'
+    this.isLoading = true
+    this.getArticleList(true);
   },
   methods: {
     handleNavItemClick(nav) {
       uni.navigateTo({
         url: nav.url,
       });
+    },
+
+    async getArticleList(isLoadmore) {
+      const res = await getIndustryInformationListApi({ ...this.queryInfo });
+      if (isLoadmore) {
+        this.allList.push(...res.data.items);
+      } else {
+        this.allList = res.data.items;
+      }
+      this.total = res.data.total;
+
+      this.loadingStatus = "more";
+      this.isLoading = false;
     },
   },
 };

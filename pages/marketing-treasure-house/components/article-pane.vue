@@ -1,34 +1,44 @@
 <template>
   <view class="article-panel">
-    <view v-for="item in 4" :key="item">
-      <view class="time">2022年9月21日 星期三</view>
-      <view
-        class="article"
-        v-for="item in 4"
-        :key="item"
-        @click="handleToViewArticleDeatil"
-      >
+    <view v-for="item in data" :key="item.data">
+      <view class="article" @click="handleToViewArticleDeatil(item)">
         <view class="article-info">
-          <view class="name"
-            >震惊！！！家居产业再迎新机遇，市场再次 迎来大发展</view
-          >
-          <view class="time">11:23</view>
+          <view class="name">{{ item.title }}</view>
+          <view class="time">{{ item.updateTime }}</view>
         </view>
-        <img
-          class="article-cover"
-          src="https://img2.baidu.com/it/u=829931824,271545605&fm=253&fmt=auto&app=138&f=JPEG?w=450&h=228"
-        />
+        <img class="article-cover" :src="item.imgUrl" />
       </view>
     </view>
+    <uni-load-more
+      v-show="data && data.length && status !== 'more'"
+      style="margin: 20upx auto"
+      :status="status"
+      iconType="snow"
+    ></uni-load-more>
   </view>
 </template>
 
 <script>
 export default {
+  props: {
+    data: {
+      type: Array,
+      required: true,
+    },
+    status: {
+      type: String,
+      default: "loading",
+    },
+  },
+
   methods: {
-    handleToViewArticleDeatil() {
+    handleToViewArticleDeatil(article) {
+      if (!article || !article.id) {
+        this.$showToast("文章错误");
+        return;
+      }
       uni.navigateTo({
-        url: "/marketing-treasure-house/article-detail",
+        url: "/marketing-treasure-house/article-detail?id=" + article.id,
       });
     },
   },
@@ -46,8 +56,15 @@ export default {
 
   .article {
     display: flex;
+    justify-content: space-between;
     padding: 24upx 0;
     border-bottom: 1upx solid #d8d8d8;
+
+    .article-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
     .name {
       font-size: 24upx;
@@ -64,6 +81,7 @@ export default {
       height: 108upx;
       border-radius: 10upx;
       margin-left: 20upx;
+      flex-shrink: 0;
     }
   }
 }

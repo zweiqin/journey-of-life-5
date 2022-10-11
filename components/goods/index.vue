@@ -10,20 +10,31 @@
     />
 
     <view class="body">
-      <view class="name">{{ name || "GLOSTAD" }} </view>
-      <view class="name">{{ sname || "二人沙发" }} </view>
+      <view class="name">{{ desc || "GLOSTAD" }} </view>
+      <!-- <view class="name">{{ sname || "二人沙发" }} </view> -->
       <view class="tags">
         <view class="tag">品牌老店</view>
         <view class="tag">官方体验店</view>
       </view>
       <view class="info">
         <view class="left">
-          <text class="icon">￥</text
-          ><text class="price">{{ price || "500" }}</text>
+          <text class="icon">{{ name }}</text>
         </view>
 
         <view class="right">
-          <view>{{ payNumber || "1000" }}+付款</view>
+          <view style="color: #3d3d3d"
+            ><image
+              style="
+                width: 28upx;
+                height: 24upx;
+                margin-right: 10upx;
+                color: #3d3d3d;
+              "
+              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1035vvc88rxf5768exul.png"
+              mode=""
+            />
+            {{ getRandom(100, 1000) }}
+          </view>
         </view>
       </view>
     </view>
@@ -31,14 +42,17 @@
 </template>
 
 <script>
+import { getRandom } from "../../utils";
+
 export default {
   props: {
-    name: String,
+    desc: String,
     sname: String,
     price: [String, Number],
     payNumber: String,
     url: String,
     id: [Number, String],
+    name: String,
   },
 
   methods: {
@@ -50,6 +64,8 @@ export default {
         url: `/store/store-detail`,
       });
     },
+
+    getRandom,
   },
 };
 </script>

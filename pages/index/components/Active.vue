@@ -17,12 +17,12 @@
     <view class="main">
       <img
         class="img"
-        src="https://img0.baidu.com/it/u=93190956,80470959&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+        :src="left"
         alt=""
       />
       <img
         class="img"
-        src="https://img0.baidu.com/it/u=2346763455,2850959081&fm=253&fmt=auto&app=138&f=JPEG?w=450&h=450"
+        :src="right"
         alt=""
       />
     </view>
@@ -36,6 +36,8 @@ export default {
     icon: String,
     background: String,
     url: String,
+    left: String,
+    right: String
   },
 
   methods: {

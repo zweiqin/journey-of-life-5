@@ -84,10 +84,10 @@ export const useCopy = (text) => {
 
 /**
  * @description 防抖函数
- * @param {*} func 
- * @param {*} wait 
- * @param {*} immediate 
- * @returns 
+ * @param {*} func
+ * @param {*} wait
+ * @param {*} immediate
+ * @returns
  */
 export function handleDebounce(func, wait, immediate) {
   let timeout;
@@ -109,4 +109,8 @@ export function handleDebounce(func, wait, immediate) {
       }, wait);
     }
   };
+}
+
+export function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
 }

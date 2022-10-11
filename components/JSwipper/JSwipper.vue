@@ -2,7 +2,7 @@
   <swiper
     class="j-swiper-container"
     :style="{
-      height: swiperHeight + 'upx',
+      height: swiperHeight + 80 + 'upx',
     }"
     :current="activeIndex"
     @change="handleAwipperChange"
@@ -13,19 +13,34 @@
       :key="index"
     >
       <slot v-if="isSlot" :name="item.slotName"></slot>
-      <view class="flex" v-else>
+      <view class="flex" v-else-if="data && data.length">
         <slot name="store-title"></slot>
         <view class="swiper-item" v-for="(goods, index) in data" :key="index">
-          <JGoods v-if="type === 'goods'"></JGoods>
+          <JGoods
+            ref="jGoodsRef"
+            :data="goods"
+            v-if="type === 'goods'"
+          ></JGoods>
           <JStorePane ref="jStoreDetailRef" v-else></JStorePane>
         </view>
       </view>
+      <NoData style="height: 400upx" v-else></NoData>
+      <uni-load-more
+        v-show="data && data.length"
+        style="margin: 0 auto"
+        :status="status"
+        iconType="snow"
+      ></uni-load-more>
     </swiper-item>
   </swiper>
 </template>
 
 <script>
+import NoData from "../no-data";
 export default {
+  components: {
+    NoData,
+  },
   props: {
     tabs: {
       type: Array,
@@ -47,6 +62,10 @@ export default {
       type: String,
       default: "goods",
     },
+    status: {
+      type: String,
+      default: "loading",
+    },
   },
 
   mounted() {
@@ -63,6 +82,10 @@ export default {
     height() {
       this.setSwiperHeight();
     },
+
+    data(){
+      this.setSwiperHeight()
+    }
   },
 
   methods: {
@@ -76,23 +99,27 @@ export default {
         let number = 0;
         let itemHeight = 0;
 
-        if (this.data && this.data.length) {
-          itemHeight =
-            this.type === "goods"
-              ? 480
-              : (this.$refs.jStoreDetailRef[0].$el.clientHeight + 10) * 2;
+        setTimeout(() => {
+          if (this.data && this.data.length) {
+            itemHeight =
+              this.type === "goods"
+                ? (this.$refs.jGoodsRef[0].$el.clientHeight + 20) * 2
+                : (this.$refs.jStoreDetailRef[0].$el.clientHeight + 10) * 2;
 
-          number =
-            this.type === "goods"
-              ? Math.floor(this.data.length / 2)
-              : this.data.length;
+            number =
+              this.type === "goods"
+                ? Math.floor(this.data.length / 2)
+                : this.data.length;
 
-          if (this.type === "goods" && this.data.length - number * 2 !== 0) {
-            number++;
+            if (this.type === "goods" && this.data.length - number * 2 !== 0) {
+              number++;
+            }
           }
-        }
 
-        this.swiperHeight = this.height ? this.height : number * itemHeight;
+          this.swiperHeight = this.height
+            ? this.height
+            : number * itemHeight;
+        }, 500);
       });
     },
   },

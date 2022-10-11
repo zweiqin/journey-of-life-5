@@ -200,6 +200,7 @@ export const marketingTools = {
     {
       label: "红包发放",
       icon: require("../../static/images/user/hongbaofafang.png"),
+      url: '/user/marketing-tools/red-envelope-distribution'
     },
     {
       label: "每日签到",

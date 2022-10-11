@@ -11,58 +11,30 @@
 
     <view class="article-detail-content">
       <h1 class="title">
-        【行业解析】国内材料市场价格大幅上涨 家具行业持续扩大需求
+        {{ articleInfo.title }}
       </h1>
       <view class="info">
-        <view class="time">2022年9月21日 星期三</view>
-        <view class="author">巨蜂发布</view>
+        <view class="time">{{ articleInfo.updateTime }}</view>
+        <view class="author">{{ articleInfo.author }}</view>
       </view>
-      <image
-        src="https://img0.baidu.com/it/u=341143845,1756073482&fm=253&fmt=auto&app=138&f=JPEG?w=1477&h=500"
-        class="adva"
-        mode=""
-      />
+      <image :src="articleInfo.imgUrl" class="adva" mode="" />
 
-      <view class="content">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam vitae
-        incidunt laboriosam quia accusamus. Vitae harum accusantium eos earum
-        tenetur adipisci, consectetur culpa at, ab expedita dolor hic tempore
-        officiis! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla
-        id iure provident odio quam saepe pariatur asperiores nobis consequuntur
-        sapiente quibusdam distinctio ullam ratione modi, quae unde expedita
-        similique eos Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-        Quam soluta aliquid ab eius culpa ut dolorum ratione reprehenderit magni
-        voluptatibus cumque, voluptatem totam molestiae itaque odio molestias
-        doloremque quo illum?Lorem ipsum dolor sit amet consectetur adipisicing
-        elit. Obcaecati hic eius rem, nostrum modi laborum aut nisi dolor atque
-        impedit ut delectus eaque natus quas eum repudiandae optio aspernatur.
-        Totam? tenetur adipisci, consectetur culpa at, ab expedita dolor hic
-        tempore officiis! Lorem ipsum dolor sit amet consectetur adipisicing
-        elit. Nulla id iure provident odio quam saepe pariatur asperiores nobis
-        consequuntur sapiente quibusdam distinctio ullam ratione modi, quae unde
-        expedita similique eos Lorem ipsum dolor sit, amet consectetur
-        adipisicing elit. Quam soluta aliquid ab eius culpa ut dolorum ratione
-        reprehenderit magni voluptatibus cumque, voluptatem totam molestiae
-        itaque odio molestias doloremque quo illum?Lorem ipsum dolor sit amet
-        consectetur adipisicing elit. Obcaecati hic eius rem, nostrum modi
-        laborum aut nisi dolor atque impedit ut delectus eaque natus quas eum
-        repudiandae optio aspernatur. Totam?tenetur adipisci, consectetur culpa
-        at, ab expedita dolor hic tempore officiis! Lorem ipsum dolor sit amet
-        consectetur adipisicing elit. Nulla id iure provident odio quam saepe
-        pariatur asperiores nobis consequuntur sapiente quibusdam distinctio
-        ullam ratione modi, quae unde expedita similique eos Lorem ipsum dolor
-        sit, amet consectetur adipisicing elit. Quam soluta aliquid ab eius
-        culpa ut dolorum ratione reprehenderit magni voluptatibus cumque,
-        voluptatem totam molestiae itaque odio molestias doloremque quo
-        illum?Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati
-        hic eius rem, nostrum modi laborum aut nisi dolor atque impedit ut
-        delectus eaque natus quas eum repudiandae optio aspernatur. Totam?
+      <view
+        class="content"
+        v-if="!articleInfo.isVip"
+        v-html="articleInfo.content"
+      ></view>
+      <view class="attention" v-else>
+        在疫情肆虐的上半年，九牧王的线上微商城月 GMV 基本平均保持在 1000w+
+        的水平，其中私域用户贡献占到 90% 。私域会员增长了 10
+        万多，其中新会员增加了 30% ，新会员的 GMV 占微商城总 GMV 的 30%
+        ，复购率增加 70% 以上。
       </view>
 
       <view class="recomment">
         <view class="tag">相关阅读</view>
 
-        <view
+        <!-- <view
           class="article"
           v-for="item in 4"
           :key="item"
@@ -74,23 +46,66 @@
             >
             <view class="time">11:23</view>
           </view>
-          <img
+          <image
             class="article-cover"
             src="https://img2.baidu.com/it/u=829931824,271545605&fm=253&fmt=auto&app=138&f=JPEG?w=450&h=228"
           />
-        </view>
+        </view> -->
+        <ArticlePane status="more" :data="recommentList"></ArticlePane>
       </view>
     </view>
   </view>
 </template>
 
 <script>
+import {
+  getIndustryInformationDetalApi,
+  getIndustryInformationListApi,
+} from "../api/marketing-treasure-house";
+import ArticlePane from "../pages/marketing-treasure-house/components/article-pane.vue";
+import { getRandom } from "../utils";
+
 export default {
+  components: {
+    ArticlePane,
+  },
+  onLoad(options) {
+    this.articleId = options.id;
+    this.getArticleDetail();
+
+    getIndustryInformationListApi({
+      page: getRandom(0, 10),
+      size: 10,
+    }).then(({ data }) => {
+      this.recommentList = data.items.slice(0, 5);
+    });
+  },
+  data() {
+    return {
+      articleId: null,
+      articleInfo: {},
+      recommentList: [],
+    };
+  },
   methods: {
     handleToViewArticleDeatil() {
       uni.navigateTo({
         url: "/marketing-treasure-house/article-detail",
       });
+    },
+
+    // 获取文章详情
+    getArticleDetail() {
+      getIndustryInformationDetalApi(this.articleId * 1)
+        .then((res) => {
+          this.articleInfo = res.data;
+        })
+        .catch(() => {
+          this.$showToast("文章详情获取失败");
+          setTimeout(() => {
+            uni.navigateBack();
+          }, 2000);
+        });
     },
   },
 };
@@ -102,6 +117,35 @@ export default {
 .article-detail-container {
   padding: 24upx;
   box-sizing: border-box;
+
+  .attention {
+    position: relative;
+    text-align: center;
+    margin: 40upx 0;
+    color: #ccc !important;
+
+    &::after {
+      content: "该案例为vip尊享，请先开通vip";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      color: #07b9b9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 28upx;
+      letter-spacing: 2px;
+      background: linear-gradient(
+        to bottom,
+        rgb(255, 255, 255),
+        rgba(238, 238, 238, 0.582),
+        rgb(255, 255, 255)
+      );
+    }
+  }
 
   .article-detail-header {
     .flex();
@@ -136,11 +180,12 @@ export default {
       height: 156upx;
     }
 
-    .content {
+    .content,
+    .attention {
       .margin(20upx, 20upx);
       font-size: 24upx;
       color: #3d3d3d;
-      line-height: 1.5;
+      line-height: 2;
     }
 
     .recomment {

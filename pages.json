@@ -15,6 +15,9 @@
 			"path": "pages/marketing-treasure-house/marketing-treasure-house"
 		},
 		{
+			"path": "pages/mobile-login/mobile-login"
+		},
+		{
 			"path": "pages/pre-order/pre-order",
 			"style": {
 				"usingComponents": {
@@ -250,6 +253,9 @@
 		{
 			"root": "user",
 			"pages": [
+				{
+					"path": "marketing-tools/red-envelope-distribution"
+				},
 				{
 					"path": "info/detail",
 					"style": {

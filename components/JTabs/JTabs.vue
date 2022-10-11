@@ -74,11 +74,13 @@ export default {
   .scroll-wrapper-container {
     display: flex;
     margin: 22upx 0 28upx 0;
+    overflow-y: scroll;
 
     .item {
       font-size: 24upx;
       color: #3d3d3d;
       margin-right: 52upx;
+      white-space: nowrap;
 
       &:last-child {
         margin-right: 0;
