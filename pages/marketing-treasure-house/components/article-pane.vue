@@ -14,6 +14,7 @@
       style="margin: 20upx auto"
       :status="status"
       iconType="snow"
+      :contentText="contentText"
     ></uni-load-more>
   </view>
 </template>
@@ -29,6 +30,14 @@ export default {
       type: String,
       default: "loading",
     },
+  },
+
+  data() {
+    return {
+      contentText: {
+        contentnomore: "我也是有底线的",
+      },
+    };
   },
 
   methods: {

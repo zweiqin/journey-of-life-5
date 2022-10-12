@@ -9,6 +9,7 @@
 // export { GyRequest as request, LqbRequest, RuanRequest } from "./DWHRequest";
 // export { fomartNumber, removeCache, getUserId, getUserId } from "./DWHutils";
 export { GyRequest as request, RuanRequest, LTRequest } from "./DWHRequest";
+
 export {
   fomartNumber,
   removeCache,
@@ -18,4 +19,4 @@ export {
   handleDebounce,
   getRandom,
 } from "./DWHutils";
-export { formatTime } from "./util";
+export { formatTime, debounce } from "./util";

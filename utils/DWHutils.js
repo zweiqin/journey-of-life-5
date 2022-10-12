@@ -49,21 +49,22 @@ export const checkWhoami = () => {
  * @returns
  */
 export const getUserId = () => {
-  const userId = uni.getStorageSync(USER_ID);
-  if (!userId) {
-    uni.showToast({
-      title: "登录已失效，请重新登录",
-      duration: 2000,
-      icon: "none",
-    });
+  // const userId = uni.getStorageSync(USER_ID);
+  // if (!userId) {
+  //   uni.showToast({
+  //     title: "登录已失效，请重新登录",
+  //     duration: 2000,
+  //     icon: "none",
+  //   });
 
-    uni.navigateTo({
-      url: "/pages/login/login",
-    });
+  //   uni.navigateTo({
+  //     url: "/pages/login/login",
+  //   });
 
-    return;
-  }
-  return userId;
+  //   return;
+  // }
+  // return userId;
+  return 265;
 };
 
 /**

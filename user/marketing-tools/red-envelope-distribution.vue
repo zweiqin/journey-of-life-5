@@ -9,7 +9,11 @@
         mode=""
       />
       <view class="title">红包金额</view>
-      <input type="number" class="input-el" />
+      <input
+        type="number"
+        v-model.number="redForm.redpackMonkey"
+        class="input-el"
+      />
       <view class="company">元</view>
     </view>
 
@@ -20,7 +24,11 @@
         mode=""
       />
       <view class="title">红包个数</view>
-      <input type="number" class="input-el" />
+      <input
+        type="number"
+        v-model.number="redForm.redpackNumber"
+        class="input-el"
+      />
       <view class="company">个</view>
     </view>
 
@@ -30,14 +38,25 @@
       class="rich-text"
       cols="30"
       rows="10"
+      v-model.trim="redForm.remark"
     ></textarea>
     <view class="title-form">红包背景</view>
 
     <view class="upload-pane">
       <view class="left">
-        <Upload></Upload>
+        <view @click="chooseImg" class="upload" v-if="!redForm.imageUrl"
+          >+</view
+        >
+        <image
+          v-else
+          class="iamge-background"
+          :src="redForm.imageUrl"
+          mode=""
+        />
       </view>
       <image
+        v-show="redForm.imageUrl"
+        @click="removeBackground"
         class="delete-icon"
         src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ghggvke7uc134gbv71gh.png"
         mode=""
@@ -49,16 +68,89 @@
 </template>
 
 <script>
-import Upload from "../../wxcomponents/vant/dist/uploader/index.vue";
-export default {
-  components: {
-    Upload,
-  },
+import { J_USER_TOKEN } from "../../constant";
+import { uploadFle } from "../../api/user";
+import { getUserId } from "../../utils";
 
+export default {
   data() {
     return {
-      redForm: {},
+      // brandName: this.data.business.name, // 商家名称
+      // userId: this.data.userInfo.userId, // 用户id
+      // brandId: this.data.business.id, // 商家id
+      // longitude: this.data.business.longitude, // 经度
+      // latitude: this.data.business.latitude, // 纬度
+      // redpackNumber: this.data.redpackNumber * 1,
+      // redpackMonkey: this.data.redpackMonkey * 1,
+      // imageUrl: this.data.imageUrl,
+      // remark: this.data.remark,
+      // redpackAllmonkey: this.data.totalAccount,
+      // effectiveDistance: this.data.effectiveDistance * 1
+      redForm: {
+        redpackNumber: 1,
+        redpackMonkey: 1,
+        remark: "",
+        imageUrl: "",
+      },
+
+      // https://img0.baidu.com/it/u=785131143,3493181645&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1665594000&t=a2d3c444e3a9e78c308f6c4e8a76ee6c
     };
+  },
+
+  methods: {
+    // 删除红包背景
+    removeBackground() {
+      const _this = this;
+      uni.showModal({
+        title: "提示",
+        content: "确定删除当前红包背景吗？",
+        success: function (res) {
+          if (res.confirm) {
+            _this.redForm.imageUrl = "";
+          }
+        },
+      });
+    },
+
+    // 选择图片
+    chooseImg(){
+      uni.chooseImage({
+        success: (chooseImageRes) => {
+          const tempFilePaths = chooseImageRes.tempFilePaths;
+          uni.uploadFile({
+            url: 'https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/secretUpload', //仅为示例，非真实的接口地址
+            filePath: chooseImageRes.tempFiles[0],
+            name: 'file',
+            formData: {
+              token: uni.getStorageSync(J_USER_TOKEN),
+              userId: getUserId(),
+              file: chooseImageRes.tempFiles[0]
+            },
+            success: (uploadFileRes) => {
+              console.log("上传成功", uploadFileRes.data);
+            }
+          });
+        }
+      });
+    },  
+
+    // 上传图片
+    // async afterRead(event) {
+    //   const { file } = event.detail;
+    //   console.log(file);
+    //   const token = ;
+
+    //   const fileFormData = new FormData();
+    //   fileFormData.append("file", file);
+
+    //   const res = await uploadFle({
+    //     file: fileFormData,
+    //     token: token,
+    //     userId: getUserId(),
+    //   });
+
+    //   console.log("上传图片了made", res);
+    // },
   },
 };
 </script>
@@ -128,18 +220,35 @@ export default {
       height: 36upx;
     }
 
-    /deep/ .van-uploader__upload {
+    .left {
+      display: flex;
+      align-items: center;
+    }
+
+    .upload {
       margin: 0;
       width: 160upx;
       height: 160upx;
+      background-color: #d8d8d8;
+      border-radius: 20upx;
+      color: #767676;
+      text-align: center;
+      line-height: 160upx;
+      font-size: 60upx;
+    }
+
+    .iamge-background {
+      width: 160upx;
+      height: 160upx;
+      object-fit: cover;
     }
   }
 
-  .sendRedPackage{
+  .sendRedPackage {
     width: 100%;
     height: 72upx;
     line-height: 72upx;
-    background-color: #FA5151;
+    background-color: #fa5151;
     color: #fff;
     font-size: 32upx;
     padding: 0;

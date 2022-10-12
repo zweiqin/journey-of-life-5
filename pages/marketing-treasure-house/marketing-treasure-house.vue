@@ -1,7 +1,7 @@
 <template>
   <view class="marketing-treasure-house-container">
     <view class="view-bg"></view>
-    <view class="search-bar">
+    <view class="search-bar" @click="serch('/pages/search-page/search-page')">
       <view class="local-wrapper">
         <img
           class="location"
@@ -10,7 +10,7 @@
         />
         <text class="locale">佛山市</text></view
       >
-      <input type="text" />
+      <view></view>
       <img class="location" src="../../static/images/store/search.png" alt="" />
     </view>
 
@@ -57,7 +57,6 @@ export default {
     };
   },
   onReachBottom() {
-    console.log("我好累");
     if (this.allList.length >= this.queryInfo.total) {
       this.loadingStatus = "noMore";
       return;
@@ -68,8 +67,8 @@ export default {
     }
 
     this.queryInfo.page++;
-    this.loadingStatus = 'loading'
-    this.isLoading = true
+    this.loadingStatus = "loading";
+    this.isLoading = true;
     this.getArticleList(true);
   },
   methods: {
@@ -90,6 +89,13 @@ export default {
 
       this.loadingStatus = "more";
       this.isLoading = false;
+    },
+
+    // 点击搜索
+    serch(url) {
+      uni.navigateTo({
+        url: url + "?type=article",
+      });
     },
   },
 };

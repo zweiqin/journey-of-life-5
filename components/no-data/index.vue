@@ -6,17 +6,24 @@
       alt=""
     />
 
-    <view>暂无数据</view>
+    <view>{{ text }}</view>
   </view>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    text: {
+      type: String,
+      default: "暂无数据",
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
-@import '../../style/mixin.less';
-@import '../../style/var.less';
+@import "../../style/mixin.less";
+@import "../../style/var.less";
 
 .empty-container {
   width: 100%;
@@ -26,7 +33,7 @@ export default {};
   color: @c9;
   padding-top: 60upx;
 
-  .empty-img{
+  .empty-img {
     .img(80%, 80%);
     margin-bottom: 20px;
   }
