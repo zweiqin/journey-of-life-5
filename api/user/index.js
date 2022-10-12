@@ -109,5 +109,21 @@ export const addMyWordsApi = (data) => {
 
 // 上传图片
 export const uploadFle = (data) => {
-  return RuanRequest("/storage/secretUpload", data);
+  return RuanRequest("/storage/upload", data);
+};
+
+// 获取商家信息
+export const getBusinessInfoByUserIdApi = () => {
+  return RuanRequest("/api/redpack/getByUserId/" + getUserId(), {}, "get");
+};
+
+// 获取门店类型
+export const getStoreTypesApi = () => {
+  return RuanRequest("/storeType/list", {}, "get");
+};
+
+// 提交申请门店
+// 该字段决定保存或提交 （true 为提交）
+export const submitApplyStoreInfo = (type, data) => {
+  return RuanRequest("/userUpInfo/save?isSubmit" + type, data);
 };

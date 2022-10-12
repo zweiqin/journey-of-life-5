@@ -382,6 +382,9 @@
 						"navigationBarTitleText": "",
 						"usingComponents": {}
 					}
+				},
+				{
+					"path": "marketing-tools/store-application"
 				}
 			]
 		},

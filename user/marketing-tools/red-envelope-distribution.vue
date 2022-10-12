@@ -9,11 +9,7 @@
         mode=""
       />
       <view class="title">红包金额</view>
-      <input
-        type="number"
-        v-model.number="redForm.redpackMonkey"
-        class="input-el"
-      />
+      <input type="number" v-model.number="redForm.redpackMonkey" class="input-el" />
       <view class="company">元</view>
     </view>
 
@@ -24,11 +20,7 @@
         mode=""
       />
       <view class="title">红包个数</view>
-      <input
-        type="number"
-        v-model.number="redForm.redpackNumber"
-        class="input-el"
-      />
+      <input type="number" v-model.number="redForm.redpackNumber" class="input-el" />
       <view class="company">个</view>
     </view>
 
@@ -44,15 +36,8 @@
 
     <view class="upload-pane">
       <view class="left">
-        <view @click="chooseImg" class="upload" v-if="!redForm.imageUrl"
-          >+</view
-        >
-        <image
-          v-else
-          class="iamge-background"
-          :src="redForm.imageUrl"
-          mode=""
-        />
+        <view @click="chooseImg" class="upload" v-if="!redForm.imageUrl">+</view>
+        <image v-else class="iamge-background" :src="redForm.imageUrl" mode="" />
       </view>
       <image
         v-show="redForm.imageUrl"
@@ -71,8 +56,18 @@
 import { J_USER_TOKEN } from "../../constant";
 import { uploadFle } from "../../api/user";
 import { getUserId } from "../../utils";
+import { getBusinessInfoByUserIdApi } from "../../api/user";
 
 export default {
+  onLoad() {
+    getBusinessInfoByUserIdApi()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log("商家信息获取失败");
+      });
+  },
   data() {
     return {
       // brandName: this.data.business.name, // 商家名称
@@ -113,44 +108,21 @@ export default {
     },
 
     // 选择图片
-    chooseImg(){
+    chooseImg() {
+      const _this = this;
       uni.chooseImage({
         success: (chooseImageRes) => {
-          const tempFilePaths = chooseImageRes.tempFilePaths;
           uni.uploadFile({
-            url: 'https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/secretUpload', //仅为示例，非真实的接口地址
-            filePath: chooseImageRes.tempFiles[0],
-            name: 'file',
-            formData: {
-              token: uni.getStorageSync(J_USER_TOKEN),
-              userId: getUserId(),
-              file: chooseImageRes.tempFiles[0]
-            },
+            url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
+            filePath: chooseImageRes.tempFiles[0].path,
+            name: "file",
             success: (uploadFileRes) => {
-              console.log("上传成功", uploadFileRes.data);
-            }
+              _this.redForm.imageUrl = JSON.parse(uploadFileRes.data).data.url;
+            },
           });
-        }
+        },
       });
-    },  
-
-    // 上传图片
-    // async afterRead(event) {
-    //   const { file } = event.detail;
-    //   console.log(file);
-    //   const token = ;
-
-    //   const fileFormData = new FormData();
-    //   fileFormData.append("file", file);
-
-    //   const res = await uploadFle({
-    //     file: fileFormData,
-    //     token: token,
-    //     userId: getUserId(),
-    //   });
-
-    //   console.log("上传图片了made", res);
-    // },
+    },
   },
 };
 </script>
