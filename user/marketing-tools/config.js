@@ -35,7 +35,7 @@ export const applyStoreTow = [
   },
   {
     label: "所在城市：",
-    type: "select",
+    type: "city",
     field: "address",
     placeholder: "省份、城市、区县",
   },

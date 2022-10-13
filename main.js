@@ -33,6 +33,16 @@ Vue.mixin({
         icon: icon || "none",
       });
     },
+
+    go(url) {
+      if (!url) {
+        return;
+      }
+
+      uni.navigateTo({
+        url: url,
+      });
+    },
   },
 });
 

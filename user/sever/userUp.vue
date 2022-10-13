@@ -1,163 +1,88 @@
-<!--
- * @Author: 13008300191 904947348@qq.com
- * @Date: 2022-09-15 16:03:19
- * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-19 14:19:52
- * @FilePath: \团蜂商城 - 副本\tuan-uniapp\user\sever\userUp.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
-  <view>
-    <view class="background">
-      <!-- 标题 -->
-      <view class="userup-title">
-        <view class="left-view">
-          <img
-            @click="back"
-            class="left-img"
-            src="../../static/images/lqb/userUp/whiteback.png"
-            alt=""
-          />
-        </view>
-        <view class="middle-view">
-          <view class="text">会员升级</view>
-        </view>
-        <view class="right-view"> </view>
-      </view>
-      <!-- 会员卡标题 -->
-      <view class="userup-text"> 我的会员卡 </view>
-      <!-- 会员详情 -->
-      <view class="userup-detail">
-        <view class="detail-orange">
-          <view class="detail-text"> 会员时间: 2022.07.22-2023.07.22 </view>
-          <view class="detail-white">
-            <view class="detail-top">
-              <view class="detail-username"> 团蜂家居会员 </view>
-              <img
-                src="../../static/images/lqb/userUp/huangguan .png"
-                alt=""
-                class="top-img"
-              />
-              <view class="up-text">升级</view>
-            </view>
-            <view class="detail-bottom">
-              <view class="user-type">
-                <view class="type-text">会员状态</view>
-                <view class="type-number">会员</view>
-              </view>
-              <view class="mycoupon">
-                <view class="coupon-text">我的优惠券</view>
-                <view class="coupon-number">10</view>
-              </view>
-              <view class="shopmoney">
-                <view class="shopmoney-text">购物金</view>
-                <view class="shopmoney-number">10</view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-      <!-- 会员升级介绍 -->
-      <view class="userup-say">
-        <view class="say-text"> 会员升级 </view>
-        <view class="say-img">
-          <img
-            class="img"
-            src="../../static/images/lqb/userUp/huangguan .png"
-            alt=""
-          />
-        </view>
-        <view class="userup-good">
-          <view class="good-title">
-            <view class="left-view">会员升级权益 </view>
-            <view class="right-view">
-              <view class="right-text">更多权益了解详情</view>
-              <img
-                @click="window"
-                src="../../static/images/lqb/userUp/goods-detail.png"
-                alt=""
-                class="right-img"
-            /></view>
-          </view>
-          <view class="good-detail">
-            <img
-              src="../../static/images/lqb/userUp/user-detail.png"
-              alt=""
-              class="detail-img"
-            />
-          </view>
-          <view class="bottom-button">
-            <view class="button-background">
-              <view class="button-text">
-                <text
-                  style="
-                    font-size: 36upx;
-                    padding-left: 150upx;
-                    padding-top: 28upx;
-                  "
-                  >￥</text
-                >
-                <text style="font-size: 72upx">99</text>
-                <view>
-                  <text
-                    style="
-                      font-size: 36upx;
-                      padding-left: 38upx;
-                      font-weight: 700;
-                    "
-                    >会员升级</text
-                  >
-                </view>
-              </view>
-            </view>
-          </view>
-        </view>
-        <!-- 分界线 -->
-        <view class="fenjiexian"></view>
-        <!-- 底部说明 -->
-        <view class="bottom-text">放心开通，不会自动续费</view>
+  <view class="up-vip-container">
+    <JHeader :dark="false" title="会员升级"></JHeader>
+
+    <view class="item" v-for="item in vips" :key="item.label">
+      <view class="title">{{ item.label }}</view>
+      <view class="vip-pane">
+        <image
+          class="vip-icon"
+          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/vlwhqwdgxqsb96z63itf.png"
+          mode=""
+        />
       </view>
 
-      <!-- 详情弹窗 -->
-      <view>
-        <uni-popup ref="popup" :type="bottom">
-          <view class="detail-window">
-            会员升级权益
-            <text class="window-text">
-              <br />
-              <br />
-              什么是VIP会员？  历时6个多月 累计整理8000+篇案例素材
-              秉承： 不是干货不分享 的理念， 过滤掉
-              过时的，不实用的，不落地的内容， 精心挑细选出
-              600+实体店营销精品案例 没有大而复杂的理论；
-              只有看完立马可以借鉴落地实操案例 无论你是线下什么行业的实体店
-              只要有目标人群， 只要你需要客源方法都值得借鉴。 等级介绍一、
-              VIP会员（1年期限） 1年内可以学习800+个实体店营销案例解析
-              成为我们的VIP会员后， 你可以一年365天内学习营销宝库的案例
-              可以得到一个属于自己的线上门店 不用但心产品的问题
-              我们就是你最好的供应链
-            </text>
-          </view>
-        </uni-popup>
-      </view>
+      <view class="sub-title">{{ item.label }}权益</view>
+
+      <image :style="item.style" :src="item.powerUrl" mode="" />
+
+      <button class="apply-btn" @click="handleToUp(item)">
+        <text>￥</text>
+        <text class="vip-price">{{ item.price }}</text>
+        <text class="text">{{ item.label }}</text>
+      </button>
+
+      <view class="tip"> 放心开通，不会自动续费 </view>
+    </view>
+
+    <view class="op">
+      <button
+        class="btn"
+        @click="go('/user/marketing-tools/apply-vip-history')"
+      >
+        申请记录
+      </button>
+      <button class="btn">我的会员</button>
     </view>
   </view>
 </template>
 
 <script>
-import uniPopup from "../../uni_modules/uni-popup/components/uni-popup/uni-popup.vue";
 export default {
-  components: { uniPopup },
   data() {
-    return {};
+    return {
+      vips: [
+        {
+          url: "",
+          label: "会员升级",
+          powerUrl:
+            "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/78ixjkl9eg69fjlcgi22.png",
+          price: "99",
+          style: {
+            height: "133upx",
+            margin: "20upx 0",
+          },
+        },
+        {
+          url: "/user/marketing-tools/store-application",
+          label: "商家升级",
+          powerUrl:
+            "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/u5eplf8zp6uh343rioyg.png",
+          price: "3000",
+          style: {
+            height: "300upx",
+            margin: "20upx 0",
+          },
+        },
+        {
+          url: "",
+          label: "营销策划师升级",
+          powerUrl:
+            "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/398c5ygdln5qfamkgret.png",
+          price: "6000",
+          style: {
+            height: "188upx",
+            margin: "20upx 0",
+          },
+        },
+      ],
+    };
   },
+
   methods: {
-    window() {
-      this.$refs.popup.open("bottom");
-    },
-    back() {
-      uni.switchTab({
-        url: "/pages/user/user",
+    handleToUp(item) {
+      uni.navigateTo({
+        url: item.url,
       });
     },
   },
@@ -165,237 +90,107 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.background {
-  background: url("../../static/images/lqb/userUp/background.png");
-  height: 100%;
-  padding-bottom: 44upx;
-  .userup-title {
-    display: flex;
-    color: white;
-    padding-top: 74upx;
-    .left-view {
-      .left-img {
-        margin-left: 34upx;
-        width: 16upx;
-        height: 28upx;
-      }
-    }
-    .middle-view {
-      .text {
-        margin-left: 260upx;
-        font-size: 32upx;
-        font-weight: 500;
-      }
-    }
-  }
-  .userup-text {
-    color: white;
-    padding-top: 22upx;
-    margin-left: 62upx;
-    font-size: 28upx;
-    font-weight: 500;
-    padding-bottom: 22upx;
-  }
-  .userup-detail {
-    margin-bottom: 22upx;
-    .detail-orange {
-      background: linear-gradient(180deg, #ff8f1f 2%, #ffc300 50%);
-      width: 95%;
-      margin: 0 auto;
-      border-radius: 20upx;
-      padding-top: 14upx;
+@import "../../style/mixin.less";
 
-      .detail-text {
-        color: white;
-        padding-bottom: 6upx;
-        font-size: 20upx;
-        padding-left: 35upx;
-      }
-      .detail-white {
-        padding-top: 34upx;
-        background-color: white;
-        padding-left: 35upx;
-        padding-right: 35upx;
-        border-radius: 20upx;
-        .detail-top {
-          display: flex;
-          align-items: center;
-          padding-bottom: 22upx;
-          .detail-username {
-            font-size: 32upx;
-            font-weight: 400;
-          }
-          .top-img {
-            widows: 36upx;
-            height: 36upx;
-            margin-left: 14upx;
-            margin-right: 14upx;
-          }
-          .up-text {
-            border-radius: 10upx;
-            background: #ff8f1f;
-            font-size: 24upx;
-            font-weight: 400;
-            color: white;
-            padding: 5upx 20upx;
-          }
-        }
-        .detail-bottom {
-          display: flex;
-          .user-type {
-            margin-right: 88upx;
-            .type-text {
-              color: #999999;
-              font-size: 24upx;
-              font-weight: 400;
-              margin-bottom: 16upx;
-            }
-            .type-number {
-              font-size: 28upx;
-              font-weight: 400;
-            }
-          }
-          .mycoupon {
-            margin-right: 88upx;
-            .coupon-text {
-              color: #999999;
-              font-size: 24upx;
-              font-weight: 400;
-              margin-bottom: 16upx;
-            }
-            .coupon-number {
-              font-size: 28upx;
-              font-weight: 400;
-            }
-          }
-          .shopmoney {
-            .shopmoney-text {
-              color: #999999;
-              font-size: 24upx;
-              font-weight: 400;
-              margin-bottom: 16upx;
-            }
-            .shopmoneyo-number {
-              font-size: 28upx;
-              font-weight: 400;
-            }
-          }
-        }
-      }
-    }
-  }
-  .userup-say {
-    background-color: white;
+.up-vip-container {
+  padding: 30upx 18upx;
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: scroll;
+  background: url(https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/zwaljjiyz29rx6l3m5vl.png)
+    no-repeat;
+  font-size: 24upx;
+  color: #3d3d3d;
+  padding-bottom: 200upx;
 
-    margin: 0 auto;
+  .item {
+    width: 100%;
+    background-color: #fff;
+    border: 1upx solid #d8d8d8;
     border-radius: 20upx;
-    width: 95%;
-    .say-text {
+    padding: 24upx 32upx;
+    box-sizing: border-box;
+    margin-top: 60upx;
+
+    .title {
       font-size: 28upx;
-      font-weight: 500;
-      padding-top: 24upx;
-      padding-left: 45upx;
-      padding-bottom: 38upx;
     }
-    .say-img {
-      text-align: center;
-      width: 87%;
-      height: 180upx;
+
+    .vip-pane {
+      .flex(center, center);
+      width: 100%;
+      margin: 32upx 0 66upx 0;
       border-radius: 20upx;
-      border: 2upx solid#FFC300;
+      height: 180upx;
+      border: 1upx solid #ffc300;
       background: linear-gradient(
         180deg,
         #fff8c6 0%,
-        rgba(255, 248, 198, 0) 104%
+        rgba(255, 248, 198, 0) 100%
       );
-      line-height: 180upx;
 
-      margin: 0 auto;
-      .img {
-        width: 143upx;
-        height: 130upx;
-        padding: 26upx;
+      .vip-icon {
+        width: 142upx;
+        height: 128upx;
       }
     }
-    .userup-good {
-      padding-top: 60upx;
 
-      .good-title {
-        display: flex;
-        justify-content: space-between;
-        align-content: center;
-        padding: 0 40upx;
-        .left-view {
-          font-size: 24upx;
-          font-weight: 350;
-          color: #3d3d3d;
-        }
-        .right-view {
-          display: flex;
-          align-items: center;
-          .right-text {
-            font-size: 20upx;
-            font-weight: 350;
-            color: #999999;
-          }
-          .right-img {
-            width: 13upx;
-            height: 20upx;
-            margin-left: 15upx;
-          }
-        }
+    .sub-title {
+      color: #fa5151;
+      font-size: 24upx;
+    }
+
+    .apply-btn {
+      font-size: 48upx;
+      color: #fff;
+      box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.302);
+      border-radius: 10px 10px 10px 10px;
+      background: linear-gradient(270deg, #ff8f1f 0%, #ffc300 100%);
+      margin: 30upx 0 0 0;
+
+      .vip-price {
+        font-size: 72upx;
       }
-      .good-detail {
-        .detail-img {
-          padding-top: 44upx;
-          padding-left: 44upx;
-          padding-bottom: 180upx;
-        }
-      }
-      .bottom-button {
-        padding-bottom: 32upx;
-        .button-background {
-          margin: 0 auto;
-          border-radius: 20upx;
-          background: linear-gradient(90deg, #ff8f1f 13%, #ffc300 100%);
-          box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
-          width: 83%;
-          height: 104upx;
-          .button-text {
-            color: white;
-            display: flex;
-            align-items: center;
-          }
-        }
+
+      .text {
+        font-size: 36upx;
+        font-weight: bold;
+        vertical-align: 14upx;
+        margin-left: 10upx;
       }
     }
-    .fenjiexian {
-      border: 0.5px solid #d8d8d8;
-      width: 82%;
-      margin: 0 auto;
-    }
-    .bottom-text {
-      padding-top: 24upx;
-      padding-bottom: 76upx;
-      font-size: 20upx;
-      font-weight: 350;
-      color: #999999;
+
+    .tip {
       text-align: center;
+      padding-top: 24upx;
+      margin-top: 50upx;
+      border-top: 1upx solid #d8d8d8;
+      font-size: 24upx;
+      color: #999;
     }
   }
-  .detail-window {
+
+  .op {
+    padding: 20upx 18upx;
+    box-sizing: border-box;
+    font-size: 32upx;
+    color: #000;
+    .flex();
     position: fixed;
-    height: 1000upx;
-    width: 95%;
-    background-color: white;
-    margin: 0 auto;
-    border-radius: 20upx;
-    z-index: 100;
     bottom: 0;
-    left: 2.5%;
-    text-align: center;
-    font-weight: 700;
-    .window-text {
+    left: 0;
+    width: 100%;
+    background: #fff;
+
+    .btn {
+      .flex(center, center);
+      width: 310upx;
+      color: rgb(255, 255, 255);
+      height: 70upx;
+      border: 1upx solid #ff0000;
+      margin: 0;
+      border-radius: 100px;
+      background: rgb(236, 0, 0);
     }
   }
 }

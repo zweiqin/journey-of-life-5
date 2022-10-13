@@ -35,8 +35,20 @@
             :range="storeTypesArr"
             range-key="storeName"
           >
-            {{ form[item.field] || "请选择门店类型" }}
+            <view
+              :style="{
+                color: form[item.field] ? '' : '#999',
+              }"
+              >{{ form[item.field] || "请选择门店类型" }}</view
+            >
           </picker>
+
+          <JCity
+            style="flex: 1"
+            @confirm="handleInput(item.field, $event)"
+            v-if="item.type === 'city'"
+            :text="form[item.field]"
+          ></JCity>
         </view>
       </template>
     </view>
@@ -90,6 +102,10 @@ export default {
 
   methods: {
     handleInput(field, e) {
+      if (field === "address") {
+        this.form[field] = e.area;
+        return;
+      }
       const value = e.detail.value;
       this.form[field] =
         field === "brandgenre" ? this.storeTypesArr[value].storeName : value;

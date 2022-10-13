@@ -125,5 +125,10 @@ export const getStoreTypesApi = () => {
 // 提交申请门店
 // 该字段决定保存或提交 （true 为提交）
 export const submitApplyStoreInfo = (type, data) => {
-  return RuanRequest("/userUpInfo/save?isSubmit" + type, data);
+  return RuanRequest("/userUpInfo/save?isSubmit=" + type, data);
+};
+
+// 获取省市区地址
+export const getCitiesApi = (data) => {
+  return RuanRequest("/region/list", data, "get");
 };

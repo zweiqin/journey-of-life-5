@@ -1,7 +1,13 @@
 <template>
   <view class="j-header-container">
     <JBack v-bind="$attrs" :dark="dark"></JBack>
-    <view class="title">{{ title }}</view>
+    <view
+      class="title"
+      :style="{
+        color: !dark ? '#fff' : '',
+      }"
+      >{{ title }}</view
+    >
   </view>
 </template>
 
