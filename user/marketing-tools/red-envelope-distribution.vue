@@ -9,7 +9,11 @@
         mode=""
       />
       <view class="title">红包金额</view>
-      <input type="number" v-model.number="redForm.redpackMonkey" class="input-el" />
+      <input
+        type="number"
+        v-model.number="redForm.redpackMonkey"
+        class="input-el"
+      />
       <view class="company">元</view>
     </view>
 
@@ -20,7 +24,11 @@
         mode=""
       />
       <view class="title">红包个数</view>
-      <input type="number" v-model.number="redForm.redpackNumber" class="input-el" />
+      <input
+        type="number"
+        v-model.number="redForm.redpackNumber"
+        class="input-el"
+      />
       <view class="company">个</view>
     </view>
 
@@ -36,8 +44,15 @@
 
     <view class="upload-pane">
       <view class="left">
-        <view @click="chooseImg" class="upload" v-if="!redForm.imageUrl">+</view>
-        <image v-else class="iamge-background" :src="redForm.imageUrl" mode="" />
+        <view @click="chooseImg" class="upload" v-if="!redForm.imageUrl"
+          >+</view
+        >
+        <image
+          v-else
+          class="iamge-background"
+          :src="redForm.imageUrl"
+          mode=""
+        />
       </view>
       <image
         v-show="redForm.imageUrl"
@@ -48,7 +63,7 @@
       />
     </view>
 
-    <button class="sendRedPackage">塞进红包</button>
+    <button class="sendRedPackage" @click="handleSend">塞进红包</button>
   </view>
 </template>
 
@@ -56,37 +71,44 @@
 import { J_USER_TOKEN } from "../../constant";
 import { uploadFle } from "../../api/user";
 import { getUserId } from "../../utils";
-import { getBusinessInfoByUserIdApi } from "../../api/user";
+import { getBusinessInfoByUserIdApi, sendRedEnvelopeApi } from "../../api/user";
+import { payOrderGoodsApi } from "../../api/goods";
 
 export default {
-  onLoad() {
+  onShow() {
+    const _this = this;
     getBusinessInfoByUserIdApi()
       .then((res) => {
-        console.log(res);
+        _this.businessInfo = res.data;
       })
       .catch((err) => {
-        console.log("商家信息获取失败");
+        uni.showModal({
+          title: "提示",
+          content: "您还不是商家或营销策划师,是否去升级？",
+          success: function (res) {
+            if (res.confirm) {
+              uni.navigateTo({
+                url: "/user/sever/userUp",
+              });
+            } else if (res.cancel) {
+              uni.switchTab({
+                url: "/pages/user/user",
+              });
+            }
+          },
+        });
       });
   },
   data() {
     return {
-      // brandName: this.data.business.name, // 商家名称
-      // userId: this.data.userInfo.userId, // 用户id
-      // brandId: this.data.business.id, // 商家id
-      // longitude: this.data.business.longitude, // 经度
-      // latitude: this.data.business.latitude, // 纬度
-      // redpackNumber: this.data.redpackNumber * 1,
-      // redpackMonkey: this.data.redpackMonkey * 1,
-      // imageUrl: this.data.imageUrl,
-      // remark: this.data.remark,
-      // redpackAllmonkey: this.data.totalAccount,
-      // effectiveDistance: this.data.effectiveDistance * 1
       redForm: {
         redpackNumber: 1,
         redpackMonkey: 1,
         remark: "",
         imageUrl: "",
       },
+
+      businessInfo: {},
 
       // https://img0.baidu.com/it/u=785131143,3493181645&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1665594000&t=a2d3c444e3a9e78c308f6c4e8a76ee6c
     };
@@ -122,6 +144,69 @@ export default {
           });
         },
       });
+    },
+
+    // 发送红包
+    handleSend() {
+      if (
+        !this.redForm.redpackNumber ||
+        typeof this.redForm.redpackNumber !== "number" ||
+        this.redForm.redpackNumber <= 0
+      ) {
+        this.$showToast("请输入正确的红包个数");
+        return;
+      }
+
+      if (
+        !this.redForm.redpackMonkey ||
+        typeof this.redForm.redpackMonkey !== "number" ||
+        this.redForm.redpackMonkey <= 0
+      ) {
+        this.$showToast("请输入正确的红包金额");
+        return;
+      }
+
+      const data = {
+        ...this.redForm,
+        userId: getUserId(),
+        brandName: this.businessInfo.name,
+        brandId: this.businessInfo.id,
+        longitude: this.businessInfo.longitude,
+        latitude: this.businessInfo.latitude,
+        redpackAllmonkey:
+          this.redForm.redpackNumber * this.redForm.redpackMonkey,
+        effectiveDistance: 1,
+      };
+
+      sendRedEnvelopeApi(data)
+        .then((res) => {
+          console.log(res);
+
+          payOrderGoodsApi({
+            orderNo: res.data,
+            userId: getUserId(),
+            payType: 3,
+          }).then((res) => {
+            const form = document.createElement("form");
+            form.setAttribute("action", res.url);
+            form.setAttribute("method", "POST");
+            const data = JSON.parse(res.data);
+            let input;
+            for (const key in data) {
+              input = document.createElement("input");
+              input.name = key;
+              input.value = data[key];
+              form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+          });
+        })
+        .catch(() => {
+          this.$showToast("红包发送失败");
+        });
     },
   },
 };

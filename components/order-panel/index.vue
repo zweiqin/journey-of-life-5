@@ -294,7 +294,6 @@ export default {
             const form = document.createElement("form");
             form.setAttribute("action", res.url);
             form.setAttribute("method", "POST");
-
             const data = JSON.parse(res.data);
             let input;
             for (const key in data) {

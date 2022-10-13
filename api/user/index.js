@@ -112,11 +112,6 @@ export const uploadFle = (data) => {
   return RuanRequest("/storage/upload", data);
 };
 
-// 获取商家信息
-export const getBusinessInfoByUserIdApi = () => {
-  return RuanRequest("/api/redpack/getByUserId/" + getUserId(), {}, "get");
-};
-
 // 获取门店类型
 export const getStoreTypesApi = () => {
   return RuanRequest("/storeType/list", {}, "get");
@@ -131,4 +126,18 @@ export const submitApplyStoreInfo = (type, data) => {
 // 获取省市区地址
 export const getCitiesApi = (data) => {
   return RuanRequest("/region/list", data, "get");
+};
+
+/**
+ * 地图红包
+ */
+
+// 获取商家信息
+export const getBusinessInfoByUserIdApi = () => {
+  return RuanRequest("/api/redpack/getByUserId/" + getUserId(), {}, "get");
+};
+
+// 发送红包
+export const sendRedEnvelopeApi = (data) => {
+  return RuanRequest("/api/redpack/createMapredpack", data);
 };
