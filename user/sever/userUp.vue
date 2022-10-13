@@ -65,7 +65,7 @@ export default {
           },
         },
         {
-          url: "",
+          url: "/user/marketing-tools/marketing-planner",
           label: "营销策划师升级",
           powerUrl:
             "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/398c5ygdln5qfamkgret.png",
