@@ -1,6 +1,11 @@
 <template>
   <view class="red-envelope-distribution-container">
-    <JHeader width="50" height="50" title="红包发放"></JHeader>
+    <JHeader
+      tabbar="/pages/user/user"
+      width="50"
+      height="50"
+      title="红包发放"
+    ></JHeader>
 
     <view class="line-item">
       <image
@@ -38,9 +43,15 @@
       class="rich-text"
       cols="30"
       rows="10"
+      maxlength="15"
       v-model.trim="redForm.remark"
     ></textarea>
-    <view class="title-form">红包背景</view>
+    <view class="title-form"
+      >红包背景
+      <button v-show="redForm.imageUrl" class="preview" @click="handlePreview">
+        红包预览
+      </button>
+    </view>
 
     <view class="upload-pane">
       <view class="left">
@@ -64,6 +75,19 @@
     </view>
 
     <button class="sendRedPackage" @click="handleSend">塞进红包</button>
+
+    <view class="preview-wrapper" ref="previewWrapperRef">
+      <JRedEnvelope
+        :desc="redForm.remark"
+        :src="redForm.imageUrl"
+        :name="businessInfo.name"
+        :avatar="businessInfo.picUrl"
+      ></JRedEnvelope>
+      <view class="op">
+        <button class="btn" @click="reUploadBgi">重新上传</button>
+        <button class="btn" @click="closePreview">确认</button>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -105,12 +129,11 @@ export default {
         redpackNumber: 1,
         redpackMonkey: 1,
         remark: "",
-        imageUrl: "",
+        imageUrl:
+          "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/7yqmypic3e5cmiap4t2o.jpg",
       },
 
       businessInfo: {},
-
-      // https://img0.baidu.com/it/u=785131143,3493181645&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1665594000&t=a2d3c444e3a9e78c308f6c4e8a76ee6c
     };
   },
 
@@ -140,6 +163,7 @@ export default {
             name: "file",
             success: (uploadFileRes) => {
               _this.redForm.imageUrl = JSON.parse(uploadFileRes.data).data.url;
+              this.$refs.previewWrapperRef.$el.style.transform = "scale(1)";
             },
           });
         },
@@ -208,11 +232,31 @@ export default {
           this.$showToast("红包发送失败");
         });
     },
+
+    // 预览红包
+    handlePreview() {
+      this.$refs.previewWrapperRef.$el.style.transform = "scale(1)";
+
+      console.log(this.businessInfo);
+    },
+
+    // 关闭预览弹窗
+    closePreview() {
+      this.$refs.previewWrapperRef.$el.style.transform = "translateX(-100%)";
+    },
+
+    // 点击重新上传
+    reUploadBgi() {
+      this.redForm.imageUrl = "";
+      this.closePreview();
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
+@import "../../style/mixin.less";
+
 .red-envelope-distribution-container {
   padding: 40upx;
   box-sizing: border-box;
@@ -311,6 +355,55 @@ export default {
     padding: 0;
     border-radius: 100px;
     margin-top: 100upx;
+  }
+
+  .preview {
+    margin: 0;
+    padding: 0;
+    width: auto;
+    font-size: 24upx;
+    line-height: 1;
+    display: inline;
+    background-color: transparent;
+    border: none !important;
+    float: right;
+    padding: 0 4upx;
+    color: #07b9b9;
+    transition: all 350ms;
+  }
+
+  .preview-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(255, 255, 255);
+    transition: all 350ms;
+    .flex(center, center);
+    flex-direction: column;
+    padding: 0 40upx;
+    box-sizing: border-box;
+    transform: scale(0);
+    transition: all 350ms;
+
+    .op {
+      margin-top: 40upx;
+      .flex();
+      width: 100%;
+
+      .btn {
+        margin: 0;
+        padding: 0;
+        flex: 1;
+        background-color: #fa5151;
+        color: #fff;
+
+        &:nth-child(1) {
+          margin-right: 20upx;
+        }
+      }
+    }
   }
 }
 </style>
