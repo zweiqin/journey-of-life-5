@@ -71,33 +71,19 @@
 
     <!-- 第一个 -->
     <view class="collection">
-      <view class="collection-chose" @click="choseCollection">
-        <view
-          @click="changeTab(0)"
-          :class="{ active: currentTab === 0 }"
-          class="item"
-          >商品订单</view
-        >
-        <view
-          @click="changeTab(1)"
-          :class="{ active: currentTab === 1 }"
-          class="item"
-          >社区订单</view
-        >
-      </view>
       <UserPanel :currentTab="currentTab" :data="one" v-if="currentTab === 0">
         <view class="info">
           <view class="item">
             <text class="title">收藏</text>
-            <text class="value">10</text>
+            <text class="value">0</text>
           </view>
           <view class="item">
             <text class="title">足迹</text>
-            <text class="value">56</text>
+            <text class="value">0</text>
           </view>
           <view class="item" @click="bindtapsubscription">
             <text class="title">订阅</text>
-            <text class="value">123</text>
+            <text class="value">0</text>
           </view>
         </view>
       </UserPanel>
@@ -143,7 +129,7 @@ import {
   otherServe,
 } from "./config";
 import { checkWhoami } from "../../utils";
-import { user_INFO } from "../../constant";
+import { J_USER_INFO } from "../../constant";
 
 export default {
   components: {
@@ -196,7 +182,7 @@ export default {
   },
   mounted() {
     // checkWhoami();
-    this.userInfo = uni.getStorageSync(user_INFO);
+    this.userInfo = uni.getStorageSync(J_USER_INFO);
   },
 };
 </script>

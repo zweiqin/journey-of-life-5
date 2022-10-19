@@ -76,7 +76,12 @@
 <script>
 import { userLoginApi } from "../../api/auth";
 import { moreLogins } from "./config";
-import { J_USER_INFO, J_USER_TOKEN, J_TOKEN_EXPIRE } from "../../constant";
+import {
+  J_USER_INFO,
+  J_USER_TOKEN,
+  J_TOKEN_EXPIRE,
+  J_USER_ID,
+} from "../../constant";
 export default {
   data() {
     return {
@@ -128,21 +133,27 @@ export default {
         ...this.loginForm,
       }).then((res) => {
         const data = res.data;
+        console.log(data.userInfo.userId);
         uni.setStorageSync(J_USER_INFO, res.data.userInfo);
         uni.setStorageSync(J_USER_TOKEN, res.data.token);
+        uni.setStorageSync(J_USER_ID, data.userInfo.userId);
         uni.setStorageSync(
           J_TOKEN_EXPIRE,
           new Date(res.data.tokenExpire).getTime()
         );
         this.$showToast("登录成功", "success");
         setTimeout(() => {
-          if (this.tabbar) {
+          if (this.isTabbar) {
             uni.switchTab({
               url: this.redirect || "/pages/index/index",
             });
-          } else {
+          } else if (this.redirect) {
             uni.redirectTo({
               url: this.redirect,
+            });
+          } else {
+            uni.switchTab({
+              url: "/pages/index/index",
             });
           }
         }, 2000);

@@ -205,18 +205,19 @@
 		"selectedColor": "#FA5151",
 		"color": "#777777",
 		"backgroundColor": "#fff",
+		"borderStyle": "white",
 		"list": [
 			{
 				"pagePath": "pages/index/index",
 				"text": "首页",
 				"iconPath": "/static/images/tabbar/home.png",
-				"selectedIconPath": "/static/images/tabbar/home.png"
+				"selectedIconPath": "/static/images/tabbar/home-active.png"
 			},
 			{
 				"pagePath": "pages/store/store",
 				"text": "附近门店",
 				"iconPath": "/static/images/tabbar/store.png",
-				"selectedIconPath": "/static/images/tabbar/store.png"
+				"selectedIconPath": "/static/images/tabbar/store-active.png"
 			},
 			{
 				"pagePath": "pages/red-envelope/red-envelope",

@@ -1,6 +1,6 @@
 <template>
   <view class="pre-order">
-    <OrderPanel></OrderPanel>
+    <OrderPanel ref="orderPaneRef"></OrderPanel>
   </view>
 </template>
 
@@ -10,8 +10,11 @@ export default {
   components: {
     OrderPanel,
   },
+
+  onShow() {
+    this.$nextTick(() => {
+      console.log(this.$refs.orderPaneRef.setChooseAddress());
+    });
+  },
 };
 </script>
-
-<style lang="less" scoped>
-</style>

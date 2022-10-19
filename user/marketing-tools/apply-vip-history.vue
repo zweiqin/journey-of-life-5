@@ -8,7 +8,7 @@
     </view>
 
     <ul>
-      <li v-for="item in 4" :key="item">
+      <li v-for="item in historyList" :key="item.id">
         <view class="vip-icon">
           <image
             class="icon"
@@ -20,7 +20,7 @@
         <view class="info">
           <view class="info-top">
             <view class="name"
-              >商家会员
+              >{{ mapApplyType(item.userUpgradeInfo.applicationType) }}
               <image
                 class="vip-icon-top"
                 src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0yofrsucrnpvcombuya9.png"
@@ -48,10 +48,31 @@
 </template>
 
 <script>
-import { mapStatusColor } from "./config";
+import { mapStatusColor, mapApplyType } from "./config";
+import { getApplyVipHistoryApi } from "../../api/user";
+import { getUserId } from "../../utils";
+
 export default {
   methods: {
     mapStatusColor,
+    mapApplyType,
+  },
+
+  data() {
+    return {
+      historyList: [],
+    };
+  },
+
+  onLoad() {
+    getApplyVipHistoryApi({
+      userId: getUserId(),
+      page: 1,
+      size: 30,
+    }).then(({ data }) => {
+      this.historyList = data.items;
+      console.log(this.historyList);
+    });
   },
 };
 </script>
@@ -118,6 +139,7 @@ export default {
           .vip-icon-top {
             width: 42upx;
             height: 40upx;
+            margin-left: 10upx
           }
         }
 
@@ -128,7 +150,7 @@ export default {
           }
         }
 
-        .info-middle{
+        .info-middle {
           margin: 16upx 0;
         }
 

@@ -6,7 +6,7 @@
         color: text ? '' : '#999',
       }"
       @click="open"
-      >{{ text || "请选择城市" }}</view
+      >{{ text || "请选择地区" }}</view
     >
     <uni-popup @change="onPopupStatusChange" ref="popup" type="bottom">
       <view class="city-wrapper">

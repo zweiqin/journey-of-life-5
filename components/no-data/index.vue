@@ -1,12 +1,18 @@
 <template>
   <view class="empty-container">
     <img
+      v-if="img"
       class="empty-img"
       src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ncs28ma9a3ac5ufebzsw.png"
       alt=""
     />
 
-    <view>{{ text }}</view>
+    <view
+      :style="{
+        color: color,
+      }"
+      >{{ text }}</view
+    >
   </view>
 </template>
 
@@ -16,6 +22,12 @@ export default {
     text: {
       type: String,
       default: "暂无数据",
+    },
+
+    color: String,
+    img: {
+      type: Boolean,
+      default: true,
     },
   },
 };

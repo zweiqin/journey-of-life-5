@@ -1,22 +1,22 @@
 <template>
   <view
     class="recommend-goods-container"
-    :style="
-       {
-        padding: padding + 'px'
-      }
-    "
+    :style="{
+      padding: padding + 'px',
+    }"
   >
     <view class="title" v-if="showTitle"></view>
     <ul>
       <li v-for="item in list" :key="item.id">
-        <Goods
+        <!-- <Goods
           :id="item.id"
           :name="item.name"
           :sname="item.brief"
           :url="item.picUrl"
           :price="item.retailPrice"
-        ></Goods>
+        ></Goods> -->
+
+        <JGoods :data="item"></JGoods>
       </li>
     </ul>
   </view>
@@ -37,7 +37,7 @@ export default {
       default: true,
     },
 
-    padding: [Number, String]
+    padding: [Number, String],
   },
 
   components: {
@@ -70,7 +70,7 @@ export default {
 @import "../../style/mixin.less";
 
 .recommend-goods-container {
-  padding: 15px;
+  padding: 15upx;
 }
 
 .title {

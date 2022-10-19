@@ -145,3 +145,10 @@ export const identImgs = [
     field: "",
   },
 ];
+
+export const mapApplyType = (type) => {
+  return {
+    1: "商家会员",
+    2: "营销策划师",
+  }[type];
+};

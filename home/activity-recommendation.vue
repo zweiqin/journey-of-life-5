@@ -5,7 +5,7 @@
       <h1>活动推荐</h1>
     </view>
 
-    <view class="activity-item">
+    <!-- <view class="activity-item">
       <view class="address">盈信广场</view>
       <JAvatar
         src="https://img2.baidu.com/it/u=3005487131,826536428&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=753"
@@ -29,90 +29,18 @@
           <button class="join" @click="handleJoin">点击参与</button>
         </view>
       </view>
-    </view>
+    </view> -->
 
-    <view class="activity-item">
-      <view class="address">盈信广场</view>
-      <JAvatar
-        src="https://img2.baidu.com/it/u=3005487131,826536428&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=753"
-        size="200"
-        radius="10"
-      ></JAvatar>
-      <view class="info">
-        <view class="activity-text">活动：盈信广场美食狂欢日</view>
-        <view class="activity-text">时间：2022-08-07至2022-08-10</view>
-        <view class="activity-text">地点：佛山顺德区盈信广场</view>
-        <view class="op">
-          <view
-            >导航去这里
-            <image
-              class="icon"
-              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/gous09leumg1u3fykzfb.png"
-              mode=""
-            />
-          </view>
-
-          <button class="join" @click="handleJoin">点击参与</button>
-        </view>
-      </view>
-    </view>
-
-    <view class="activity-item">
-      <view class="address">盈信广场</view>
-      <JAvatar
-        src="https://img2.baidu.com/it/u=3005487131,826536428&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=753"
-        size="200"
-        radius="10"
-      ></JAvatar>
-      <view class="info">
-        <view class="activity-text">活动：盈信广场美食狂欢日</view>
-        <view class="activity-text">时间：2022-08-07至2022-08-10</view>
-        <view class="activity-text">地点：佛山顺德区盈信广场</view>
-        <view class="op">
-          <view
-            >导航去这里
-            <image
-              class="icon"
-              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/gous09leumg1u3fykzfb.png"
-              mode=""
-            />
-          </view>
-
-          <button class="join" @click="handleJoin">点击参与</button>
-        </view>
-      </view>
-    </view>
-
-    <view class="activity-item">
-      <view class="address">盈信广场</view>
-      <JAvatar
-        src="https://img2.baidu.com/it/u=3005487131,826536428&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=753"
-        size="200"
-        radius="10"
-      ></JAvatar>
-      <view class="info">
-        <view class="activity-text">活动：盈信广场美食狂欢日</view>
-        <view class="activity-text">时间：2022-08-07至2022-08-10</view>
-        <view class="activity-text">地点：佛山顺德区盈信广场</view>
-        <view class="op">
-          <view
-            >导航去这里
-            <image
-              class="icon"
-              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/gous09leumg1u3fykzfb.png"
-              mode=""
-            />
-          </view>
-
-          <button class="join" @click="handleJoin">点击参与</button>
-        </view>
-      </view>
-    </view>
+    <NoData :img="false" color="#fff" text="暂无活动，敬请期待"></NoData>
   </view>
 </template>
 
 <script>
+import NoData from "../components/no-data";
 export default {
+  components: {
+    NoData,
+  },
   methods: {
     handleJoin() {
       uni.navigateTo({

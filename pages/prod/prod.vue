@@ -28,7 +28,7 @@
         <view class="bottom">
           <view class="tag">厂家直销</view>
           <view class="tag">会员促销</view>
-          <view class="tag">团蜂家具商城</view>
+          <!-- <view class="tag">团蜂家具商城</view> -->
         </view>
       </view>
       <!-- <view class="right">
@@ -58,7 +58,7 @@
     </view>
 
     <view class="main">
-      <view class="line">
+      <!-- <view class="line">
         <view class="left">
           <img
             class="img"
@@ -73,13 +73,13 @@
         </view>
 
         <text class="coupons-btn">领劵</text>
-      </view>
+      </view> -->
 
       <view class="info">
         <view class="left">
           <view class="name">{{ goodsInfo.info.name }}</view>
-          <view class="style">家庭餐桌带椅子，白色/灰色</view>
-          <view class="ranking"> 第二名 | 家具餐桌热销榜 </view>
+          <!-- <view class="style">家庭餐桌带椅子，白色/灰色</view>
+          <view class="ranking"> 第二名 | 家具餐桌热销榜 </view> -->
         </view>
         <view class="right">
           <div class="item" @click="handleCollect">
@@ -112,12 +112,12 @@
           <view class="value">
             <view class="tags-wrapper">
               <view class="tags">
-                <img
+                <!-- <img
                   class="img"
                   src="../../static/images/goods/fufei.png"
                   alt=""
-                />
-                <view class="text">付费组装服务</view>
+                /> -->
+                <!-- <view class="text">付费组装服务</view> -->
               </view>
               <view class="tags">
                 <img
@@ -127,14 +127,14 @@
                 />
                 <view class="text">退货政策</view>
               </view>
-              <view class="tags">
+              <!-- <view class="tags">
                 <img
                   class="img"
                   src="../../static/images/goods/shejizixun.png"
                   alt=""
                 />
                 <view class="text">设计咨询</view>
-              </view>
+              </view> -->
             </view>
           </view>
         </view>
@@ -272,12 +272,15 @@ import {
 } from "../../api/goods";
 import { getUserId } from "../../utils";
 import RecommendGoods from "../../components/recommend-goods";
-import { PAY_GOODS } from "../../constant";
+import { PAY_GOODS, J_SELECT_ADDRESS } from "../../constant";
 
 export default {
   components: {
     Carousel,
     RecommendGoods,
+  },
+  onShow() {
+    uni.removeStorageSync(J_SELECT_ADDRESS);
   },
   data() {
     return {
@@ -562,7 +565,7 @@ export default {
     align-items: center;
     width: 100%;
     padding-top: 28upx;
-    background-color: #089a9d;
+    // background-color: #089a9d;
     box-sizing: border-box;
     border-radius: 20upx 20upx 0 0;
     margin-top: -28upx;
@@ -575,7 +578,7 @@ export default {
       box-sizing: border-box;
       flex: 1;
       height: 100%;
-      background-color: #09b8b8;
+      // background-color: #09b8b8;
       padding-top: 16upx;
       padding-left: 28upx;
       padding-bottom: 12upx;
@@ -583,11 +586,11 @@ export default {
       .top {
         display: flex;
         align-items: center;
-        color: #fff;
+        color: #f40;
         font-size: 24upx;
         margin-bottom: 16upx;
         .number {
-          font-size: 36upx;
+          font-size: 60upx;
         }
 
         .tag {
@@ -616,10 +619,11 @@ export default {
 
         .tag {
           padding: 2upx 22upx;
-          background-color: #1f9695;
+          border: 1upx solid #f40;
           color: #fff;
           border-radius: 20upx;
           margin-right: 18upx;
+          color: #f40;
         }
       }
     }
@@ -693,6 +697,10 @@ export default {
         }
       }
 
+      .left {
+        margin-right: 20px;
+      }
+
       .coupons-btn {
         color: #fa5151;
         font-size: 20upx;
@@ -711,12 +719,17 @@ export default {
       align-items: flex-start;
       margin: 18upx 0;
 
+      .text {
+        white-space: nowrap;
+      }
+
       .name {
         color: #3d3d3d;
         font-size: 28upx;
         line-height: 32upx;
         font-weight: bold;
-        margin-bottom: 16upx;
+        margin-bottom: 20upx;
+        margin-right: 70upx;
       }
 
       .style {
@@ -782,6 +795,7 @@ export default {
         .value {
           color: #3d3d3d;
           font-size: 24upx;
+          margin-left: -60upx;
 
           .tags-wrapper {
             width: 100%;

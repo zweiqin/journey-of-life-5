@@ -114,7 +114,7 @@
         </Panel>
       </view>
 
-      <view v-if="isShowItemPane">
+      <view v-if="isShowItemPane && !noData">
         <JTabs
           @change="handleChangeCurrentPane"
           :activeIndex="currentActive"
@@ -131,6 +131,11 @@
           :status="listLoading"
         ></JSwipper>
       </view>
+
+      <noData
+        v-show="!labelList.length && isShowItemPane"
+        text="该分类下暂无商品"
+      ></noData>
     </view>
     <JAside
       @op="handleOp"
@@ -147,6 +152,7 @@ import Active from "./components/Active.vue";
 import Panel from "../../components/panel";
 import Goods from "../../components/goods";
 import JAside from "./components/Aside.vue";
+import NoData from "../../components/no-data";
 import { getSroreListApi } from "../../api/store";
 import {
   getTypeDetailList,
@@ -160,6 +166,7 @@ export default {
     Panel,
     Goods,
     JAside,
+    NoData,
   },
   data() {
     return {
@@ -184,6 +191,7 @@ export default {
         totalPage: 0,
       },
       listLoading: "loading",
+      noData: false,
     };
   },
 
@@ -246,6 +254,12 @@ export default {
     async getOrderList(isLoadMore) {
       const res = await getTypeDetailList({ id: this.currentCategoryId });
       this.labelList = res.data.currentSubCategory;
+
+      if (!this.labelList.length) {
+        this.noData = true;
+      } else {
+        this.noData = false;
+      }
 
       const listRes = await getGoodsById({
         categoryId: this.labelList[this.currentActive].id,

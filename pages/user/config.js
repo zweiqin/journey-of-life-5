@@ -224,7 +224,7 @@ export const marketingTools = {
     },
     {
       label: "推广中心",
-      icon: require("../../static/images/user/tuiguangzhongxin.png"),
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/o63eczbr410ozaj831bx.png",
     },
   ],
 };
@@ -236,18 +236,19 @@ export const otherServe = {
       label: "进销存",
       icon: require("../../static/images/user//jinxiaocun.png"),
     },
-    // {
-    //   label: "代金券充值",
-    //   icon: require("../../static/images/user/daijinjuanchongzhi.png"),
-    // },
-    // {
-    //   label: "代金券转赠",
-    //   icon: require("../../static/images/user/daijinjuanzhuanzeng.png"),
-    // },
     {
-      label: "关注物流",
-      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/93ka73rcnj4d73wub68u.png",
-      url: "/logistics/appoint",
+      label: "代金券充值",
+      icon: require("../../static/images/user/daijinjuanchongzhi.png"),
     },
+    {
+      label: "代金券转赠",
+      icon: require("../../static/images/user/daijinjuanzhuanzeng.png"),
+    },
+    {}
+    // {
+    //   label: "关注物流",
+    //   icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/93ka73rcnj4d73wub68u.png",
+    //   url: "/logistics/appoint",
+    // },
   ],
 };

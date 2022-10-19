@@ -123,6 +123,11 @@ export const submitApplyStoreInfo = (type, data) => {
   return RuanRequest("/userUpInfo/save?isSubmit=" + type, data);
 };
 
+// 获取申请记录
+export const getApplyVipHistoryApi = (data) => {
+  return RuanRequest("/upRecord/list", data, "success");
+};
+
 // 获取省市区地址
 export const getCitiesApi = (data) => {
   return RuanRequest("/region/list", data, "get");
@@ -140,4 +145,14 @@ export const getBusinessInfoByUserIdApi = () => {
 // 发送红包
 export const sendRedEnvelopeApi = (data) => {
   return RuanRequest("/api/redpack/createMapredpack", data);
+};
+
+// 获取红包列表
+export const getRedEnvelopeListApi = () => {
+  return RuanRequest("/api/redpack/queryList", {}, "get");
+};
+
+// 领取红包
+export const receiveRedEnvelopeApi = (data) => {
+  return RuanRequest("/api/redpack/getReceiveMapredpack", data);
 };

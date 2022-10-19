@@ -1,10 +1,6 @@
 <template>
   <view class="j-goods-container" @click="handleToViewGoodsDetail">
-    <image
-      class="img"
-      :src="data.picUrl"
-      alt=""
-    />
+    <image class="img" :src="data.picUrl" alt="" />
     <view class="info">
       <view class="name">{{ data.name }}</view>
       <view class="tags">
@@ -13,7 +9,7 @@
       </view>
 
       <view class="op">
-        <view class="j-goods-price">￥{{data.counterPrice}}</view>
+        <view class="j-goods-price">￥{{ data.counterPrice }}</view>
         <view ref="numbersRef" class="numbers">
           <view class="item" @click="changeNumber(-1)">-</view>
           <view class="currentNumber">{{ goodsNumber }}</view>
@@ -61,7 +57,7 @@ export default {
     // 点击查看详情
     handleToViewGoodsDetail() {
       uni.navigateTo({
-        url: "/goods/goods-detail",
+        url: "/pages/prod/prod?goodsId=" + this.data.id,
       });
     },
   },

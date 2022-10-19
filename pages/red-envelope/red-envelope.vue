@@ -1,36 +1,129 @@
 <template>
   <view class="map-container">
     <map
-      :longitude="113.293719"
-      :latitude="22.885983"
+      :longitude="longitude"
+      :latitude="latitude"
       :scale="20"
-      enable-poi
-      enable-3D
       style="width: 100vw; height: 100vh"
+      :markers="markers"
+      @markertap="handleReceive"
     >
     </map>
+
+    <view class="preview-wrapper" ref="previewWrapperRef">
+      <JRedEnvelope
+        :desc="redForm.remark"
+        :src="redForm.imageUrl"
+        :name="redForm.brandName"
+        :avatar="redForm.picUrl"
+      ></JRedEnvelope>
+    </view>
   </view>
 </template>
 
 <script>
+import { getRedEnvelopeListApi, receiveRedEnvelopeApi } from "../../api/user";
 export default {
   onLoad() {
+    const _this = this;
     this.$nextTick(() => {
       uni.getLocation({
-        type: "wgs84",
+        type: "gcj02",
         success: function (res) {
-          console.log("当前位置的经度：" + res.longitude);
-          console.log("当前位置的纬度：" + res.latitude);
+          _this.longitude = res.longitude * 1;
+          _this.latitude = res.latitude * 1;
         },
-        fail: () => {
-        },
-        complete: function () {
-        },
+        fail: () => {},
+        complete: function () {},
       });
     });
+
+    this.getRedEnvelopeList();
+  },
+
+  data() {
+    return {
+      markers: [],
+      longitude: 0,
+      latitude: 0,
+      redForm: {
+        name: "",
+      },
+      allMarks: [],
+    };
+  },
+
+  methods: {
+    getRedEnvelopeList() {
+      getRedEnvelopeListApi().then((res) => {
+        this.allMarks = res.data;
+        for (const redPack of res.data) {
+          this.markers.push({
+            id: redPack.id,
+            latitude: redPack.latitude,
+            longitude: redPack.longitude,
+            title: redPack.brandName + "的红包",
+            width: 20,
+            height: 17,
+            iconPath:
+              "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/n6p0qgt26t6wu1onofpa.webp",
+          });
+        }
+      });
+    },
+
+    handleReceive(e) {
+      const { markerId } = e.detail;
+      if (markerId) {
+        const currentMark = this.allMarks.find((item) => item.id === markerId);
+        if (currentMark) {
+          this.redForm = currentMark;
+          console.log(currentMark);
+          this.$refs.previewWrapperRef.$el.style.transform = "scale(1)";
+        }
+        // receiveRedEnvelopeApi({
+        // }).then(res => {
+        // })
+      }
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
+@import "../../style/mixin.less";
+
+.preview-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(255, 255, 255);
+  transition: all 350ms;
+  .flex(center, center);
+  flex-direction: column;
+  padding: 40upx 40upx;
+  box-sizing: border-box;
+  transform: scale(0);
+  transition: all 350ms;
+
+  .op {
+    margin-top: 40upx;
+    .flex();
+    width: 100%;
+
+    .btn {
+      margin: 0;
+      padding: 0;
+      flex: 1;
+      background-color: #fa5151;
+      color: #fff;
+
+      &:nth-child(1) {
+        margin-right: 20upx;
+      }
+    }
+  }
+}
 </style>

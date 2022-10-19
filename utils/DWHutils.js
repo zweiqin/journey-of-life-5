@@ -1,5 +1,5 @@
 import { whoami } from "../api/auth";
-import { USER_ID } from "../constant";
+import { J_USER_ID } from "../constant";
 
 /**
  * @description 解决小数计算精度问题（en，你应该使用big.js）
@@ -49,22 +49,22 @@ export const checkWhoami = () => {
  * @returns
  */
 export const getUserId = () => {
-  // const userId = uni.getStorageSync(USER_ID);
-  // if (!userId) {
-  //   uni.showToast({
-  //     title: "登录已失效，请重新登录",
-  //     duration: 2000,
-  //     icon: "none",
-  //   });
+  const userId = uni.getStorageSync(J_USER_ID);
+  if (!userId) {
+    uni.showToast({
+      title: "登录已失效，请重新登录",
+      duration: 2000,
+      icon: "none",
+    });
 
-  //   uni.navigateTo({
-  //     url: "/pages/login/login",
-  //   });
+    uni.navigateTo({
+      url: "/pages/login/login",
+    });
 
-  //   return;
-  // }
-  // return userId;
-  return 200;
+    return;
+  }
+  return userId;
+  // return 200;
   // return 265;
 };
 

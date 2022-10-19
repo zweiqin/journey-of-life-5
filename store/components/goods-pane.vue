@@ -1,28 +1,34 @@
 <template>
   <view class="goods-pane">
     <JAvatar
-      :radius="10"
+      radius="10"
       :size="120"
-      src="https://img2.baidu.com/it/u=1443258330,1345238306&fm=253&fmt=auto&app=138&f=JPEG?w=310&h=230"
+      :src="
+        imgUrl ||
+        'https://img2.baidu.com/it/u=3642934879,209265319&fm=253&fmt=auto&app=138&f=PNG?w=500&h=618'
+      "
     ></JAvatar>
 
     <view class="goods-pane-right">
-      <view class="goods-pane-name">BILLY 毕利 / OXBERG 奥克伯家具餐桌奥克伯家具餐桌奥克伯家具餐桌</view>
-      <view class="goods-pane-desc-content">
+      <view class="goods-pane-name">
+        {{
+          name ||
+          "BILLY 毕利 / OXBERG 奥克伯家具餐桌奥克伯家具餐桌奥克伯家具餐桌"
+        }}
+      </view>
+      <!-- <view class="goods-pane-desc-content">
         <text class="goods-pane-desc">家庭餐桌带椅子</text>
         <text class="goods-pane-desc">灰色</text>
-      </view>
+      </view> -->
       <view class="goods-pane-footer">
-        <text class="goods-pane-price">￥300</text>
-        <view ref="numbersRef" class="numbers">
+        <text class="goods-pane-price">￥{{ price }}</text>
+        <!-- <view ref="numbersRef" class="numbers">
           <view class="item" @click="changeNumber(-1)">-</view>
           <view class="currentNumber">{{ goodsNumber }}</view>
           <view class="item" @click="changeNumber(1)">+</view>
-        </view>
+        </view> -->
 
-        <button ref="addCarRef" class="add-car" @click="handleAddCar">
-          加入购物车
-        </button>
+        <button ref="addCarRef" class="add-car">查看详情</button>
       </view>
     </view>
   </view>
@@ -30,6 +36,11 @@
 
 <script>
 export default {
+  props: {
+    name: String,
+    price: [String, Number],
+    imgUrl: String,
+  },
   data() {
     return {
       goodsNumber: 1,
@@ -140,6 +151,7 @@ export default {
         transition: all 200ms;
         overflow: hidden;
         flex-shrink: 0;
+        margin-top: 20upx;
       }
     }
   }
