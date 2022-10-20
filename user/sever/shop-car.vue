@@ -85,7 +85,12 @@
       ></Goods>
     </view>
 
-    <view class="shop-car-footer">
+    <view
+      class="shop-car-footer"
+      :class="{
+        show: !shopCarList.length,
+      }"
+    >
       <view class="choose-all" @click="handleChooseAll">
         <JIcon
           class="icon"
@@ -120,6 +125,7 @@ import {
 } from "../../api/cart";
 import { everyLookApi } from "../../api/goods";
 import { getUserId, fomartNumber } from "../../utils";
+import { J_PAY_GOODS, J_SELECT_ADDRESS } from "../../constant";
 
 const EDIT = "EDIT";
 const CONFIRM = "CONFIRM";
@@ -132,6 +138,7 @@ export default {
 
   onLoad() {
     this.getShopList();
+    uni.removeStorageSync(J_SELECT_ADDRESS);
     everyLookApi(24555).then(({ data }) => {
       this.recommentList = data.goodsList.slice(0, 10);
     });
@@ -320,6 +327,15 @@ export default {
         this.$showToast("请选择要结算的商品");
         return;
       }
+
+      uni.setStorageSync(J_PAY_GOODS, {
+        goods: selectGoods,
+        pay: this.totalPrice,
+      });
+
+      uni.navigateTo({
+        url: "/user/sever/pay-shop-card",
+      });
     },
   },
 

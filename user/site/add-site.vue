@@ -141,7 +141,6 @@ export default {
 
       const _this = this;
       const data = JSON.parse(JSON.stringify(this.form));
-      data.address = this.area + "-" + data.address;
       getAddressSaveApi(data).then((res) => {
         _this.$showToast(_this.form.id ? "修改成功" : "添加成功", "success");
         this.form = {
@@ -173,10 +172,11 @@ export default {
         userId: getUserId(),
         id: this.editId,
       }).then(({ data }) => {
+        console.log("操了", data);
         _this.form.name = data.name;
         _this.form.mobile = data.mobile;
-        _this.form.address = data.address.split("-")[1];
-        _this.area = data.address.split("-")[0];
+        _this.form.address = data.address;
+        _this.area = data.provinceName + data.cityName + data.areaName;
         _this.form.provinceId = data.provinceId;
         _this.form.cityId = data.cityId;
         _this.form.areaId = data.areaId;

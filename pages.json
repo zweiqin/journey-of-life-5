@@ -392,6 +392,9 @@
 				},
 				{
 					"path": "marketing-tools/marketing-planner"
+				},
+				{
+					"path": "sever/pay-shop-card"
 				}
 			]
 		},

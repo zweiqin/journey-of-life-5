@@ -16,10 +16,9 @@
           "BILLY 毕利 / OXBERG 奥克伯家具餐桌奥克伯家具餐桌奥克伯家具餐桌"
         }}
       </view>
-      <!-- <view class="goods-pane-desc-content">
-        <text class="goods-pane-desc">家庭餐桌带椅子</text>
-        <text class="goods-pane-desc">灰色</text>
-      </view> -->
+      <view class="goods-pane-desc-content" v-if="desc">
+        <text class="goods-pane-desc">{{ desc }}</text>
+      </view>
       <view class="goods-pane-footer">
         <text class="goods-pane-price">￥{{ price }}</text>
         <!-- <view ref="numbersRef" class="numbers">
@@ -28,7 +27,9 @@
           <view class="item" @click="changeNumber(1)">+</view>
         </view> -->
 
-        <button ref="addCarRef" class="add-car">查看详情</button>
+        <button v-if="!readOnly" ref="addCarRef" class="add-car">
+          查看详情
+        </button>
       </view>
     </view>
   </view>
@@ -40,6 +41,8 @@ export default {
     name: String,
     price: [String, Number],
     imgUrl: String,
+    desc: String,
+    readOnly: Boolean,
   },
   data() {
     return {

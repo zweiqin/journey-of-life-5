@@ -19,7 +19,7 @@
         ></JBack>
         <view class="site-mine">我的地址</view>
       </view>
-      <view class="title-right-view">
+      <view class="title-right-view" v-if="!isSelect">
         <view class="manage" @click="manage" v-if="manageok == 1"> 管理 </view>
         <view class="manage" @click="manage" v-if="manageok == 2"> 完成 </view>
       </view>
