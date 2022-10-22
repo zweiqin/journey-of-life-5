@@ -170,6 +170,7 @@ export default {
       box-sizing: border-box;
       border-radius: 20upx;
       box-shadow: 0px 1px 2px 0px rgb(223, 223, 223);
+      margin-bottom: 40upx;
     }
   }
 }

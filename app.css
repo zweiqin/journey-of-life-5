@@ -6,6 +6,10 @@
   font-family: helvetica, 'Heiti SC', PingFangSC-Light;
 }
 
+::-webkit-scrollbar {
+  width: 0 !important
+}
+
 .uni-btn {
   line-height: 1;
   margin: 0;

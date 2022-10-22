@@ -1,10 +1,6 @@
 <template>
   <view class="store-application-container">
-    <JHeader
-      width="50"
-      height="50"
-      title="商家信息填写"
-    ></JHeader>
+    <JHeader width="50" height="50" title="商家信息填写"></JHeader>
     <view class="header">
       <img src="" class="back" alt="" />
     </view>
@@ -42,6 +38,7 @@ import { applyStoreOne, applyStoreTow, uploadFields } from "./config";
 import { submitApplyStoreInfo } from "../../api/user";
 import { J_USER_INFO, J_STORE_TYPES } from "../../constant";
 import { getUserId } from "../../utils";
+import { getAddressLongitudeAndLatitude } from "../../utils";
 
 export default {
   components: {
@@ -60,17 +57,15 @@ export default {
 
       // 门店类型列表
       storeType: [],
-
-      handleSaveImg(field, imgUrl) {
-        this.form.imgs[field] = imgUrl;
-        this.$forceUpdate();
-      },
     };
   },
 
-  onLoad() {},
-
   methods: {
+    handleSaveImg(field, imgUrl) {
+      this.form.imgs[field] = imgUrl;
+      this.$forceUpdate();
+    },
+
     // 点击提交按钮
     submit(tag) {
       const _this = this;
@@ -169,41 +164,48 @@ export default {
       data.address = data.address + "-" + data.addressDetail;
       delete data.addressDetail;
 
-      if (tag) {
-        uni.showModal({
-          title: "提示",
-          content: "确认提交门店申请？",
-          success: function (res) {
-            if (res.confirm) {
-              submitApplyStoreInfo(tag, data).then((res) => {
-                _this.$showToast("提交成功，请等待审核");
-                setTimeout(() => {
-                  uni.switchTab({
-                    url: "/pages/user/user",
+      getAddressLongitudeAndLatitude(data.address.replace("-", "")).then(
+        (res) => {
+          data.longitude = res.result.location.lat;
+          data.latitude = res.result.location.lng;
+
+          if (tag) {
+            uni.showModal({
+              title: "提示",
+              content: "确认提交门店申请？",
+              success: function (res) {
+                if (res.confirm) {
+                  submitApplyStoreInfo(tag, data).then((res) => {
+                    _this.$showToast("提交成功，请等待审核");
+                    setTimeout(() => {
+                      uni.switchTab({
+                        url: "/pages/user/user",
+                      });
+                    }, 2000);
                   });
-                }, 2000);
-              });
-            }
-          },
-        });
-      } else {
-        uni.showModal({
-          title: "提示",
-          content: "确认保存当前门店信息？",
-          success: function (res) {
-            if (res.confirm) {
-              submitApplyStoreInfo(tag, data).then((res) => {
-                _this.$showToast("保存成功", "success");
-                setTimeout(() => {
-                  uni.switchTab({
-                    url: "/pages/user/user",
+                }
+              },
+            });
+          } else {
+            uni.showModal({
+              title: "提示",
+              content: "确认保存当前门店信息？",
+              success: function (res) {
+                if (res.confirm) {
+                  submitApplyStoreInfo(tag, data).then((res) => {
+                    _this.$showToast("保存成功", "success");
+                    setTimeout(() => {
+                      uni.switchTab({
+                        url: "/pages/user/user",
+                      });
+                    }, 2000);
                   });
-                }, 2000);
-              });
-            }
-          },
-        });
-      }
+                }
+              },
+            });
+          }
+        }
+      );
     },
 
     // 删除当前图片

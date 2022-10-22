@@ -23,7 +23,7 @@
     </view>
 
     <view class="activity-list">
-      <view class="activity-item" v-for="item in 4" :key="item">
+      <!-- <view class="activity-item" v-for="item in 4" :key="item">
         <view class="address">盈信广场</view>
         <JAvatar
           src="https://img2.baidu.com/it/u=3005487131,826536428&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=753"
@@ -47,7 +47,8 @@
             <button class="join" @click="handleJoin">点击参与</button>
           </view>
         </view>
-      </view>
+      </view> -->
+      <view class="no-data">暂无活动推荐</view>
     </view>
   </view>
 </template>
@@ -186,6 +187,14 @@ export default {
         }
       }
     }
+  }
+
+  .no-data{
+    width: 100%;
+    height: 200px;
+    text-align: center;
+    line-height: 200px;
+    color: #ccc;
   }
 }
 </style>

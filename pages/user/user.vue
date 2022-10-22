@@ -73,15 +73,15 @@
     <view class="collection">
       <UserPanel :currentTab="currentTab" :data="one" v-if="currentTab === 0">
         <view class="info">
-          <view class="item">
+          <view class="item" @click="handleToViewHistory('collection')">
             <text class="title">收藏</text>
             <text class="value">0</text>
           </view>
-          <view class="item">
+          <view class="item" @click="handleToViewHistory('history')">
             <text class="title">足迹</text>
             <text class="value">0</text>
           </view>
-          <view class="item" @click="bindtapsubscription">
+          <view class="item" @click="handleToViewHistory('follow')">
             <text class="title">订阅</text>
             <text class="value">0</text>
           </view>
@@ -178,6 +178,12 @@ export default {
       uni.navigateTo({
         url: "/user/subscription/subscription",
       });
+    },
+
+    handleToViewHistory(page) {
+      // uni.navigateTo({
+      //   url: "/user/sever/view-history?page=" + page,
+      // });
     },
   },
   mounted() {

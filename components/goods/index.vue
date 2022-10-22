@@ -57,11 +57,12 @@ export default {
 
   methods: {
     handeViewDetail() {
-      // if (!this.id) {
-      //   return;
-      // }
+      if (!this.id) {
+        return;
+      }
+
       uni.navigateTo({
-        url: `/store/store-detail`,
+        url: `/store/store-detail?storeId=${this.id}`,
       });
     },
 

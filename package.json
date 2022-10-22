@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "crypto-js": "^4.1.1",
-    "echarts": "^5.3.3"
+    "echarts": "^5.3.3",
+    "vue-jsonp": "^2.0.0"
   }
 }

@@ -39,6 +39,7 @@ export default {
 
       // 表单
       form: {
+        accountInfo: {},
         imgs: {},
       },
     };
@@ -52,7 +53,9 @@ export default {
     handleDeleteImg() {},
 
     // 提交表单
-    submit() {},
+    submit() {
+      console.log(this.form);
+    },
   },
 };
 </script>

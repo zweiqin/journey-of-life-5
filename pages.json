@@ -395,6 +395,9 @@
 				},
 				{
 					"path": "sever/pay-shop-card"
+				},
+				{
+					"path": "sever/view-history"
 				}
 			]
 		},

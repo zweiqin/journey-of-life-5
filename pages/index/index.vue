@@ -109,6 +109,7 @@
               :url="store.picUrl"
               :desc="store.desc"
               :name="store.name"
+              :id="store.id"
             ></Goods>
           </view>
         </Panel>
@@ -394,6 +395,7 @@ export default {
       box-sizing: border-box;
       box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
       padding-bottom: 0 !important;
+      margin-bottom: 40upx
     }
 
     // 活动面板

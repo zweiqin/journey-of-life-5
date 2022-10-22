@@ -123,7 +123,6 @@
 </template>
 
 <script>
-import { USER_ID, user_INFO, USER_TOKEN } from "../../constant";
 import { layoutApi } from "../../api/auth";
 import { getUserId } from "../../utils";
 
@@ -183,23 +182,25 @@ export default {
      */
     async handleLagout() {
       const res = await layoutApi(getUserId());
-      if (res.errno === 0) {
-        uni.removeStorageSync(USER_ID);
-        uni.removeStorageSync(USER_TOKEN);
-        uni.removeStorageSync(user_INFO);
-
-        uni.navigateTo({
-          url: "/pages/login/login",
+      if (res.errno == 0) {
+        uni.clearStorageSync();
+        uni.showToast({
+          title: "退出成功",
+          duration: 2000,
         });
 
-        return;
+        setTimeout(() => {
+          uni.navigateTo({
+            url: "/pages/login/login",
+          });
+        }, 2000);
+      } else {
+        uni.showToast({
+          title: "退出失败",
+          duration: 2000,
+          icon: "none",
+        });
       }
-
-      uni.showToast({
-        title: "退出失败",
-        duration: 2000,
-        icon: "none",
-      });
     },
   },
 };

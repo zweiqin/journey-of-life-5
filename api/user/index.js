@@ -144,7 +144,7 @@ export const getBusinessInfoByUserIdApi = () => {
 
 // 发送红包
 export const sendRedEnvelopeApi = (data) => {
-  return RuanRequest("/api/redpack/createMapredpack", data);
+  return LTRequest("/api/redpack/createMapredpack", data);
 };
 
 // 获取红包列表
@@ -155,4 +155,9 @@ export const getRedEnvelopeListApi = () => {
 // 领取红包
 export const receiveRedEnvelopeApi = (data) => {
   return RuanRequest("/api/redpack/getReceiveMapredpack", data);
+};
+
+// 查询用户足迹
+export const getUserViewHistoryApi = (data) => {
+  return RuanRequest("/footprint/list", data, "get");
 };

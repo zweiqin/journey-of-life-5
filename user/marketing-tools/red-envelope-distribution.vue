@@ -129,8 +129,7 @@ export default {
         redpackNumber: 1,
         redpackMonkey: 1,
         remark: "",
-        imageUrl:
-          "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/7yqmypic3e5cmiap4t2o.jpg",
+        imageUrl: "",
       },
 
       businessInfo: {},
@@ -204,8 +203,7 @@ export default {
 
       sendRedEnvelopeApi(data)
         .then((res) => {
-          console.log(res);
-
+          console.log("操了", res);
           payOrderGoodsApi({
             orderNo: res.data,
             userId: getUserId(),
@@ -222,7 +220,6 @@ export default {
               input.value = data[key];
               form.appendChild(input);
             }
-
             document.body.appendChild(form);
             form.submit();
             document.body.removeChild(form);

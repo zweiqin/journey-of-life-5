@@ -27,7 +27,12 @@
           <view class="item" @click="changeNumber(1)">+</view>
         </view> -->
 
-        <button v-if="!readOnly" ref="addCarRef" class="add-car">
+        <button
+          v-if="!readOnly"
+          ref="addCarRef"
+          @click="handleToView"
+          class="add-car"
+        >
           查看详情
         </button>
       </view>
@@ -43,6 +48,7 @@ export default {
     imgUrl: String,
     desc: String,
     readOnly: Boolean,
+    id: [String, Number]
   },
   data() {
     return {
@@ -66,6 +72,12 @@ export default {
         this.goodsNumber = 0;
       }
     },
+
+    handleToView(){
+      uni.navigateTo({
+         url: '/pages/prod/prod?goodsId=' + this.id
+      })
+    }
   },
 };
 </script>

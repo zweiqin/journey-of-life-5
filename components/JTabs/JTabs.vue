@@ -10,12 +10,20 @@
           v-for="(item, index) in tabs"
           :key="item.name"
           @click="handleCurrentChange(index)"
+          :style="{
+            paddingBottom: noScrollBar ? '10upx' : '',
+            borderBottom: noScrollBar
+              ? activeIndex === index
+                ? '4upx solid #fa5151'
+                : '4upx solid transparent'
+              : '',
+          }"
         >
           {{ item.name }}
         </view>
       </view>
     </scroll-view>
-    <view ref="scrollBarRef" class="scroll-bar"></view>
+    <view v-if="!noScrollBar" ref="scrollBarRef" class="scroll-bar"></view>
   </view>
 </template>
 
@@ -30,6 +38,11 @@ export default {
     activeIndex: {
       type: Number,
       default: 0,
+    },
+
+    noScrollBar: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -47,6 +60,9 @@ export default {
 
   methods: {
     setScrollBar() {
+      if (this.noScrollBar) {
+        return;
+      }
       // scrollBarRef
       const currentEl = document.querySelector(".item-active");
       const baseLeft = document
@@ -62,6 +78,17 @@ export default {
 
     handleCurrentChange(index) {
       this.$emit("change", index);
+    },
+  },
+
+  computed: {
+    styles() {
+      if (this.noScrollBar) {
+        return {
+          paddingBottom: "10upx",
+          borderBottom: "4upx solid transparent",
+        };
+      }
     },
   },
 };
@@ -81,6 +108,7 @@ export default {
       color: #3d3d3d;
       margin-right: 52upx;
       white-space: nowrap;
+      // border-bottom: 2upx solid #fa5151;
 
       &:last-child {
         margin-right: 0;

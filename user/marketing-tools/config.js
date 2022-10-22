@@ -84,33 +84,33 @@ export const mapStatusColor = (type) => {
 export const infomations = [
   {
     label: "手机号：",
-    field: "",
+    field: "brandPhone",
     type: "input",
     placeholder: "请填写营销策划师需要绑定的手机号",
   },
   {
     label: "联系方式：",
-    field: "",
+    field: "salesmanPhone",
     type: "input",
     placeholder: "请填写联系方式",
   },
   {
     label: "姓名：",
     type: "input",
-    field: "",
+    field: "salesmanname",
     placeholder: "请填写营销策划师的姓名",
     warnText: "（注：账号/密码用于您登陆PC端管理后台，请务必牢记）",
   },
   {
     label: "性别",
     type: "input",
-    field: "",
+    field: "gender",
     placeholder: "请选择性别",
   },
   {
     label: "所属城市",
     type: "city",
-    field: "",
+    field: "address",
     placeholder: "省份、城市、区县",
   },
   {

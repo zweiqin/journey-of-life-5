@@ -1,5 +1,5 @@
 {
-    "name" : "团蜂家居",
+    "name" : "巨蜂商城",
     "appid" : "__UNI__B07FE0F",
     "description" : "",
     "versionName" : "1.0.3",
@@ -107,15 +107,16 @@
         "usingComponents" : true
     },
     "h5" : {
-        "title" : "团蜂家居",
+        "title" : "巨蜂商城",
         "domain" : "",
         "devServer" : {
             "disableHostCheck" : true,
-            "port" : 8989
+            "port" : 8989,
+            "https" : false
         },
         "router" : {
             "mode" : "hash",
-            "base" : "/TFShop_Uni_H5/"
+            "base" : "/JFShop_Uni_H5/"
         },
         "sdkConfigs" : {
             "maps" : {

@@ -1,5 +1,6 @@
 import { whoami } from "../api/auth";
 import { J_USER_ID } from "../constant";
+import { jsonp } from "vue-jsonp";
 
 /**
  * @description 解决小数计算精度问题（en，你应该使用big.js）
@@ -116,3 +117,19 @@ export function handleDebounce(func, wait, immediate) {
 export function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
+
+export const getAddressLongitudeAndLatitude = (address) => {
+  return new Promise((resolve, reject) => {
+    jsonp("https://apis.map.qq.com/ws/geocoder/v1/", {
+      key: "3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH",
+      address: address,
+      output: "jsonp",
+    })
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

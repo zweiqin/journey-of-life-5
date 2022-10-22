@@ -4,3 +4,12 @@ import { RuanRequest } from "../../utils";
 export const getSroreListApi = (data) => {
   return RuanRequest("/brand/list", data, "get");
 };
+
+// 门店详情
+export const getStoreDetailApi = (storeId) => {
+  return RuanRequest("/brand/detail", { id: storeId }, "get");
+};
+
+export const getStoreAndGoods = (data) => {
+  return RuanRequest("/brand/listBySelect", data, "get");
+};

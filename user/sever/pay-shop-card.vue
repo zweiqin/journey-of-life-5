@@ -62,6 +62,8 @@ import Goods from "../../store/components/goods-pane.vue";
 import { J_PAY_GOODS, J_SELECT_ADDRESS } from "../../constant";
 import { getAddressListApi } from "../../api/address";
 import { getUserId } from "../../utils";
+import { payShopCarApi } from "../../api/cart";
+import { submitOrderApi, payOrderGoodsApi } from "../../api/goods";
 
 export default {
   components: {
@@ -143,12 +145,47 @@ export default {
 
     // 支付
     handleToPay() {
-      console.log(this.defaultAddress);
       const data = {
         userId: getUserId(),
         addressId: this.defaultAddress.id,
         useVoucher: 0,
+        cartId: 0,
       };
+
+      payShopCarApi(data).then(({ data }) => {
+        submitOrderApi({
+          userId: getUserId(),
+          cartId: 0,
+          addressId: data.addressId,
+          couponId: 0,
+          useVoucher: false,
+          message: "",
+          grouponLinkId: "",
+          grouponRulesId: "",
+        }).then(({ data }) => {
+          payOrderGoodsApi({
+            orderNo: data.orderSn,
+            userId: getUserId(),
+            payType: 1,
+          }).then((res) => {
+            const form = document.createElement("form");
+            form.setAttribute("action", res.url);
+            form.setAttribute("method", "POST");
+            const data = JSON.parse(res.data);
+            let input;
+            for (const key in data) {
+              input = document.createElement("input");
+              input.name = key;
+              input.value = data[key];
+              form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+          });
+        });
+      });
     },
   },
 };
@@ -195,6 +232,10 @@ export default {
 
   .goods-wrapper {
     margin-bottom: 30upx;
+
+    .goods-pane {
+      margin-bottom: 40upx;
+    }
   }
 
   .line-pane {

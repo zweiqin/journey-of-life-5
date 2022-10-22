@@ -1,11 +1,7 @@
 <template>
-  <view class="store-detail-container">
+  <view class="store-detail-container" v-if="storeDetail">
     <view class="detail-info">
-      <image
-        class="background-img"
-        src="https://img0.baidu.com/it/u=852183785,3727559688&fm=253&fmt=auto&app=138&f=JPEG?w=1000&h=500"
-        mode=""
-      />
+      <image class="background-img" :src="storeDetail.picUrl" mode="" />
       <view class="icons">
         <JBack tabbar="/pages/index/index"></JBack>
         <view class="right">
@@ -25,10 +21,13 @@
       <view class="detail-info-wrapper">
         <JAvatar
           :size="160"
-          src="https://img0.baidu.com/it/u=236085137,1979895699&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1665162000&t=088094aae804f9e6b3e57981e76e3845"
+          :src="
+            storeDetail.logo ||
+            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/berqiue9nqc9c2ykl3ud.webp'
+          "
         ></JAvatar>
         <view class="detail-info-ccontent">
-          <view class="name">巨蜂商城</view>
+          <view class="name">{{ storeDetail.name }}</view>
           <view class="tags">
             <view class="tag">品牌老店</view>
             <view class="tag">品质保障</view>
@@ -55,14 +54,32 @@
         </view>
       </view>
 
-      <JTabs
+      <view class="goods-wrapper" v-if="goodsList.length">
+        <GoodsPanel
+          :price="goods.retailPrice"
+          :name="goods.name"
+          v-for="goods in goodsList"
+          :key="goods.id"
+          :imgUrl="goods.picUrl"
+          :id="goods.id"
+        ></GoodsPanel>
+
+        <uni-load-more
+          v-if="loadingStatus !== 'hidden'"
+          :status="loadingStatus"
+        ></uni-load-more>
+      </view>
+
+      <NoData v-else></NoData>
+
+      <!-- <JTabs
         @change="handleChangeCurrentPane"
         :tabs="storeDetailLabels"
         :activeIndex="currentActive"
         class="j-tabs"
-      ></JTabs>
+      ></JTabs> -->
 
-      <JSwipper
+      <!-- <JSwipper
         @change="handleChangeCurrentPane"
         :activeIndex="currentActive"
         :tabs="storeDetailLabels"
@@ -76,7 +93,7 @@
         </template>
         <template #evaluate> <Evaluate ref="evaluateRef"></Evaluate> </template>
         <template #coupon> <Coupon ref="couponRef"></Coupon> </template>
-      </JSwipper>
+      </JSwipper> -->
     </view>
   </view>
 </template>
@@ -86,6 +103,9 @@ import { storeDetailNavs } from "./config";
 import GoodsPanel from "./components/goods-pane.vue";
 import Evaluate from "./components/evaluate.vue";
 import Coupon from "./components/coupon.vue";
+import { getStoreDetailApi } from "../api/store";
+import { getGoodsById } from "../api/home";
+import NoData from "../components/no-data";
 
 export default {
   data() {
@@ -115,26 +135,87 @@ export default {
         1: "evaluateRef",
         2: "couponRef",
       },
+
+      // 门店id
+      storeId: null,
+      storeDetail: null,
+
+      //
+      goodsTotalCount: 0,
+      goodsList: [],
+
+      //
+      query: {
+        page: 1,
+        size: 10,
+      },
+
+      loadingStatus: "loading",
     };
+  },
+
+  onLoad(options) {
+    this.storeId = options.storeId;
+    this.getStoreDetail();
+    this.getGoodsDetail();
   },
 
   components: {
     GoodsPanel,
     Evaluate,
     Coupon,
+    NoData,
   },
 
   methods: {
+    // 设置高度
     handleChangeCurrentPane(index) {
-      this.swipterHeight =
-        this.$refs[this.mapRef[index]].$el.clientHeight * 2 + 20;
+      // this.swipterHeight = this.$refs[this.mapRef[index]].$el.clientHeight * 2 + 20;
       this.currentActive = index;
+    },
+
+    // 获取门店详情
+    getStoreDetail() {
+      const _this = this;
+      getStoreDetailApi(this.storeId).then(({ data }) => {
+        console.log(data);
+        _this.storeDetail = data.brand;
+      });
+    },
+
+    // 获取门店的商品
+    getGoodsDetail(more) {
+      this.loadingStatus = "loading";
+      this.query.brandId = this.storeId;
+      getGoodsById(this.query).then(({ data }) => {
+        this.goodsTotalCount = data.count;
+        if (more) {
+          this.goodsList.push(...data.goodsList);
+        } else {
+          this.goodsList = data.goodsList;
+        }
+      });
+
+      this.loadingStatus = "hidden";
     },
   },
 
   mounted() {
-    this.swipterHeight =
-      this.$refs.JSideClassificationRef.$el.clientHeight * 2 + 10;
+    // this.swipterHeight = this.$refs.JSideClassificationRef.$el.clientHeight * 2 + 10;
+  },
+
+  onReachBottom() {
+    console.log(this.goodsTotalCount);
+    if (this.goodsList.length > this.goodsTotalCount) {
+      this.loadingStatus = "noMore";
+      return;
+    }
+
+    if (this.goodsList.length < this.query.size) {
+      return;
+    }
+    this.query.page++;
+    this.getGoodsDetail(true);
   },
 };
 </script>
@@ -265,6 +346,10 @@ export default {
 
   .j-tabs {
     margin-top: 44upx;
+  }
+
+  .goods-wrapper {
+    margin: 30upx 0;
   }
 }
 </style>

@@ -21,7 +21,7 @@
             :data="goods"
             v-if="type === 'goods'"
           ></JGoods>
-          <JStorePane ref="jStoreDetailRef" v-else></JStorePane>
+          <JStorePane :data="goods" ref="jStoreDetailRef" v-else></JStorePane>
         </view>
       </view>
       <NoData style="height: 400upx" v-else></NoData>
@@ -83,9 +83,9 @@ export default {
       this.setSwiperHeight();
     },
 
-    data(){
-      this.setSwiperHeight()
-    }
+    data() {
+      this.setSwiperHeight();
+    },
   },
 
   methods: {
@@ -116,10 +116,8 @@ export default {
             }
           }
 
-          this.swiperHeight = this.height
-            ? this.height
-            : number * itemHeight;
-        }, 500);
+          this.swiperHeight = this.height ? this.height : number * itemHeight;
+        }, 1000);
       });
     },
   },
@@ -130,9 +128,14 @@ export default {
 .j-swiper-container {
   margin: 10upx 0 5upx;
   .swiper-item-wrapper {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+
+    // .swiper-item{
+    //   width: 100%;
+    // }
   }
 }
 

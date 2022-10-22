@@ -23,6 +23,7 @@
 
 <script>
 import { getRedEnvelopeListApi, receiveRedEnvelopeApi } from "../../api/user";
+import { getUserId } from "../../utils";
 export default {
   onLoad() {
     const _this = this;
@@ -63,8 +64,8 @@ export default {
             latitude: redPack.latitude,
             longitude: redPack.longitude,
             title: redPack.brandName + "的红包",
-            width: 20,
-            height: 17,
+            width: 28,
+            height: 37,
             iconPath:
               "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/n6p0qgt26t6wu1onofpa.webp",
           });
@@ -73,17 +74,36 @@ export default {
     },
 
     handleReceive(e) {
+      const _this = this;
       const { markerId } = e.detail;
       if (markerId) {
         const currentMark = this.allMarks.find((item) => item.id === markerId);
         if (currentMark) {
           this.redForm = currentMark;
           console.log(currentMark);
-          this.$refs.previewWrapperRef.$el.style.transform = "scale(1)";
+          // this.$refs.previewWrapperRef.$el.style.transform = "scale(1)";
         }
-        // receiveRedEnvelopeApi({
-        // }).then(res => {
-        // })
+
+        uni.getLocation({
+          type: "gcj02",
+          success: function (res) {
+            receiveRedEnvelopeApi({
+              id: currentMark.id,
+              userId: getUserId(),
+              longitude: res.longitude * 1,
+              latitude: res.latitude * 1,
+            }).then(() => {
+              _this.$refs.previewWrapperRef.$el.style.transform = "scale(1)";
+            });
+          },
+          fail: () => {
+            uni.showToast({
+              title: "领取失败",
+              duration: 2000,
+              icon: "none",
+            });
+          },
+        });
       }
     },
   },

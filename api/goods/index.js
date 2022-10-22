@@ -1,4 +1,4 @@
-import { getUserId, RuanRequest } from "../../utils";
+import { getUserId, LTRequest, RuanRequest } from "../../utils";
 
 /**
  * @description 查询商品详情
@@ -76,5 +76,5 @@ export const firstAddCar = (data) => {
 }
 
 export const payOrderGoodsApi = (data) => {
-  return RuanRequest("/api/syb/orderPayH5", data)
+  return LTRequest("/api/syb/orderPayH5", data)
 }

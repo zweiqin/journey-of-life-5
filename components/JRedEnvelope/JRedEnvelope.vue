@@ -1,11 +1,24 @@
 <template>
   <view class="j-red-envelope-container">
     <view class="header">
-      <JAvatar :size="48" :src="avatar"></JAvatar>
+      <JAvatar
+        :size="48"
+        :src="
+          avatar ||
+          'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/fal17oak8m6t4ytoo1lh.webp'
+        "
+      ></JAvatar>
       <view class="from">{{ name }}的红包</view>
     </view>
-    <view class="desc">{{ desc || '恭喜发财，财源滚滚' }}</view>
-    <image class="bg-img" :src="src" mode="" />
+    <view class="desc">{{ desc || "恭喜发财，财源滚滚" }}</view>
+    <image
+      class="bg-img"
+      :src="
+        src ||
+        'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6es7jzqcs3atdn7qyhxg.png'
+      "
+      mode=""
+    />
   </view>
 </template>
 

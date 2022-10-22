@@ -54,6 +54,6 @@ export const deleteShopCarGoodsApi = (data) => {
  * @param {购物车结算} data
  * @returns
  */
-export const getCartCheckoutApi = (data) => {
+export const payShopCarApi = (data) => {
   return RuanRequest("/cart/checkout", data, "get");
 };
