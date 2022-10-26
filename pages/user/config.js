@@ -193,9 +193,10 @@ export const marketingTools = {
   title: "营销工具",
   menus: [
     {
-      label: "门店申请",
-      icon: require("../../static/images/user/mendiankanban.png"),
-      url: "/user/marketing-tools/store-application",
+      label: "我的名片",
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/exu48rqu12mmp283gf7u.png",
+      url: "/user/marketing-tools/contact-guide/index",
+      width: "60upx",
     },
     {
       label: "红包发放",

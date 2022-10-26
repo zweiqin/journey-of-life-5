@@ -26,7 +26,14 @@
         v-for="item in data.menus"
         :key="item.label"
       >
-        <img class="icon" :src="item.icon" alt="" />
+        <img
+          class="icon"
+          :style="{
+            width: item.width,
+          }"
+          :src="item.icon"
+          alt=""
+        />
         <view class="name">{{ item.label }}</view>
       </view>
     </view>
