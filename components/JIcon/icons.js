@@ -12,7 +12,11 @@ export const types = {
   collection:
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/imqpu7njm1nr2xx1bsra.png", // 收藏
   empty:
-    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8vht7teaqd7nrqxxdfhg.png",
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8vht7teaqd7nrqxxdfhg.png", // 空
   history:
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/h7udo29vv7yqm5ey4y9z.webp",
+  share:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/w1l9jhs5w7w7v2z8qt71.png", // 分享
+  close:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/q5n6tmqehph8ty2nokal.png",
 };

@@ -22,11 +22,23 @@
 
     <!-- 三张图 -->
     <view class="goods-layout three" v-if="data.goodsList.length >= 3">
-      <img class="store" :src="data.goodsList[0].picUrl" alt="" />
+      <img
+        class="store animate__animated animate__backInLeft"
+        :src="data.goodsList[0].picUrl"
+        alt=""
+      />
       <view class="right">
-        <img :src="data.goodsList[1].picUrl" alt="" />
+        <img
+          class="animate__animated animate__fadeInTopRight"
+          :src="data.goodsList[1].picUrl"
+          alt=""
+        />
 
-        <img :src="data.goodsList[2].picUrl" alt="" />
+        <img
+          class="animate__animated animate__fadeInBottomRight"
+          :src="data.goodsList[2].picUrl"
+          alt=""
+        />
       </view>
 
       <view class="price-icon" style="left: 0; top: 20upx"
@@ -41,15 +53,26 @@
     </view>
 
     <!-- 一张图 -->
-    <view class="goods-layout one" v-if="data.goodsList.length === 1">
+    <view
+      class="goods-layout one animate__animated animate__flipInX"
+      v-if="data.goodsList.length === 1"
+    >
       <img class="img" :src="data.goodsList[0].picUrl" alt="" />
       <view class="price-icon">￥{{ data.goodsList[0].retailPrice }}</view>
     </view>
 
     <!-- 两张图 -->
     <view class="goods-layout two" v-if="data.goodsList.length === 2">
-      <img class="img" :src="data.goodsList[0].picUrl" alt="" />
-      <img class="img" :src="data.goodsList[1].picUrl" alt="" />
+      <img
+        class="img animate__animated animate__lightSpeedInLeft"
+        :src="data.goodsList[0].picUrl"
+        alt=""
+      />
+      <img
+        class="img animate__animated animate__lightSpeedInRight"
+        :src="data.goodsList[1].picUrl"
+        alt=""
+      />
 
       <view class="price-icon" style="left: 0; top: 20upx"
         >￥{{ data.goodsList[0].retailPrice }}</view
