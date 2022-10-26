@@ -91,7 +91,8 @@ export default {
     .name {
       width: 348upx;
       color: #3d3d3d;
-      font-size: 20upx;
+      font-size: 28upx;
+      font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

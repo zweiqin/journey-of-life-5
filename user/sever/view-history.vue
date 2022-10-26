@@ -1,9 +1,15 @@
 <template>
   <view class="view-history-container">
-    <JHeader width="50" height="50" :title="currentPageInfo.title"></JHeader>
+    <JHeader
+      width="50"
+      height="50"
+      tabbar="/pages/user/user"
+      :title="currentPageInfo.title"
+    ></JHeader>
     <view class="navs">
       <view
         class="item"
+        @click="handleSwitchTab(item.value)"
         :class="{ active: currentPage === item.value }"
         v-for="item in labelList"
         :key="item.label"
@@ -11,48 +17,48 @@
       >
     </view>
 
-    <view class="timer">
-      <image
-        class="timer-icon"
-        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/208t5z0ldi4odit8lbsn.png"
-        mode=""
-      />
-
-      <view class="timer-title">时间</view>
-
-      <view @click="openCalendar" style="display: flex; align-items: center">
-        {{ currentTime }}
-        <JIcon type="right-arrow"></JIcon>
-      </view>
-    </view>
+    
 
     <view class="list-wrapper">
-    </view>
+      <FootPrint
+        v-show="currentPage === 'history'"
+        ref="footerPrintRef"
+      ></FootPrint>
 
-    <uni-calendar
-      ref="calendar"
-      class="uni-calendar--hook"
-      :clear-date="true"
-      :date="info.date"
-      :insert="info.insert"
-      :lunar="info.lunar"
-      @confirm="handleChoonseCanlar"
-      @close="handleCloseCanlar"
-    />
+      <Collections
+        @delete="getCollections"
+        v-show="currentPage === 'collection'"
+        :data="collectionInfo.data"
+      ></Collections>
+
+      <uni-load-more
+        v-show="loadingStatus !== 'hidden'"
+        :status="loadingStatus"
+      ></uni-load-more>
+
+      <JNoData v-show="showNoData" type="empty"></JNoData>
+    </view>
   </view>
 </template>
 
 <script>
-import { getUserViewHistoryApi } from "../../api/user";
+import {
+  getUserViewHistoryApi,
+  getUserCollectionListApi,
+} from "../../api/user";
 import { getUserId } from "../../utils";
+import FootPrint from "./components/FootPrint.vue";
+import Collections from "./components/Collections.vue";
 
 const mapCurrentInfo = {
-  collection: {
+  history: {
     title: "我的足迹",
+    api: "getFootPrint",
   },
 
-  history: {
+  collection: {
     title: "我的收藏",
+    api: "getCollections",
   },
 
   follow: {
@@ -61,11 +67,34 @@ const mapCurrentInfo = {
 };
 
 export default {
+  components: {
+    FootPrint,
+    Collections,
+  },
   data() {
     return {
       currentPage: "",
       currentPageInfo: "",
-      historyList: {},
+
+      historyInfo: {
+        query: {
+          page: 1,
+          size: 20,
+        },
+
+        data: {},
+        totalPage: 0,
+      },
+
+      collectionInfo: {
+        query: {
+          page: 1,
+          size: 20,
+        },
+        data: {},
+        totalPage: 0,
+      },
+
       labelList: [
         {
           name: "收藏",
@@ -87,29 +116,15 @@ export default {
         selected: [],
       },
       currentTime: "",
+
+      loadingStatus: "loading",
+      showNoData: false,
     };
   },
   onLoad(options) {
     this.currentPage = options.page;
     this.currentPageInfo = mapCurrentInfo[this.currentPage];
-    const time = new Date();
-    this.currentTime =
-      time.getFullYear() + "年" + " " + (time.getMonth() + 1) + "月";
-
-    getUserViewHistoryApi({
-      page: 0,
-      size: 10,
-      userId: getUserId(),
-    }).then(({ data }) => {
-      for (const item of data.footprintList) {
-        const key = item.addTime.split(" ")[0];
-        if (!this.historyList[key]) {
-          this.historyList[key] = [item];
-        } else {
-          this.historyList[key].push(item);
-        }
-      }
-    });
+    this.currentPageInfo.api && this[this.currentPageInfo.api]();
   },
 
   methods: {
@@ -118,16 +133,93 @@ export default {
       this.currentActive = index;
     },
 
-    // 打开日历
-    openCalendar() {
-      this.$refs.calendar.open();
+    handleSwitchTab(currentPage) {
+      this.currentPage = currentPage;
+      this.currentPageInfo = mapCurrentInfo[this.currentPage];
+      this.currentPageInfo.api
+        ? this[this.currentPageInfo.api]()
+        : (this.showNoData = true);
     },
 
-    // 选择日历
-    handleChoonseCanlar(e) {},
+    
 
-    // 关闭日历
-    handleCloseCanlar() {},
+    // 获取足迹数据
+    getFootPrint() {
+      const _this = this;
+      this.loadingStatus = "loading";
+
+      getUserViewHistoryApi({
+        ...this.historyInfo.query,
+        userId: getUserId(),
+      }).then(({ data }) => {
+        _this.historyInfo.totalPage = data.totalPages;
+        for (const item of data.footprintList) {
+          const key = item.addTime.split(" ")[0];
+          const data = _this.historyInfo.data;
+          if (!data[key]) {
+            data[key] = [item];
+          } else {
+            data[key].push(item);
+          }
+        }
+
+        this.loadingStatus = "hidden";
+        this.$refs.footerPrintRef.setData(this.historyInfo.data);
+        this.showNoData = this.historyInfo.data.length === 0;
+      });
+    },
+
+    // 获取收藏数据
+    getCollections() {
+      const _this = this;
+      this.loadingStatus = "loading";
+      getUserCollectionListApi({
+        ...this.collectionInfo.query,
+        userId: getUserId(),
+        type: 0,
+      }).then(({ data }) => {
+        _this.collectionInfo.totalPage = data.totalPages;
+        _this.collectionInfo.data = data.collectList;
+        _this.loadingStatus = "hidden";
+        this.showNoData = this.collectionInfo.data.length == 0;
+      });
+    },
+  },
+
+  onReachBottom() {
+    switch (this.currentPage) {
+      case "history":
+        if (this.historyInfo.data.length < this.historyInfo.query.size) {
+          return;
+        }
+
+        if (this.historyInfo.query.page >= this.historyInfo.totalPage) {
+          this.loadingStatus = "noMore";
+          return;
+        }
+
+        if (this.historyInfo.query.page < this.historyInfo.totalPage) {
+          this.historyInfo.query.page++;
+          this.getFootPrint();
+        }
+        break;
+
+      case "collection":
+        if (this.collectionInfo.data.length < this.collectionInfo.query.size) {
+          return;
+        }
+
+        if (this.collectionInfo.query.page >= this.collectionInfo.totalPage) {
+          this.loadingStatus = "noMore";
+          return;
+        }
+
+        if (this.collectionInfo.query.page < this.collectionInfo.totalPage) {
+          this.collectionInfo.query.page++;
+          this.getCollections();
+        }
+        break;
+    }
   },
 };
 </script>
@@ -136,7 +228,7 @@ export default {
 @import "../../style/mixin.less";
 
 .view-history-container {
-  padding: 74upx 32upx;
+  padding: 50upx 32upx;
   box-sizing: border-box;
 
   .navs {
@@ -150,29 +242,6 @@ export default {
     }
   }
 
-  .timer {
-    font-size: 28upx;
-    color: #3d3d3d;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    margin: 32upx 0;
-
-    .timer-icon {
-      width: 40upx;
-      height: 44upx;
-    }
-
-    .timer-title {
-      margin: 0 80upx 0 22upx;
-    }
-
-    .j-icon {
-      width: 30upx;
-      height: 32upx;
-      transform: rotate(90deg);
-      margin-left: 20upx;
-    }
-  }
+  
 }
 </style>

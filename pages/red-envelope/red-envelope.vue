@@ -3,7 +3,8 @@
     <map
       :longitude="longitude"
       :latitude="latitude"
-      :scale="20"
+      :scale="40"
+			:max-scale="40"
       style="width: 100vw; height: 100vh"
       :markers="markers"
       @markertap="handleReceive"
@@ -24,22 +25,12 @@
 <script>
 import { getRedEnvelopeListApi, receiveRedEnvelopeApi } from "../../api/user";
 import { getUserId } from "../../utils";
+import { J_LOACTION } from "../../constant";
+
 export default {
   onLoad() {
-    const _this = this;
-    this.$nextTick(() => {
-      uni.getLocation({
-        type: "gcj02",
-        success: function (res) {
-          _this.longitude = res.longitude * 1;
-          _this.latitude = res.latitude * 1;
-        },
-        fail: () => {},
-        complete: function () {},
-      });
-    });
-
     this.getRedEnvelopeList();
+		this.getLoaction()
   },
 
   data() {
@@ -106,6 +97,36 @@ export default {
         });
       }
     },
+
+    getLoaction() {
+			
+      const locationInfo = uni.getStorageSync(J_LOACTION);
+      if (locationInfo) {
+        this.latitude = locationInfo.latitude;
+        this.longitude = locationInfo.longitude;
+        return;
+      }
+
+      const _this = this;
+      uni.getLocation({
+        type: "gcj02",
+        success: function (res) {
+          _this.longitude = res.longitude * 1;
+          _this.latitude = res.latitude * 1;
+
+          uni.setStorageSync(J_LOACTION, {
+            latitude: res.latitude,
+            longitude: res.longitude,
+          });
+
+          location.reload();
+        },
+      });
+    },
+  },
+
+  destroyed() {
+    uni.removeStorageSync(J_LOACTION);
   },
 };
 </script>

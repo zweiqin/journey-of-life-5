@@ -460,11 +460,10 @@ export default {
 
     // handleShareGoods
     handleShareGoods() {
-      // uni.share({
-      //   type: 2,
-      //   href: '',
-      //   imageUr: ''
-      // })
+      uni.share({
+        title: "哈啊哈",
+        href: "https://www.baidu.com",
+      });
     },
 
     // 立即购买
@@ -550,7 +549,7 @@ export default {
     position: relative;
     z-index: 10;
     .back {
-      position: fixed;
+      position: absolute;
       top: 28upx;
       left: 10upx;
       width: 48upx;
@@ -587,7 +586,7 @@ export default {
         display: flex;
         align-items: center;
         color: #f40;
-        font-size: 24upx;
+        font-size: 36upx;
         margin-bottom: 16upx;
         .number {
           font-size: 60upx;

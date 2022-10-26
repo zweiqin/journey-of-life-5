@@ -161,3 +161,9 @@ export const receiveRedEnvelopeApi = (data) => {
 export const getUserViewHistoryApi = (data) => {
   return RuanRequest("/footprint/list", data, "get");
 };
+
+
+// 获取收藏数据
+export const getUserCollectionListApi = (data) => {
+  return RuanRequest("/collect/list", data, 'get')
+}

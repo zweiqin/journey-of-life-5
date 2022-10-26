@@ -9,4 +9,10 @@ export const types = {
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/7xustalt5ocsv5ke25bv.png", // 未选中
   "right-arrow":
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/nnykqa10hv024q7pvtqh.png", // 右，灰色，箭头
+  collection:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/imqpu7njm1nr2xx1bsra.png", // 收藏
+  empty:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8vht7teaqd7nrqxxdfhg.png",
+  history:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/h7udo29vv7yqm5ey4y9z.webp",
 };

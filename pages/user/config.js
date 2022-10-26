@@ -125,7 +125,7 @@ export const serve = {
     {
       label: "商品收藏",
       icon: require("../../static/images/user/shangpinshocang.png"),
-      url: "/user/Collection/Goods-Collection",
+      url: "/user/sever/view-history?page=collection",
     },
     {
       label: "我的拼团",
@@ -244,7 +244,7 @@ export const otherServe = {
       label: "代金券转赠",
       icon: require("../../static/images/user/daijinjuanzhuanzeng.png"),
     },
-    {}
+    {},
     // {
     //   label: "关注物流",
     //   icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/93ka73rcnj4d73wub68u.png",

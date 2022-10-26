@@ -80,9 +80,9 @@
         <ActivePane type="recommend"></ActivePane>
       </view>
 
-      <view v-if="data.length">
+      <view v-if="homeStores.length">
         <JStorePane
-          v-for="item in data"
+          v-for="item in homeStores"
           :data="item"
           :key="item.id"
         ></JStorePane>
@@ -97,7 +97,7 @@
 import ActivePane from "./components/active-pane.vue";
 import { getStoreAndGoods } from "../../api/store";
 import { J_STORE_TYPES } from "../../constant";
-import { getStoreTypesApi } from '../../api/user';
+import { getStoreTypesApi } from "../../api/user";
 
 export default {
   components: {
@@ -221,6 +221,14 @@ export default {
     this.page++;
     this.getStoreList(true);
   },
+
+  computed: {
+    homeStores() {
+      return this.data.filter((item) => {
+        return item.goodsList.length >= 1;
+      });
+    },
+  },
 };
 </script>
 
@@ -316,7 +324,15 @@ export default {
 .j-tabs {
   box-sizing: border-box;
   padding: 0 16upx;
-  margin-bottom: -50upx;
+  // margin-bottom: -50upx;
+
+  /deep/ .item {
+    font-size: 24upx;
+  }
+
+  /deep/ .item-active {
+    font-weight: bold;
+  }
 }
 
 .list-wrapper {

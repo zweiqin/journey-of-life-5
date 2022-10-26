@@ -78,6 +78,7 @@ export default {
     .name {
       font-size: 24upx;
       color: #3d3d3d;
+      font-weight: bold;
     }
 
     .time {

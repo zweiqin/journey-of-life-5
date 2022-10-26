@@ -10,20 +10,13 @@
           v-for="(item, index) in tabs"
           :key="item.name"
           @click="handleCurrentChange(index)"
-          :style="{
-            paddingBottom: noScrollBar ? '10upx' : '',
-            borderBottom: noScrollBar
-              ? activeIndex === index
-                ? '4upx solid #fa5151'
-                : '4upx solid transparent'
-              : '',
-          }"
+          
         >
           {{ item.name }}
         </view>
       </view>
     </scroll-view>
-    <view v-if="!noScrollBar" ref="scrollBarRef" class="scroll-bar"></view>
+    <!-- <view v-if="!noScrollBar" ref="scrollBarRef" class="scroll-bar"></view> -->
   </view>
 </template>
 
@@ -46,16 +39,18 @@ export default {
     },
   },
 
-  watch: {
-    activeIndex() {
-      this.$nextTick(() => {
-        this.setScrollBar();
-      });
-    },
-  },
+  // watch: {
+  //   activeIndex() {
+  //     this.$nextTick(() => {
+  //       this.setScrollBar();
+  //     });
+  //   },
+  // },
 
   mounted() {
-    this.setScrollBar();
+    // this.$nextTick(() => {
+    //   this.setScrollBar();
+    // });
   },
 
   methods: {
@@ -63,6 +58,7 @@ export default {
       if (this.noScrollBar) {
         return;
       }
+
       // scrollBarRef
       const currentEl = document.querySelector(".item-active");
       const baseLeft = document
@@ -74,6 +70,10 @@ export default {
         this.$refs.scrollBarRef.$el.style.left = locale.left - baseLeft + "px";
         this.$refs.scrollBarRef.$el.style.width = locale.width + "px";
       }
+
+      setTimeout(() => {
+        console.log("你妈的", currentEl);
+      }, 500);
     },
 
     handleCurrentChange(index) {
@@ -104,11 +104,24 @@ export default {
     overflow-y: scroll;
 
     .item {
-      font-size: 24upx;
+      position: relative;
+      font-size: 28upx;
       color: #3d3d3d;
       margin-right: 52upx;
       white-space: nowrap;
-      // border-bottom: 2upx solid #fa5151;
+      padding-bottom: 10upx;
+      border-bottom: 2upx solid transparent;
+
+      &::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 8upx;
+        border-radius: 100px;
+        left: 0;
+        bottom: -3px;
+        transition: all 200ms linear;
+      }
 
       &:last-child {
         margin-right: 0;
@@ -118,6 +131,11 @@ export default {
     .item-active {
       color: #fa5151;
       transition: all 350ms;
+      // border-bottom: 2px solid #fa5151;
+
+      &::after {
+        background-color: #fa5151;
+      }
     }
   }
 

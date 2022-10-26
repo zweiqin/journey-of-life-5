@@ -181,9 +181,9 @@ export default {
     },
 
     handleToViewHistory(page) {
-      // uni.navigateTo({
-      //   url: "/user/sever/view-history?page=" + page,
-      // });
+      uni.navigateTo({
+        url: "/user/sever/view-history?page=" + page,
+      });
     },
   },
   mounted() {

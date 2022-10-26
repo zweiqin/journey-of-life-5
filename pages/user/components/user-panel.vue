@@ -57,10 +57,10 @@ export default {
 
         console.log(item.url);
 
-        return
+        return;
       }
       uni.navigateTo({
-        url: item.url + "?collectiontype=" + this.currentTab,
+        url: item.url,
       });
     },
   },

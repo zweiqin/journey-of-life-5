@@ -19,11 +19,14 @@
       </view>
       <image :src="articleInfo.imgUrl" class="adva" mode="" />
 
-      <view
-        class="content"
-        v-if="!articleInfo.isVip"
-        v-html="articleInfo.content"
-      ></view>
+      <!-- <view class="content" v-html="articleInfo.content"></view> -->
+
+      <view v-if="!articleInfo.isVip" style="margin: 10px 0">
+        <u-parse
+          :content="articleInfo.content && marked(articleInfo.content)"
+        ></u-parse>
+      </view>
+
       <view class="attention" v-else>
         在疫情肆虐的上半年，九牧王的线上微商城月 GMV 基本平均保持在 1000w+
         的水平，其中私域用户贡献占到 90% 。私域会员增长了 10
@@ -64,10 +67,13 @@ import {
 } from "../api/marketing-treasure-house";
 import ArticlePane from "../pages/marketing-treasure-house/components/article-pane.vue";
 import { getRandom } from "../utils";
+import { marked } from "marked";
+import uParse from "../components/u-parse/u-parse.vue";
 
 export default {
   components: {
     ArticlePane,
+    uParse,
   },
   onLoad(options) {
     this.articleId = options.id;
@@ -107,12 +113,15 @@ export default {
           }, 2000);
         });
     },
+
+    marked,
   },
 };
 </script>
 
 <style lang="less" scoped>
 @import "../style/mixin.less";
+@import url("../components/u-parse/u-parse.css");
 
 .article-detail-container {
   padding: 24upx;
@@ -177,7 +186,7 @@ export default {
       width: 100%;
       object-fit: cover;
       border-radius: 20upx;
-      height: 156upx;
+      height: 416upx;
     }
 
     .content,

@@ -20,6 +20,7 @@
   "dependencies": {
     "crypto-js": "^4.1.1",
     "echarts": "^5.3.3",
+    "marked": "^4.1.1",
     "vue-jsonp": "^2.0.0"
   }
 }

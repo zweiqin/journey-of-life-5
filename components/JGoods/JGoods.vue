@@ -94,6 +94,7 @@ export default {
       overflow: hidden;
       white-space: nowrap;
       font-size: 24upx;
+      font-weight: bold;
       color: #3d3d3d;
     }
 
@@ -102,11 +103,13 @@ export default {
       margin: 12upx 0 23upx 0;
 
       .tag {
-        border: 1upx solid #777777;
+        font-weight: 100;
+        border: 1upx solid #999;
         font-size: 20upx;
         padding: 4upx 8upx;
         border-radius: 10px;
         margin-right: 10upx;
+        color: rgb(0, 0, 0)
       }
     }
 

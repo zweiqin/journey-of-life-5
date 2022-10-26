@@ -138,6 +138,7 @@ export default {
       .name {
         color: #3d3d3d;
         font-size: 24upx;
+        font-weight: bold;
         margin-bottom: 12upx;
       }
       .tem {

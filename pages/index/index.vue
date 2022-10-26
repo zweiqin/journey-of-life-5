@@ -17,7 +17,7 @@
     <view
       class="banner"
       :style="{
-        background: isShowItemPane ? currentNav.background : '',
+        background: isShowItemPane ? bannerComputed : '',
         borderRadius: isShowItemPane ? '0' : '',
       }"
     >
@@ -60,6 +60,10 @@
         class="navs"
         :style="{
           padding: isShowItemPane ? '20upx' : '',
+          'box-shadow': isShowItemPane
+            ? '0px 1px 2px 0px rgba(0, 0, 0, 0.1)'
+            : '',
+          'margin-bottom': isShowItemPane ? '' : '-5px',
         }"
         @nav-click="handleNavItemClick"
         :navs="navs"
@@ -78,6 +82,7 @@
           ></Active>
 
           <Active
+            style="padding: 27upx 12upx"
             url="/home/ranking-list"
             title="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/fopsiop6q7gh6l9pyomb.png"
             background="linear-gradient(180deg, #FCDBDB, rgba(255,255,255,0))"
@@ -117,6 +122,7 @@
 
       <view v-if="isShowItemPane && !noData">
         <JTabs
+          ref="jTabsRef"
           @change="handleChangeCurrentPane"
           :activeIndex="currentActive"
           :tabs="labelList"
@@ -215,6 +221,10 @@ export default {
         totalPage: 0,
       };
       this.isShowItemPane = true;
+
+      this.$nextTick(() => {
+        this.$refs.jTabsRef.setScrollBar()
+      });
     },
 
     handleChangeCurrentPane(index) {
@@ -276,6 +286,23 @@ export default {
 
       this.queryInfo.totalPage = listRes.data.totalPages;
       this.listLoading = "";
+    },
+  },
+
+  computed: {
+    bannerComputed() {
+      console.log(
+        this.currentNav.background.slice(
+          0,
+          this.currentNav.background.length - 1
+        ) + ", #fff)"
+      );
+      return (
+        this.currentNav.background.slice(
+          0,
+          this.currentNav.background.length - 1
+        ) + ", #fff)"
+      );
     },
   },
 
@@ -393,9 +420,8 @@ export default {
       background-color: #fff;
       border-radius: 20upx;
       box-sizing: border-box;
-      box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
       padding-bottom: 0 !important;
-      margin-bottom: 40upx
+      margin-bottom: 40upx;
     }
 
     // 活动面板
