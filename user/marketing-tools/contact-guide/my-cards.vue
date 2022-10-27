@@ -12,7 +12,9 @@
         <view class="card-number">1</view>
       </view>
 
-      <view class="my-card-change"> 更换背景 </view>
+      <view class="my-card-change" @click="changeBackgroundColor">
+        更换背景
+      </view>
 
       <view class="card-list">
         <view class="create-card-time">2022-10月</view>
@@ -38,13 +40,82 @@
 
     <view class="my-card-footer">
       <button class="uni-btn build">新建名片</button>
-      <button class="uni-btn cards">我的名片</button>
     </view>
+
+    <JPopup v-model="backgroundChangeVisble">
+      <view class="change-background">
+        <view class="change-background-header">
+          <view class="title">更换背景色</view>
+          <JIcon
+            @click="closePopup"
+            width="36"
+            height="36"
+            type="close"
+          ></JIcon>
+        </view>
+
+        <view class="color-selector">
+          <view class="color-wrapper">
+            <view class="title">当前</view>
+            <view class="colors">
+              <view class="color-item" style="background: #183869"></view>
+            </view>
+          </view>
+
+          <view class="color-wrapper">
+            <view class="title">替换</view>
+            <view class="colors">
+              <view
+                v-for="item in restColoes"
+                :key="item"
+                :style="{
+                  background: item,
+                }"
+                class="color-item"
+                style="background: #183869"
+              ></view>
+            </view>
+          </view>
+
+          <view class="selector-footer">
+            <button class="uni-btn selector-cancel" @click="closePopup">
+              取消
+            </button>
+            <button class="uni-btn selector-confirm">确定</button>
+          </view>
+        </view>
+      </view>
+    </JPopup>
   </view>
 </template>
 
 <script>
-export default {};
+import { getRestColor } from "./config";
+export default {
+  data() {
+    return {
+      backgroundChangeVisble: false,
+    };
+  },
+
+  methods: {
+    // 更换背景
+    changeBackgroundColor() {
+      this.backgroundChangeVisble = true;
+    },
+
+    // 关闭popup
+    closePopup(){
+      this.backgroundChangeVisble = false
+    }
+  },
+
+  computed: {
+    restColoes() {
+      return getRestColor("#183869");
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
@@ -174,24 +245,88 @@ export default {};
     .build {
       flex: 1;
       margin-right: 24upx;
-      border: 1upx solid #999999;
-      color: #999;
+      color: rgb(255, 255, 255);
       height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
       border-radius: 100px;
+      background-color: #3662ec;
+    }
+  }
+
+  .change-background {
+    width: 690upx;
+    padding: 26upx 18upx;
+    box-sizing: border-box;
+    border-radius: 20upx;
+    background-color: #fff;
+
+    .change-background-header {
+      position: relative;
+      width: 100%;
+      text-align: center;
+
+      /deep/ .j-icon {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+      }
     }
 
-    .cards {
+    .color-selector {
+      margin: 60upx 0 20upx 0;
+      .color-wrapper {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 20upx;
+
+        .colors {
+          display: flex;
+          flex: 1;
+          flex-wrap: wrap;
+        }
+
+        .title {
+          margin-right: 20upx;
+          font-size: 24upx;
+          color: #3d3d3d;
+        }
+
+        .color-item {
+          width: 80upx;
+          height: 80upx;
+          margin-right: 20upx;
+          border-radius: 4upx;
+          flex-shrink: 0;
+          margin-bottom: 20upx;
+        }
+      }
+    }
+
+    .selector-footer {
+      width: 100%;
       display: flex;
-      justify-content: center;
       align-items: center;
-      flex: 2;
-      height: 100%;
-      border-radius: 100px;
-      background-color: #0087f5;
-      color: #fff;
+      justify-content: space-around;
+      margin-top: 100upx;
+
+      .uni-btn {
+        font-size: 32upx;
+        color: #fff;
+        border-radius: 100px;
+        padding: 20upx 80upx;
+      }
+
+      .selector-cancel {
+        color: #999;
+        border: 1upx solid #999;
+      }
+
+      .selector-confirm {
+        background-color: #3662ec;
+      }
     }
   }
 }

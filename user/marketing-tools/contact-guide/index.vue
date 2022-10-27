@@ -2,7 +2,7 @@
   <view class="contact-guide-container">
     <image
       class="logo animate__animated animate__bounce"
-      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/5yrh2paxxwv3r3xixlbz.png"
+      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ajpaibzunrpqxlu9uw4o.png"
     ></image>
     <view class="desc animate__animated animate__rubberBand"
       >数字化营销的领跑者</view
@@ -57,9 +57,10 @@ export default {
   overflow: hidden;
 
   .logo {
-    width: 100%;
-    height: 520upx;
-    margin-bottom: -202upx;
+    width: 411upx;
+    height: 115.48upx;
+    margin-top: 200upx;
+    margin-bottom: 20upx;
   }
 
   .uni-btn {
