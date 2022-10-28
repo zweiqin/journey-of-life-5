@@ -4,7 +4,7 @@
     <view class="upload-pane">
       <view class="left">
         <view @click="chooseImg" class="upload" v-if="!imgUrl">+</view>
-        <image v-else class="iamge-background" :src="imgUrl" mode="" />
+        <img v-else class="iamge-background" :src="imgUrl" mode="" />
       </view>
       <image
         v-show="imgUrl"

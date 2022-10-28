@@ -1,13 +1,20 @@
 <template>
   <view class="my-card">
-    <view class="my-card-background"> </view>
+    <view
+      ref="backgroundImgRef"
+      class="my-card-background"
+      :style="{
+        background: currentBackgroundColor,
+      }"
+    >
+    </view>
     <view class="main">
       <view class="my-card-header">
         <JBack></JBack>
         <h2>名片夹</h2>
       </view>
 
-      <view class="card-info">
+      <view class="card-info animate__animated animate__swing">
         <view class="title">总名片数</view>
         <view class="card-number">1</view>
       </view>
@@ -39,7 +46,12 @@
     </view>
 
     <view class="my-card-footer">
-      <button class="uni-btn build">新建名片</button>
+      <button
+        class="uni-btn build"
+        @click="go('/user/marketing-tools/contact-guide/create-namezcard')"
+      >
+        新建名片
+      </button>
     </view>
 
     <JPopup v-model="backgroundChangeVisble">
@@ -71,7 +83,11 @@
                 :style="{
                   background: item,
                 }"
+                @click="handleChooseItem(item)"
                 class="color-item"
+                :class="{
+                  active: currentChooseColor === item,
+                }"
                 style="background: #183869"
               ></view>
             </view>
@@ -81,7 +97,12 @@
             <button class="uni-btn selector-cancel" @click="closePopup">
               取消
             </button>
-            <button class="uni-btn selector-confirm">确定</button>
+            <button
+              class="uni-btn selector-confirm"
+              @click="handleConfirmBackground"
+            >
+              确定
+            </button>
           </view>
         </view>
       </view>
@@ -95,6 +116,8 @@ export default {
   data() {
     return {
       backgroundChangeVisble: false,
+      currentChooseColor: "",
+      currentBackgroundColor: "",
     };
   },
 
@@ -105,9 +128,21 @@ export default {
     },
 
     // 关闭popup
-    closePopup(){
-      this.backgroundChangeVisble = false
-    }
+    closePopup() {
+      this.backgroundChangeVisble = false;
+      this.currentChooseColor = "";
+    },
+
+    // 选择当前颜色值
+    handleChooseItem(color) {
+      this.currentChooseColor = color;
+    },
+
+    // 确定选择该颜色值
+    handleConfirmBackground() {
+      this.currentBackgroundColor = this.currentChooseColor;
+      this.closePopup();
+    },
   },
 
   computed: {
@@ -126,7 +161,8 @@ export default {
   &-background {
     width: 100%;
     height: 384upx;
-    background-color: #183869ff;
+    background-color: #183869;
+    transition: all 350ms;
   }
 
   .main {
@@ -301,6 +337,23 @@ export default {
           border-radius: 4upx;
           flex-shrink: 0;
           margin-bottom: 20upx;
+
+          &.active {
+            position: relative;
+
+            &::after {
+              content: "";
+              display: block;
+              position: absolute;
+              right: 6upx;
+              bottom: 6upx;
+              width: 32upx;
+              height: 32upx;
+              background: url("https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0kut8emy01lkcxd0gvxg.png")
+                no-repeat;
+              background-size: cover;
+            }
+          }
         }
       }
     }

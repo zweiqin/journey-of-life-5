@@ -22,6 +22,7 @@
 
           <textarea
             @input="handleInput(item.field, $event)"
+            :value="form[item.field]"
             v-if="item.type === 'textarea'"
             class="textarea"
             :placeholder="item.placeholder"

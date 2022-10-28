@@ -403,7 +403,16 @@
 					"path": "marketing-tools/contact-guide/index"
 				},
 				{
-					"path": "marketing-tools/contact-guide/my-cards"
+					"path": "marketing-tools/contact-guide/my-cards",
+					"style": {
+						"navigationBarTitleText": "名片夹"
+					}
+				},
+				{
+					"path": "marketing-tools/contact-guide/create-namezcard",
+					"style": {
+						"navigationBarTitleText": "新建名片"
+					}
 				}
 			]
 		},

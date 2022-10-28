@@ -25,11 +25,10 @@ export default {
       handler(value) {
         if (value) {
           this.$refs.popupRef.open();
+        } else {
+          this.$refs.popupRef.close();
         }
       },
-
-      immediate: true,
-      deep: true,
     },
   },
 

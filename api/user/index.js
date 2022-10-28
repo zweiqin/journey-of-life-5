@@ -162,8 +162,17 @@ export const getUserViewHistoryApi = (data) => {
   return RuanRequest("/footprint/list", data, "get");
 };
 
-
 // 获取收藏数据
 export const getUserCollectionListApi = (data) => {
-  return RuanRequest("/collect/list", data, 'get')
-}
+  return RuanRequest("/collect/list", data, "get");
+};
+
+// 查询门店的信息
+export const getStoreSaveInfoApi = (data) => {
+  return RuanRequest("/userUpInfo/read", data, "get");
+};
+
+// 获取申请记录表
+export const getApplyTableApi = (data) => {
+  return RuanRequest("/upRecord/list", data, "get");
+};

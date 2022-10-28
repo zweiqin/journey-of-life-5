@@ -22,6 +22,14 @@
         <text class="text">{{ item.label }}</text>
       </button>
 
+      <view class="apply-status">
+        <button class="uni-btn" @click="handleToViewApplyTable(item.type)">
+          申请表
+        </button>
+        <!-- <view class="status">{{ mapApplyStats(storeInfo.status) }}</view> -->
+        <button class="uni-btn">撤销申请</button>
+      </view>
+
       <view class="tip"> 放心开通，不会自动续费 </view>
     </view>
 
@@ -38,6 +46,11 @@
 </template>
 
 <script>
+import { getApplyTableApi } from "../../api/user";
+import { getUserId } from "../../utils";
+import { mapApplyStats } from "./config";
+import { J_STORE_INFO } from "../../constant";
+
 export default {
   data() {
     return {
@@ -59,6 +72,7 @@ export default {
           powerUrl:
             "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/u5eplf8zp6uh343rioyg.png",
           price: "3000",
+          type: 1,
           style: {
             height: "300upx",
             margin: "20upx 0",
@@ -76,7 +90,22 @@ export default {
           },
         },
       ],
+
+      storeInfo: {},
     };
+  },
+
+  onLoad() {
+    getApplyTableApi({
+      userId: getUserId(),
+    }).then((res) => {
+      this.storeInfo = res.data.items.find((item) => item.newGrade === 1);
+
+      uni.setStorageSync(J_STORE_INFO, {
+        info: this.storeInfo.userUpgradeInfo,
+        status: this.storeInfo.status,
+      });
+    });
   },
 
   methods: {
@@ -84,6 +113,14 @@ export default {
       uni.navigateTo({
         url: item.url,
       });
+    },
+
+    mapApplyStats,
+
+    handleToViewApplyTable(type) {
+      if (type === 1) {
+        this.go("/user/marketing-tools/store-application?type=table");
+      }
     },
   },
 };
@@ -191,6 +228,31 @@ export default {
       margin: 0;
       border-radius: 100px;
       background: rgb(236, 0, 0);
+    }
+  }
+
+  .apply-status {
+    display: flex;
+    width: 100%;
+    height: 73upx;
+    background-color: #fff;
+    border-top: 1upx solid #dfdfdf;
+    padding-top: 20px;
+    margin-top: 20px;
+    justify-content: flex-end;
+
+    .uni-btn {
+      padding: 20upx 40upx;
+      margin-left: 20upx;
+      color: #fff;
+
+      &:nth-child(1) {
+        background-image: linear-gradient(to bottom, #0166f6, #01c3fe);
+      }
+
+      &:nth-child(2) {
+        background-image: linear-gradient(to right, #80ff9c, #01d2fb);
+      }
     }
   }
 }

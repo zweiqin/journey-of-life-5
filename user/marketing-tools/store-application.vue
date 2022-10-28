@@ -26,23 +26,45 @@
     ></JUpload>
 
     <view class="buts">
-      <button class="btn" @click="submit(false)">保存</button>
-      <button class="btn" @click="submit(true)">提交</button>
+      <button v-if="!applyStatus === 0" class="btn" @click="submit(false)">
+        保存
+      </button>
+      <button v-if="!applyStatus === 0" class="btn" @click="submit(true)">
+        提交
+      </button>
+
+      <button v-if="applyStatus === 0" class="btn withdraw">撤销申请</button>
     </view>
+
+    <view v-if="status === 0" class="mask"></view>
   </view>
 </template>
 
 <script>
 import FieldPane from "./components/field-pane.vue";
 import { applyStoreOne, applyStoreTow, uploadFields } from "./config";
-import { submitApplyStoreInfo } from "../../api/user";
-import { J_USER_INFO, J_STORE_TYPES } from "../../constant";
+import { submitApplyStoreInfo, getStoreSaveInfoApi } from "../../api/user";
+import {
+  J_USER_INFO,
+  J_STORE_TYPES,
+  J_USER_TOKEN,
+  J_STORE_INFO,
+} from "../../constant";
 import { getUserId } from "../../utils";
 import { getAddressLongitudeAndLatitude } from "../../utils";
 
 export default {
   components: {
     FieldPane,
+  },
+  onLoad(options) {
+    if (options.type === "table") {
+      const applyInfo = uni.getStorageSync(J_STORE_INFO);
+      this.setSToreApplyDetailInfo(applyInfo.info);
+      this.applyStatus = applyInfo.status;
+    } else {
+      this.getUserSaveInfo();
+    }
   },
   data() {
     return {
@@ -57,6 +79,8 @@ export default {
 
       // 门店类型列表
       storeType: [],
+
+      applyStatus: null,
     };
   },
 
@@ -178,8 +202,8 @@ export default {
                   submitApplyStoreInfo(tag, data).then((res) => {
                     _this.$showToast("提交成功，请等待审核");
                     setTimeout(() => {
-                      uni.switchTab({
-                        url: "/pages/user/user",
+                      uni.navigateTo({
+                        url: "/user/sever/userUp",
                       });
                     }, 2000);
                   });
@@ -195,8 +219,8 @@ export default {
                   submitApplyStoreInfo(tag, data).then((res) => {
                     _this.$showToast("保存成功", "success");
                     setTimeout(() => {
-                      uni.switchTab({
-                        url: "/pages/user/user",
+                      uni.navigateTo({
+                        url: "/user/sever/userUp",
                       });
                     }, 2000);
                   });
@@ -213,36 +237,96 @@ export default {
       this.form.imgs[field] = "";
       this.$forceUpdate();
     },
+
+    // 查询保存的申请记录
+    getUserSaveInfo() {
+      getStoreSaveInfoApi({
+        userId: getUserId(),
+        applicationType: 1,
+        token: uni.getStorageSync(J_USER_TOKEN),
+      }).then((res) => {
+        if (res.data) {
+          this.setSToreApplyDetailInfo(res.data);
+        }
+      });
+    },
+
+    // 数据回填
+    setSToreApplyDetailInfo(data) {
+      this.form.accountInfo.username = data.username;
+      this.form.accountInfo.password = data.password;
+      this.form.accountInfo.brandPhone = data.brandPhone;
+
+      this.form.storeInfo.brandname = data.brandname;
+      const storeTypes = uni.getStorageSync(J_STORE_TYPES);
+      this.form.storeInfo.brandgenre = storeTypes.find(
+        (item) => item.id === data.brandgenre
+      ).storeName;
+      this.form.storeInfo.address = data.address.split("-")[0];
+      this.form.storeInfo.addressDetail = data.address.split("-")[1];
+      this.form.storeInfo.desc = data.desc;
+
+      this.form.imgs.picUrl = data.picUrl;
+      this.form.imgs.licenseUrl = data.licenseUrl;
+      this.form.imgs.brandIdcardProsUrl = data.brandIdcardProsUrl;
+      this.form.imgs.brandIdcardConsUrl = data.brandIdcardConsUrl;
+      this.$forceUpdate();
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
 .store-application-container {
-  padding: 40upx;
+  padding: 40upx 40upx 140upx 40upx;
   box-sizing: border-box;
 
+  .mask {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: rgba(250, 81, 81, 0.329);
+  }
+
   .buts {
+    position: fixed;
+    bottom: -1px;
+    z-index: 2;
+    padding: 20upx 40upx;
+    left: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #fff;
+    width: 100%;
+    box-sizing: border-box;
     margin-top: 272upx;
+  }
 
-    .btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 72upx;
-      width: 306upx;
-      font-size: 32upx;
-      color: #fff;
-      margin: 0;
-      background-color: #07b9b9;
-      border-radius: 100px;
+  .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 72upx;
+    width: 306upx;
+    font-size: 32upx;
+    color: #fff;
+    margin: 0;
+    background-color: #07b9b9;
+    border-radius: 100px;
 
-      &:last-child {
-        background-color: #fa5151;
-      }
+    &:last-child {
+      background-color: #fa5151;
+    }
+
+    &.withdraw {
+      width: 100%;
+      background-image: linear-gradient(to right, #80ff9c, #01d2fb);
+      letter-spacing: 10upx;
     }
   }
 }

@@ -18,5 +18,10 @@ export const types = {
   share:
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/w1l9jhs5w7w7v2z8qt71.png", // 分享
   close:
-    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/q5n6tmqehph8ty2nokal.png",
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/q5n6tmqehph8ty2nokal.png", // 关闭
+  active:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0kut8emy01lkcxd0gvxg.png", // 选中时显示勾
+  "edit-blue":
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lbgcpb3khhqwp04rfzjp.png", // 编辑
+    
 };
