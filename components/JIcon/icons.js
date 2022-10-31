@@ -27,5 +27,8 @@ export const types = {
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/au0lt13ad4mjposzwh8p.webp", // gouwuche
   modal:
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/vmdsaejtrqyluz8uhfkb.png", // 勋章
-  "local-black": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2lvq1mi90v8e73xx7ozh.png",
+  "local-black":
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2lvq1mi90v8e73xx7ozh.png", // 黑色定位
+  filter:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4wcie54va3x131h01wmn.png",
 };

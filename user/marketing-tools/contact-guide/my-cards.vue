@@ -168,7 +168,7 @@ export default {
   .main {
     position: absolute;
     left: 0;
-    top: 92upx;
+    top: 54upx;
     width: 100%;
     padding: 0 30upx;
     box-sizing: border-box;

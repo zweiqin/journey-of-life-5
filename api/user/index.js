@@ -183,6 +183,11 @@ export const widthDrawApi = (data) => {
 };
 
 // 营销/门店 升级预支付
-export const previewPayApi = (data) => {
+export const payStoreAndYingApi = (data) => {
   return RuanRequest("/levelPay/SalesmanPrepayBySyb", data);
+};
+
+// 营销/门店 试用预支付
+export const payTryStoreAndYingApi = (data) => {
+  return RuanRequest("/levelPay/TryStorePrepayBySyb", data);
 };

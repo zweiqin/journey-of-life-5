@@ -54,6 +54,7 @@
         <button
           class="uni-btn"
           style="background: #52aa44"
+          @click="handlePay(1, 'pay')"
           v-if="
             storeInfo.userUpgradeInfo.status === 2 ||
             storeInfo.userUpgradeInfo.status === 3
@@ -63,6 +64,7 @@
         </button>
 
         <button
+          @click="handlePay(1, 'try')"
           style="background: #2bcddd"
           class="uni-btn"
           v-if="
@@ -102,10 +104,16 @@
 </template>
 
 <script>
-import { getApplyTableApi, widthDrawApi } from "../../api/user";
+import {
+  getApplyTableApi,
+  widthDrawApi,
+  payStoreAndYingApi,
+  payTryStoreAndYingApi
+} from "../../api/user";
 import { getUserId } from "../../utils";
 import { mapApplyStats } from "./config";
 import { J_STORE_INFO, J_USER_TOKEN } from "../../constant";
+import { payOrderGoodsApi } from "../../api/goods";
 
 export default {
   data() {
@@ -223,6 +231,38 @@ export default {
           duration: 2000,
         });
       });
+    },
+
+    handlePay(type, payType) {
+      if (type === 1) {
+        const api = payType === 'pay' ? payStoreAndYingApi : payTryStoreAndYingApi
+        api({
+          userId: getUserId(),
+          upOrderId: this.storeInfo.ticketsId,
+        }).then(({ data }) => {
+          payOrderGoodsApi({
+            orderNo: data.payOrderID,
+            userId: getUserId(),
+            payType: 4,
+          }).then((res) => {
+            const form = document.createElement("form");
+            form.setAttribute("action", res.url);
+            form.setAttribute("method", "POST");
+            const data = JSON.parse(res.data);
+            let input;
+            for (const key in data) {
+              input = document.createElement("input");
+              input.name = key;
+              input.value = data[key];
+              form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+          });
+        });
+      }
     },
   },
 };
