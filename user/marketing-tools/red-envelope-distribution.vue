@@ -37,6 +37,18 @@
       <view class="company">个</view>
     </view>
 
+    <view class="line-item" @click="handleChooseRange">
+      <image
+        class="icon"
+        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/bcn99sapk1p3nzm56285.png"
+        mode=""
+      />
+      <view class="title">红包范围</view>
+      <view class="input-el">{{
+        redForm.effectiveDistance | filterEffectiveDistance
+      }}</view>
+    </view>
+
     <view class="title-form">内容留言</view>
     <textarea
       placeholder="（留言15字符以内）"
@@ -111,13 +123,13 @@ export default {
           content: "您还不是商家或营销策划师,是否去升级？",
           success: function (res) {
             if (res.confirm) {
-              uni.navigateTo({
-                url: "/user/sever/userUp",
-              });
+              // uni.navigateTo({
+              //   url: "/user/sever/userUp",
+              // });
             } else if (res.cancel) {
-              uni.switchTab({
-                url: "/pages/user/user",
-              });
+              // uni.switchTab({
+              //   url: "/pages/user/user",
+              // });
             }
           },
         });
@@ -130,10 +142,45 @@ export default {
         redpackMonkey: 1,
         remark: "",
         imageUrl: "",
+        effectiveDistance: 1,
       },
 
       businessInfo: {},
     };
+  },
+
+  filters: {
+    filterEffectiveDistance(value) {
+      const items = [
+        {
+          label: "3km",
+          value: 1,
+        },
+        {
+          label: "5km",
+          value: 2,
+        },
+        {
+          label: "区",
+          value: 3,
+        },
+        {
+          label: "市",
+          value: 4,
+        },
+        {
+          label: "省",
+          value: 5,
+        },
+      ];
+
+      const item = items.find((item) => item.value === value);
+      if (item) {
+        return item.label;
+      } else {
+        return "艹";
+      }
+    },
   },
 
   methods: {
@@ -203,7 +250,15 @@ export default {
 
       sendRedEnvelopeApi(data)
         .then((res) => {
-          console.log("操了", res);
+          if (res.erron !== 0) {
+            uni.showToast({
+              title: "红包发送失败",
+              duration: 2000,
+              icon: 'none'
+            });
+
+            return
+          }
           payOrderGoodsApi({
             orderNo: res.data,
             userId: getUserId(),
@@ -246,6 +301,17 @@ export default {
     reUploadBgi() {
       this.redForm.imageUrl = "";
       this.closePreview();
+    },
+
+    // 点击选择范围
+    handleChooseRange() {
+      const _this = this;
+      uni.showActionSheet({
+        itemList: ["3km", "5km", "区", "市", "省"],
+        success: (res) => {
+          _this.redForm.effectiveDistance = res.tapIndex + 1;
+        },
+      });
     },
   },
 };

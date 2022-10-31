@@ -21,25 +21,11 @@ export const homeNavs = {
       id: 1001002,
     },
     {
-      label: "衣服配饰",
-      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/z3bskqk44mhl2nxq01yf.png",
-      background: "linear-gradient(137deg, #00B578, #07B9B9)",
-      width: "45upx",
-      id: 1001006,
-    },
-    {
       label: "日用百货",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/7v7f7eh4nwdmi44jwrhm.png",
       background: "linear-gradient(137deg, #FF8F1F, #FA5151)",
       width: "54upx",
       id: 1001009,
-    },
-    {
-      label: "大健康",
-      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/m84ik0e747f4m8ec3ai3.png",
-      background: "linear-gradient(137deg, #07B9B9, #00B578)",
-      width: "45upx",
-      id: 1001007,
     },
     {
       label: "美妆护肤",
@@ -49,13 +35,27 @@ export const homeNavs = {
       id: 1001008,
     },
     {
+      label: "家具用品",
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/hu618z0uzj1djwb1tkny.png",
+      background: "linear-gradient(137deg, #07B9B9, #00B578)",
+      width: "56upx",
+      id: 1001011,
+    },
+
+    {
       label: "汽车用品",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/qbzls5y8h6506fi9e36l.png",
       background: "linear-gradient(137deg, #FF8F1F, #FA5151)",
       width: "40upx",
       id: 1001010,
     },
-
+    {
+      label: "酒水",
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/z3bskqk44mhl2nxq01yf.png",
+      background: "linear-gradient(137deg, #00B578, #07B9B9)",
+      width: "45upx",
+      id: 1001006,
+    },
     {
       label: "香包首饰",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/dt3i40dcro8i91qs22ix.png",
@@ -63,13 +63,17 @@ export const homeNavs = {
       width: "48upx",
       id: 1001013,
     },
-    {
-      label: "家具用品",
-      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/hu618z0uzj1djwb1tkny.png",
+{
+      label: "大健康",
+      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/m84ik0e747f4m8ec3ai3.png",
       background: "linear-gradient(137deg, #07B9B9, #00B578)",
-      width: "56upx",
-      id: 1001011,
+      width: "45upx",
+      id: 1001007,
     },
+
+
+    
+
     {
       label: "爆品选购",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/j4c42vmwqg1ss4wel6ra.png",

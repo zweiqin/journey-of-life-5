@@ -4,7 +4,7 @@
       :longitude="longitude"
       :latitude="latitude"
       :scale="40"
-			:max-scale="40"
+      :max-scale="40"
       style="width: 100vw; height: 100vh"
       :markers="markers"
       @markertap="handleReceive"
@@ -30,7 +30,10 @@ import { J_LOACTION } from "../../constant";
 export default {
   onLoad() {
     this.getRedEnvelopeList();
-		this.getLoaction()
+  },
+
+  created(){
+    this.getLoaction();
   },
 
   data() {
@@ -59,6 +62,16 @@ export default {
             height: 37,
             iconPath:
               "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/n6p0qgt26t6wu1onofpa.webp",
+          });
+
+          this.markers.push({
+            id: "location",
+            latitude: this.latitude,
+            longitude: this.longitude,
+            width: 22,
+            height: 37,
+            iconPath:
+              "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lvmfduz8l50btyqlkd2k.png",
           });
         }
       });
@@ -99,7 +112,6 @@ export default {
     },
 
     getLoaction() {
-			
       const locationInfo = uni.getStorageSync(J_LOACTION);
       if (locationInfo) {
         this.latitude = locationInfo.latitude;

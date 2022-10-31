@@ -88,7 +88,7 @@
 <script>
 import Rate from "../rate";
 import { J_STORE_TYPES } from "../../constant";
-import { getStoreTypesApi } from "../../api/store";
+import { getStoreTypesApi } from "../../api/user";
 export default {
   components: {
     Rate,
@@ -124,7 +124,8 @@ export default {
             uni.setStorageSync(J_STORE_TYPES, data.items);
             return _this.setTypes(types, value);
           })
-          .catch(() => {
+          .catch((e) => {
+            console.log(e);
             _this.$showToast("门店类型获取失败");
           });
       } else {

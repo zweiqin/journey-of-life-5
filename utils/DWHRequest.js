@@ -14,7 +14,6 @@ const request = (base_url) => {
               duration: 2000,
               icon: "none",
             });
-            console.log("草泥吗", res);
             reject(res.data.errmsg);
             return;
           } else if (res.data.errno == 403) {

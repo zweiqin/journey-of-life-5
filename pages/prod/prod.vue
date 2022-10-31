@@ -3,7 +3,7 @@
     <view class="carousel">
       <Carousel
         v-if="goodsInfo.info"
-        :list="[goodsInfo.info.picUrl]"
+        :list="goodsInfo.info.gallery"
         :height="370"
         :top="0"
         :radius="0"
@@ -11,7 +11,7 @@
       <img
         @click="back"
         class="back"
-        src="../../static/images/store/chevron-states.png"
+        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ozsrolc809fc5y260e8c.png"
         alt=""
       />
     </view>
@@ -287,7 +287,7 @@ export default {
       goodsId: "",
       goodsInfo: {},
       specificationListInfo: {
-        number: 0,
+        number: 1,
         currentSpecification: {},
         currentGoodsImg: "",
         currentPrice: "",
@@ -296,6 +296,7 @@ export default {
       selectedSpecificationInfoStr: "",
       shopCarList: [],
       carGoodsNumer: 0,
+      isLogin: true,
     };
   },
   methods: {
@@ -382,6 +383,11 @@ export default {
 
     // 点击添加购物车
     async handleAddCar() {
+      if (!this.isLogin) {
+        this.$showToast("请先登录");
+        return;
+      }
+
       if (!this.selectedSpecificationInfoStr) {
         this.handleChoosespecificationList();
         return;
@@ -453,6 +459,10 @@ export default {
 
     // 去购物车
     toShopCar() {
+      if (!this.isLogin) {
+        this.$showToast("请先登录");
+        return;
+      }
       uni.navigateTo({
         url: "/user/sever/shop-car",
       });
@@ -468,6 +478,10 @@ export default {
 
     // 立即购买
     handlePayGoods() {
+      if (!this.isLogin) {
+        this.$showToast("请先登录");
+        return;
+      }
       if (this.specificationListInfo.number) {
         const productInfo = this.goodsInfo.productList.find((item) => {
           let tag = true;
@@ -532,8 +546,12 @@ export default {
   onLoad(options) {
     this.goodsId = options.goodsId;
     this.getGoodsDetail();
-    this.getShopCar();
-    this.getCarShopNumber();
+
+    this.isLogin = !!getUserId();
+    if (isLogin) {
+      this.getShopCar();
+      this.getCarShopNumber();
+    }
   },
 };
 </script>

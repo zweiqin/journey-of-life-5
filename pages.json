@@ -102,15 +102,6 @@
 			}
 		},
 		{
-			"path": "pages/stuff/brand/index",
-			"style": {
-				"backgroundTextStyle": "light",
-				"navigationBarBackgroundColor": "#fff",
-				"navigationBarTitleText": "提交订单",
-				"navigationBarTextStyle": "black"
-			}
-		},
-		{
 			"path": "pages/binding-phone/binding-phone",
 			"style": {
 				"backgroundTextStyle": "light",
@@ -209,13 +200,13 @@
 		"list": [
 			{
 				"pagePath": "pages/index/index",
-				"text": "首页",
+				"text": "商城",
 				"iconPath": "/static/images/tabbar/home.png",
 				"selectedIconPath": "/static/images/tabbar/home-active.png"
 			},
 			{
 				"pagePath": "pages/store/store",
-				"text": "附近门店",
+				"text": "本地生活",
 				"iconPath": "/static/images/tabbar/store.png",
 				"selectedIconPath": "/static/images/tabbar/store-active.png"
 			},

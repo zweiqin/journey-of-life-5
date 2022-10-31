@@ -15,7 +15,8 @@
   "license": "ISC",
   "devDependencies": {
     "query-string": "^6.13.1",
-    "uni-read-pages": "^1.0.5"
+    "uni-read-pages": "^1.0.5",
+    "weixin-js-sdk": "^1.6.0"
   },
   "dependencies": {
     "animate.css": "^4.1.1",

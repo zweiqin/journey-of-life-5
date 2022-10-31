@@ -181,26 +181,18 @@ export default {
      * 点击退出
      */
     async handleLagout() {
-      const res = await layoutApi(getUserId());
-      if (res.errno == 0) {
-        uni.clearStorageSync();
-        uni.showToast({
-          title: "退出成功",
-          duration: 2000,
-        });
+      await layoutApi(getUserId());
+      uni.clearStorageSync();
+      uni.showToast({
+        title: "退出成功",
+        duration: 2000,
+      });
 
-        setTimeout(() => {
-          uni.navigateTo({
-            url: "/pages/login/login",
-          });
-        }, 2000);
-      } else {
-        uni.showToast({
-          title: "退出失败",
-          duration: 2000,
-          icon: "none",
+      setTimeout(() => {
+        uni.navigateTo({
+          url: "/pages/login/login",
         });
-      }
+      }, 2000);
     },
   },
 };

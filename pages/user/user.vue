@@ -1,11 +1,3 @@
-<!--
- * @Author: error: git config user.name && git config user.email & please set dead value or install git
- * @Date: 2022-09-05 16:21:06
- * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-25 09:12:32
- * @FilePath: \tuan-uniapp\pages\user\user.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <view class="user-page">
     <view class="tools">
@@ -25,14 +17,13 @@
           @click="toViewMineInfo"
           class="avatar"
           :src="
-            userInfo.avatarUrl ===
-            'https://avatar.csdnimg.cn/8/A/0/2_qiguliuxing.jpg'
-              ? 'https://img2.baidu.com/it/u=3258659466,1029841077&fm=253&fmt=auto&app=138&f=PNG?w=120&h=120'
-              : userInfo.avatarUrl
+            userInfo
+              ? userInfo.avatarUrl
+              : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4x1yzf4dw5q4y8q3o16m.webp'
           "
           alt=""
         />
-        <view class="right">
+        <view class="right" v-if="userInfo">
           <view class="name">{{ userInfo.nickName }}</view>
           <view class="vip-info">
             <text class="id">团蜂ID {{ userInfo.userId }}</text>
@@ -46,11 +37,26 @@
             }}</text> -->
           </view>
         </view>
+
+        <view class="no-login" v-else
+          >未登录,
+          <text class="go-login" @click="go('/pages/login/login')"
+            >去登录~</text
+          ></view
+        >
       </view>
       <view class="prices">
         <view class="item">
           <view class="title"> 会员 </view>
-          <view class="value"> {{ userInfo.userLevelDesc }} </view>
+          <view class="value">
+            {{
+              userInfo
+                ? userInfo.userLevelDesc
+                  ? userInfo.userLevelDesc
+                  : "会员"
+                : "游客"
+            }}
+          </view>
         </view>
         <view class="item">
           <view class="title"> 0<view class="bl-text">元</view> </view>
@@ -129,7 +135,7 @@ import {
   otherServe,
 } from "./config";
 import { checkWhoami } from "../../utils";
-import { J_USER_INFO } from "../../constant";
+import { J_USER_INFO, J_USER_ID, J_LOACTION } from "../../constant";
 
 export default {
   components: {
@@ -147,8 +153,17 @@ export default {
       otherServe,
       collectiontype: 1,
       currentTab: 0,
-      userInfo: {},
+      userInfo: null,
     };
+  },
+
+  onShow() {
+    const userInfo = uni.getStorageSync(J_USER_INFO);
+    if (userInfo) {
+      this.userInfo = userInfo;
+    }
+
+    uni.removeStorageSync(J_LOACTION);
   },
 
   methods: {
@@ -188,7 +203,6 @@ export default {
   },
   mounted() {
     // checkWhoami();
-    this.userInfo = uni.getStorageSync(J_USER_INFO);
   },
 };
 </script>
@@ -256,6 +270,18 @@ export default {
             width: 34upx;
             margin-left: 18upx;
           }
+        }
+      }
+
+      .no-login {
+        font-size: 28upx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        letter-spacing: 2px;
+
+        .go-login {
+          color: #287add;
         }
       }
     }

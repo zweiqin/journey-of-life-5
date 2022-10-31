@@ -168,15 +168,14 @@ export default {
     if (this.type === "register") {
       this.$showToast("注册成功", "success");
     }
-    const tokenExpireTime = uni.getStorageSync(J_TOKEN_EXPIRE);
-    console.log(tokenExpireTime);
-    if (tokenExpireTime) {
-      if (tokenExpireTime - Date.now() > 0) {
-        uni.switchTab({
-          url: "/pages/index/index",
-        });
-      }
-    }
+    // const tokenExpireTime = uni.getStorageSync(J_TOKEN_EXPIRE);
+    // if (tokenExpireTime) {
+    //   if (tokenExpireTime - Date.now() > 0) {
+    //     uni.switchTab({
+    //       url: "/pages/index/index",
+    //     });
+    //   }
+    // }
   },
 };
 </script>

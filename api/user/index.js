@@ -176,3 +176,13 @@ export const getStoreSaveInfoApi = (data) => {
 export const getApplyTableApi = (data) => {
   return RuanRequest("/upRecord/list", data, "get");
 };
+
+// 撤销会员升级申请
+export const widthDrawApi = (data) => {
+  return RuanRequest("/userUpInfo/revoke", data, "get");
+};
+
+// 营销/门店 升级预支付
+export const previewPayApi = (data) => {
+  return RuanRequest("/levelPay/SalesmanPrepayBySyb", data);
+};

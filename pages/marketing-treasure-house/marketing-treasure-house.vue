@@ -34,6 +34,7 @@
 import { navs } from "./config";
 import ArticlePane from "./components/article-pane.vue";
 import { getIndustryInformationListApi } from "../../api/marketing-treasure-house";
+import { J_LOACTION } from "../../constant";
 
 export default {
   components: {
@@ -41,6 +42,9 @@ export default {
   },
   onLoad() {
     this.getArticleList();
+  },
+  onShow() {
+    uni.removeStorageSync(J_LOACTION);
   },
   data() {
     return {
@@ -106,7 +110,7 @@ export default {
   margin: 40upx auto;
 }
 .marketing-treasure-house-container {
-  padding-top: 160upx;
+  padding-top: 200upx;
   padding-bottom: 120upx;
 
   .view-bg {

@@ -22,15 +22,71 @@
         <text class="text">{{ item.label }}</text>
       </button>
 
-      <view class="apply-status">
+      <view class="tip"> 放心开通，不会自动续费 </view>
+
+      <view class="apply-status" v-if="item.type === 4 && vipInfo">
         <button class="uni-btn" @click="handleToViewApplyTable(item.type)">
           申请表
         </button>
         <!-- <view class="status">{{ mapApplyStats(storeInfo.status) }}</view> -->
-        <button class="uni-btn">撤销申请</button>
+        <button
+          v-if="[item.key].status === 0"
+          class="uni-btn"
+          @click="handleWhhithDrawApply(item.type)"
+        >
+          撤销申请
+        </button>
       </view>
 
-      <view class="tip"> 放心开通，不会自动续费 </view>
+      <view class="apply-status" v-if="item.type === 1 && storeInfo">
+        <button class="uni-btn" @click="handleToViewApplyTable(item.type)">
+          申请表
+        </button>
+        <!-- <view class="status">{{ mapApplyStats(storeInfo.status) }}</view> -->
+        <button
+          v-if="storeInfo.userUpgradeInfo.status === 0"
+          class="uni-btn"
+          @click="handleWhhithDrawApply(item.type)"
+        >
+          撤销申请
+        </button>
+
+        <button
+          class="uni-btn"
+          style="background: #52aa44"
+          v-if="
+            storeInfo.userUpgradeInfo.status === 2 ||
+            storeInfo.userUpgradeInfo.status === 3
+          "
+        >
+          支付
+        </button>
+
+        <button
+          style="background: #2bcddd"
+          class="uni-btn"
+          v-if="
+            storeInfo.userUpgradeInfo.status === 2 ||
+            storeInfo.userUpgradeInfo.status === 3
+          "
+        >
+          试用
+        </button>
+      </view>
+
+      <view class="apply-status" v-if="item.type === 2 && marketingPlannerInfo">
+        <button class="uni-btn" @click="handleToViewApplyTable(item.type)">
+          申请表
+        </button>
+        <!-- <view class="status">{{ mapApplyStats(storeInfo.status) }}</view> -->
+        <button
+          v-if="[item.key].status === 0"
+          class="uni-btn"
+          @click="handleWhhithDrawApply(item.type)"
+        >
+          撤销申请
+        </button>
+      </view>
     </view>
 
     <view class="op">
@@ -46,10 +102,10 @@
 </template>
 
 <script>
-import { getApplyTableApi } from "../../api/user";
+import { getApplyTableApi, widthDrawApi } from "../../api/user";
 import { getUserId } from "../../utils";
 import { mapApplyStats } from "./config";
-import { J_STORE_INFO } from "../../constant";
+import { J_STORE_INFO, J_USER_TOKEN } from "../../constant";
 
 export default {
   data() {
@@ -61,26 +117,30 @@ export default {
           powerUrl:
             "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/78ixjkl9eg69fjlcgi22.png",
           price: "99",
+          type: 4,
           style: {
             height: "133upx",
             margin: "20upx 0",
           },
+          key: "vipInfo",
         },
         {
           url: "/user/marketing-tools/store-application",
           label: "商家升级",
           powerUrl:
             "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/u5eplf8zp6uh343rioyg.png",
-          price: "3000",
+          price: "3800",
           type: 1,
           style: {
             height: "300upx",
             margin: "20upx 0",
           },
+          key: "storeInfo",
         },
         {
           url: "/user/marketing-tools/marketing-planner",
           label: "营销策划师升级",
+          type: 2,
           powerUrl:
             "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/398c5ygdln5qfamkgret.png",
           price: "6000",
@@ -88,27 +148,40 @@ export default {
             height: "188upx",
             margin: "20upx 0",
           },
+          key: "marketingPlannerInfo",
         },
       ],
 
-      storeInfo: {},
+      storeInfo: null,
+      vipInfo: null,
+      marketingPlannerInfo: null,
     };
   },
 
-  onLoad() {
-    getApplyTableApi({
-      userId: getUserId(),
-    }).then((res) => {
-      this.storeInfo = res.data.items.find((item) => item.newGrade === 1);
-
-      uni.setStorageSync(J_STORE_INFO, {
-        info: this.storeInfo.userUpgradeInfo,
-        status: this.storeInfo.status,
-      });
-    });
+  onShow() {
+    this.getApplyHistory();
   },
 
   methods: {
+    getApplyHistory() {
+      getApplyTableApi({
+        userId: getUserId(),
+      }).then((res) => {
+        this.vipInfo =
+          res.data.items.find((item) => item.newGrade === 4) || null;
+        this.storeInfo =
+          res.data.items.find((item) => item.newGrade === 1) || null;
+        this.marketingPlannerInfo =
+          res.data.items.find((item) => item.newGrade === 2) || null;
+
+        uni.setStorageSync(J_STORE_INFO, {
+          info: this.storeInfo.userUpgradeInfo,
+          status: this.storeInfo.userUpgradeInfo.status,
+          ticketsId: this.storeInfo.ticketsId,
+        });
+      });
+    },
+
     handleToUp(item) {
       uni.navigateTo({
         url: item.url,
@@ -121,6 +194,35 @@ export default {
       if (type === 1) {
         this.go("/user/marketing-tools/store-application?type=table");
       }
+    },
+
+    handleWhhithDrawApply(type) {
+      const _this = this;
+      if (type === 1) {
+        uni.showModal({
+          title: "提示",
+          content: "是否要撤销商家申请？",
+          success: function (res) {
+            if (res.confirm) {
+              _this.widthDraw(_this.storeInfo.ticketsId);
+            }
+          },
+        });
+      }
+    },
+
+    widthDraw(id) {
+      const _this = this;
+      widthDrawApi({
+        userId: getUserId(),
+        token: uni.getStorageSync(J_USER_TOKEN),
+        id,
+      }).then(() => {
+        uni.showToast({
+          title: "撤销成功",
+          duration: 2000,
+        });
+      });
     },
   },
 };
@@ -199,9 +301,9 @@ export default {
 
     .tip {
       text-align: center;
-      padding-top: 24upx;
+      // padding-top: 24upx;
+      padding-bottom: 24upx;
       margin-top: 50upx;
-      border-top: 1upx solid #d8d8d8;
       font-size: 24upx;
       color: #999;
     }
@@ -245,13 +347,15 @@ export default {
       padding: 20upx 40upx;
       margin-left: 20upx;
       color: #fff;
+      font-size: 28upx;
+      letter-spacing: 2px;
 
       &:nth-child(1) {
-        background-image: linear-gradient(to bottom, #0166f6, #01c3fe);
+        background: #ff8f1f;
       }
 
       &:nth-child(2) {
-        background-image: linear-gradient(to right, #80ff9c, #01d2fb);
+        background: #999;
       }
     }
   }

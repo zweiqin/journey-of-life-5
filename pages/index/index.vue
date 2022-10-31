@@ -1,5 +1,13 @@
 <template>
   <view class="index-container" ref="indexPageRef">
+    <!-- <wx-open-launch-weapp
+      id="launch-btn"
+      username="gh_6303db43d6d6"
+      path="pages/mine/minebind.html"
+    >
+      <button class="btn">打开小程序</button>
+    </wx-open-launch-weapp> -->
+
     <view class="search-bar">
       <view class="local-wrapper">
         <img
@@ -104,11 +112,19 @@
             alt=""
           />
 
-          <button class="btn">立即开通</button>
+          <img
+            class="vip-text"
+            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/xd7rf3gaapi84hj96du6.png"
+            alt=""
+          />
+
+          <button class="btn" @click="go('/user/sever/userUp')">
+            立即开通
+          </button>
         </view>
 
         <!-- 附近联盟商家 -->
-        <Panel title="附近联盟商家" routeText="更多">
+        <!-- <Panel title="附近联盟商家" routeText="更多">
           <view class="store-wrapper">
             <Goods
               v-for="store in storeList"
@@ -119,7 +135,41 @@
               :id="store.id"
             ></Goods>
           </view>
-        </Panel>
+        </Panel> -->
+
+        <view class="footer-home">
+          <view class="footer-navs">
+            <view
+              @click="handleSwitchTab('preferential')"
+              class="footer-nav-item"
+              :class="{ active: currentIndex === 'preferential' }"
+              >特惠专区</view
+            >
+
+            <view
+              @click="handleSwitchTab('hotGoodsList')"
+              :class="{ active: currentIndex === 'hotGoodsList' }"
+              class="footer-nav-item"
+              >爆品选购</view
+            >
+          </view>
+
+          <view class="footer-goods-wrapper">
+            <view
+              @click="handleToViewDetail(item)"
+              class="footer-goods"
+              v-for="item in footerData"
+              :key="item.id"
+            >
+              <image class="goods-img" :src="item.picUrl" mode="" />
+
+              <view class="goods-info">
+                <view class="goods-title">{{ item.name }}</view>
+                <view class="goods-price">￥{{ item.retailPrice }}</view>
+              </view>
+            </view>
+          </view>
+        </view>
       </view>
 
       <view v-if="isShowItemPane && !noData">
@@ -162,7 +212,9 @@ import Panel from "../../components/panel";
 import Goods from "../../components/goods";
 import JAside from "./components/Aside.vue";
 import NoData from "../../components/no-data";
-import { getSroreListApi } from "../../api/store";
+import { getIndexDataApi } from "../../api/home";
+import { J_LOACTION } from "../../constant";
+
 import {
   getTypeDetailList,
   getGoodsById,
@@ -201,11 +253,20 @@ export default {
       },
       listLoading: "loading",
       noData: false,
+
+      preferential: [],
+      hotGoodsList: [],
+      footerData: [],
+      currentIndex: "preferential",
     };
   },
 
   onLoad() {
-    this.getStoreList();
+    this.getHomeData();
+  },
+
+  onShow() {
+    uni.removeStorageSync(J_LOACTION);
   },
 
   methods: {
@@ -226,6 +287,15 @@ export default {
 
       this.$nextTick(() => {
         this.$refs.jTabsRef.setScrollBar();
+      });
+    },
+
+    // 获取首页数据
+    getHomeData() {
+      getIndexDataApi().then(({ data }) => {
+        this.preferential = data.newGoodsList;
+        this.hotGoodsList = data.hotGoodsList;
+        this.footerData = this.preferential;
       });
     },
 
@@ -252,15 +322,11 @@ export default {
       }
     },
 
-    // 获取首页门店
-    async getStoreList() {
-      const res = await getSroreListApi({
-        page: 1,
-        size: 10,
-      });
-
-      this.totalPages = res.data.totalPages;
-      this.storeList = res.data.brandList;
+    //
+    handleSwitchTab(index) {
+      this.currentIndex = index;
+      this.footerData =
+        index === "preferential" ? this.preferential : this.hotGoodsList;
     },
 
     // 根据一级类目查询二级类目
@@ -288,6 +354,10 @@ export default {
 
       this.queryInfo.totalPage = listRes.data.totalPages;
       this.listLoading = "";
+    },
+
+    handleToViewDetail(info) {
+      this.go("/pages/prod/prod?goodsId=" + info.id);
     },
   },
 
@@ -445,6 +515,13 @@ export default {
         width: 100%;
       }
 
+      .vip-text {
+        position: absolute;
+        height: 34upx;
+        top: 56upx;
+        left: 28upx;
+      }
+
       .btn {
         position: absolute;
         right: 32upx;
@@ -478,5 +555,78 @@ export default {
   bottom: 140upx;
   right: -100%;
   transition: all 350ms 350ms;
+}
+
+.footer-home {
+  padding-bottom: 100upx;
+
+  .footer-navs {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #3d3d3d;
+    font-size: 28upx;
+    transition: all 350ms;
+
+    .footer-nav-item {
+      padding-bottom: 10upx;
+      border-bottom: 4upx solid transparent;
+      transition: all 350ms;
+
+      &:nth-child(1) {
+        margin-right: 20px;
+      }
+
+      &.active {
+        color: #fa5151;
+        border-bottom-color: #fa5151;
+      }
+    }
+  }
+
+  .footer-goods-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 30upx;
+
+    .footer-goods {
+      width: 348upx;
+      border-radius: 40upx 40upx 0 0;
+      overflow: hidden;
+      margin-bottom: 30upx;
+
+      .goods-img {
+        width: 100%;
+        height: 290upx;
+        object-fit: cover;
+        display: block;
+      }
+
+      .goods-info {
+        width: 348upx;
+        padding: 20upx;
+        box-sizing: border-box;
+        background-color: #f2f2f2;
+
+        .goods-title {
+          width: 100%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          font-size: 24upx;
+        }
+      }
+
+      .goods-price {
+        width: 100%;
+        text-align: center;
+        color: #fa5151;
+        font-size: 24upx;
+        margin-top: 20upx;
+        font-size: 30upx;
+      }
+    }
+  }
 }
 </style>

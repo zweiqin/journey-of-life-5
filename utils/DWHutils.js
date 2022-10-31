@@ -1,6 +1,7 @@
 import { whoami } from "../api/auth";
 import { J_USER_ID } from "../constant";
 import { jsonp } from "vue-jsonp";
+import wx from "weixin-js-sdk";
 
 /**
  * @description 解决小数计算精度问题（en，你应该使用big.js）
@@ -34,15 +35,15 @@ export const removeCache = (cacheArr) => {
  * 检测登录是否有效
  */
 export const checkWhoami = () => {
-  new Promise(async (resolve, reject) => {
-    const userId = getUserId();
-    const res = await whoami(userId);
-    if (res.errno !== 0) {
-      uni.navigateTo({
-        url: "/pages/login/login",
-      });
-    }
-  });
+  // new Promise(async (resolve, reject) => {
+  //   const userId = getUserId();
+  //   const res = await whoami(userId);
+  //   if (res.errno !== 0) {
+  //     uni.navigateTo({
+  //       url: "/pages/login/login",
+  //     });
+  //   }
+  // });
 };
 
 /**
@@ -52,20 +53,30 @@ export const checkWhoami = () => {
 export const getUserId = () => {
   const userId = uni.getStorageSync(J_USER_ID);
   if (!userId) {
-    uni.showToast({
-      title: "登录已失效，请重新登录",
-      duration: 2000,
-      icon: "none",
-    });
+    // uni.showToast({
+    //   title: "登录已失效，请重新登录",
+    //   duration: 2000,
+    //   icon: "none",
+    // });
 
-    uni.navigateTo({
-      url: "/pages/login/login",
+    uni.showModal({
+      title: "提示",
+      content: "您还未登录，是否去登录？",
+      success: function (res) {
+        if (res.confirm) {
+          uni.navigateTo({
+            url: "/pages/login/login",
+          });
+        } else if (res.cancel) {
+          // uni.navigateBack();
+        }
+      },
     });
 
     return;
   }
   return userId;
-  // return 200;
+  // return 200
   // return 265;
 };
 
@@ -131,5 +142,15 @@ export const getAddressLongitudeAndLatitude = (address) => {
       .catch((error) => {
         reject(error);
       });
+  });
+};
+
+export const toMiniProgram = (url, params) => {
+  let stringParmes = JSON.stringify(params); // h5活动需回传的参数
+  let h5Url = "https://xxxx.com.cn/wxapp/nev-prod/3d/"; // h5活动需回传的h5活动地址
+  wx.miniProgram.redirectTo({
+    url: `${url}?redirectURL=${encodeURIComponent(
+      h5Url
+    )}&params=${encodeURIComponent(stringParmes)}`,
   });
 };

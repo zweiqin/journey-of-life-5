@@ -1,322 +1,456 @@
-<!--
- * @Author: 13008300191 904947348@qq.com
- * @Date: 2022-09-14 11:18:08
- * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-15 10:44:45
- * @FilePath: \团蜂商城 - 副本\tuan-uniapp\user\orderForm\order-form-detail-detail.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
-.<template>
-  <view>
-    <!-- 标题栏 -->
-    <view class="order-form-detail-title">
-      <view class="left-view">
-        <img
-          @click="back"
-          class="left-img"
-          src="../../static/images/store/chevron-states.png"
-          alt=""
-        />
-      </view>
-      <view class="middle-view">
-        <view class="text">我的订单</view>
-      </view>
-      <view class="right-view"> </view>
+<template>
+  <view class="order-detail" v-if="data">
+    <JHeader width="50" height="50" title="订单详情"></JHeader>
+
+    <view
+      class="view-order-status"
+      :style="{
+        'background-image': bg,
+      }"
+    >
+      <JIcon width="44" height="44" type="active"></JIcon>
+      {{ data.orderInfo.orderStatusText }}
     </view>
-    <!-- 订单状态栏 -->
-    <view class="order-form-detail-type">
-      <!-- 订单完成状态 0=完成 -->
-      <view class="type-accomplish" v-if="orderFormDetail == 0">
-        <view class="accomplish-background">
-          <img
-            src="../../static/images/lqb/orderform/accomplish.png"
-            alt=""
-            class="accomplish-img"
-          />
-          <view class="accomplish-text">交易完成</view>
+
+    <!-- 订单信息 -->
+    <view class="order-info pane">
+      <view class="co-info">
+        <view class="line">
+          <JIcon width="32" height="46" class="line-icon" type="modal"></JIcon>
+          <view class="sub-title">姓名</view>
+          <view>{{
+            `${data.orderInfo.consignee} ${data.orderInfo.mobile}`
+          }}</view>
+        </view>
+        <view class="line">
+          <JIcon
+            width="32"
+            height="40"
+            class="line-icon"
+            type="local-black"
+          ></JIcon>
+          <view class="sub-title">地址</view>
+          <view style="color: #07b9b9">{{ data.orderInfo.address }}</view>
         </view>
       </view>
-      <!-- 订单完成状态 1= 未完成 -->
-      <view class="type-noaccomplish" v-if="orderFormDetail == 1">
-        <view class="noaccomplish-background">
-          <img
-            src="../../static/images/lqb/orderform/accomplish.png"
-            alt=""
-            class="noaccomplish-img"
-          />
-          <view class="noaccomplish-text">交易待完成</view>
+
+      <view class="goods-info">
+        <view class="title">商品信息</view>
+
+        <view class="goods-item" v-for="item in data.orderGoods" :key="item.id">
+          <image :src="item.picUrl" class="goods-img" mode="" />
+          <view class="goods-info-content">
+            <view class="goods-name">{{ item.goodsName }}</view>
+            <view class="sp">{{ item.specifications | fomatSp }}</view>
+            <view class="goods-price"> ￥{{ item.price }}</view>
+          </view>
+          <view class="goods-number">x1</view>
         </view>
       </view>
     </view>
-    <!-- 订单用户详情 -->
-    <view class="order-form-detail-userdetail">
-      <view class="user-detail">
-        <img
-          src="../../static/images/lqb/orderform/userdetail.png"
-          alt=""
-          class="userdetail-img"
-        />
-        <view class="detail-text">姓名</view>
-        <view class="user-name"> {{ this.userdetail.username }}</view>
-        <view class="user-phone">{{ this.userdetail.userphone }}</view>
+
+    <!-- 评论 -->
+    <view class="evaluate-info pane" style="display: none">
+      <view class="line">
+        <view class="title">满意</view>
+        <uni-rate></uni-rate>
       </view>
-      <view class="user-appointment-time">
-        <img
-          src="../../static/images/lqb/orderform/appointmentTime.png"
-          alt=""
-          class="appointmentTime"
-        />
-        <view class="appointment-text">预约时间</view>
-        <view class="appointment-time">{{
-          this.userdetail.appointmentTime
-        }}</view>
+
+      <view class="line">
+        <view class="title">评论</view>
+        <textarea
+          placeholder="请输入商品评论"
+          class="evaluate-textarea"
+          maxlength="200"
+        ></textarea>
       </view>
-      <view class="user-location">
-        <img
-          src="../../static/images/lqb/orderform/location.png"
-          alt=""
-          class="location"
-        />
-        <view class="location-text">地址</view>
-        <view class="location-detail">{{ this.userdetail.location }}</view>
+
+      <view class="line">
+        <view class="title">晒图/视频</view>
+        <view class="images">
+          <view v-for="item in 12" :key="item">
+            <image
+              class="user-upload-img"
+              src="https://img0.baidu.com/it/u=1370384016,828589411&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313"
+              mode=""
+            />
+          </view>
+          <view class="upload-icon">+</view>
+        </view>
+      </view>
+
+      <button class="uni-btn sub-eval-btn">提交评论</button>
+    </view>
+
+    <!-- 详细信息 -->
+    <view class="detail-info pane">
+      <view class="detail-info-title"> 详细信息 </view>
+
+      <view class="line">
+        <view class="title">订单编号</view>
+        <view class="text">{{ data.orderInfo.orderSn }}</view>
+      </view>
+      <view class="line">
+        <view class="title">下单时间</view>
+        <view class="text">{{ data.orderInfo.addTime }}</view>
       </view>
     </view>
-    <!-- 分界线 -->
-    <view class="order-form-detail-boundary"> </view>
-    <!-- 服务站 -->
-    <view class="order-form-detail-serve">
-      <view class="serve-station">
-        <view class="serve-text">服务站</view>
-        <view class="serve-name">{{ this.servedetail.serveName }}</view>
-      </view>
-      <view class="serve-install">
-        <view class="install-name">安装进度</view>
-        <view class="install-detail">师傅已上门</view>
-        <view class="install-detail">师傅未上门</view>
-      </view>
-      <view class="serve-message">
-        <view class="message-text">服务信息</view>
-        <view class="message-detail">{{
-          this.servedetail.installMessage
-        }}</view>
-      </view>
-      <view class="serve-paymoney">
-        <view class="paymoney-text">支付金额</view>
-        <view class="paymoney-right">
-          <view class="paymoney-goodsnumber"
-            >共{{ this.servedetail.goodsnumber }}件商品</view
-          >
-          <view class="paymoney-money">{{ this.servedetail.payMoney }}元</view>
-        </view>
+
+    <view class="order-detail-footer" v-if="data">
+      <view v-for="item in orderOpButtons" :key="item.label">
+        <button
+          @click="handleOpOrder(data.orderInfo, item.key)"
+          v-if="data.orderInfo.handleOption[item.key]"
+          class="uni-btn"
+        >
+          {{ item.label }}
+        </button>
       </view>
     </view>
   </view>
 </template>
 
 <script>
+import {
+  getOrderDetailApi,
+  orderCancelApi,
+  orderDeleteApi,
+} from "../../api/order";
+import { getUserId } from "../../utils";
+import { orderOpButtons } from "./config";
+import { payOrderGoodsApi } from "../../api/goods";
+
 export default {
-  methods: {
-    name() {},
-  },
   data() {
     return {
-      orderFormDetail: 0,
-      userdetail: {
-        id: 1,
-        username: "白大拿",
-        userphone: "11122233311",
-        appointmentTime: "08月18日(周四) 19:00",
-        location: "佛山市顺德区龙江镇亚洲国际材料城五栋三楼团蜂科技",
-      },
-      servedetail: {
-        id: 1,
-        serveName: "团蜂家居社区服务站",
-        installType: 0,
-        installMessage: "空调安装",
-        goodsnumber: 1,
-        payMoney: 300,
-      },
-      collectionType: {
-        type: 0,
-      },
+      orderId: null,
+      data: null,
+      orderOpButtons,
     };
+  },
+
+  onLoad(options) {
+    this.orderId = options.id;
+    this.getOrderDetail();
+  },
+
+  methods: {
+    // 获取订单详情
+    getOrderDetail() {
+      uni.showLoading();
+      getOrderDetailApi({
+        userId: getUserId(),
+        orderId: this.orderId,
+      }).then(({ data }) => {
+        this.data = data;
+        console.log(data);
+      });
+      uni.hideLoading();
+    },
+
+    // 点击操作按钮
+    handleOpOrder(goods, key) {
+      console.log(goods);
+      const mapMethods = {
+        cancel: {
+          text: "确定要取消当前订单吗?",
+          api: orderCancelApi,
+          success: "取消成功",
+        },
+        delete: {
+          text: "确定要删除当前订单吗?",
+          api: orderDeleteApi,
+          success: "删除成功",
+        },
+      };
+
+      const _this = this;
+      if (goods.handleOption[key] && ["cancel", "delete"].includes(key)) {
+        uni.showModal({
+          title: "提示",
+          content: mapMethods[key].text,
+          success: function (res) {
+            if (res.confirm) {
+              mapMethods[key]
+                .api({
+                  userId: getUserId(),
+                  orderId: goods.id,
+                })
+                .then(() => {
+                  _this.$showToast(mapMethods[key].success, "success");
+                  setTimeout(() => {
+                    if (["delete"].includes(key)) {
+                      uni.navigateBack();
+                    } else if (["cancel"].includes(key)) {
+                      _this.getOrderDetail();
+                    }
+                  }, 2000);
+                });
+            }
+          },
+        });
+      } else {
+        if (key === "pay") {
+          payOrderGoodsApi({
+            orderNo: goods.orderSn,
+            userId: getUserId(),
+            payType: 1,
+          }).then((res) => {
+            const form = document.createElement("form");
+            form.setAttribute("action", res.url);
+            form.setAttribute("method", "POST");
+            const data = JSON.parse(res.data);
+            let input;
+            for (const key in data) {
+              input = document.createElement("input");
+              input.name = key;
+              input.value = data[key];
+              form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+          });
+        }
+      }
+    },
+  },
+
+  filters: {
+    fomatSp(value) {
+      let str = "";
+      for (const item of value) {
+        str += item + ", ";
+      }
+
+      return str.substr(0, str.length - 2);
+    },
+  },
+
+  computed: {
+    bg() {
+      const data = {
+        已取消: "linear-gradient(to right, #959595, #d3d3d3)",
+        未支付: "linear-gradient(to right, #fa5151, #fddbdb)",
+      };
+      return data[this.data.orderInfo.orderStatusText];
+    },
   },
 };
 </script>
 
-.<style lang="less" scoped>
-.order-form-detail-serve {
-  .serve-station {
-    display: flex;
-    .serve-text {
-    }
-    .serve-name {
-    }
+<style lang="less" scoped>
+.order-detail {
+  width: 100%;
+  height: 100vh;
+  background-color: #f4f4f4;
+  font-size: 28upx;
+  color: #3d3d3d;
+  padding-bottom: 200upx;
+
+  /deep/ .j-header-container {
+    padding: 20upx;
+    box-sizing: border-box;
+    background: #fff;
   }
-  .serve-install {
-    display: flex;
-    .install-name {
-    }
-    .install-detail {
-    }
-  }
-  .serve-message {
-    display: flex;
-    .message-text {
-    }
-    .message-detail {
-    }
-  }
-  .serve-paymoney {
-    display: flex;
-    .paymoney-text {
-    }
-    .paymoney-right {
-      display: flex;
-      .paymoney-goodsnumber {
-      }
-      .paymoney-money {
-      }
-    }
-  }
-}
-.order-form-detail-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 60upx;
-  .left-view {
-    display: flex;
-    .left-img {
-      height: 48upx;
-      width: 48upx;
-    }
-  }
-  .middle-view {
-    flex: 1;
-    margin-left: 244upx;
-    .text {
-    }
-  }
-  .right-view {
-  }
-}
-.order-form-detail-type {
-  .type-accomplish {
-    .accomplish-background {
-      display: flex;
-      width: 750upx;
-      height: 110upx;
-      background: linear-gradient(90deg, #07b9b9 0%, rgba(0, 181, 120, 0) 103%);
-      align-items: center;
-      .accomplish-img {
-        width: 44upx;
-        height: 44upx;
-        margin-right: 20upx;
-        margin-left: 60upx;
-      }
-      .accomplish-text {
-        color: white;
-        font-size: 36upx;
-      }
-    }
-  }
-  .type-noaccomplish {
-    .noaccomplish-background {
-      display: flex;
-      width: 750upx;
-      height: 110upx;
-      background: linear-gradient(
-        90deg,
-        #fa5151 0%,
-        #ffffff 103%,
-        rgba(0, 181, 120, 0) 103%
-      );
-      align-items: center;
-      .noaccomplish-img {
-        width: 44upx;
-        height: 44upx;
-        margin-right: 20upx;
-        margin-left: 60upx;
-      }
-      .noaccomplish-text {
-        color: white;
-        font-size: 36upx;
-      }
-    }
-  }
-}
-.order-form-detail-userdetail {
-  margin-left: 60upx;
-  margin-top: 50upx;
-  .user-detail {
+
+  .view-order-status {
     display: flex;
     align-items: center;
-    margin-bottom: 36upx;
-    .userdetail-img {
-      width: 27upx;
-      height: 40upx;
-      margin-right: 17upx;
-    }
-    .detail-text {
-      font-size: 24upx;
-      font-weight: 400;
+    height: 114upx;
+    padding-left: 60upx;
+    box-sizing: border-box;
+    background-image: linear-gradient(to right, #fa5151, #fddbdb);
+    color: #fff;
+    font-size: 36upx;
+
+    .j-icon {
       margin-right: 20upx;
     }
-    .user-name {
-      font-size: 24upx;
-      font-weight: 350;
-      margin-right: 28upx;
+  }
+
+  .pane {
+    padding: 40upx;
+    box-sizing: border-box;
+    background-color: #fff;
+  }
+
+  .order-info {
+    .co-info {
+      .line {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+
+        .line-icon {
+          margin-right: 20upx;
+          flex-shrink: 0;
+        }
+
+        &:nth-child(1) {
+          margin-bottom: 20upx;
+        }
+
+        .sub-title {
+          margin-right: 20upx;
+          flex-shrink: 0;
+        }
+      }
+      padding-bottom: 20upx;
+      border-bottom: 1upx solid #dadada;
     }
-    .user-phone {
-      font-size: 24upx;
-      font-weight: 350;
+
+    .goods-info {
+      margin: 20upx 0;
+
+      .goods-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 30upx;
+
+        .goods-img {
+          width: 140upx;
+          height: 140upx;
+          border-radius: 4upx;
+          margin-right: 20upx;
+          flex-shrink: 0;
+        }
+
+        .goods-info-content {
+          flex: 1;
+          font-size: 24upx;
+          color: #3d3d3d;
+
+          .goods-name {
+            font-size: 28upx;
+            font-weight: bold;
+            width: 380upx;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          .sp {
+            margin: 20upx 0 10upx;
+          }
+
+          .goods-price {
+            font-size: 28upx;
+          }
+        }
+      }
     }
   }
-  .user-appointment-time {
+
+  .detail-info {
+    margin-top: 20upx;
+    color: #000;
+
+    .detail-info-title {
+      margin-bottom: 20upx;
+    }
+
+    .line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 24upx;
+      padding: 10upx 0;
+
+      .title {
+        color: #3d3d3d;
+      }
+    }
+  }
+
+  .evaluate-info {
+    margin-top: 20upx;
+
+    .sub-eval-btn {
+      margin-top: 80upx;
+      font-size: 28upx;
+      border-top: 1upx solid #d8d8d8;
+      padding-top: 30upx;
+    }
+
+    .line {
+      padding: 16upx 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+
+      &:nth-child(3) {
+        display: block !important;
+
+        .title {
+          margin-bottom: 20upx;
+        }
+
+        .images {
+          display: flex;
+          flex-wrap: wrap;
+        }
+      }
+
+      .title {
+        margin-right: 30upx;
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .evaluate-textarea {
+        flex: 1;
+        height: 100upx;
+      }
+
+      .images {
+        .user-upload-img {
+          width: 120upx;
+          height: 120upx;
+          border-radius: 6upx;
+          object-fit: cover;
+          margin-right: 10upx;
+          margin-bottom: 10upx;
+        }
+
+        .upload-icon {
+          width: 120upx;
+          height: 120upx;
+          border-radius: 6upx;
+          background-color: #d8d8d8;
+          color: #fff;
+          font-size: 54upx;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 0 6upx 6upx 0;
+          box-sizing: border-box;
+        }
+      }
+    }
+  }
+
+  .order-detail-footer {
+    height: 100upx;
+    width: 100%;
+    position: fixed;
+    bottom: -1px;
+    left: 0;
     display: flex;
-    margin-bottom: 36upx;
-    .appointmentTime {
-      width: 27upx;
-      height: 27upx;
-      margin-right: 17upx;
-    }
-    .appointment-text {
-      font-size: 24upx;
-      font-weight: 400;
-      margin-right: 28upx;
-    }
-    .appointment-time {
-      font-size: 24upx;
-      font-weight: 350;
-      color: #ff8f1f;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 40upx;
+    box-sizing: border-box;
+    background-color: #fff;
+
+    .uni-btn {
+      border: 1upx solid #3d3d3d;
+      padding: 18upx 48upx;
+      color: #3d3d3d;
+      font-size: 28upx;
+      margin-left: 30upx;
     }
   }
-  .user-location {
-    display: flex;
-    .location {
-      width: 27upx;
-      height: 33upx;
-      margin-right: 15upx;
-    }
-    .location-text {
-      white-space: nowrap;
-      margin-right: 32upx;
-      font-size: 24upx;
-      font-weight: 400;
-    }
-    .location-detail {
-      font-size: 24upx;
-      font-weight: 350;
-      color: #07b9b9;
-      padding-right: 100upx;
-    }
-  }
-}
-.order-form-detail-boundary {
-  border: 0.5px solid #d8d8d8;
-  width: 90%;
-  margin: 0 auto;
-  margin-top: 34upx;
 }
 </style>

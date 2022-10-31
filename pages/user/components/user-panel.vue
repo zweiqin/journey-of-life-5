@@ -26,15 +26,35 @@
         v-for="item in data.menus"
         :key="item.label"
       >
-        <img
-          class="icon"
-          :style="{
-            width: item.width,
-          }"
-          :src="item.icon"
-          alt=""
-        />
-        <view class="name">{{ item.label }}</view>
+        <wx-open-launch-weapp
+          v-if="item.type === 'mini-progress'"
+          id="launch-btn"
+          style="margin-top: 24upx"
+          username="gh_6303db43d6d6"
+          path="pages/mine/minebind.html"
+        >
+          <img
+            class="icon"
+            :style="{
+              width: item.width,
+            }"
+            :src="item.icon"
+            alt=""
+          />
+          <view class="name">{{ item.label }}</view>
+        </wx-open-launch-weapp>
+
+        <view class="item" v-else>
+          <img
+            class="icon"
+            :style="{
+              width: item.width,
+            }"
+            :src="item.icon"
+            alt=""
+          />
+          <view class="name">{{ item.label }}</view>
+        </view>
       </view>
     </view>
   </view>
@@ -62,12 +82,11 @@ export default {
           url: item.url,
         });
 
-        console.log(item.url);
-
         return;
       }
+
       uni.navigateTo({
-        url: item.url,
+        url: item.url + (item.showType ? "?type=" + item.showType : ""),
       });
     },
   },

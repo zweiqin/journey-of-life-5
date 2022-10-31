@@ -110,19 +110,19 @@ export const infomations = [
   {
     label: "所属城市",
     type: "city",
-    field: "address",
+    field: "areaname",
     placeholder: "省份、城市、区县",
   },
   {
     label: "微信号",
     type: "input",
-    field: "",
+    field: "wechat",
     placeholder: "请填写微信号",
   },
   {
     label: "原住城市",
     type: "city",
-    field: "",
+    field: "address",
     placeholder: "省份、城市、区县",
     warnText:
       "（注：微信号/微信手机号用于绑定新账号的角色，请务必填写真实信息）",
@@ -130,7 +130,7 @@ export const infomations = [
   {
     label: "详细地址（门牌号）",
     type: "textarea",
-    field: "addressDetail",
+    field: "orgioinAddressDetail",
     placeholder: "请填写详细地址",
   },
 ];
@@ -138,11 +138,11 @@ export const infomations = [
 export const identImgs = [
   {
     label: "身份证人像面",
-    field: "",
+    field: "brandIdcardProsUrl",
   },
   {
     label: "身份证国徽面",
-    field: "",
+    field: "brandIdcardConsUrl",
   },
 ];
 

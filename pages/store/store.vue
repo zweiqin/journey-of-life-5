@@ -96,7 +96,7 @@
 <script>
 import ActivePane from "./components/active-pane.vue";
 import { getStoreAndGoods } from "../../api/store";
-import { J_STORE_TYPES } from "../../constant";
+import { J_STORE_TYPES, J_LOACTION } from "../../constant";
 import { getStoreTypesApi } from "../../api/user";
 
 export default {
@@ -107,6 +107,10 @@ export default {
   onLoad() {
     this.getStoreList();
     this.getStoreTypes();
+  },
+
+  onShow() {
+    uni.removeStorageSync(J_LOACTION);
   },
 
   data() {
@@ -187,9 +191,9 @@ export default {
           .then(({ data }) => {
             types = data.items;
             uni.setStorageSync(J_STORE_TYPES, data.items);
-            return _this.setTypes(types, value);
           })
-          .catch(() => {
+          .catch((err) => {
+            console.log(err);
             _this.$showToast("门店类型获取失败");
           });
       } else {
@@ -324,7 +328,7 @@ export default {
 .j-tabs {
   box-sizing: border-box;
   padding: 0 16upx;
-  // margin-bottom: -50upx;
+  margin-bottom: -50upx;
 
   /deep/ .item {
     font-size: 24upx;

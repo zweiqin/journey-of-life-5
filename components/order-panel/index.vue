@@ -278,6 +278,7 @@ export default {
     // 点击支付
     async handlePay() {
       // console.log(this.defaultAddress);
+    
       const _this = this;
       // return;
       const data = {
@@ -303,7 +304,6 @@ export default {
 
         const submitRes = await submitOrderApi(submitData);
         if (submitRes.errno === 0) {
-          console.log(submitRes);
           payOrderGoodsApi({
             orderNo: submitRes.data.orderSn,
             userId: getUserId(),

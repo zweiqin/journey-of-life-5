@@ -150,6 +150,8 @@ export default {
         addressId: this.defaultAddress.id,
         useVoucher: 0,
         cartId: 0,
+        couponId: '',
+        grouponRulesId: ''
       };
 
       payShopCarApi(data).then(({ data }) => {

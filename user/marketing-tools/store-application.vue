@@ -24,26 +24,43 @@
       @upload="handleSaveImg(item.field, $event)"
       @delete="handleDeleteImg(item.field)"
     ></JUpload>
-
-    <view class="buts">
-      <button v-if="!applyStatus === 0" class="btn" @click="submit(false)">
+    <view class="buts" v-if="![2, 3, 4, 5, 6].includes(applyStatus * 1)">
+      <button
+        v-if="![2, 3, 4, 5, 6].includes(applyStatus * 1)"
+        class="btn"
+        @click="submit(false)"
+      >
         保存
       </button>
-      <button v-if="!applyStatus === 0" class="btn" @click="submit(true)">
+      <button
+        v-if="![2, 3, 4, 5, 6].includes(applyStatus * 1)"
+        class="btn"
+        @click="submit(true)"
+      >
         提交
       </button>
 
-      <button v-if="applyStatus === 0" class="btn withdraw">撤销申请</button>
+      <button
+        v-if="applyStatus == 0"
+        @click="handleWidthDraw"
+        class="btn withdraw"
+      >
+        撤销申请
+      </button>
     </view>
 
-    <view v-if="status === 0" class="mask"></view>
+    <view v-if="applyStatus" class="mask"></view>
   </view>
 </template>
 
 <script>
 import FieldPane from "./components/field-pane.vue";
 import { applyStoreOne, applyStoreTow, uploadFields } from "./config";
-import { submitApplyStoreInfo, getStoreSaveInfoApi } from "../../api/user";
+import {
+  submitApplyStoreInfo,
+  getStoreSaveInfoApi,
+  widthDrawApi,
+} from "../../api/user";
 import {
   J_USER_INFO,
   J_STORE_TYPES,
@@ -62,6 +79,7 @@ export default {
       const applyInfo = uni.getStorageSync(J_STORE_INFO);
       this.setSToreApplyDetailInfo(applyInfo.info);
       this.applyStatus = applyInfo.status;
+      this.ticketsId = applyInfo.ticketsId;
     } else {
       this.getUserSaveInfo();
     }
@@ -81,11 +99,13 @@ export default {
       storeType: [],
 
       applyStatus: null,
+      ticketsId: null,
     };
   },
 
   methods: {
     handleSaveImg(field, imgUrl) {
+      console.log(field, imgUrl);
       this.form.imgs[field] = imgUrl;
       this.$forceUpdate();
     },
@@ -272,6 +292,35 @@ export default {
       this.form.imgs.brandIdcardConsUrl = data.brandIdcardConsUrl;
       this.$forceUpdate();
     },
+
+    // 撤销
+    handleWidthDraw() {
+      const _this = this;
+      uni.showModal({
+        title: "提示",
+        content: "是否撤回当前门店申请?",
+        success: function (res) {
+          if (res.confirm) {
+            widthDrawApi({
+              userId: getUserId(),
+              id: _this.ticketsId,
+              token: uni.getStorageSync(J_USER_TOKEN),
+            }).then(() => {
+              uni.showToast({
+                title: "撤销成功",
+                duration: 2000,
+              });
+
+              setTimeout(() => {
+                uni.navigateTo({
+                  url: "/user/sever/userUp",
+                });
+              }, 1000);
+            });
+          }
+        },
+      });
+    },
   },
 };
 </script>
@@ -289,7 +338,7 @@ export default {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background-color: rgba(250, 81, 81, 0.329);
+    background-color: transparent;
   }
 
   .buts {
@@ -325,7 +374,7 @@ export default {
 
     &.withdraw {
       width: 100%;
-      background-image: linear-gradient(to right, #80ff9c, #01d2fb);
+      background: #999;
       letter-spacing: 10upx;
     }
   }

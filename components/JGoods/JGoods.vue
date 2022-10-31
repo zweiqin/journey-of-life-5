@@ -17,7 +17,7 @@
         </view>
 
         <button ref="addCarRef" class="add-car" @click="handleAddCar">
-          加入购物车
+          查看详情
         </button>
       </view>
     </view>

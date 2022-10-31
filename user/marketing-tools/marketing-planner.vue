@@ -1,6 +1,7 @@
 <template>
   <view class="marketing-planner-container">
     <JHeader width="50" height="50" title="营销策划师升级信息填写"></JHeader>
+
     <FieldPane
       :fields="infomations"
       title="信息填写"
@@ -26,6 +27,7 @@
 <script>
 import FieldPane from "./components/field-pane.vue";
 import { infomations, identImgs } from "./config";
+import { submitApplyStoreInfo } from "../../api/user";
 
 export default {
   components: {
@@ -47,14 +49,22 @@ export default {
 
   methods: {
     // 图片上传成功
-    handleSaveImg() {},
+    handleSaveImg(field, imageUrl) {
+      console.log(field, imageUrl);
+      this.form.imgs[field] = imageUrl;
+      this.$forceUpdate();
+    },
 
     // 删除图片
     handleDeleteImg() {},
 
     // 提交表单
-    submit() {
+    submit(tag) {
       console.log(this.form);
+
+      submitApplyStoreInfo(tag, {
+        ...this.form,
+      }).then((res) => {});
     },
   },
 };

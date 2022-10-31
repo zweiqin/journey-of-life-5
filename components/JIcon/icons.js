@@ -23,5 +23,9 @@ export const types = {
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0kut8emy01lkcxd0gvxg.png", // 选中时显示勾
   "edit-blue":
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lbgcpb3khhqwp04rfzjp.png", // 编辑
-    
+  "order-shop":
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/au0lt13ad4mjposzwh8p.webp", // gouwuche
+  modal:
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/vmdsaejtrqyluz8uhfkb.png", // 勋章
+  "local-black": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2lvq1mi90v8e73xx7ozh.png",
 };

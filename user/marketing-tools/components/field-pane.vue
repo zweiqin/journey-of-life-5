@@ -103,7 +103,7 @@ export default {
 
   methods: {
     handleInput(field, e) {
-      if (field === "address") {
+      if (field === "address" || field === "areaname") {
         this.form[field] = e.area;
         return;
       }
