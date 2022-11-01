@@ -13,7 +13,7 @@ export default {
 
   onShow() {
     this.$nextTick(() => {
-      console.log(this.$refs.orderPaneRef.setChooseAddress());
+      this.$refs.orderPaneRef.setChooseAddress()
     });
   },
 };

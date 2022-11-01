@@ -1,6 +1,6 @@
 <template>
   <view class="order-panel" v-if="orderInfo.info">
-    <PageHeader title="订单详情"></PageHeader>
+    <JHeader width="50" height="50" title="订单详情"></JHeader>
     <view class="status" :style="statusStyles">
       {{ status ? "交易完成" : "交易待完成" }}
     </view>
@@ -41,7 +41,7 @@
     <!-- 订单信息 -->
     <view class="order-info">
       <view class="item">
-        <img class="goods-img" :src="orderInfo.currentGoodsImg" alt="" />
+        <img class="goods-img" :src="orderInfo.info.picUrl" alt="" />
         <view class="info">
           <view class="name">{{ orderInfo.info.name }}</view>
           <view>{{ goodsInfoStr }}</view>
@@ -207,6 +207,7 @@ export default {
   mounted() {
     this.baseInfo = getBaseInfo(this.type);
     this.orderInfo = uni.getStorageSync(PAY_GOODS);
+    console.log(this.orderInfo);
     this.getAddressList();
   },
 
@@ -347,7 +348,8 @@ export default {
 
 <style lang="less" scoped>
 .order-panel {
-  background-color: #efefef;
+  padding: 40upx 0;
+  background-color: #f4f4f4;
 
   .flex {
     display: flex;
@@ -380,7 +382,7 @@ export default {
     color: #fff;
     font-size: 36upx;
     height: 114upx;
-    margin-top: 120upx;
+    margin-top: 20upx;
 
     &::before {
       position: absolute;

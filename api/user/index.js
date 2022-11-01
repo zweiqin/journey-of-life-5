@@ -191,3 +191,9 @@ export const payStoreAndYingApi = (data) => {
 export const payTryStoreAndYingApi = (data) => {
   return RuanRequest("/levelPay/TryStorePrepayBySyb", data);
 };
+
+// 优惠劵
+// 查询用户优惠劵
+export const getCouponListApi = (data) => {
+  return RuanRequest("/coupon/getUserCoupon", data, "get");
+};

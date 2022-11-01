@@ -5,20 +5,21 @@
 			"style": {
 				"backgroundTextStyle": "dark",
 				"navigationBarBackgroundColor": "#fff",
-				"navigationBarTextStyle": "black"
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "商城"
 			}
 		},
 		{
-			"path": "pages/red-envelope/red-envelope"
+			"path": "pages/red-envelope/red-envelope",
+			"navigationBarTitleText": "红包地图"
 		},
 		{
-			"path": "pages/marketing-treasure-house/marketing-treasure-house"
-		},
-		{
-			"path": "pages/mobile-login/mobile-login"
+			"path": "pages/marketing-treasure-house/marketing-treasure-house",
+			"navigationBarTitleText": "营销宝库"
 		},
 		{
 			"path": "pages/pre-order/pre-order",
+			"navigationBarTitleText": "订单详情",
 			"style": {
 				"usingComponents": {
 					"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
@@ -35,7 +36,7 @@
 		{
 			"path": "pages/user/user",
 			"style": {
-				"navigationBarTitleText": "个人中心"
+				"navigationBarTitleText": "会员中心"
 			}
 		},
 		{
@@ -72,15 +73,6 @@
 				"navigationBarBackgroundColor": "#fff",
 				"navigationBarTitleText": "编辑收货地址",
 				"navigationBarTextStyle": "black"
-			}
-		},
-		{
-			"path": "pages/orderList/orderList",
-			"style": {
-				"backgroundTextStyle": "light",
-				"navigationBarTitleText": "订单列表",
-				"navigationBarTextStyle": "black",
-				"navigationBarBackgroundColor": "#fafafa"
 			}
 		},
 		{
@@ -189,7 +181,8 @@
 			"path": "pages/register/register"
 		},
 		{
-			"path": "pages/store/store"
+			"path": "pages/store/store",
+			"navigationBarTitleText": "本地生活"
 		}
 	],
 	"tabBar": {

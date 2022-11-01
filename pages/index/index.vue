@@ -588,6 +588,7 @@ export default {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    background-color: #f7f7f7;
     margin-top: 30upx;
 
     .footer-goods {
@@ -607,7 +608,7 @@ export default {
         width: 348upx;
         padding: 20upx;
         box-sizing: border-box;
-        background-color: #f2f2f2;
+        background-color: #fff;
 
         .goods-title {
           width: 100%;

@@ -2,6 +2,7 @@
 //app.js
 var http = require("./utils/http.js");
 var util = require("./utils/util.js");
+const wx = require("jweixin-module")
 
 export default {
   onLaunach: function () {},

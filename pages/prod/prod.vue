@@ -1,5 +1,6 @@
 <template>
   <view class="prod-wrapper">
+    <!-- 轮播图 -->
     <view class="carousel">
       <Carousel
         v-if="goodsInfo.info"
@@ -16,45 +17,18 @@
       />
     </view>
 
+    <!-- 价格，tag -->
     <view class="promotion">
       <view class="left">
         <view class="top">
           ￥<text class="number">{{ goodsInfo.info.retailPrice }}</text>
-          <!-- <view class="tag">
-            新人价 <view class="price">￥<text class="number">1900</text></view>
-          </view> -->
         </view>
 
         <view class="bottom">
           <view class="tag">厂家直销</view>
           <view class="tag">会员促销</view>
-          <!-- <view class="tag">团蜂家具商城</view> -->
         </view>
       </view>
-      <!-- <view class="right">
-        <view class="fast">
-          <img
-            class="text"
-            src="../../static/images/goods/maiosha.png"
-            alt=""
-          />
-          <img
-            class="icon"
-            src="../../static/images/goods/miaosha.png"
-            alt=""
-          />
-        </view>
-
-        <view class="time">
-          <view class="item">1</view>
-          <view class="item">8</view>
-          <view class="item">:</view>
-          <view class="item">3</view>
-          <view class="item">0</view>
-        </view>
-
-        <view class="on-time">准时开抢</view>
-      </view> -->
     </view>
 
     <view class="main">
@@ -102,23 +76,11 @@
       </view>
 
       <view class="selects">
-        <!-- <view class="item">
-          <view class="title">已选</view>
-          <view class="value">灰色 1件 可选套餐</view>
-        </view> -->
-
         <view class="item">
           <view class="title">服务</view>
           <view class="value">
             <view class="tags-wrapper">
-              <view class="tags">
-                <!-- <img
-                  class="img"
-                  src="../../static/images/goods/fufei.png"
-                  alt=""
-                /> -->
-                <!-- <view class="text">付费组装服务</view> -->
-              </view>
+              <view class="tags"> </view>
               <view class="tags">
                 <img
                   class="img"
@@ -127,14 +89,6 @@
                 />
                 <view class="text">退货政策</view>
               </view>
-              <!-- <view class="tags">
-                <img
-                  class="img"
-                  src="../../static/images/goods/shejizixun.png"
-                  alt=""
-                />
-                <view class="text">设计咨询</view>
-              </view> -->
             </view>
           </view>
         </view>
@@ -237,12 +191,14 @@
         <view class="choose-number">
           数量
           <uni-number-box
+            :min="1"
             v-model="specificationListInfo.number"
           ></uni-number-box>
         </view>
       </view>
     </view>
 
+    <!-- 底部的操作 -->
     <view class="footer">
       <view class="item">
         <img class="kefu" src="../../static/images/goods/kefu.png" alt="" />
@@ -308,7 +264,6 @@ export default {
       const res = await getGoodsDetailApi(this.goodsId);
       if (res.errno === 0) {
         this.goodsInfo = res.data;
-        console.log(res.data.info.detail);
         this.goodsInfo.info.detail = this.goodsInfo.info.detail.replaceAll(
           "width=",
           ""
@@ -323,6 +278,12 @@ export default {
         );
 
         this.specificationListInfo.currentGoodsImg = res.data.info.picUrl;
+
+        if (
+          res.data.specificationListInfo.length === 1 &&
+          res.data.specificationListInfo[0].valueList[0].value === "标注"
+        ) {
+        }
       } else {
         uni.showToast({
           title: res.errmsg,
@@ -346,14 +307,19 @@ export default {
 
     // 点击选择规格
     handleChoosespecificationList() {
-      // this.specificationListInfoVisible = true;
       this.$refs.maskMainAreaRef.$el.style.transform = "scaleY(1)";
-      // this.$refs.maskMainAreaRef.$el.style.transform = 'sca'
+      this.goodsInfo.specificationList.forEach((item) => {
+        this.specificationListInfo.currentSpecification[item.name] = "";
+      });
     },
 
     // 点击阴影关闭
     handleCloseModal() {
       this.$refs.maskMainAreaRef.$el.style.transform = "scaleY(0)";
+      this.selectedSpecificationInfoStr = "";
+      this.goodsInfo.specificationList.forEach((item) => {
+        this.specificationListInfo.currentSpecification[item.name] = "";
+      });
     },
 
     // 监听动画完成
@@ -363,7 +329,7 @@ export default {
 
     // 点击选择规格
     chooseCurrentSpecification(name, item) {
-      this.specificationListInfo.currentSpecification[`${name}`] = item.value;
+      this.specificationListInfo.currentSpecification[name] = item.value;
       this.selectedSpecificationInfoStr = "";
 
       for (const key in this.specificationListInfo.currentSpecification) {
@@ -388,66 +354,73 @@ export default {
         return;
       }
 
-      if (!this.selectedSpecificationInfoStr) {
-        this.handleChoosespecificationList();
-        return;
-      }
-
-      if (!this.specificationListInfo.number) {
-        uni.showToast({
-          title: "请选择规格数量",
-          duration: 2000,
-          icon: "none",
-        });
-
-        this.handleChoosespecificationList();
-        return;
-      }
-
-      const productInfo = this.goodsInfo.productList.find((item) => {
-        let tag = true;
-        for (const key in this.specificationListInfo.currentSpecification) {
-          tag = item.specifications.includes(
-            this.specificationListInfo.currentSpecification[key]
-          );
+      try {
+        if (!this.selectedSpecificationInfoStr) {
+          this.handleChoosespecificationList();
+          this.$showToast("请选择呢商品规格");
+          return;
         }
 
-        if (tag) {
-          return item;
+        if (!this.specificationListInfo.number) {
+          uni.showToast({
+            title: "请选择商品数量",
+            duration: 2000,
+            icon: "none",
+          });
+
+          this.handleChoosespecificationList();
+          return;
         }
-      });
 
-      if (!productInfo) {
-        uni.showToast({
-          title: "该商品暂无库存",
-          duration: 2000,
-          icon: "none",
+        const productInfo = this.goodsInfo.productList.find((item) => {
+          let tag = true;
+          for (const key in this.specificationListInfo.currentSpecification) {
+            tag = item.specifications.includes(
+              this.specificationListInfo.currentSpecification[key]
+            );
+          }
+
+          if (tag) {
+            return item;
+          }
         });
 
-        return;
-      }
+        await this.checkedSp();
 
-      const data = {
-        userId: getUserId(),
-        goodsId: this.goodsId,
-        number: this.specificationListInfo.number,
-        productId: productInfo.id,
-      };
+        if (!productInfo) {
+          uni.showToast({
+            title: "该商品暂无库存",
+            duration: 2000,
+            icon: "none",
+          });
 
-      const res = await addShopCarApi(data);
-      if (res.errno === 0) {
-        uni.showToast({
-          title: "添加成功",
-          duration: 2000,
-        });
-        this.handleCloseModal();
-        this.getCarShopNumber();
-      } else {
-        uni.showToast({
-          title: res.errmsg,
-          duration: 2000,
-          icon: "none",
-        });
+          return;
+        }
+
+        const data = {
+          userId: getUserId(),
+          goodsId: this.goodsId,
+          number: this.specificationListInfo.number,
+          productId: productInfo.id,
+        };
+
+        const res = await addShopCarApi(data);
+        if (res.errno === 0) {
+          uni.showToast({
+            title: "添加成功",
+            duration: 2000,
+          });
+          this.handleCloseModal();
+          this.getCarShopNumber();
+        } else {
+          uni.showToast({
+            title: res.errmsg,
+            duration: 2000,
+            icon: "none",
+          });
+        }
+      } catch (error) {
+        this.$showToast(error);
       }
     },
 
@@ -477,55 +450,86 @@ export default {
     },
 
     // 立即购买
-    handlePayGoods() {
+    async handlePayGoods() {
       if (!this.isLogin) {
         this.$showToast("请先登录");
         return;
       }
-      if (this.specificationListInfo.number) {
-        const productInfo = this.goodsInfo.productList.find((item) => {
-          let tag = true;
-          for (const key in this.specificationListInfo.currentSpecification) {
-            tag = item.specifications.includes(
-              this.specificationListInfo.currentSpecification[key]
-            );
-          }
 
-          if (tag) {
-            return item;
-          }
-        });
+      if (!this.selectedSpecificationInfoStr) {
+        this.$showToast("请选择规格");
+        this.handleChoosespecificationList();
+        return;
+      }
 
-        if (!productInfo) {
+      try {
+        await this.checkedSp();
+        if (this.specificationListInfo.number) {
+          const productInfo = this.goodsInfo.productList.find((item) => {
+            let tag = true;
+            for (const key in this.specificationListInfo.currentSpecification) {
+              tag = item.specifications.includes(
+                this.specificationListInfo.currentSpecification[key]
+              );
+            }
+
+            if (tag) {
+              return item;
+            }
+          });
+
+          console.log("选中的商品", productInfo);
+
+          if (!productInfo) {
+            uni.showToast({
+              title: "该商品暂无库存",
+              duration: 2000,
+              icon: "none",
+            });
+
+            return;
+          }
+          uni.setStorageSync(PAY_GOODS, {
+            ...this.specificationListInfo,
+            status: 0,
+            ...this.goodsInfo,
+            selectedProduct: productInfo,
+          });
+          uni.navigateTo({
+            url: "/pages/pre-order/pre-order",
+          });
+        } else if (
+          this.selectedSpecificationInfoStr &&
+          !this.specificationListInfo.number
+        ) {
           uni.showToast({
-            title: "该商品暂无库存",
+            title: "请选择购买数量",
             duration: 2000,
             icon: "none",
           });
-
-          return;
+        } else {
+          this.handleChoosespecificationList();
         }
-        uni.setStorageSync(PAY_GOODS, {
-          ...this.specificationListInfo,
-          status: 0,
-          ...this.goodsInfo,
-          selectedProduct: productInfo,
-        });
-        uni.navigateTo({
-          url: "/pages/pre-order/pre-order",
-        });
-      } else if (
-        this.selectedSpecificationInfoStr &&
-        !this.specificationListInfo.number
-      ) {
-        uni.showToast({
-          title: "请选择购买数量",
-          duration: 2000,
-          icon: "none",
-        });
-      } else {
-        this.handleChoosespecificationList();
+      } catch (error) {
+        this.$showToast(error);
       }
+    },
+
+    // 检查是否完整选择了规格
+    checkedSp() {
+      const _this = this
+      return new Promise((resolve, reject) => {
+        const sps = _this.specificationListInfo.currentSpecification;
+        let tag = true;
+
+        for (const sp in sps) {
+          if (!sps[sp]) {
+            tag = false;
+          }
+        }
+
+        tag ? resolve() : reject("请选择完整的商品规格");
+      });
     },
   },
 
@@ -548,7 +552,7 @@ export default {
     this.getGoodsDetail();
 
     this.isLogin = !!getUserId();
-    if (isLogin) {
+    if (this.isLogin) {
       this.getShopCar();
       this.getCarShopNumber();
     }
