@@ -107,15 +107,9 @@ export default {
   methods: {
     // 点击取消
     goBackIndex() {
-      if (this.type === "article") {
-        uni.navigateTo({
-          url: "/pages/marketing-treasure-house/marketing-treasure-house",
-        });
-      } else {
-        uni.switchTab({
-          url: mapUrl[this.type],
-        });
-      }
+      uni.switchTab({
+        url: mapUrl[this.type],
+      });
     },
 
     // 点击确认
