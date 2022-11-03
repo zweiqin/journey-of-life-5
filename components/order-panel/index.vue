@@ -207,7 +207,6 @@ export default {
   mounted() {
     this.baseInfo = getBaseInfo(this.type);
     this.orderInfo = uni.getStorageSync(PAY_GOODS);
-    console.log(this.orderInfo);
     this.getAddressList();
   },
 
@@ -301,6 +300,7 @@ export default {
           useVoucher: false,
           grouponRulesId: "",
           grouponLinkId: "",
+          brandId: this.orderInfo.brandId
         };
 
         const submitRes = await submitOrderApi(submitData);

@@ -220,6 +220,7 @@ export default {
 
     // 更新用户信息
     updateUserInfo(key, value) {
+      uni.showLoading();
       const _this = this;
       const originData = {
         nickname: this.userInfo.nickName,
@@ -234,6 +235,7 @@ export default {
         refrshUserInfoApi({
           userId: getUserId(),
         }).then(({ data }) => {
+          uni.hideLoading();
           _this.handleCloseUpload();
           _this.$showToast("修改成功", "success");
           uni.setStorageSync(J_USER_INFO, data);

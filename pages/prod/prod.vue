@@ -480,8 +480,6 @@ export default {
             }
           });
 
-          console.log("选中的商品", productInfo);
-
           if (!productInfo) {
             uni.showToast({
               title: "该商品暂无库存",
@@ -496,6 +494,7 @@ export default {
             status: 0,
             ...this.goodsInfo,
             selectedProduct: productInfo,
+            brandId: this.goodsInfo.brand.id
           });
           uni.navigateTo({
             url: "/pages/pre-order/pre-order",
