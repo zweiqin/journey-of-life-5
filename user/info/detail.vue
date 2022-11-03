@@ -11,11 +11,7 @@
     </view>
 
     <view class="avatar-container">
-      <img
-        src="https://img1.baidu.com/it/u=1831586528,1339508464&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
-        alt=""
-        class="avatar"
-      />
+      <img :src="userInfo.avatarUrl" alt="" class="avatar" />
       <view class="change-btn font-14" @click="handleChangeAvatar"
         >更换头像</view
       >
@@ -147,6 +143,7 @@ export default {
 
   mounted() {
     this.userInfo = uni.getStorageSync(J_USER_INFO);
+    this.nickName = this.userInfo.nickName;
   },
   methods: {
     handleClickLogout() {
@@ -184,7 +181,7 @@ export default {
      * @description 点击确定修改昵称
      */
     handleConfirmEditNickname() {
-      console.log(this.nickname);
+      this.updateUserInfo("nickname", this.nickname);
     },
 
     /**
@@ -223,6 +220,7 @@ export default {
 
     // 更新用户信息
     updateUserInfo(key, value) {
+      const _this = this;
       const originData = {
         nickname: this.userInfo.nickName,
         avatar: this.userInfo.avatarUrl,
@@ -235,9 +233,12 @@ export default {
       updateUserInfoApi(originData).then(() => {
         refrshUserInfoApi({
           userId: getUserId(),
-        }).then(({data}) => {
-          console.log(data);
-        })
+        }).then(({ data }) => {
+          _this.handleCloseUpload();
+          _this.$showToast("修改成功", "success");
+          uni.setStorageSync(J_USER_INFO, data);
+          _this.userInfo = uni.getStorageSync(J_USER_INFO);
+        });
       });
     },
   },

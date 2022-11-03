@@ -15,7 +15,7 @@ export const updateUserInfoApi = data => {
 
 // 刷新用户信息
 export const refrshUserInfoApi = data => {
-  return RuanRequest("/user/refreshUser", data)
+  return RuanRequest("/user/refreshUser", data, 'get')
 }
 
 // 业务管理升级
