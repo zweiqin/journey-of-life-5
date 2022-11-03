@@ -30,5 +30,7 @@ export const types = {
   "local-black":
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2lvq1mi90v8e73xx7ozh.png", // 黑色定位
   filter:
-    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4wcie54va3x131h01wmn.png",
+    "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4wcie54va3x131h01wmn.png", //
+  king: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/pfjj3t86b2npboh96h9u.png", // 皇冠
+  back: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ozsrolc809fc5y260e8c.png", // 灰色返回键
 };

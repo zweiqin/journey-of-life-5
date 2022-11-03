@@ -222,7 +222,7 @@ import Carousel from "../../components/carousel";
 import {
   getGoodsDetailApi,
   collectionApi,
-  getShopCarApi,
+  // getShopCarApi,
   addShopCarApi,
   getCarShopNumberApi,
 } from "../../api/goods";
@@ -262,27 +262,29 @@ export default {
 
     async getGoodsDetail() {
       const res = await getGoodsDetailApi(this.goodsId);
+
       if (res.errno === 0) {
         this.goodsInfo = res.data;
-        this.goodsInfo.info.detail = this.goodsInfo.info.detail.replaceAll(
-          "width=",
-          ""
-        );
-        this.goodsInfo.info.detail = this.goodsInfo.info.detail.replaceAll(
-          "<img",
-          "<img width='100%' "
-        );
-        this.goodsInfo.info.detail = this.goodsInfo.info.detail.replaceAll(
-          "height=",
-          ""
-        );
+        if (this.goodsInfo.detail) {
+          this.goodsInfo.info.detail = this.goodsInfo.info.detail.replaceAll(
+            "width=",
+            ""
+          );
+          this.goodsInfo.info.detail = this.goodsInfo.info.detail.replaceAll(
+            "<img",
+            "<img width='100%' "
+          );
+          this.goodsInfo.info.detail = this.goodsInfo.info.detail.replaceAll(
+            "height=",
+            ""
+          );
+        }
 
         this.specificationListInfo.currentGoodsImg = res.data.info.picUrl;
 
-        if (
-          res.data.specificationListInfo.length === 1 &&
-          res.data.specificationListInfo[0].valueList[0].value === "标注"
-        ) {
+        if (this.isLogin) {
+          // this.getShopCar();
+          this.getCarShopNumber();
         }
       } else {
         uni.showToast({
@@ -342,10 +344,15 @@ export default {
     },
 
     // 获取购物车数据
-    async getShopCar() {
-      const res = await getShopCarApi();
-      this.shopCarList = res.data.brandCartgoods;
-    },
+    // async getShopCar() {
+    //   console.log("购物车", this.goodsInfo.brand.id);
+    //   const _this = this
+    //   const res = await getShopCarApi({
+    //     userId: getUserId(),
+    //     brandId: _this.goodsInfo.brand.id,
+    //   });
+    //   this.shopCarList = res.data.brandCartgoods;
+    // },
 
     // 点击添加购物车
     async handleAddCar() {
@@ -426,7 +433,10 @@ export default {
 
     // 获取购物车商品数量
     async getCarShopNumber() {
-      const res = await getCarShopNumberApi();
+      const res = await getCarShopNumberApi({
+        userId: getUserId(),
+        brandId: this.goodsInfo.brand.id
+      });
       this.carGoodsNumer = res.data;
     },
 
@@ -438,14 +448,6 @@ export default {
       }
       uni.navigateTo({
         url: "/user/sever/shop-car",
-      });
-    },
-
-    // handleShareGoods
-    handleShareGoods() {
-      uni.share({
-        title: "哈啊哈",
-        href: "https://www.baidu.com",
       });
     },
 
@@ -517,7 +519,7 @@ export default {
 
     // 检查是否完整选择了规格
     checkedSp() {
-      const _this = this
+      const _this = this;
       return new Promise((resolve, reject) => {
         const sps = _this.specificationListInfo.currentSpecification;
         let tag = true;
@@ -552,10 +554,10 @@ export default {
     this.getGoodsDetail();
 
     this.isLogin = !!getUserId();
-    if (this.isLogin) {
-      this.getShopCar();
-      this.getCarShopNumber();
-    }
+    // if (this.isLogin) {
+    //   this.getShopCar();
+    //   this.getCarShopNumber();
+    // }
   },
 };
 </script>

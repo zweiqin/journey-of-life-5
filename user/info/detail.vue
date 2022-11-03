@@ -16,7 +16,9 @@
         alt=""
         class="avatar"
       />
-      <view class="change-btn font-14">更换头像</view>
+      <view class="change-btn font-14" @click="handleChangeAvatar"
+        >更换头像</view
+      >
     </view>
 
     <view class="detail-container">
@@ -119,12 +121,20 @@
         </view>
       </uni-popup-dialog>
     </uni-popup>
+
+    <JUploadAvatar
+      @close="handleCloseUpload"
+      ref="jUploadAvatarRef"
+      @success="handleUpDateAvatar"
+    ></JUploadAvatar>
   </view>
 </template>
 
 <script>
 import { layoutApi } from "../../api/auth";
+import { updateUserInfoApi, refrshUserInfoApi } from "../../api/user";
 import { getUserId } from "../../utils";
+import { J_USER_INFO } from "../../constant";
 
 export default {
   data() {
@@ -134,9 +144,9 @@ export default {
       userInfo: {},
     };
   },
+
   mounted() {
-    this.userInfo = uni.getStorageSync(user_INFO);
-    console.log(this.userInfo);
+    this.userInfo = uni.getStorageSync(J_USER_INFO);
   },
   methods: {
     handleClickLogout() {
@@ -181,7 +191,7 @@ export default {
      * 点击退出
      */
     async handleLagout() {
-      await layoutApi(getUserId());
+      // await layoutApi(getUserId());
       uni.clearStorageSync();
       uni.showToast({
         title: "退出成功",
@@ -193,6 +203,42 @@ export default {
           url: "/pages/login/login",
         });
       }, 2000);
+    },
+
+    // 点击更换头像
+    handleChangeAvatar() {
+      this.$refs.jUploadAvatarRef.$el.style.left = "0";
+    },
+
+    // 点击关闭
+    handleCloseUpload() {
+      this.$refs.jUploadAvatarRef.$el.style.left = "-100%";
+    },
+
+    // 更换头像
+    handleUpDateAvatar(res) {
+      const url = JSON.parse(res.data).data.url;
+      this.updateUserInfo("avatar", url);
+    },
+
+    // 更新用户信息
+    updateUserInfo(key, value) {
+      const originData = {
+        nickname: this.userInfo.nickName,
+        avatar: this.userInfo.avatarUrl,
+        password: this.userInfo.password,
+        id: getUserId(),
+      };
+
+      originData[key] = value;
+
+      updateUserInfoApi(originData).then(() => {
+        refrshUserInfoApi({
+          userId: getUserId(),
+        }).then(({data}) => {
+          console.log(data);
+        })
+      });
     },
   },
 };

@@ -1,14 +1,10 @@
 <script>
-//app.js
-var http = require("./utils/http.js");
-var util = require("./utils/util.js");
-const wx = require("jweixin-module")
 
 export default {
   onLaunach: function () {},
   onShow: function () {
     // 判断浏览器环境
-    var ua = navigator.userAgent.toLowerCase();
+    // var ua = navigator.userAgent.toLowerCase();
     // if (ua.search(/MicroMessenger/i) > -1 && !uni.getStorageSync('appType')) {
     // 	// 微信环境
     // 	uni.setStorageSync('appType', 2)
@@ -23,16 +19,10 @@ export default {
     // 		path = path.substring(0, path.indexOf('code=') - 1)
     // 		history.replaceState({}, '', path)
     // 	}
-    http.getCartCount();
+    // http.getCartCount();
     // }
   },
   globalData: {
-    // 定义全局请求队列
-    requestQueue: [],
-    // 是否正在进行登陆
-    isLanding: false,
-    // 购物车商品数量
-    totalCartCount: 0,
   },
   methods: {},
 };

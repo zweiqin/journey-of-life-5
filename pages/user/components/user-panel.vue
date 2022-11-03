@@ -26,7 +26,7 @@
         v-for="item in data.menus"
         :key="item.label"
       >
-        <wx-open-launch-weapp
+        <!-- <wx-open-launch-weapp
           v-if="item.type === 'mini-progress'"
           id="launch-btn"
           style="margin-top: 24upx"
@@ -42,9 +42,9 @@
             alt=""
           />
           <view class="name">{{ item.label }}</view>
-        </wx-open-launch-weapp>
+        </wx-open-launch-weapp> -->
 
-        <view class="item" v-else>
+        <view class="item">
           <img
             class="icon"
             :style="{

@@ -250,7 +250,7 @@ export default {
 
       sendRedEnvelopeApi(data)
         .then((res) => {
-          if (res.erron !== 0) {
+          if (res.errno !== 0) {
             uni.showToast({
               title: "红包发送失败",
               duration: 2000,

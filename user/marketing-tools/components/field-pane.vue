@@ -16,7 +16,7 @@
             @input="handleInput(item.field, $event)"
             :value="form[item.field]"
             class="input"
-            type="text"
+            :type="item.field === 'password' ? 'password': 'text'"
             :placeholder="item.placeholder"
           />
 

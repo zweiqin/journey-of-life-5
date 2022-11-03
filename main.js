@@ -2,9 +2,14 @@ import Vue from "vue";
 import App from "./App";
 
 Vue.config.productionTip = false;
-import 'animate.css'
+// import 'animate.css'
 
 Vue.mixin({
+  data() {
+    return {
+      baseUrl: ''
+    }
+  },
   methods: {
     setData: function (obj) {
       let that = this;

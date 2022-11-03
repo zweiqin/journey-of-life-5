@@ -152,3 +152,61 @@ export const mapApplyType = (type) => {
     2: "营销策划师",
   }[type];
 };
+
+export const mapApplyStatus = [
+  {
+    label: "未提交",
+    value: -1,
+  },
+  {
+    label: "已撤回",
+    value: -2,
+  },
+  {
+    label: "已驳回",
+    value: -3,
+  },
+  {
+    label: "待审核",
+    value: 0,
+  },
+  {
+    label: "审核中",
+    value: 1,
+  },
+  {
+    label: "审核通过",
+    value: 2,
+  },
+  {
+    label: "未付款",
+    value: 3,
+  },
+  {
+    label: "已付款",
+    value: 4,
+  },
+  {
+    label: "未创建账号",
+    value: 5,
+  },
+  {
+    label: "已创建账号",
+    value: 6,
+  },
+];
+
+export const vipUpNavs = [
+  {
+    label: "全部",
+    value: null,
+  },
+  {
+    label: "商家升级",
+    value: 1,
+  },
+  {
+    label: "营销策划师升级",
+    value: 2,
+  },
+];

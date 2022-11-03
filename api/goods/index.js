@@ -33,12 +33,10 @@ export const everyLookApi = (categoryId) => {
  * @description 获取购物车数据
  * @returns
  */
-export const getShopCarApi = () => {
+export const getShopCarApi = (data) => {
   return RuanRequest(
     "/cart/index",
-    {
-      userId: getUserId(),
-    },
+    data,
     "get"
   );
 };
@@ -61,8 +59,8 @@ export const addShopCarApi = (data) => {
  * @description 获取购物车数量
  * @returns
  */
-export const getCarShopNumberApi = () => {
-  return RuanRequest("/cart/goodscount", { userId: getUserId() }, "get");
+export const getCarShopNumberApi = (data) => {
+  return RuanRequest("/cart/goodscount", data, "get");
 };
 
 // 提交订单

@@ -1,7 +1,6 @@
 import { whoami } from "../api/auth";
 import { J_USER_ID } from "../constant";
 import { jsonp } from "vue-jsonp";
-import wx from "weixin-js-sdk";
 
 /**
  * @description 解决小数计算精度问题（en，你应该使用big.js）
@@ -145,12 +144,3 @@ export const getAddressLongitudeAndLatitude = (address) => {
   });
 };
 
-export const toMiniProgram = (url, params) => {
-  let stringParmes = JSON.stringify(params); // h5活动需回传的参数
-  let h5Url = "https://xxxx.com.cn/wxapp/nev-prod/3d/"; // h5活动需回传的h5活动地址
-  wx.miniProgram.redirectTo({
-    url: `${url}?redirectURL=${encodeURIComponent(
-      h5Url
-    )}&params=${encodeURIComponent(stringParmes)}`,
-  });
-};

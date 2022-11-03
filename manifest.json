@@ -2,8 +2,8 @@
     "name" : "巨蜂商城",
     "appid" : "__UNI__B07FE0F",
     "description" : "",
-    "versionName" : "1.0.3",
-    "versionCode" : 102,
+    "versionName" : "1.0.6",
+    "versionCode" : 107,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true,
@@ -29,19 +29,22 @@
                     "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
                     "<uses-permission android:name=\"android.permission.VIBRATE\"/>",
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>"
-                ]
+                ],
+                "abiFilters" : []
             },
             "ios" : {
-                "dSYMs" : false
+                "dSYMs" : false,
+                "idfa" : false
             },
             "sdkConfigs" : {
                 "ad" : {},
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "",
-                        "appkey_android" : ""
+                        "appkey_ios" : "2b352cfd249b580bd87da6d9ec37f010",
+                        "appkey_android" : "2b352cfd249b580bd87da6d9ec37f010"
                     }
-                }
+                },
+                "share" : {}
             },
             "icons" : {
                 "android" : {
@@ -122,5 +125,6 @@
                 }
             }
         }
-    }
+    },
+    "fallbackLocale" : "zh-Hans"
 }

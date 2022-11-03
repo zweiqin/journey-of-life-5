@@ -60,6 +60,7 @@ import {
   submitApplyStoreInfo,
   getStoreSaveInfoApi,
   widthDrawApi,
+  houxucaozuoApi
 } from "../../api/user";
 import {
   J_USER_INFO,

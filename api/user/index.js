@@ -8,6 +8,16 @@
  */
 import { LTRequest, getUserId, RuanRequest } from "../../utils";
 
+// 更新用户信息
+export const updateUserInfoApi = data => {
+  return RuanRequest("/user/update", data)
+}
+
+// 刷新用户信息
+export const refrshUserInfoApi = data => {
+  return RuanRequest("/user/refreshUser", data)
+}
+
 // 业务管理升级
 export const upbussinessApi = (data) => {
   return LTRequest("/api/business/setMsgSentryStatus", data);
@@ -128,6 +138,11 @@ export const getApplyVipHistoryApi = (data) => {
   return RuanRequest("/upRecord/list", data, "success");
 };
 
+// 所有的申请记录
+export const getAllApplyVipHistoryListApi = data => {
+  return RuanRequest("/userUpInfo/list", data, 'get')
+}
+
 // 获取省市区地址
 export const getCitiesApi = (data) => {
   return RuanRequest("/region/list", data, "get");
@@ -191,6 +206,11 @@ export const payStoreAndYingApi = (data) => {
 export const payTryStoreAndYingApi = (data) => {
   return RuanRequest("/levelPay/TryStorePrepayBySyb", data);
 };
+
+// 后续操作
+export const houxucaozuoApi = data => {
+  return RuanRequest("/userUpInfo/signin", data, 'get')
+}
 
 // 优惠劵
 // 查询用户优惠劵

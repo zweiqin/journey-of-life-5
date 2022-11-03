@@ -108,7 +108,8 @@ import {
   getApplyTableApi,
   widthDrawApi,
   payStoreAndYingApi,
-  payTryStoreAndYingApi
+  payTryStoreAndYingApi,
+  houxucaozuoApi
 } from "../../api/user";
 import { getUserId } from "../../utils";
 import { mapApplyStats } from "./config";
@@ -168,6 +169,12 @@ export default {
 
   onShow() {
     this.getApplyHistory();
+    // houxucaozuoApi({
+    //   userId: getUserId(),
+    //   id: 82
+    // }).then(res => {
+    //   console.log(res);
+    // })
   },
 
   methods: {
