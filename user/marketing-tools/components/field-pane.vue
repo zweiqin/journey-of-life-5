@@ -16,7 +16,7 @@
             @input="handleInput(item.field, $event)"
             :value="form[item.field]"
             class="input"
-            :type="item.field === 'password' ? 'password': 'text'"
+            :type="item.field === 'password' ? 'password' : 'text'"
             :placeholder="item.placeholder"
           />
 
@@ -43,6 +43,14 @@
               >{{ form[item.field] || "请选择门店类型" }}</view
             >
           </picker>
+
+          <view
+            @click="chnageGender(item.field)"
+            class="chooseGender"
+            v-if="item.field === 'gender'"
+          >
+            {{ form[item.field] | fomartGender }}
+          </view>
 
           <JCity
             style="flex: 1"
@@ -111,6 +119,23 @@ export default {
       this.form[field] =
         field === "brandgenre" ? this.storeTypesArr[value].storeName : value;
     },
+
+    // 选择性别
+    chnageGender(field) {
+      const _this = this;
+      uni.showActionSheet({
+        itemList: ["女", "男"],
+        success: function (res) {
+          _this.form[field] = res.tapIndex + 1;
+        },
+      });
+    },
+  },
+
+  filters: {
+    fomartGender(gender) {
+      return gender === 0 ? "位置" : gender === 1 ? "男" : "女";
+    },
   },
 
   watch: {
@@ -153,6 +178,11 @@ export default {
     font-weight: bold;
   }
 
+  .chooseGender {
+    flex: 1;
+    text-align: left;
+  }
+
   .item {
     padding: 20upx 0;
     border-bottom: 1upx solid #d8d8d8;
@@ -182,6 +212,7 @@ export default {
         margin-top: 20upx;
         width: 100%;
         height: 100px;
+        font-size: 24upx;
       }
     }
   }

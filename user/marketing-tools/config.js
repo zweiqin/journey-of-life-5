@@ -84,7 +84,7 @@ export const mapStatusColor = (type) => {
 export const infomations = [
   {
     label: "手机号：",
-    field: "brandPhone",
+    field: "phone",
     type: "input",
     placeholder: "请填写营销策划师需要绑定的手机号",
   },
@@ -102,25 +102,25 @@ export const infomations = [
     warnText: "（注：账号/密码用于您登陆PC端管理后台，请务必牢记）",
   },
   {
-    label: "性别",
-    type: "input",
+    label: "性别：",
+    type: "gender",
     field: "gender",
     placeholder: "请选择性别",
   },
   {
-    label: "所属城市",
+    label: "所属城市：",
     type: "city",
     field: "areaname",
     placeholder: "省份、城市、区县",
   },
   {
-    label: "微信号",
+    label: "微信号：",
     type: "input",
     field: "wechat",
     placeholder: "请填写微信号",
   },
   {
-    label: "原住城市",
+    label: "居住城市：",
     type: "city",
     field: "address",
     placeholder: "省份、城市、区县",
@@ -138,11 +138,11 @@ export const infomations = [
 export const identImgs = [
   {
     label: "身份证人像面",
-    field: "brandIdcardProsUrl",
+    field: "idcardProsUrl",
   },
   {
     label: "身份证国徽面",
-    field: "brandIdcardConsUrl",
+    field: "idcardConsUrl",
   },
 ];
 

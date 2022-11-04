@@ -56,7 +56,7 @@ prod:nth-child(2n) .prod-items {
   position: relative;
   height: 50rpx;
   line-height: 70rpx;
-  font-family: Arial;
+  /* font-family: Arial; */
 }
 
 .prod-items .hot-text .prod-text-info .price {

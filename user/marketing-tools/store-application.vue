@@ -1,6 +1,6 @@
 <template>
   <view class="store-application-container">
-    <JHeader width="50" height="50" title="商家信息填写"></JHeader>
+    <JHeader width="50" height="50" title="商家信息"></JHeader>
     <view class="header">
       <img src="" class="back" alt="" />
     </view>
@@ -24,16 +24,16 @@
       @upload="handleSaveImg(item.field, $event)"
       @delete="handleDeleteImg(item.field)"
     ></JUpload>
-    <view class="buts" v-if="![2, 3, 4, 5, 6].includes(applyStatus * 1)">
+    <view class="buts">
       <button
-        v-if="![2, 3, 4, 5, 6].includes(applyStatus * 1)"
+        v-if="[2, 3, 4, 5, 6, -10].includes(applyStatus * 1)"
         class="btn"
         @click="submit(false)"
       >
         保存
       </button>
       <button
-        v-if="![2, 3, 4, 5, 6].includes(applyStatus * 1)"
+        v-if="[2, 3, 4, 5, 6, -10].includes(applyStatus * 1)"
         class="btn"
         @click="submit(true)"
       >
@@ -49,7 +49,7 @@
       </button>
     </view>
 
-    <view v-if="applyStatus" class="mask"></view>
+    <view v-if="applyStatus > 1" class="mask"></view>
   </view>
 </template>
 
@@ -60,7 +60,7 @@ import {
   submitApplyStoreInfo,
   getStoreSaveInfoApi,
   widthDrawApi,
-  houxucaozuoApi
+  houxucaozuoApi,
 } from "../../api/user";
 import {
   J_USER_INFO,
@@ -79,10 +79,11 @@ export default {
     if (options.type === "table") {
       const applyInfo = uni.getStorageSync(J_STORE_INFO);
       this.setSToreApplyDetailInfo(applyInfo.info);
-      this.applyStatus = applyInfo.status;
+      this.applyStatus = applyInfo.status * 1;
       this.ticketsId = applyInfo.ticketsId;
     } else {
       this.getUserSaveInfo();
+      this.applyStatus = options.status * 1;
     }
   },
   data() {
@@ -101,6 +102,7 @@ export default {
 
       applyStatus: null,
       ticketsId: null,
+      showApplyBtn: true,
     };
   },
 
@@ -211,8 +213,8 @@ export default {
 
       getAddressLongitudeAndLatitude(data.address.replace("-", "")).then(
         (res) => {
-          data.longitude = res.result.location.lat;
-          data.latitude = res.result.location.lng;
+          data.longitude = res.result.location.lng;
+          data.latitude = res.result.location.lat;
 
           if (tag) {
             uni.showModal({
@@ -334,7 +336,7 @@ export default {
   .mask {
     position: fixed;
     z-index: 1;
-    top: 0;
+    top: 100upx;
     left: 0;
     width: 100vw;
     height: 100vh;

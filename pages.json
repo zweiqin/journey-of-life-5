@@ -47,7 +47,8 @@
 				"navigationBarTitleText": "搜索",
 				"navigationBarTextStyle": "black"
 			}
-		},{
+		},
+		{
 			"path": "pages/prod/prod",
 			"style": {
 				"navigationBarTitleText": "商品详情",
@@ -55,7 +56,8 @@
 					"uni-number-box": "/uni_modules/uni-number-box/components/uni-number-box/uni-number-box"
 				}
 			}
-		},{
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录"
@@ -304,6 +306,12 @@
 					"path": "marketing-tools/contact-guide/create-namezcard",
 					"style": {
 						"navigationBarTitleText": "新建名片"
+					}
+				},
+				{
+					"path": "otherServe/voucher/index",
+					"style": {
+						"navigationBarTitleText": "代金劵"
 					}
 				}
 			]

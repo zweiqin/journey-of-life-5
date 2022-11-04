@@ -1,6 +1,6 @@
 <template>
   <view class="up-vip-container">
-    <JHeader :dark="false" title="会员升级"></JHeader>
+    <JHeader tabbar="/pages/user/user" :dark="false" title="会员升级"></JHeader>
 
     <view class="item" v-for="item in vips" :key="item.label">
       <view class="title">{{ item.label }}</view>
@@ -82,11 +82,35 @@
         </button>
         <!-- <view class="status">{{ mapApplyStats(storeInfo.status) }}</view> -->
         <button
-          v-if="[item.key].status === 0"
+          v-if="marketingPlannerInfo.userUpgradeInfo.status === 0"
           class="uni-btn"
           @click="handleWhhithDrawApply(item.type)"
         >
           撤销申请
+        </button>
+
+        <button
+          class="uni-btn"
+          style="background: #52aa44"
+          @click="handlePay(2, 'pay')"
+          v-if="
+            marketingPlannerInfo.userUpgradeInfo.status === 2 ||
+            marketingPlannerInfo.userUpgradeInfo.status === 3
+          "
+        >
+          支付
+        </button>
+
+        <button
+          @click="handlePay(2, 'try')"
+          style="background: #2bcddd"
+          class="uni-btn"
+          v-if="
+            marketingPlannerInfo.userUpgradeInfo.status === 2 ||
+            marketingPlannerInfo.userUpgradeInfo.status === 3
+          "
+        >
+          试用
         </button>
       </view>
     </view>
@@ -109,76 +133,39 @@ import {
   widthDrawApi,
   payStoreAndYingApi,
   payTryStoreAndYingApi,
-  houxucaozuoApi
+  houxucaozuoApi,
+  applyVipApi,
+  payVipApplySuccessApi,
 } from "../../api/user";
 import { getUserId } from "../../utils";
-import { mapApplyStats } from "./config";
-import { J_STORE_INFO, J_USER_TOKEN } from "../../constant";
+import { mapApplyStats, vips } from "./config";
+import {
+  J_STORE_INFO,
+  J_USER_TOKEN,
+  J_MARKETING_PLANNER,
+  J_USER_INFO,
+} from "../../constant";
 import { payOrderGoodsApi } from "../../api/goods";
 
 export default {
   data() {
     return {
-      vips: [
-        {
-          url: "",
-          label: "会员升级",
-          powerUrl:
-            "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/78ixjkl9eg69fjlcgi22.png",
-          price: "99",
-          type: 4,
-          style: {
-            height: "133upx",
-            margin: "20upx 0",
-          },
-          key: "vipInfo",
-        },
-        {
-          url: "/user/marketing-tools/store-application",
-          label: "商家升级",
-          powerUrl:
-            "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/u5eplf8zp6uh343rioyg.png",
-          price: "3800",
-          type: 1,
-          style: {
-            height: "300upx",
-            margin: "20upx 0",
-          },
-          key: "storeInfo",
-        },
-        {
-          url: "/user/marketing-tools/marketing-planner",
-          label: "营销策划师升级",
-          type: 2,
-          powerUrl:
-            "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/398c5ygdln5qfamkgret.png",
-          price: "6000",
-          style: {
-            height: "188upx",
-            margin: "20upx 0",
-          },
-          key: "marketingPlannerInfo",
-        },
-      ],
-
+      vips,
       storeInfo: null,
       vipInfo: null,
       marketingPlannerInfo: null,
+      isReLoad: true,
     };
   },
 
   onShow() {
     this.getApplyHistory();
-    // houxucaozuoApi({
-    //   userId: getUserId(),
-    //   id: 82
-    // }).then(res => {
-    //   console.log(res);
-    // })
   },
 
   methods: {
     getApplyHistory() {
+      const _this = this;
+
       getApplyTableApi({
         userId: getUserId(),
       }).then((res) => {
@@ -188,16 +175,125 @@ export default {
           res.data.items.find((item) => item.newGrade === 1) || null;
         this.marketingPlannerInfo =
           res.data.items.find((item) => item.newGrade === 2) || null;
+        console.log(this.vipInfo);
+        if (this.vipInfo.upgradeOrder.payStatus === 2) {
+          const info = uni.getStorageSync(J_USER_INFO);
+          console.log(info);
+          // payVipApplySuccessApi({}).then(() => {
+          //   this.$showToast("升级vip", "success");
+          // });
+        }
 
-        uni.setStorageSync(J_STORE_INFO, {
-          info: this.storeInfo.userUpgradeInfo,
-          status: this.storeInfo.userUpgradeInfo.status,
-          ticketsId: this.storeInfo.ticketsId,
-        });
+        if (this.storeInfo && this.storeInfo.status !== 1) {
+          if (this.isReLoad) {
+            if (
+              this.storeInfo.upgradeOrder &&
+              this.storeInfo.upgradeOrder.payStatus === 2
+            ) {
+              houxucaozuoApi({
+                userId: getUserId(),
+                id: this.storeInfo.ticketsId,
+              })
+                .then((res) => {
+                  _this.$showToast("商家升级成功", "success");
+                  _this.getApplyHistory();
+                  this.isReLoad = false;
+                })
+                .catch((err) => {});
+            }
+          }
+        }
+
+        if (
+          this.marketingPlannerInfo &&
+          this.marketingPlannerInfo.status !== 1
+        ) {
+          if (this.isReLoad) {
+            if (
+              this.marketingPlannerInfo.upgradeOrder &&
+              this.marketingPlannerInfo.upgradeOrder.payStatus === 2
+            ) {
+              houxucaozuoApi({
+                userId: getUserId(),
+                id: this.marketingPlannerInfo.ticketsId,
+              })
+                .then((res) => {
+                  _this.$showToast("营销策划师升级成功", "success");
+                  _this.getApplyHistory();
+                  this.isReLoad = false;
+                })
+                .catch((err) => {});
+            }
+          }
+        }
+
+        // if (this.storeInfo) {
+        //   houxucaozuoApi({
+        //     userId: getUserId(),
+        //     id: this.storeInfo.ticketsId,
+        //   }).then(res => {
+        //     console.log(res);
+        //   }).catch(err => {
+
+        //   })
+        // }
+
+        if (this.storeInfo) {
+          uni.setStorageSync(J_STORE_INFO, {
+            info: this.storeInfo.userUpgradeInfo,
+            status: this.storeInfo.userUpgradeInfo.status,
+            ticketsId: this.storeInfo.ticketsId,
+          });
+        }
+
+        if (this.marketingPlannerInfo) {
+          uni.setStorageSync(J_MARKETING_PLANNER, {
+            info: this.marketingPlannerInfo.userUpgradeInfo,
+            status: this.marketingPlannerInfo.userUpgradeInfo.status,
+            ticketsId: this.marketingPlannerInfo.ticketsId,
+          });
+        }
       });
     },
 
     handleToUp(item) {
+      if (item.type === 1 && this.storeInfo) {
+        return;
+      }
+
+      if (item.type === 2 && this.marketingPlannerInfo) {
+        return;
+      }
+
+      if (item.type === 4) {
+        applyVipApi({
+          userId: getUserId(),
+        }).then(({ data }) => {
+          payOrderGoodsApi({
+            orderNo: data.payOrderID,
+            userId: getUserId(),
+            payType: 4,
+          }).then((res) => {
+            const form = document.createElement("form");
+            form.setAttribute("action", res.url);
+            form.setAttribute("method", "POST");
+            const data = JSON.parse(res.data);
+            let input;
+            for (const key in data) {
+              input = document.createElement("input");
+              input.name = key;
+              input.value = data[key];
+              form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+          });
+        });
+        return;
+      }
+
       uni.navigateTo({
         url: item.url,
       });
@@ -208,6 +304,8 @@ export default {
     handleToViewApplyTable(type) {
       if (type === 1) {
         this.go("/user/marketing-tools/store-application?type=table");
+      } else {
+        this.go("/user/marketing-tools/marketing-planner?type=table");
       }
     },
 
@@ -220,6 +318,16 @@ export default {
           success: function (res) {
             if (res.confirm) {
               _this.widthDraw(_this.storeInfo.ticketsId);
+            }
+          },
+        });
+      } else {
+        uni.showModal({
+          title: "提示",
+          content: "是否要撤销营销策划师申请？",
+          success: function (res) {
+            if (res.confirm) {
+              _this.widthDraw(_this.marketingPlannerInfo.ticketsId);
             }
           },
         });
@@ -242,10 +350,40 @@ export default {
 
     handlePay(type, payType) {
       if (type === 1) {
-        const api = payType === 'pay' ? payStoreAndYingApi : payTryStoreAndYingApi
+        const api =
+          payType === "pay" ? payStoreAndYingApi : payTryStoreAndYingApi;
         api({
           userId: getUserId(),
           upOrderId: this.storeInfo.ticketsId,
+        }).then(({ data }) => {
+          payOrderGoodsApi({
+            orderNo: data.payOrderID,
+            userId: getUserId(),
+            payType: 4,
+          }).then((res) => {
+            const form = document.createElement("form");
+            form.setAttribute("action", res.url);
+            form.setAttribute("method", "POST");
+            const data = JSON.parse(res.data);
+            let input;
+            for (const key in data) {
+              input = document.createElement("input");
+              input.name = key;
+              input.value = data[key];
+              form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+          });
+        });
+      } else if (type === 2) {
+        const api =
+          payType === "pay" ? payStoreAndYingApi : payTryStoreAndYingApi;
+        api({
+          userId: getUserId(),
+          upOrderId: this.marketingPlannerInfo.ticketsId,
         }).then(({ data }) => {
           payOrderGoodsApi({
             orderNo: data.payOrderID,

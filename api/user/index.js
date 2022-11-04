@@ -133,6 +133,16 @@ export const submitApplyStoreInfo = (type, data) => {
   return RuanRequest("/userUpInfo/save?isSubmit=" + type, data);
 };
 
+// vip 预支付
+export const applyVipApi = data => {
+  return RuanRequest('/levelPay/VipPrepayBySyb', data)
+}
+
+// vip 升级成功
+export const payVipApplySuccessApi = (data) => {
+  return RuanRequest('/userUpInfo/upToVip', data, 'get')
+}
+
 // 获取申请记录
 export const getApplyVipHistoryApi = (data) => {
   return RuanRequest("/upRecord/list", data, "success");
@@ -182,7 +192,7 @@ export const getUserCollectionListApi = (data) => {
   return RuanRequest("/collect/list", data, "get");
 };
 
-// 查询门店的信息
+// 查询会员升级的信息
 export const getStoreSaveInfoApi = (data) => {
   return RuanRequest("/userUpInfo/read", data, "get");
 };

@@ -32,7 +32,7 @@ export default {
     this.getRedEnvelopeList();
   },
 
-  created(){
+  created() {
     this.getLoaction();
   },
 
@@ -52,11 +52,12 @@ export default {
     getRedEnvelopeList() {
       getRedEnvelopeListApi().then((res) => {
         this.allMarks = res.data;
+        const made = [];
         for (const redPack of res.data) {
-          this.markers.push({
+          made.push({
             id: redPack.id,
-            latitude: redPack.latitude,
-            longitude: redPack.longitude,
+            latitude: redPack.longitude,
+            longitude: redPack.latitude,
             title: redPack.brandName + "的红包",
             width: 28,
             height: 37,
@@ -64,16 +65,38 @@ export default {
               "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/n6p0qgt26t6wu1onofpa.webp",
           });
 
-          this.markers.push({
-            id: "location",
-            latitude: this.latitude,
-            longitude: this.longitude,
-            width: 22,
-            height: 37,
-            iconPath:
-              "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lvmfduz8l50btyqlkd2k.png",
-          });
+          // this.markers.push({
+          //   id: Date.now() + Math.random(),
+          //   latitude: '117.53414',
+          //   longitude: '25.00446',
+          //   title: "尼玛的红包",
+          //   width: 28,
+          //   height: 37,
+          //   iconPath:
+          //     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/n6p0qgt26t6wu1onofpa.webp",
+          // });
         }
+        made.push({
+          id: Date.now() + Math.random(),
+          latitude: this.latitude,
+          longitude: this.longitude,
+          width: 22,
+          height: 37,
+          iconPath:
+            "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lvmfduz8l50btyqlkd2k.png",
+        });
+
+        // made.push({
+        //   id: Date.now() + Math.random(),
+        //   latitude: this.latitude + 0,
+        //   longitude: this.longitude,
+        //   width: 22,
+        //   height: 37,
+        //   iconPath:
+        //     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lvmfduz8l50btyqlkd2k.png",
+        // });
+        this.markers = made;
+        console.log(this.markers);
       });
     },
 
