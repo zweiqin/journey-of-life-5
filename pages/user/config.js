@@ -244,13 +244,15 @@ export const otherServe = {
       type: 'mini-progress'
     },
     {
-      label: "代金券充值",
+      label: "代金券",
       icon: require("../../static/images/user/daijinjuanchongzhi.png"),
+      url: '/user/otherServe/voucher/index'
     },
-    {
-      label: "代金券转赠",
-      icon: require("../../static/images/user/daijinjuanzhuanzeng.png"),
-    },
+    // {
+    //   label: "代金券转赠",
+    //   icon: require("../../static/images/user/daijinjuanzhuanzeng.png"),
+    // },
+    {},
     {}
     // {
     //   label: "联系客服",

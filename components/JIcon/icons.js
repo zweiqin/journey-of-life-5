@@ -33,4 +33,5 @@ export const types = {
     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4wcie54va3x131h01wmn.png", //
   king: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/pfjj3t86b2npboh96h9u.png", // 皇冠
   back: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ozsrolc809fc5y260e8c.png", // 灰色返回键
+  voucher: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/37xw9u10eokmm37o2lov.png"
 };

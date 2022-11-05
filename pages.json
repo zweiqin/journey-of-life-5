@@ -313,6 +313,12 @@
 					"style": {
 						"navigationBarTitleText": "代金劵"
 					}
+				},
+				{
+					"path": "otherServe/voucher/voucher-turnover",
+					"style": {
+						"navigationBarTitleText": "代金劵流水"
+					}
 				}
 			]
 		},
