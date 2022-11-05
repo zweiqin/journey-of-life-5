@@ -319,6 +319,12 @@
 					"style": {
 						"navigationBarTitleText": "代金劵流水"
 					}
+				},
+				{
+					"path": "otherServe/voucher/recharge-history",
+					"style": {
+						"navigationBarTitleText": "充值记录"
+					}
 				}
 			]
 		},

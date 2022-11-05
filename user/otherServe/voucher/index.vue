@@ -12,7 +12,7 @@
       <view class="icon-wrapper">
         <JIcon width="40" height="40" type="voucher"></JIcon>
       </view>
-      <view class="my-voucher">我的代金券 100</view>
+      <view class="my-voucher">我的代金券 0</view>
       <button class="uni-btn">签到有惊喜</button>
     </view>
 
@@ -25,7 +25,7 @@
         </view>
 
         <view class="total-value" :style="{ color: item.color }"
-          >100
+          >0
           <text class="unit" v-if="item.unit" :style="{ color: item.color }">{{
             item.unit
           }}</text></view
@@ -42,7 +42,7 @@
         <navigator
           v-for="item in footerMenus"
           :key="item.label"
-          url="/user/info/detail"
+          :url="item.url"
           hover-class="navigator-hover"
         >
           <view class="to">{{ item.label }}</view>

@@ -29,6 +29,6 @@ export const footerMenus = [
   },
   {
     label: "代金劵充值记录",
-    url: "",
+    url: "/user/otherServe/voucher/recharge-history",
   },
 ];
