@@ -18,7 +18,7 @@ export const getCartAddApi = (data) => {
 
 // 获取购物车列表
 export const getShopCarListApi = (data) => {
-  return RuanRequest("/cart/index", data, "get");
+  return RuanRequest("/cart/allIndex", data, "get");
 };
 /**
  *

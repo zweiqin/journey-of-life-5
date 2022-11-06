@@ -134,8 +134,9 @@ import {
   marketingTools,
   otherServe,
 } from "./config";
-import { checkWhoami } from "../../utils";
-import { J_USER_INFO, J_USER_ID, J_LOACTION } from "../../constant";
+import { checkWhoami, getUserId } from "../../utils";
+import { J_USER_INFO, J_USER_ID, J_LOACTION, J_REFRSH } from "../../constant";
+import { refrshUserInfoApi } from "../../api/user";
 
 export default {
   components: {
@@ -163,7 +164,14 @@ export default {
       this.userInfo = userInfo;
     }
 
+    refrshUserInfoApi({
+      userId: getUserId(),
+    }).then((res) => {
+      this.userInfo = res.data;
+    });
+
     uni.removeStorageSync(J_LOACTION);
+    uni.removeStorageSync(J_REFRSH);
   },
 
   methods: {

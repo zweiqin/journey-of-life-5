@@ -22,3 +22,6 @@ export const J_LOACTION = "J_LOACTION";
 // vip
 export const J_STORE_INFO = "J_STORE_INFO";
 export const J_MARKETING_PLANNER = "J_MARKETING_PLANNER"
+
+// page
+export const J_REFRSH = "J_REFRSH"

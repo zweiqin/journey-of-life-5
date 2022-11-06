@@ -24,19 +24,19 @@
 
       <view class="tip"> 放心开通，不会自动续费 </view>
 
-      <view class="apply-status" v-if="item.type === 4 && vipInfo">
+      <!-- <view class="apply-status" v-if="item.type === 4 && vipInfo">
         <button class="uni-btn" @click="handleToViewApplyTable(item.type)">
           申请表
-        </button>
-        <!-- <view class="status">{{ mapApplyStats(storeInfo.status) }}</view> -->
-        <button
+        </button> -->
+      <!-- <view class="status">{{ mapApplyStats(storeInfo.status) }}</view> -->
+      <!-- <button
           v-if="[item.key].status === 0"
           class="uni-btn"
           @click="handleWhhithDrawApply(item.type)"
         >
           撤销申请
         </button>
-      </view>
+      </view> -->
 
       <view class="apply-status" v-if="item.type === 1 && storeInfo">
         <button class="uni-btn" @click="handleToViewApplyTable(item.type)">
@@ -144,6 +144,7 @@ import {
   J_USER_TOKEN,
   J_MARKETING_PLANNER,
   J_USER_INFO,
+  J_REFRSH,
 } from "../../constant";
 import { payOrderGoodsApi } from "../../api/goods";
 
@@ -176,13 +177,13 @@ export default {
         this.marketingPlannerInfo =
           res.data.items.find((item) => item.newGrade === 2) || null;
         console.log(this.vipInfo);
-        if (this.vipInfo.upgradeOrder.payStatus === 2) {
-          const info = uni.getStorageSync(J_USER_INFO);
-          console.log(info);
-          // payVipApplySuccessApi({}).then(() => {
-          //   this.$showToast("升级vip", "success");
-          // });
-        }
+        // if (this.vipInfo.upgradeOrder.payStatus === 2) {
+        //   const info = uni.getStorageSync(J_USER_INFO);
+        //   console.log(info);
+        //   // payVipApplySuccessApi({}).then(() => {
+        //   //   this.$showToast("升级vip", "success");
+        //   // });
+        // }
 
         if (this.storeInfo && this.storeInfo.status !== 1) {
           if (this.isReLoad) {
@@ -195,6 +196,7 @@ export default {
                 id: this.storeInfo.ticketsId,
               })
                 .then((res) => {
+                  uni.setStorageSync(J_REFRSH, "refrush");
                   _this.$showToast("商家升级成功", "success");
                   _this.getApplyHistory();
                   this.isReLoad = false;
@@ -218,6 +220,7 @@ export default {
                 id: this.marketingPlannerInfo.ticketsId,
               })
                 .then((res) => {
+                  uni.setStorageSync(J_REFRSH, "refrush");
                   _this.$showToast("营销策划师升级成功", "success");
                   _this.getApplyHistory();
                   this.isReLoad = false;
@@ -257,6 +260,17 @@ export default {
     },
 
     handleToUp(item) {
+      if (item.type === 4) {
+        const userInfo = uni.getStorageSync(J_USER_INFO);
+        console.log(userInfo.userLevel);
+        if (userInfo.userLevel >= 1) {
+          this.$showToast(
+            `您已经是${userInfo.userLevelDesc}等级了，无需升级vip`
+          );
+        }
+
+        return;
+      }
       if (item.type === 1 && this.storeInfo) {
         return;
       }
