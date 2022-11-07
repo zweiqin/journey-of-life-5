@@ -88,7 +88,8 @@
         ></JStorePane>
       </view>
 
-      <view v-else class="no-data"> 暂无门店信息 </view>
+      <!-- <view v-else class="no-data"> 暂无门店信息 </view> -->
+      <JNoData v-else text="暂无门店信息" type="store"></JNoData>
     </view>
   </view>
 </template>
@@ -106,11 +107,11 @@ export default {
 
   onLoad() {
     this.getStoreList();
-    this.getStoreTypes();
   },
 
   onShow() {
     uni.removeStorageSync(J_LOACTION);
+    this.getStoreTypes();
   },
 
   data() {
@@ -190,6 +191,8 @@ export default {
         })
           .then(({ data }) => {
             types = data.items;
+            this.$forceUpdate();
+
             uni.setStorageSync(J_STORE_TYPES, data.items);
           })
           .catch((err) => {
@@ -328,7 +331,7 @@ export default {
 .j-tabs {
   box-sizing: border-box;
   padding: 0 16upx;
-  margin-bottom: -50upx;
+  margin-bottom: -30upx;
 
   /deep/ .item {
     font-size: 24upx;

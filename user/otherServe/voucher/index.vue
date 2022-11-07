@@ -12,7 +12,7 @@
       <view class="icon-wrapper">
         <JIcon width="40" height="40" type="voucher"></JIcon>
       </view>
-      <view class="my-voucher">我的代金券 0</view>
+      <view class="my-voucher">我的代金券 {{ voucherNumber }}</view>
       <button class="uni-btn">签到有惊喜</button>
     </view>
 
@@ -25,7 +25,7 @@
         </view>
 
         <view class="total-value" :style="{ color: item.color }"
-          >0
+          >{{ voucherNumber }}
           <text class="unit" v-if="item.unit" :style="{ color: item.color }">{{
             item.unit
           }}</text></view
@@ -69,6 +69,8 @@ import {
   footerMenus,
 } from "./config";
 import PricePane from "./components/price-pane.vue";
+import { getVoucherNumberApi } from "../../../api/user";
+import { getUserId } from "../../../utils";
 
 export default {
   data() {
@@ -77,16 +79,29 @@ export default {
       reCharges,
       transFormVoucher,
       footerMenus,
+      voucherNumber: 0,
     };
   },
   components: {
     PricePane,
   },
 
+  onShow() {
+    this.getVoucherHold();
+  },
+
   methods: {
     opVoucher(type, price) {
       let url = type === "recharge" ? "/user/otherServe/voucher/recharge" : "";
       this.go(url + `?price=${price}`);
+    },
+
+    getVoucherHold() {
+      getVoucherNumberApi({
+        userId: getUserId(),
+      }).then(({ data }) => {
+        this.voucherNumber = data[0] ? data[0].number : 0;
+      });
     },
   },
 };

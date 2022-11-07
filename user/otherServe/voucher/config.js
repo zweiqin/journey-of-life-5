@@ -1,13 +1,13 @@
 export const totalVoucher = [
   {
     label: "余额",
-    field: "",
+    field: "yue",
     unit: "元",
     color: "#FA5151",
   },
   {
     label: "代金劵",
-    field: "",
+    field: "voucheNumber",
   },
   {
     label: "充值记录",

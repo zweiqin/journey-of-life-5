@@ -213,7 +213,7 @@ import Goods from "../../components/goods";
 import JAside from "./components/Aside.vue";
 import NoData from "../../components/no-data";
 import { getIndexDataApi } from "../../api/home";
-import { J_LOACTION, J_REFRSH } from "../../constant";
+import { J_LOACTION, J_REFRSH, J_STORE_TYPES } from "../../constant";
 import {
   getTypeDetailList,
   getGoodsById,
@@ -266,8 +266,8 @@ export default {
 
   onShow() {
     uni.removeStorageSync(J_LOACTION);
-    const refrsh = uni.getStorageSync(J_REFRSH)
-    
+    const refrsh = uni.getStorageSync(J_REFRSH);
+    uni.removeStorageSync(J_STORE_TYPES);
   },
 
   methods: {

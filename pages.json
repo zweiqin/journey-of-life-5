@@ -11,15 +11,21 @@
 		},
 		{
 			"path": "pages/red-envelope/red-envelope",
-			"navigationBarTitleText": "红包地图"
+			"style": {
+				"navigationBarTitleText": "地图红包"
+			}
 		},
 		{
 			"path": "pages/pay-result/pay-result",
-			"navigationBarTitleText": "支付结果"
+			"style": {
+				"navigationBarTitleText": "支付结果"
+			}
 		},
 		{
 			"path": "pages/marketing-treasure-house/marketing-treasure-house",
-			"navigationBarTitleText": "营销宝库"
+			"style": {
+				"navigationBarTitleText": "营销宝库"
+			}
 		},
 		{
 			"path": "pages/pre-order/pre-order",
@@ -96,7 +102,9 @@
 		},
 		{
 			"path": "pages/store/store",
-			"navigationBarTitleText": "本地生活"
+			"style": {
+				"navigationBarTitleText": "本地生活"
+			}
 		}
 	],
 	"tabBar": {

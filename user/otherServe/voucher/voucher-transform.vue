@@ -1,5 +1,5 @@
 <template>
-  <view class="recharge-page">
+  <view class="voucher-transform-container">
     <JBack dark width="50" height="50"></JBack>
     <view class="main">
       <view class="recharge-wrapper">
@@ -127,7 +127,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.recharge-page {
+.voucher-transform-container {
   padding: 48upx;
   box-sizing: border-box;
 

@@ -45,7 +45,7 @@
           ><JIcon type="redBag" width="36" height="40"></JIcon
         ></view>
 
-        <view class="desc"> 抽奖次数： 5次 </view>
+        <view class="desc"> 抽奖次数： 0次 </view>
       </view>
 
       <button class="uni-btn share-btn">分享好友</button>
@@ -61,16 +61,41 @@ export default {
   data() {
     return {
       currentNumber: null,
-      timer: null
+      timer: null,
+      quan: null,
+      currentQuan: 0,
     };
   },
 
   methods: {
     handleStart() {
-      const _this = this
+      uni.showModal({
+        title: "提示",
+        content: "您没有抽奖次数",
+        success: function () {},
+      });
+      return;
+      const _this = this;
       if (_this.timer) return;
+      this.quan = (Math.random() + "").slice(3, 4);
       this.timer = setInterval(() => {
         this.currentNumber++;
+        this.currentQuan++;
+        if (this.currentQuan >= this.quan) {
+          uni.showModal({
+            title: "提示",
+            content: "谢谢惠顾~",
+            success: function (res) {
+              _this.currentNumber = "";
+              _this.currentQuan = 0;
+              clearInterval(_this.timer);
+              _this.timer = null;
+            },
+          });
+
+          return;
+        }
+
         if (this.currentNumber === 7) {
           this.currentNumber = 0;
         }

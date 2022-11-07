@@ -227,3 +227,21 @@ export const houxucaozuoApi = data => {
 export const getCouponListApi = (data) => {
   return RuanRequest("/coupon/getUserCoupon", data, "get");
 };
+
+
+
+// 代金劵
+// 获取代金劵配置
+export const getVoucherConfigApi = () => {
+  return RuanRequest('/voucher/getVoucher', {}, 'get')
+}
+
+// 代金劵预支付
+export const rechargePrePayApi = data => {
+  return RuanRequest("/voucherRecord/prepayBySyb", data)
+}
+
+// 获取代金劵持有
+export const getVoucherNumberApi = (data) => {
+  return RuanRequest("/voucher/getVoucherHold", data, 'get')
+}

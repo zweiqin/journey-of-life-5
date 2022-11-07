@@ -47,5 +47,5 @@ export const types = {
     redBag: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/hu569nggd0ibd0nqjwxp.png", // 红包
     price: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/m5edz05hnrtqkuiacj93.png", // 钱
     store: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lvp8wwsr2pkefwo22kdl.png", // 门店
-    coupon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1sfuzb6hhnxya30o7jn1.png"
+    coupon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1sfuzb6hhnxya30o7jn1.png" // 代金劵
 };
