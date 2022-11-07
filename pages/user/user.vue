@@ -109,7 +109,12 @@
           </view>
         </view>
       </UserPanel>
-      <UserPanel :row="4" :showShadow="false" :data="serve"></UserPanel>
+      <UserPanel
+        :row="4"
+        :showShadow="false"
+        @clickItem="handleClickItem"
+        :data="serve"
+      ></UserPanel>
 
       <UserPanel :row="4" :showShadow="false" :data="digitalStore"></UserPanel>
       <UserPanel
@@ -118,6 +123,28 @@
         :data="marketingTools"
       ></UserPanel>
       <UserPanel :row="4" :showShadow="false" :data="otherServe"></UserPanel>
+    </view>
+
+    <view
+      @click="extensionCodeUrl = ''"
+      class="code-mask"
+      :style="{
+        opacity: extensionCodeUrl ? '1' : '0',
+        'z-index': extensionCodeUrl ? '1' : '-1',
+      }"
+    >
+      <view
+        class="code-wrapper"
+        :style="{
+          transform: extensionCodeUrl ? 'scale(1)' : 'scale(0)',
+        }"
+      >
+        <view class="code-title"
+          >{{ userInfo.nickName }} {{ userInfo.userId }}</view
+        >
+        <img class="code" :src="extensionCodeUrl" alt="" />
+        <button class="uni-btn" @click="extensionCodeUrl = ''">取消</button>
+      </view>
     </view>
   </view>
 </template>
@@ -136,7 +163,11 @@ import {
 } from "./config";
 import { checkWhoami, getUserId } from "../../utils";
 import { J_USER_INFO, J_USER_ID, J_LOACTION, J_REFRSH } from "../../constant";
-import { refrshUserInfoApi } from "../../api/user";
+import {
+  refrshUserInfoApi,
+  getExtensionCodeApi,
+  bindLastUserApi,
+} from "../../api/user";
 
 export default {
   components: {
@@ -155,6 +186,7 @@ export default {
       collectiontype: 1,
       currentTab: 0,
       userInfo: null,
+      extensionCodeUrl: "",
     };
   },
 
@@ -193,9 +225,7 @@ export default {
     },
 
     changeTab(tab) {
-      console.log(this.currentTab);
       this.currentTab = tab;
-      console.log(this.currentTab);
     },
     bindtapsubscription() {
       uni.navigateTo({
@@ -208,9 +238,40 @@ export default {
         url: "/user/sever/view-history?page=" + page,
       });
     },
+
+    // 点击了icon
+    handleClickItem(item) {
+      if (item.type && item.type === "extension") {
+        this.getExtensionCode();
+      }
+    },
+
+    // 获取推广码
+    getExtensionCode() {
+      uni.showLoading({
+        title: "加载中",
+      });
+      getExtensionCodeApi({
+        url: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/login/login?userId=${getUserId()}&type=bind`,
+      }).then(({ data }) => {
+        console.log(data);
+        this.extensionCodeUrl = data;
+        uni.hideLoading();
+      });
+    },
   },
   mounted() {
     // checkWhoami();
+  },
+
+  onLoad(options) {
+    const { bind } = options;
+    if (bind) {
+      bindLastUserApi({
+        userId: [getUserId()],
+        salesmanId: bind * 1,
+      }).then(() => {});
+    }
   },
 };
 </script>
@@ -360,6 +421,52 @@ export default {
         color: #3d3d3d;
         font-weight: bold;
       }
+    }
+  }
+}
+
+// 推广码
+.code-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: all 350ms;
+  opacity: 0;
+
+  .code-wrapper {
+    width: 600upx;
+    padding: 30upx;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-radius: 20upx;
+    transform: scale(0);
+    transition: all 350ms;
+
+    .code-title {
+      text-align: center;
+      font-size: 36upx;
+      font-weight: bold;
+      margin-top: 20upx;
+    }
+
+    .code {
+      width: 540upx;
+      height: 540upx;
+      object-fit: cover;
+    }
+
+    .uni-btn {
+      padding-top: 20upx;
+      border-top: 1upx solid #ccc;
+      font-size: 32upx;
+      letter-spacing: 1em;
+      color: #ccc;
     }
   }
 }

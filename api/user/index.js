@@ -245,3 +245,18 @@ export const rechargePrePayApi = data => {
 export const getVoucherNumberApi = (data) => {
   return RuanRequest("/voucher/getVoucherHold", data, 'get')
 }
+
+
+/**
+ * 推广码
+ */
+
+// 获取推广码
+export const getExtensionCodeApi = data => {
+  return RuanRequest("/qrCode/getQrCodeByH5", data, 'get')
+}
+
+// 绑定上级
+export const bindLastUserApi = (data) => {
+  return RuanRequest("/bindUser/add", data)
+}

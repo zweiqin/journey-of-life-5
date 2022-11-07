@@ -94,6 +94,7 @@ export default {
       },
       isShowPwd: false,
       isTabbar: false,
+      bindUserId: null,
     };
   },
   methods: {
@@ -133,7 +134,6 @@ export default {
         ...this.loginForm,
       }).then((res) => {
         const data = res.data;
-        console.log(data.userInfo.userId);
         uni.setStorageSync(J_USER_INFO, res.data.userInfo);
         uni.setStorageSync(J_USER_TOKEN, res.data.token);
         uni.setStorageSync(J_USER_ID, data.userInfo.userId);
@@ -143,18 +143,24 @@ export default {
         );
         this.$showToast("登录成功", "success");
         setTimeout(() => {
-          if (this.isTabbar) {
+          if (this.type === "bind") {
             uni.switchTab({
-              url: this.redirect || "/pages/index/index",
-            });
-          } else if (this.redirect) {
-            uni.redirectTo({
-              url: this.redirect,
+              url: "/pages/user/user?bind=" + this.bindUserId,
             });
           } else {
-            uni.switchTab({
-              url: "/pages/index/index",
-            });
+            if (this.isTabbar) {
+              uni.switchTab({
+                url: this.redirect || "/pages/index/index",
+              });
+            } else if (this.redirect) {
+              uni.redirectTo({
+                url: this.redirect,
+              });
+            } else {
+              uni.switchTab({
+                url: "/pages/index/index",
+              });
+            }
           }
         }, 2000);
       });
@@ -165,17 +171,16 @@ export default {
     this.type = options.type;
     this.redirect = options.redirect;
     this.isTabbar = !!options.tabbar;
+    this.bindUserId = options.userId;
     if (this.type === "register") {
       this.$showToast("注册成功", "success");
+    } else if (this.type === "bind") {
+      if (getUserId()) {
+        uni.switchTab({
+          url: "/pages/user/user?bind=" + this.bindUserId,
+        });
+      }
     }
-    // const tokenExpireTime = uni.getStorageSync(J_TOKEN_EXPIRE);
-    // if (tokenExpireTime) {
-    //   if (tokenExpireTime - Date.now() > 0) {
-    //     uni.switchTab({
-    //       url: "/pages/index/index",
-    //     });
-    //   }
-    // }
   },
 };
 </script>

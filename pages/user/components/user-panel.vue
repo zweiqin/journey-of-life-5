@@ -77,6 +77,7 @@ export default {
   },
   methods: {
     bindtap(item) {
+      this.$emit("clickItem", item);
       if (this.currentTab === 1) {
         uni.navigateTo({
           url: item.url,
