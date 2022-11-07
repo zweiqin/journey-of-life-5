@@ -2,6 +2,7 @@ export const storeDetailNavs = [
   {
     name: "预约",
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/enuehwcj95vieomssyq3.png",
+    url: "/store/appoint-view"
   },
   {
     name: "会员",
@@ -14,6 +15,7 @@ export const storeDetailNavs = [
   {
     name: "抽奖",
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/dgf20g02lkk4ri6tk5fl.png",
+    url: '/store/lottery-draw'
   },
   {
     name: "更多",

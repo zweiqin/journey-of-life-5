@@ -325,6 +325,12 @@
 					"style": {
 						"navigationBarTitleText": "充值记录"
 					}
+				},
+				{
+					"path": "otherServe/voucher/recharge",
+					"style": {
+						"navigationBarTitleText": "充值"
+					}
 				}
 			]
 		},
@@ -339,6 +345,18 @@
 				},
 				{
 					"path": "explosives-list"
+				},
+				{
+					"path": "appoint-view",
+					"style": {
+						"navigationBarTitleText": "预约"
+					}
+				},
+				{
+					"path": "lottery-draw",
+					"style": {
+						"navigationBarTitleText": "抽奖"
+					}
 				}
 			]
 		},

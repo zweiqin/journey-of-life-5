@@ -48,7 +48,12 @@
 
     <view class="main">
       <view class="navs">
-        <view class="item" v-for="nav in storeDetailNavs" :key="nav.name">
+        <view
+          class="item"
+          v-for="nav in storeDetailNavs"
+          @click="go(nav.url)"
+          :key="nav.name"
+        >
           <image class="icon" :src="nav.icon" mode="" />
           <text class="name">{{ nav.name }}</text>
         </view>

@@ -11,13 +11,21 @@
     >
     </map>
 
-    <view class="preview-wrapper" ref="previewWrapperRef">
+    <view
+      class="preview-wrapper"
+      :style="{
+        transform: showRedPackage ? 'scale(1)' : 'scale(0)',
+      }"
+      ref="previewWrapperRef"
+    >
       <JRedEnvelope
         :desc="redForm.remark"
         :src="redForm.imageUrl"
         :name="redForm.brandName"
         :avatar="redForm.picUrl"
       ></JRedEnvelope>
+
+      <button class="receive-btn" @click="handleClose">确定</button>
     </view>
   </view>
 </template>
@@ -45,6 +53,7 @@ export default {
         name: "",
       },
       allMarks: [],
+      showRedPackage: false,
     };
   },
 
@@ -96,19 +105,22 @@ export default {
         //     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lvmfduz8l50btyqlkd2k.png",
         // });
         this.markers = made;
-        console.log(this.markers);
+        // console.log(this.markers);
       });
     },
 
     handleReceive(e) {
+      const userId = getUserId();
+      if (!userId) {
+        return;
+      }
       const _this = this;
       const { markerId } = e.detail;
       if (markerId) {
         const currentMark = this.allMarks.find((item) => item.id === markerId);
         if (currentMark) {
           this.redForm = currentMark;
-          console.log(currentMark);
-          // this.$refs.previewWrapperRef.$el.style.transform = "scale(1)";
+          this.showRedPackage = true;
         }
 
         uni.getLocation({
@@ -116,11 +128,12 @@ export default {
           success: function (res) {
             receiveRedEnvelopeApi({
               id: currentMark.id,
-              userId: getUserId(),
+              userId: userId,
               longitude: res.longitude * 1,
               latitude: res.latitude * 1,
             }).then(() => {
-              _this.$refs.previewWrapperRef.$el.style.transform = "scale(1)";
+              _this.showRedPackage = true;
+
             });
           },
           fail: () => {
@@ -158,6 +171,11 @@ export default {
         },
       });
     },
+
+    handleClose(){
+      this.showRedPackage = false
+      this.getRedEnvelopeList()
+    }
   },
 
   destroyed() {
@@ -200,6 +218,14 @@ export default {
         margin-right: 20upx;
       }
     }
+  }
+
+  .receive-btn {
+    width: 100%;
+    background-color: #fa5151;
+    border-radius: 40upx;
+    color: #fff;
+    margin-top: 20px;
   }
 }
 </style>
