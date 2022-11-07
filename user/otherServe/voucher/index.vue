@@ -33,8 +33,17 @@
       </view>
     </view>
 
-    <PricePane title="代金券充值" :data="reCharges" isRecharge></PricePane>
-    <PricePane title="代金券转账" :data="transFormVoucher"></PricePane>
+    <PricePane
+      title="代金券充值"
+      @opVoucher="opVoucher('recharge', $event)"
+      :data="reCharges"
+      isRecharge
+    ></PricePane>
+    <PricePane
+      title="代金券转账"
+      @opVoucher="opVoucher('transform', $event)"
+      :data="transFormVoucher"
+    ></PricePane>
 
     <view class="footer-menus">
       <view class="footer-desc">代金券解释权归巨峰商城所属</view>
@@ -72,6 +81,13 @@ export default {
   },
   components: {
     PricePane,
+  },
+
+  methods: {
+    opVoucher(type, price) {
+      let url = type === "recharge" ? "/user/otherServe/voucher/recharge" : "";
+      this.go(url + `?price=${price}`);
+    },
   },
 };
 </script>

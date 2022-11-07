@@ -65,10 +65,12 @@
     <!-- 优惠卷列表 -->
     <view class="coupon-list" ref="couponListRef">
       <view @click="closeMask" class="mask" ref="maskRef"></view>
-      <Coupon></Coupon>
+      <!-- <Coupon></Coupon>
       <Coupon expire></Coupon>
       <Coupon></Coupon>
-      <Coupon></Coupon>
+      <Coupon></Coupon> -->
+
+      <JNoData icon=""></JNoData>
     </view>
   </view>
 </template>

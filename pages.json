@@ -14,6 +14,10 @@
 			"navigationBarTitleText": "红包地图"
 		},
 		{
+			"path": "pages/pay-result/pay-result",
+			"navigationBarTitleText": "支付结果"
+		},
+		{
 			"path": "pages/marketing-treasure-house/marketing-treasure-house",
 			"navigationBarTitleText": "营销宝库"
 		},

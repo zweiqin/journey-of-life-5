@@ -1,15 +1,15 @@
 <template>
-  <view class="j-button" :style="btnStyle"><slot></slot></view>
+  <view class="j-button" @click="$emit('click')" :style="btnStyle"><slot></slot></view>
 </template>
 
 <script>
-const mapBtnType = {
+const mapBtnTextColor = {
   primary: "#fff",
   info: "#999999",
   danger: "#fff",
 };
 
-const mapBtnTextColor = {
+const mapBtnType = {
   primary: "#00B578",
   info: "#EFEFEF",
   danger: "#FA5151",
@@ -44,5 +44,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
+.j-button {
+  font-size: 48upx;
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+}
 </style>

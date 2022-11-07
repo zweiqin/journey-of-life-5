@@ -6,17 +6,32 @@
     </view>
 
     <view class="prices">
-      <view class="price-item" v-for="item in data" :key="item">
+      <view
+        class="price-item"
+        @click="$emit('opVoucher', item)"
+        v-for="item in data"
+        :key="item"
+      >
         <view class="text">{{ item }}元</view>
         <view v-if="isRecharge" class="desc">售价{{ item }}元</view>
       </view>
 
-      <view class="price-item other-btn" v-if="isRecharge">
+      <view
+        class="price-item other-btn"
+        @click="$emit('opVoucher', -1)"
+        v-if="isRecharge"
+      >
         <view class="text">更多面额</view>
         <view class="desc">自定义</view>
       </view>
 
-      <view class="price-item recharge-other-btn" v-else> 其他金额 </view>
+      <view
+        class="price-item recharge-other-btn"
+        @click="$emit('opVoucher', -1)"
+        v-else
+      >
+        其他金额
+      </view>
     </view>
   </view>
 </template>
