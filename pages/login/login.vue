@@ -50,12 +50,7 @@
       </view>
     </view>
 
-    <JAuthButton
-      text="登录"
-      class="btn"
-      @click="handleLogin"
-      type="error"
-    ></JAuthButton>
+    <JAuthButton text="登录" class="btn" @click="handleLogin" type="error"></JAuthButton>
     <view class="remember-password">免密码登录</view>
 
     <view class="footer">
@@ -81,7 +76,9 @@ import {
   J_USER_TOKEN,
   J_TOKEN_EXPIRE,
   J_USER_ID,
+  BIND_USER_ID,
 } from "../../constant";
+import { getUserId } from "../../utils";
 export default {
   data() {
     return {
@@ -137,10 +134,7 @@ export default {
         uni.setStorageSync(J_USER_INFO, res.data.userInfo);
         uni.setStorageSync(J_USER_TOKEN, res.data.token);
         uni.setStorageSync(J_USER_ID, data.userInfo.userId);
-        uni.setStorageSync(
-          J_TOKEN_EXPIRE,
-          new Date(res.data.tokenExpire).getTime()
-        );
+        uni.setStorageSync(J_TOKEN_EXPIRE, new Date(res.data.tokenExpire).getTime());
         this.$showToast("登录成功", "success");
         setTimeout(() => {
           if (this.type === "bind") {
@@ -172,6 +166,9 @@ export default {
     this.redirect = options.redirect;
     this.isTabbar = !!options.tabbar;
     this.bindUserId = options.userId;
+    if (this.bindUserId) {
+      uni.setStorageSync(BIND_USER_ID, this.bindUserId);
+    }
     if (this.type === "register") {
       this.$showToast("注册成功", "success");
     } else if (this.type === "bind") {

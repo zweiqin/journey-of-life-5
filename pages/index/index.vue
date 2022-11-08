@@ -155,7 +155,7 @@
           </view>
 
           <view class="footer-goods-wrapper">
-            <view
+            <!-- <view
               @click="handleToViewDetail(item)"
               class="footer-goods"
               v-for="item in footerData"
@@ -167,7 +167,13 @@
                 <view class="goods-title">{{ item.name }}</view>
                 <view class="goods-price">￥{{ item.retailPrice }}</view>
               </view>
-            </view>
+            </view> -->
+
+            <JGoods
+              v-for="item in footerData"
+              :key="item.id"
+              :data="item"
+            ></JGoods>
           </view>
         </view>
       </view>
@@ -589,7 +595,7 @@ export default {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    background-color: #f7f7f7;
+    // background-color: #f7f7f7;
     margin-top: 30upx;
 
     .footer-goods {

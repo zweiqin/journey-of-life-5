@@ -1,5 +1,5 @@
 <template>
-  <view class="prod-wrapper">
+  <view class="prod-wrapper" v-if="goodsInfo.info">
     <!-- 轮播图 -->
     <view class="carousel">
       <Carousel
@@ -18,7 +18,7 @@
     </view>
 
     <!-- 价格，tag -->
-    <view class="promotion">
+    <view class="promotion" v-if="goodsInfo.info">
       <view class="left">
         <view class="top">
           ￥<text class="number">{{ goodsInfo.info.retailPrice }}</text>
@@ -118,7 +118,9 @@
       </view>
     </view>
 
-    <view class="detail-img" v-html="goodsInfo.info.detail"></view>
+    <!-- <view class="detail-img" v-html="goodsInfo.info.detail"></view> -->
+
+    <u-parse v-if="goodsInfo.info.detail" :content="goodsInfoDetail"></u-parse>
 
     <!-- 常见问题 -->
     <view class="problems">
@@ -139,6 +141,7 @@
         height: specificationListInfoVisible ? '100vh' : 0,
       }"
       ref="chooseSpecificationListRef"
+      v-if="goodsInfo.info.retailPrice"
     >
       <view class="mask" @click="handleCloseModal"></view>
       <view
@@ -219,6 +222,9 @@
 
 <script>
 import Carousel from "../../components/carousel";
+import { marked } from "marked";
+import uParse from "../../components/u-parse/u-parse.vue";
+
 import {
   getGoodsDetailApi,
   collectionApi,
@@ -234,6 +240,7 @@ export default {
   components: {
     Carousel,
     RecommendGoods,
+    uParse,
   },
   onShow() {
     uni.removeStorageSync(J_SELECT_ADDRESS);
@@ -435,7 +442,7 @@ export default {
     async getCarShopNumber() {
       const res = await getCarShopNumberApi({
         userId: getUserId(),
-        brandId: this.goodsInfo.brand.id
+        brandId: this.goodsInfo.brand.id,
       });
       this.carGoodsNumer = res.data;
     },
@@ -494,7 +501,7 @@ export default {
             status: 0,
             ...this.goodsInfo,
             selectedProduct: productInfo,
-            brandId: this.goodsInfo.brand.id
+            brandId: this.goodsInfo.brand.id,
           });
           uni.navigateTo({
             url: "/pages/pre-order/pre-order",
@@ -557,6 +564,14 @@ export default {
     //   this.getShopCar();
     //   this.getCarShopNumber();
     // }
+  },
+
+  computed: {
+    goodsInfoDetail() {
+      return this.goodsInfo.info.detail
+        ? marked(this.goodsInfo.info.detail)
+        : "";
+    },
   },
 };
 </script>

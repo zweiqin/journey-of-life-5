@@ -196,7 +196,7 @@ export default {
       });
 
       setTimeout(() => {
-        uni.navigateTo({
+        uni.redirectTo({
           url: "/pages/login/login",
         });
       }, 2000);

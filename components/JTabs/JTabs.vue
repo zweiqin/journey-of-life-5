@@ -10,7 +10,6 @@
           v-for="(item, index) in tabs"
           :key="item.name"
           @click="handleCurrentChange(index)"
-          
         >
           {{ item.name }}
         </view>
@@ -36,6 +35,16 @@ export default {
     noScrollBar: {
       type: Boolean,
       default: false,
+    },
+  },
+
+  watch: {
+    tabs: {
+      handler() {
+        this.$forceUpdate();
+      },
+
+      immediate: true,
     },
   },
 

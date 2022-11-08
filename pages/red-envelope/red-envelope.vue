@@ -120,7 +120,7 @@ export default {
         const currentMark = this.allMarks.find((item) => item.id === markerId);
         if (currentMark) {
           this.redForm = currentMark;
-          this.showRedPackage = true;
+          // this.showRedPackage = true;
         }
 
         uni.getLocation({

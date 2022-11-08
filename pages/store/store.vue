@@ -49,13 +49,26 @@
         }}</view>
       </view> -->
 
-    <JTabs
+    <!-- <JTabs
       @change="handleChangeCurrentPane"
       :activeIndex="currentActive"
       :tabs="storeLabelList"
       class="j-tabs"
       noScrollBar
-    ></JTabs>
+    ></JTabs> -->
+
+    <scroll-view scroll-x="true">
+      <view class="navs">
+        <view
+          class="item"
+          :class="{ active: currentActive === index }"
+          v-for="(item, index) in storeLabelList"
+          :key="item.id"
+          @click="handleChangeCurrentPane(index, id)"
+          >{{ item.storeName }}</view
+        >
+      </view>
+    </scroll-view>
 
     <!-- <view class="list-wrapper">
       <JSwipper
@@ -111,31 +124,71 @@ export default {
 
   onShow() {
     uni.removeStorageSync(J_LOACTION);
-    this.getStoreTypes();
+    // this.getStoreTypes();
   },
 
   data() {
     return {
       storeLabelList: [
         {
-          name: "综合",
-          value: 0,
+          storeName: "综合",
+          id: 0,
         },
         {
-          name: "家具店",
-          value: 1,
+          id: 21,
+          storeName: "美甲美睫",
+          addTime: "2022-10-31 11:43:50",
+          updateTime: "2022-10-31 11:43:50",
+          deleted: false,
         },
         {
-          name: "日用百货",
-          value: 2,
+          id: 20,
+          storeName: "运动健身",
+          addTime: "2022-10-31 11:43:38",
+          updateTime: "2022-10-31 11:43:38",
+          deleted: false,
         },
         {
-          name: "汽车店",
-          value: 3,
+          id: 19,
+          storeName: "亲子",
+          addTime: "2022-10-31 11:43:26",
+          updateTime: "2022-10-31 11:43:26",
+          deleted: false,
         },
         {
-          name: "酒店",
-          value: 4,
+          id: 18,
+          storeName: "住宿",
+          addTime: "2022-10-31 11:43:16",
+          updateTime: "2022-10-31 11:43:16",
+          deleted: false,
+        },
+        {
+          id: 17,
+          storeName: "丽人/美发",
+          addTime: "2022-10-31 11:43:05",
+          updateTime: "2022-10-31 11:43:05",
+          deleted: false,
+        },
+        {
+          id: 16,
+          storeName: "游玩",
+          addTime: "2022-10-31 11:42:34",
+          updateTime: "2022-10-31 11:42:34",
+          deleted: false,
+        },
+        {
+          id: 15,
+          storeName: "休闲娱乐",
+          addTime: "2022-10-31 11:42:22",
+          updateTime: "2022-10-31 11:42:22",
+          deleted: false,
+        },
+        {
+          id: 14,
+          storeName: "附近美食",
+          addTime: "2022-10-31 11:41:35",
+          updateTime: "2022-10-31 11:41:35",
+          deleted: false,
         },
       ],
       currentActive: 0,
@@ -158,10 +211,10 @@ export default {
     handleChangeCurrentPane(index) {
       this.currentActive = index;
       const store = this.storeLabelList[index];
-      if (store.value === 0) {
+      if (store.id === 0) {
         this.query.brandgenreId = null;
       } else {
-        this.query.brandgenreId = store.value;
+        this.query.brandgenreId = store.id;
       }
       this.query.page = 1;
       this.getStoreList();
@@ -191,12 +244,10 @@ export default {
         })
           .then(({ data }) => {
             types = data.items;
-            this.$forceUpdate();
-
             uni.setStorageSync(J_STORE_TYPES, data.items);
+            this.$forceUpdate();
           })
           .catch((err) => {
-            console.log(err);
             _this.$showToast("门店类型获取失败");
           });
       } else {
@@ -212,6 +263,8 @@ export default {
           value: 0,
         });
       }
+
+      this.$forceUpdate();
     },
   },
 
@@ -318,6 +371,8 @@ export default {
   box-sizing: border-box;
   font-size: 28upx;
   overflow-x: scroll;
+  height: 100%;
+  margin-bottom: -44upx;
 
   .item {
     white-space: nowrap;
@@ -325,6 +380,13 @@ export default {
     color: #3d3d3d;
     height: 40upx;
     line-height: 40upx;
+    padding: 20upx 0;
+    border-bottom: 2upx solid transparent;
+
+    &.active {
+      color: #fa5151;
+      font-weight: bold;
+    }
   }
 }
 

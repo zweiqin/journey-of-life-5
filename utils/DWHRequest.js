@@ -1,4 +1,4 @@
-import { BASE_URL, RUAN_URL, LANG_FEE_URL } from "../config";
+import { BASE_URL, RUAN_URL, LANG_FEE_URL, XZL } from "../config";
 
 const request = (base_url) => {
   return function (url, data = {}, method = "post", cb) {

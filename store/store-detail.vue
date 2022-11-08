@@ -3,7 +3,7 @@
     <view class="detail-info">
       <image class="background-img" :src="storeDetail.picUrl" mode="" />
       <view class="icons">
-        <JBack tabbar="/pages/index/index"></JBack>
+        <JBack></JBack>
         <view class="right">
           <image
             class="icon"

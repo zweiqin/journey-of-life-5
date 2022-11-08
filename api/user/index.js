@@ -9,14 +9,14 @@
 import { LTRequest, getUserId, RuanRequest } from "../../utils";
 
 // 更新用户信息
-export const updateUserInfoApi = data => {
-  return RuanRequest("/user/update", data)
-}
+export const updateUserInfoApi = (data) => {
+  return RuanRequest("/user/update", data);
+};
 
 // 刷新用户信息
-export const refrshUserInfoApi = data => {
-  return RuanRequest("/user/refreshUser", data, 'get')
-}
+export const refrshUserInfoApi = (data) => {
+  return RuanRequest("/user/refreshUser", data, "get");
+};
 
 // 业务管理升级
 export const upbussinessApi = (data) => {
@@ -134,14 +134,14 @@ export const submitApplyStoreInfo = (type, data) => {
 };
 
 // vip 预支付
-export const applyVipApi = data => {
-  return RuanRequest('/levelPay/VipPrepayBySyb', data)
-}
+export const applyVipApi = (data) => {
+  return RuanRequest("/levelPay/VipPrepayBySyb", data);
+};
 
 // vip 升级成功
 export const payVipApplySuccessApi = (data) => {
-  return RuanRequest('/userUpInfo/upToVip', data, 'get')
-}
+  return RuanRequest("/userUpInfo/upToVip", data, "get");
+};
 
 // 获取申请记录
 export const getApplyVipHistoryApi = (data) => {
@@ -149,9 +149,9 @@ export const getApplyVipHistoryApi = (data) => {
 };
 
 // 所有的申请记录
-export const getAllApplyVipHistoryListApi = data => {
-  return RuanRequest("/userUpInfo/list", data, 'get')
-}
+export const getAllApplyVipHistoryListApi = (data) => {
+  return RuanRequest("/userUpInfo/list", data, "get");
+};
 
 // 获取省市区地址
 export const getCitiesApi = (data) => {
@@ -218,9 +218,9 @@ export const payTryStoreAndYingApi = (data) => {
 };
 
 // 后续操作
-export const houxucaozuoApi = data => {
-  return RuanRequest("/userUpInfo/signin", data, 'get')
-}
+export const houxucaozuoApi = (data) => {
+  return RuanRequest("/userUpInfo/signin", data, "get");
+};
 
 // 优惠劵
 // 查询用户优惠劵
@@ -228,35 +228,37 @@ export const getCouponListApi = (data) => {
   return RuanRequest("/coupon/getUserCoupon", data, "get");
 };
 
-
-
 // 代金劵
 // 获取代金劵配置
 export const getVoucherConfigApi = () => {
-  return RuanRequest('/voucher/getVoucher', {}, 'get')
-}
+  return RuanRequest("/voucher/getVoucher", {}, "get");
+};
 
 // 代金劵预支付
-export const rechargePrePayApi = data => {
-  return RuanRequest("/voucherRecord/prepayBySyb", data)
-}
+export const rechargePrePayApi = (data) => {
+  return RuanRequest("/voucherRecord/prepayBySyb", data);
+};
 
 // 获取代金劵持有
 export const getVoucherNumberApi = (data) => {
-  return RuanRequest("/voucher/getVoucherHold", data, 'get')
-}
+  return RuanRequest("/voucher/getVoucherHold", data, "get");
+};
 
+// 代金劵发放
+export const grantVoucherApi = (data) => {
+  return RuanRequest("/voucher/add", data);
+};
 
 /**
  * 推广码
  */
 
 // 获取推广码
-export const getExtensionCodeApi = data => {
-  return RuanRequest("/qrCode/getQrCodeByH5", data, 'get')
-}
+export const getExtensionCodeApi = (data) => {
+  return RuanRequest("/qrCode/getQrCodeByH5", data, "get");
+};
 
 // 绑定上级
 export const bindLastUserApi = (data) => {
-  return RuanRequest("/bindUser/add", data)
-}
+  return RuanRequest("/bindUser/add", data);
+};

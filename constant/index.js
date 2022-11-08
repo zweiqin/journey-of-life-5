@@ -25,3 +25,7 @@ export const J_MARKETING_PLANNER = "J_MARKETING_PLANNER"
 
 // page
 export const J_REFRSH = "J_REFRSH"
+export const BIND_USER_ID= "BIND_USER_ID"
+
+// pay
+export const J_ORDER_NO = "J_ORDER_NO"

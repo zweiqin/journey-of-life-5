@@ -54,7 +54,7 @@ export const homeNavs = {
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/z3bskqk44mhl2nxq01yf.png",
       background: "linear-gradient(137deg, #00B578, #07B9B9)",
       width: "45upx",
-      id: 1001006,
+      id: 100101469,
     },
     {
       label: "香包首饰",

@@ -29,6 +29,7 @@
 import { getVoucherConfigApi, rechargePrePayApi } from "../../../api/user";
 import { payOrderGoodsApi } from "../../../api/goods";
 import { getUserId } from "../../../utils";
+import { J_ORDER_NO } from "../../../constant";
 
 export default {
   onLoad(options) {
@@ -67,12 +68,17 @@ export default {
         payOrderGoodsApi({
           orderNo: data.payOrderID,
           userId: getUserId(),
-          payType: 2
+          payType: 2,
         }).then((res) => {
+          uni.setStorageSync(J_ORDER_NO, {
+            type: "voucher",
+            orderNo: res.orderNo,
+          });
+          const payData = JSON.parse(res.h5PayUrl);
           const form = document.createElement("form");
-          form.setAttribute("action", res.url);
+          form.setAttribute("action", payData.url);
           form.setAttribute("method", "POST");
-          const data = JSON.parse(res.data);
+          const data = JSON.parse(payData.data);
           let input;
           for (const key in data) {
             input = document.createElement("input");

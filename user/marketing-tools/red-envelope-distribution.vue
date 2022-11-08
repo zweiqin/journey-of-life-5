@@ -264,10 +264,11 @@ export default {
             userId: getUserId(),
             payType: 3,
           }).then((res) => {
+            const payData = JSON.parse(res.h5PayUrl);
             const form = document.createElement("form");
-            form.setAttribute("action", res.url);
+            form.setAttribute("action", payData.url);
             form.setAttribute("method", "POST");
-            const data = JSON.parse(res.data);
+            const data = JSON.parse(payData.data);
             let input;
             for (const key in data) {
               input = document.createElement("input");

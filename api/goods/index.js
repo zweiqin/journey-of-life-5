@@ -76,3 +76,7 @@ export const firstAddCar = (data) => {
 export const payOrderGoodsApi = (data) => {
   return LTRequest("/api/syb/orderPayH5", data)
 }
+
+export const getPayOrderResultApi = (data) => {
+  return LTRequest("/api/syb/getIsPaySucceed", data, 'get')
+}

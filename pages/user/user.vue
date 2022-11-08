@@ -129,8 +129,9 @@
       @click="extensionCodeUrl = ''"
       class="code-mask"
       :style="{
-        opacity: extensionCodeUrl ? '1' : '0',
-        'z-index': extensionCodeUrl ? '1' : '-1',
+        opacity: extensionCodeUrl && userInfo && userInfo.nickName ? '1' : '0',
+        'z-index':
+          extensionCodeUrl && userInfo && userInfo.nickName ? '1' : '-1',
       }"
     >
       <view
@@ -140,7 +141,8 @@
         }"
       >
         <view class="code-title"
-          >{{ userInfo.nickName }} {{ userInfo.userId }}</view
+          >{{ userInfo && userInfo.nickName }}
+          {{ userInfo && userInfo.userId }}</view
         >
         <img class="code" :src="extensionCodeUrl" alt="" />
         <button class="uni-btn" @click="extensionCodeUrl = ''">取消</button>
@@ -162,7 +164,13 @@ import {
   otherServe,
 } from "./config";
 import { checkWhoami, getUserId } from "../../utils";
-import { J_USER_INFO, J_USER_ID, J_LOACTION, J_REFRSH } from "../../constant";
+import {
+  J_USER_INFO,
+  J_USER_ID,
+  J_LOACTION,
+  J_REFRSH,
+  BIND_USER_ID,
+} from "../../constant";
 import {
   refrshUserInfoApi,
   getExtensionCodeApi,
@@ -194,13 +202,18 @@ export default {
     const userInfo = uni.getStorageSync(J_USER_INFO);
     if (userInfo) {
       this.userInfo = userInfo;
+    }else {
+      this.userInfo = ''
     }
 
-    refrshUserInfoApi({
-      userId: getUserId(),
-    }).then((res) => {
-      this.userInfo = res.data;
-    });
+    if (getUserId()) {
+      refrshUserInfoApi({
+        userId: getUserId(),
+      }).then((res) => {
+        this.userInfo = res.data;
+        uni.setStorageSync(J_USER_INFO, res.data)
+      });
+    }
 
     uni.removeStorageSync(J_LOACTION);
     uni.removeStorageSync(J_REFRSH);
@@ -254,7 +267,6 @@ export default {
       getExtensionCodeApi({
         url: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/login/login?userId=${getUserId()}&type=bind`,
       }).then(({ data }) => {
-        console.log(data);
         this.extensionCodeUrl = data;
         uni.hideLoading();
       });
@@ -264,13 +276,16 @@ export default {
     // checkWhoami();
   },
 
-  onLoad(options) {
-    const { bind } = options;
-    if (bind) {
+  onLoad() {
+    const bindUserId = uni.getStorageSync(BIND_USER_ID);
+    if (bindUserId) {
       bindLastUserApi({
         userId: [getUserId()],
-        salesmanId: bind * 1,
-      }).then(() => {});
+        salesmanId: bindUserId,
+      }).then(() => {
+        this.$showToast("绑定成功");
+        uni.removeStorageSync(BIND_USER_ID);
+      });
     }
   },
 };

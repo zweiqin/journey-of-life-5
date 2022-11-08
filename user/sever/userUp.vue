@@ -166,6 +166,9 @@ export default {
   methods: {
     getApplyHistory() {
       const _this = this;
+      uni.showLoading({
+        title: "加载中",
+      });
 
       getApplyTableApi({
         userId: getUserId(),
@@ -176,7 +179,6 @@ export default {
           res.data.items.find((item) => item.newGrade === 1) || null;
         this.marketingPlannerInfo =
           res.data.items.find((item) => item.newGrade === 2) || null;
-        console.log(this.vipInfo);
         // if (this.vipInfo.upgradeOrder.payStatus === 2) {
         //   const info = uni.getStorageSync(J_USER_INFO);
         //   console.log(info);
@@ -256,13 +258,13 @@ export default {
             ticketsId: this.marketingPlannerInfo.ticketsId,
           });
         }
+        uni.hideLoading();
       });
     },
 
     handleToUp(item) {
       if (item.type === 4) {
         const userInfo = uni.getStorageSync(J_USER_INFO);
-        console.log(userInfo.userLevel);
         if (userInfo.userLevel >= 1) {
           this.$showToast(
             `您已经是${userInfo.userLevelDesc}等级了，无需升级vip`
@@ -271,6 +273,31 @@ export default {
 
         return;
       }
+
+      if (item.type === 1) {
+        const userInfo = uni.getStorageSync(J_USER_INFO);
+        if (userInfo.userLevel === 1) {
+          this.$showToast(
+            `您已经是${userInfo.userLevelDesc}等级了，无需重复申请`
+          );
+        } else if (userInfo.userLevel > 1) {
+          this.$showToast(
+            `您已经是${userInfo.userLevelDesc}等级了，无需申请门店`
+          );
+        }
+
+        return;
+      }
+
+      if (item.type === 2) {
+        const userInfo = uni.getStorageSync(J_USER_INFO);
+        if (userInfo.userLevel === 2) {
+          this.$showToast(
+            `您已经是${userInfo.userLevelDesc}等级了，无需重复申请`
+          );
+        }
+      }
+
       if (item.type === 1 && this.storeInfo) {
         return;
       }
@@ -288,10 +315,11 @@ export default {
             userId: getUserId(),
             payType: 4,
           }).then((res) => {
+            const payData = JSON.parse(res.h5PayUrl);
             const form = document.createElement("form");
-            form.setAttribute("action", res.url);
+            form.setAttribute("action", payData.url);
             form.setAttribute("method", "POST");
-            const data = JSON.parse(res.data);
+            const data = JSON.parse(payData.data);
             let input;
             for (const key in data) {
               input = document.createElement("input");
@@ -375,10 +403,11 @@ export default {
             userId: getUserId(),
             payType: 4,
           }).then((res) => {
+            const payData = JSON.parse(res.h5PayUrl);
             const form = document.createElement("form");
-            form.setAttribute("action", res.url);
+            form.setAttribute("action", payData.url);
             form.setAttribute("method", "POST");
-            const data = JSON.parse(res.data);
+            const data = JSON.parse(payData.data);
             let input;
             for (const key in data) {
               input = document.createElement("input");
@@ -404,10 +433,11 @@ export default {
             userId: getUserId(),
             payType: 4,
           }).then((res) => {
+            const payData = JSON.parse(res.h5PayUrl);
             const form = document.createElement("form");
-            form.setAttribute("action", res.url);
+            form.setAttribute("action", payData.url);
             form.setAttribute("method", "POST");
-            const data = JSON.parse(res.data);
+            const data = JSON.parse(payData.data);
             let input;
             for (const key in data) {
               input = document.createElement("input");

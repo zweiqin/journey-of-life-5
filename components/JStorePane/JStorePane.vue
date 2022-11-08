@@ -23,19 +23,19 @@
     <!-- 三张图 -->
     <view class="goods-layout three" v-if="data.goodsList.length >= 3">
       <img
-        class="store animate__animated animate__backInLeft"
+        class="store  animate__backInLeft"
         :src="data.goodsList[0].picUrl"
         alt=""
       />
       <view class="right">
         <img
-          class="animate__animated animate__fadeInTopRight"
+          class=" animate__fadeInTopRight"
           :src="data.goodsList[1].picUrl"
           alt=""
         />
 
         <img
-          class="animate__animated animate__fadeInBottomRight"
+          class=" animate__fadeInBottomRight"
           :src="data.goodsList[2].picUrl"
           alt=""
         />
@@ -54,7 +54,7 @@
 
     <!-- 一张图 -->
     <view
-      class="goods-layout one animate__animated animate__flipInX"
+      class="goods-layout one  animate__flipInX"
       v-if="data.goodsList.length === 1"
     >
       <img class="img" :src="data.goodsList[0].picUrl" alt="" />
@@ -64,12 +64,12 @@
     <!-- 两张图 -->
     <view class="goods-layout two" v-if="data.goodsList.length === 2">
       <img
-        class="img animate__animated animate__lightSpeedInLeft"
+        class="img  animate__lightSpeedInLeft"
         :src="data.goodsList[0].picUrl"
         alt=""
       />
       <img
-        class="img animate__animated animate__lightSpeedInRight"
+        class="img  animate__lightSpeedInRight"
         :src="data.goodsList[1].picUrl"
         alt=""
       />
@@ -143,7 +143,7 @@ export default {
 
 <style lang="less" scoped>
 .panel {
-  margin-bottom: 20upx;
+  margin-bottom: 52upx;
 
   .header {
     display: flex;
@@ -225,6 +225,7 @@ export default {
       display: flex;
       justify-content: space-between;
       flex-direction: column;
+      flex: 1;
 
       img {
         height: 146upx;
