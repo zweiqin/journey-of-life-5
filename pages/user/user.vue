@@ -59,7 +59,9 @@
           </view>
         </view>
         <view class="item">
-          <view class="title"> 0<view class="bl-text">元</view> </view>
+          <view class="title">
+            {{ userInfo.commission }}<view class="bl-text">元</view>
+          </view>
           <view class="value"> 余额 </view>
         </view>
         <!-- <view class="item">
@@ -69,8 +71,18 @@
           <view class="value"> 代金劵 </view>
         </view> -->
         <view class="item">
-          <view class="title"> 0<view class="bl-text">元</view> </view>
+          <view class="title">
+            0
+            <view class="bl-text">元</view>
+          </view>
           <view class="value"> 收入佣金 </view>
+        </view>
+
+        <view class="item">
+          <view class="title">
+            {{ userInfo.voucherNumber }}<view class="bl-text">元</view>
+          </view>
+          <view class="value"> 代金劵 </view>
         </view>
       </view>
     </view>
@@ -81,15 +93,15 @@
         <view class="info">
           <view class="item" @click="handleToViewHistory('collection')">
             <text class="title">收藏</text>
-            <text class="value">0</text>
+            <text class="value">{{ userInfo.collectCount }}</text>
           </view>
           <view class="item" @click="handleToViewHistory('history')">
             <text class="title">足迹</text>
-            <text class="value">0</text>
+            <text class="value">{{ userInfo.footprintCount }}</text>
           </view>
           <view class="item" @click="handleToViewHistory('follow')">
             <text class="title">订阅</text>
-            <text class="value">0</text>
+            <text class="value">{{ userInfo.rssCount }}</text>
           </view>
         </view>
       </UserPanel>
@@ -202,8 +214,8 @@ export default {
     const userInfo = uni.getStorageSync(J_USER_INFO);
     if (userInfo) {
       this.userInfo = userInfo;
-    }else {
-      this.userInfo = ''
+    } else {
+      this.userInfo = "";
     }
 
     if (getUserId()) {
@@ -211,7 +223,7 @@ export default {
         userId: getUserId(),
       }).then((res) => {
         this.userInfo = res.data;
-        uni.setStorageSync(J_USER_INFO, res.data)
+        uni.setStorageSync(J_USER_INFO, res.data);
       });
     }
 

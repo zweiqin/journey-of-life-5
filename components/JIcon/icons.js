@@ -47,5 +47,9 @@ export const types = {
     redBag: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/hu569nggd0ibd0nqjwxp.png", // 红包
     price: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/m5edz05hnrtqkuiacj93.png", // 钱
     store: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lvp8wwsr2pkefwo22kdl.png", // 门店
-    coupon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1sfuzb6hhnxya30o7jn1.png" // 代金劵
+    coupon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1sfuzb6hhnxya30o7jn1.png", // 代金劵
+    'color-voucher': "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/d53fje7jgft1srkwej8m.png", // colorful voucher
+    'to': 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/xgqzhvjxft4yx4g8c5s6.png',
+    "blue-locale": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/w7yyxfyk34alhk9qjt29.png", // 导航
+    "full-store": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ib1o7q9o50hsuu5uu1xs.png", // 红色门店
 };

@@ -285,7 +285,7 @@ export default {
   computed: {
     homeStores() {
       return this.data.filter((item) => {
-        return item.goodsList.length >= 1;
+        return item.goodsList && item.goodsList.length >= 1;
       });
     },
   },
@@ -372,7 +372,7 @@ export default {
   font-size: 28upx;
   overflow-x: scroll;
   height: 100%;
-  margin-bottom: -44upx;
+  margin-bottom: -22upx;
 
   .item {
     white-space: nowrap;

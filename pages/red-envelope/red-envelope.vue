@@ -5,6 +5,8 @@
       :latitude="latitude"
       :scale="40"
       :max-scale="40"
+      show-compass
+      show-location
       style="width: 100vw; height: 100vh"
       :markers="markers"
       @markertap="handleReceive"
@@ -37,6 +39,10 @@ import { J_LOACTION } from "../../constant";
 
 export default {
   onLoad() {
+    // this.getRedEnvelopeList();
+  },
+
+  onReady() {
     this.getRedEnvelopeList();
   },
 
@@ -65,11 +71,15 @@ export default {
         for (const redPack of res.data) {
           made.push({
             id: redPack.id,
-            latitude: redPack.longitude,
-            longitude: redPack.latitude,
+            latitude: redPack.latitude,
+            longitude: redPack.longitude,
             title: redPack.brandName + "的红包",
             width: 28,
             height: 37,
+            anchor: {
+              x: 0.5,
+              y: 0.5,
+            },
             iconPath:
               "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/n6p0qgt26t6wu1onofpa.webp",
           });
@@ -85,27 +95,7 @@ export default {
           //     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/n6p0qgt26t6wu1onofpa.webp",
           // });
         }
-        made.push({
-          id: Date.now() + Math.random(),
-          latitude: this.latitude,
-          longitude: this.longitude,
-          width: 22,
-          height: 37,
-          iconPath:
-            "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lvmfduz8l50btyqlkd2k.png",
-        });
-
-        // made.push({
-        //   id: Date.now() + Math.random(),
-        //   latitude: this.latitude + 0,
-        //   longitude: this.longitude,
-        //   width: 22,
-        //   height: 37,
-        //   iconPath:
-        //     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lvmfduz8l50btyqlkd2k.png",
-        // });
         this.markers = made;
-        // console.log(this.markers);
       });
     },
 
@@ -116,6 +106,7 @@ export default {
       }
       const _this = this;
       const { markerId } = e.detail;
+      console.log(markerId);
       if (markerId) {
         const currentMark = this.allMarks.find((item) => item.id === markerId);
         if (currentMark) {
@@ -133,7 +124,7 @@ export default {
               latitude: res.latitude * 1,
             }).then(() => {
               _this.showRedPackage = true;
-
+              _this.getRedEnvelopeList();
             });
           },
           fail: () => {
@@ -169,13 +160,16 @@ export default {
 
           location.reload();
         },
+        fail: function (err) {
+          _this.$showToast("获取定位失败，请确保您开启了定位");
+        },
       });
     },
 
-    handleClose(){
-      this.showRedPackage = false
-      this.getRedEnvelopeList()
-    }
+    handleClose() {
+      this.showRedPackage = false;
+      this.getRedEnvelopeList();
+    },
   },
 
   destroyed() {

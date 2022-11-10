@@ -360,19 +360,19 @@ export default {
   .change {
     color: #3d3d3d;
     text-decoration: underline;
-    font-size: 12px;
+    font-size: 28upx;
     text-align: right;
   }
 
   .text {
     color: #3d3d3d;
-    font-size: 20upx;
+    font-size: 24upx;
     flex-shrink: 0;
     margin: 0 20upx 0 20upx;
   }
 
   .text-value {
-    font-size: 20upx;
+    font-size: 24upx;
   }
 
   .status {
@@ -472,7 +472,7 @@ export default {
       display: flex;
       // justify-content: space-between;
       align-items: center;
-      font-size: 14upx;
+      font-size: 14px;
 
       .name {
         margin-bottom: 20upx;

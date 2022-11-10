@@ -7,7 +7,7 @@
     </view>
 
     <!-- 收货信息 -->
-    <view class="consignee-info">
+    <view class="consignee-info" v-if="defaultAddress">
       <view class="pane">
         <view class="name">
           <view
@@ -22,6 +22,11 @@
 
       <view class="address"> 地址：{{ defaultAddress.detailedAddress }} </view>
       <view class="no-data"> </view>
+    </view>
+
+    <view class="address-null" v-else @click="handleChooseAddress">
+      <view>请选择收货地址</view>
+      <JIcon width="32" height="32" type="right-arrow"></JIcon>
     </view>
 
     <!-- 商品信息 -->
@@ -88,6 +93,7 @@ export default {
       totalPrice: 0,
       isNoAddress: false,
       defaultAddress: "",
+      brandId: null,
     };
   },
 
@@ -106,6 +112,7 @@ export default {
           },
         });
       } else {
+        this.brandId = payGoodsInfo.brandId;
         this.goodsList = payGoodsInfo.goods.map((item) => {
           let str = "";
           for (const item of item.specifications) {
@@ -145,13 +152,19 @@ export default {
 
     // 支付
     handleToPay() {
+      if (!this.defaultAddress || !this.defaultAddress.id) {
+        this.$showToast("请选择收货地址");
+        return;
+      }
+
       const data = {
         userId: getUserId(),
         addressId: this.defaultAddress.id,
         useVoucher: 0,
         cartId: 0,
-        couponId: '',
-        grouponRulesId: ''
+        couponId: "",
+        grouponRulesId: "",
+        brandId: this.brandId,
       };
 
       payShopCarApi(data).then(({ data }) => {
@@ -164,6 +177,7 @@ export default {
           message: "",
           grouponLinkId: "",
           grouponRulesId: "",
+          brandId: this.brandId,
         }).then(({ data }) => {
           payOrderGoodsApi({
             orderNo: data.orderSn,
@@ -232,6 +246,17 @@ export default {
     .address {
       margin-top: 30upx;
     }
+  }
+
+  .address-null {
+    font-size: 28upx;
+    padding: 30upx 0;
+    margin: 30upx 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1upx solid #d8d8d8;
+    color: red;
   }
 
   .goods-wrapper {

@@ -33,6 +33,7 @@
             <view class="tag">品质保障</view>
           </view>
         </view>
+        <JTo :address="storeDetail.address"></JTo>
       </view>
 
       <view class="pub">
@@ -270,13 +271,14 @@ export default {
   .detail-info-wrapper {
     width: 100%;
     color: #fff;
-    .flex(center, flex-start);
+    .flex(center, space-between);
     font-size: 24upx;
     flex: 1;
     margin-top: 20px;
 
     .detail-info-ccontent {
-      margin-left: 18upx;
+      margin: 0 18upx;
+      flex: 1;
     }
 
     .name {

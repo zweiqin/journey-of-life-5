@@ -68,12 +68,10 @@ export default {
     const orderInfo = uni.getStorageSync(J_ORDER_NO);
     if (orderInfo) {
       this.orderInfo = orderInfo;
-
       getPayOrderResultApi({
         payOrderNo: orderInfo.orderNo,
       }).then((res) => {
         this.isPay = res.errno;
-
         this.mapMethod[orderInfo.type]();
       });
     }
@@ -86,8 +84,10 @@ export default {
     grantVoucher() {
       const _this = this;
       grantVoucherApi({
-        orderId: _this.orderInfo.orderNo,
-      }).then(({ data }) => {});
+        orderId: _this.orderInfo.jfOrder,
+      }).then(() => {
+        uni.removeStorageSync(J_ORDER_NO);
+      });
     },
   },
 };

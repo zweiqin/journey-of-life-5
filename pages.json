@@ -10,6 +10,12 @@
 			}
 		},
 		{
+			"path": "pages/map-navigation/map-navigation",
+			"style": {
+				"navigationBarTitleText": "导航"
+			}
+		},
+		{
 			"path": "pages/red-envelope/red-envelope",
 			"style": {
 				"navigationBarTitleText": "地图红包"
@@ -342,6 +348,12 @@
 					"path": "otherServe/voucher/recharge",
 					"style": {
 						"navigationBarTitleText": "充值"
+					}
+				},
+				{
+					"path": "otherServe/voucher/recharge-give",
+					"style": {
+						"navigationBarTitleText": "代金劵转增"
 					}
 				}
 			]

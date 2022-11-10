@@ -23,20 +23,23 @@
     <!-- 三张图 -->
     <view class="goods-layout three" v-if="data.goodsList.length >= 3">
       <img
-        class="store  animate__backInLeft"
+        @click="handleViewDetail(data.goodsList[0])"
+        class="store animate__backInLeft"
         :src="data.goodsList[0].picUrl"
         alt=""
       />
       <view class="right">
         <img
-          class=" animate__fadeInTopRight"
+          class="animate__fadeInTopRight"
           :src="data.goodsList[1].picUrl"
+          @click="handleViewDetail(data.goodsList[1])"
           alt=""
         />
 
         <img
-          class=" animate__fadeInBottomRight"
+          class="animate__fadeInBottomRight"
           :src="data.goodsList[2].picUrl"
+          @click="handleViewDetail(data.goodsList[2])"
           alt=""
         />
       </view>
@@ -54,23 +57,30 @@
 
     <!-- 一张图 -->
     <view
-      class="goods-layout one  animate__flipInX"
+      class="goods-layout one animate__flipInX"
       v-if="data.goodsList.length === 1"
     >
-      <img class="img" :src="data.goodsList[0].picUrl" alt="" />
+      <img
+        class="img"
+        @click="handleViewDetail(data.goodsList[0])"
+        :src="data.goodsList[0].picUrl"
+        alt=""
+      />
       <view class="price-icon">￥{{ data.goodsList[0].retailPrice }}</view>
     </view>
 
     <!-- 两张图 -->
     <view class="goods-layout two" v-if="data.goodsList.length === 2">
       <img
-        class="img  animate__lightSpeedInLeft"
+        class="img animate__lightSpeedInLeft"
         :src="data.goodsList[0].picUrl"
+        @click="handleViewDetail(data.goodsList[0])"
         alt=""
       />
       <img
-        class="img  animate__lightSpeedInRight"
+        class="img animate__lightSpeedInRight"
         :src="data.goodsList[1].picUrl"
+        @click="handleViewDetail(data.goodsList[1])"
         alt=""
       />
 
@@ -136,6 +146,12 @@ export default {
     setTypes(types, type) {
       const item = types.find((item) => item.id === type);
       return item && item.storeName;
+    },
+
+    handleViewDetail(info) {
+      uni.navigateTo({
+        url: "/pages/prod/prod?goodsId=" + info.id,
+      });
     },
   },
 };

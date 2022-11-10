@@ -67,9 +67,9 @@ export default {
         payOrderGoodsApi({
           orderNo: data.payOrderID,
           userId: getUserId(),
-          payType: 2
+          payType: 2,
         }).then((res) => {
-            const payData = JSON.parse(res.h5PayUrl);
+          const payData = JSON.parse(res.h5PayUrl);
           const form = document.createElement("form");
           form.setAttribute("action", payData.url);
           form.setAttribute("method", "POST");

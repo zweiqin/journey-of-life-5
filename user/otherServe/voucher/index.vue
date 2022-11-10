@@ -12,7 +12,7 @@
       <view class="icon-wrapper">
         <JIcon width="40" height="40" type="voucher"></JIcon>
       </view>
-      <view class="my-voucher">我的代金券 {{ voucherNumber }}</view>
+      <view class="my-voucher">我的代金券 {{ allHistory.voucherNumber }}</view>
       <button class="uni-btn">签到有惊喜</button>
     </view>
 
@@ -25,7 +25,7 @@
         </view>
 
         <view class="total-value" :style="{ color: item.color }"
-          >{{ voucherNumber }}
+          >{{ allHistory[item.field] }}
           <text class="unit" v-if="item.unit" :style="{ color: item.color }">{{
             item.unit
           }}</text></view
@@ -79,7 +79,11 @@ export default {
       reCharges,
       transFormVoucher,
       footerMenus,
-      voucherNumber: 0,
+      allHistory: {
+        balance: 0,
+        voucherNumber: 0,
+        rechrageHistory: 0,
+      },
     };
   },
   components: {
@@ -92,7 +96,10 @@ export default {
 
   methods: {
     opVoucher(type, price) {
-      let url = type === "recharge" ? "/user/otherServe/voucher/recharge" : "";
+      let url =
+        type === "recharge"
+          ? "/user/otherServe/voucher/recharge"
+          : "/user/otherServe/voucher/recharge-give";
       this.go(url + `?price=${price}`);
     },
 
@@ -100,7 +107,7 @@ export default {
       getVoucherNumberApi({
         userId: getUserId(),
       }).then(({ data }) => {
-        this.voucherNumber = data[0] ? data[0].number : 0;
+        this.allHistory.voucherNumber = data[0] ? data[0].number : 0;
       });
     },
   },

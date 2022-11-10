@@ -1,17 +1,17 @@
 export const totalVoucher = [
   {
     label: "余额",
-    field: "yue",
+    field: "balance",
     unit: "元",
     color: "#FA5151",
   },
   {
     label: "代金劵",
-    field: "voucheNumber",
+    field: "voucherNumber",
   },
   {
     label: "充值记录",
-    field: "",
+    field: "rechrageHistory",
     unit: "次",
   },
 ];
@@ -32,3 +32,22 @@ export const footerMenus = [
     url: "/user/otherServe/voucher/recharge-history",
   },
 ];
+
+export const mapVoucherRechargeStatus = [
+  {
+    label: '未付款',
+    value: 0
+  }, {
+    label: '取消',
+    value: 1
+  }, {
+    label: '已付款',
+    value: 2
+  }, {
+    label: '代金劵未发放',
+    value: 3
+  }, {
+    label: '代金劵已发放',
+    value: 4
+  }
+]

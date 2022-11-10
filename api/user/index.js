@@ -249,6 +249,24 @@ export const grantVoucherApi = (data) => {
   return RuanRequest("/voucher/add", data);
 };
 
+// 代金劵转增
+export const giveVoucherToUserApi = data => {
+  return RuanRequest("/voucher/circula", data)
+}
+
+// 查找用户
+export const searchUserApi = (data) => {
+  return RuanRequest('/voucher/query', data, 'get')
+}
+
+// 代金劵充值记录
+export const getVoucherRechargeHistoryApi = data => {
+  return RuanRequest('/voucher/getVoucherOrder', data, 'get')
+}
+
+// 代金劵流水
+// export const getVoucher 
+
 /**
  * 推广码
  */

@@ -49,6 +49,12 @@
       }}</view>
     </view>
 
+    <view class="line-item" @click="handleChooseRedPackLocation">
+      <JIcon type="blue-locale" width="36" height="40"></JIcon>
+      <view class="title">红包位置</view>
+      <input readonly disabled v-model="redPackAddress" class="input-el" />
+    </view>
+
     <view class="title-form">内容留言</view>
     <textarea
       placeholder="（留言15字符以内）"
@@ -143,8 +149,10 @@ export default {
         remark: "",
         imageUrl: "",
         effectiveDistance: 1,
+        latitude: null,
+        longitude: null,
       },
-
+      redPackAddress: "",
       businessInfo: {},
     };
   },
@@ -216,6 +224,17 @@ export default {
       });
     },
 
+    handleChooseRedPackLocation() {
+      const _this = this;
+      uni.chooseLocation({
+        success: function (res) {
+          _this.redPackAddress = res.name;
+          _this.redForm.latitude = res.latitude;
+          _this.redForm.longitude = res.longitude;
+        },
+      });
+    },
+
     // 发送红包
     handleSend() {
       if (
@@ -236,13 +255,18 @@ export default {
         return;
       }
 
+      if (!this.redForm.latitude || !this.redForm.longitude) {
+        this.$showToast("请选择红包位置");
+        return;
+      }
+
       const data = {
         ...this.redForm,
         userId: getUserId(),
         brandName: this.businessInfo.name,
         brandId: this.businessInfo.id,
-        longitude: this.businessInfo.longitude,
-        latitude: this.businessInfo.latitude,
+        longitude: this.redForm.longitude,
+        latitude: this.redForm.latitude,
         redpackAllmonkey:
           this.redForm.redpackNumber * this.redForm.redpackMonkey,
         effectiveDistance: 1,
@@ -254,10 +278,10 @@ export default {
             uni.showToast({
               title: "红包发送失败",
               duration: 2000,
-              icon: 'none'
+              icon: "none",
             });
 
-            return
+            return;
           }
           payOrderGoodsApi({
             orderNo: res.data,
@@ -289,8 +313,6 @@ export default {
     // 预览红包
     handlePreview() {
       this.$refs.previewWrapperRef.$el.style.transform = "scale(1)";
-
-      console.log(this.businessInfo);
     },
 
     // 关闭预览弹窗

@@ -15,45 +15,60 @@
     </view>
 
     <view class="shop-list">
-      <view
-        class="goods-item"
-        v-for="(item, index) in shopCarList"
-        :key="item.productId"
-      >
-        <JIcon
-          v-show="opStatus === 'EDIT'"
-          class="icon"
-          @click="handleChangeGoodsStatus(item, index)"
-          :type="item.checked ? 'active-choose' : 'active-default'"
-        ></JIcon>
-        <JIcon
-          class="icon"
-          v-show="opStatus === 'CONFIRM'"
-          @click="handleOp(item)"
-          :type="
-            opList.includes(item.productId) ? 'active-choose' : 'active-default'
-          "
-        ></JIcon>
-        <JAvatar radius="10" :size="120" :src="item.picUrl"></JAvatar>
+      <view class="shop-car-list" v-for="store in shopCarList" :key="store.id">
+        <view class="shop-card-name">
+          <JIcon class="icon" width="30" height="30" type="full-store"></JIcon>
+          {{ store.brandName }}
+        </view>
 
-        <view class="goods-pane-right">
-          <view class="goods-pane-name">{{ item.goodsName.trim() }} </view>
-          <view class="goods-pane-desc-content">
-            <text class="goods-pane-desc">{{
-              item.specifications | getDesc
-            }}</text>
-          </view>
-          <view class="goods-pane-footer">
-            <text class="goods-pane-price">￥{{ item.price }}</text>
+        <view class="shop-goods-list">
+          <view
+            class="goods-item"
+            v-for="(item, index) in store.cartList"
+            :key="item.productId"
+          >
+            <JIcon
+              v-show="opStatus === 'EDIT'"
+              class="icon"
+              @click="handleChangeGoodsStatus(item, index, store)"
+              :type="item.checked ? 'active-choose' : 'active-default'"
+            ></JIcon>
+            <JIcon
+              class="icon"
+              v-show="opStatus === 'CONFIRM'"
+              @click="handleOp(item)"
+              :type="
+                opList.includes(item.productId)
+                  ? 'active-choose'
+                  : 'active-default'
+              "
+            ></JIcon>
+            <JAvatar radius="10" :size="120" :src="item.picUrl"></JAvatar>
 
-            <view class="ops">
-              <text class="item" @click="handleChangeNumber(-1, item, index)"
-                >-</text
-              >
-              <text class="item">{{ item.number }}</text>
-              <text class="item" @click="handleChangeNumber(+1, item, index)"
-                >+</text
-              >
+            <view class="goods-pane-right">
+              <view class="goods-pane-name">{{ item.goodsName.trim() }} </view>
+              <view class="goods-pane-desc-content">
+                <text class="goods-pane-desc">{{
+                  item.specifications | getDesc
+                }}</text>
+              </view>
+              <view class="goods-pane-footer">
+                <text class="goods-pane-price">￥{{ item.price }}</text>
+
+                <view class="ops">
+                  <text
+                    class="item"
+                    @click="handleChangeNumber(-1, item, index, store)"
+                    >-</text
+                  >
+                  <text class="item">{{ item.number }}</text>
+                  <text
+                    class="item"
+                    @click="handleChangeNumber(+1, item, index, store)"
+                    >+</text
+                  >
+                </view>
+              </view>
             </view>
           </view>
         </view>
@@ -185,15 +200,16 @@ export default {
     },
 
     // 改变商品勾选状态
-    handleChangeGoodsStatus(goods, index) {
+    handleChangeGoodsStatus(goods, index, store) {
       if (this.opStatus === CONFIRM) {
       } else {
         changeShopCarStatusApi({
           userId: getUserId(),
           productIds: [goods.productId],
           isChecked: goods.checked ? 0 : 1,
+          brandId: store.brandId,
         }).then(() => {
-          this.shopCarList[index].checked = !this.shopCarList[index].checked;
+          store.cartList[index].checked = !store.cartList[index].checked;
         });
       }
     },
@@ -216,7 +232,8 @@ export default {
         userId: getUserId(),
       })
         .then(({ data }) => {
-          _this.setShopCarList(data);
+          _this.shopCarList = data.brandCartgoods;
+          this.loadingStatus = "no-more";
         })
         .catch(() => {
           this.loadingStatus = "no-more";
@@ -224,7 +241,7 @@ export default {
     },
 
     // 购物车数量的添加
-    handleChangeNumber(number, goods, index) {
+    handleChangeNumber(number, goods, index, store) {
       if (this.isChangeNumber) {
         this.$showToast("操作太快啦~");
         return;
@@ -237,12 +254,13 @@ export default {
           content: "是否将该商品移出购物车？",
           success: function (res) {
             if (res.confirm) {
-              _this.deleteGoods([goods.productId]);
+              _this.deleteGoods([goods.productId], store);
             }
           },
         });
         _this.isChangeNumber = false;
       } else {
+        uni.showLoading();
         updateShopCarCountApi({
           userId: getUserId(),
           goodsId: goods.goodsId,
@@ -251,13 +269,14 @@ export default {
           id: goods.id,
         })
           .then(() => {
-            this.shopCarList[index].number =
-              this.shopCarList[index].number + number;
+            _this.getShopList();
             _this.isChangeNumber = false;
+            uni.hideLoading();
           })
           .catch(() => {
             this.$showToast("数量修改失败");
             _this.isChangeNumber = false;
+            uni.hideLoading();
           });
       }
     },
@@ -278,13 +297,11 @@ export default {
 
     // 删除购物车的商品
     deleteGoods(productIds) {
-      const _this = this;
       deleteShopCarGoodsApi({
         productIds,
         userId: getUserId(),
-      }).then(({ data }) => {
-        _this.setShopCarList(data);
-        _this.opList = [];
+      }).then(() => {
+        this.getShopList();
       });
     },
 
@@ -300,6 +317,7 @@ export default {
 
     // 是否全选
     handleChooseAll() {
+      return;
       if (this.opStatus === EDIT) {
         const needCheckedIds = this.shopCarList
           .filter((item) => !item.checked === !this.allCheckStatus)
@@ -321,15 +339,33 @@ export default {
 
     // 去结算
     handleToPay() {
-      const selectGoods = this.shopCarList.filter((item) => item.checked);
+      let currentBrand = null;
+      let tag = true;
+      const op = [];
+      for (const shop of this.shopCarList) {
+        for (const item of shop.cartList) {
+          if (item.checked) {
+            if (!currentBrand || currentBrand == shop.brandId) {
+              currentBrand = shop.brandId;
+              op.push(item);
+            } else {
+              tag = false;
+            }
+          }
+        }
+      }
 
-      if (!selectGoods.length) {
+      if (tag && !op.length) {
         this.$showToast("请选择要结算的商品");
+        return;
+      } else if (!tag) {
+        this.$showToast("暂不支持跨门店结算");
         return;
       }
 
       uni.setStorageSync(J_PAY_GOODS, {
-        goods: selectGoods,
+        goods: op,
+        brandId: currentBrand,
         pay: this.totalPrice,
       });
 
@@ -345,7 +381,16 @@ export default {
         return false;
       }
       if (this.opStatus === EDIT) {
-        return this.shopCarList.every((item) => item.checked);
+        let status = true;
+        for (const shop of this.shopCarList) {
+          for (const item of shop.cartList) {
+            if (!item.checked) {
+              status = false;
+              break;
+            }
+          }
+        }
+        return status;
       } else {
         let status = true;
         for (const item of this.shopCarList) {
@@ -359,9 +404,11 @@ export default {
 
     totalPrice() {
       let price = 0;
-      for (const item of this.shopCarList) {
-        if (item.checked) {
-          price += item.number * item.price;
+      for (const shop of this.shopCarList) {
+        for (const item of shop.cartList) {
+          if (item.checked) {
+            price += item.number * item.price;
+          }
         }
       }
       return fomartNumber(price);

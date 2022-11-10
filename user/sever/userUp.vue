@@ -189,6 +189,7 @@ export default {
 
         if (this.storeInfo && this.storeInfo.status !== 1) {
           if (this.isReLoad) {
+            console.log('操了', this.storeInfo.upgradeOrder.payStatus);
             if (
               this.storeInfo.upgradeOrder &&
               this.storeInfo.upgradeOrder.payStatus === 2
@@ -265,13 +266,12 @@ export default {
     handleToUp(item) {
       if (item.type === 4) {
         const userInfo = uni.getStorageSync(J_USER_INFO);
-        if (userInfo.userLevel >= 1) {
+        if (userInfo.userLevel >= 1 && userInfo.userLevel !== 5) {
           this.$showToast(
             `您已经是${userInfo.userLevelDesc}等级了，无需升级vip`
           );
+          return;
         }
-
-        return;
       }
 
       if (item.type === 1) {
@@ -280,13 +280,13 @@ export default {
           this.$showToast(
             `您已经是${userInfo.userLevelDesc}等级了，无需重复申请`
           );
-        } else if (userInfo.userLevel > 1) {
+          return;
+        } else if (userInfo.userLevel > 1 && userInfo.userLevel !== 5) {
           this.$showToast(
             `您已经是${userInfo.userLevelDesc}等级了，无需申请门店`
           );
+          return;
         }
-
-        return;
       }
 
       if (item.type === 2) {
@@ -295,6 +295,8 @@ export default {
           this.$showToast(
             `您已经是${userInfo.userLevelDesc}等级了，无需重复申请`
           );
+
+          return
         }
       }
 

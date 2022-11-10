@@ -11,7 +11,7 @@
         </view> -->
 
         <JBack
-          tabbar="/pages/user/user"
+          :tabbar="backUrl"
           style="margin-top: 10upx; margin-left: 20upx"
           width="50"
           height="50"
@@ -198,6 +198,12 @@ export default {
   onShow() {
     console.log("sb");
     this.getAddressList();
+  },
+
+  computed: {
+    backUrl() {
+      return this.isSelect ? "" : "/pages/user/user";
+    },
   },
 };
 </script>
