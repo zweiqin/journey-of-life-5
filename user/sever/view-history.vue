@@ -17,8 +17,6 @@
       >
     </view>
 
-    
-
     <view class="list-wrapper">
       <FootPrint
         v-show="currentPage === 'history'"
@@ -82,7 +80,7 @@ export default {
           size: 20,
         },
 
-        data: {},
+        data: [],
         totalPage: 0,
       },
 
@@ -91,7 +89,7 @@ export default {
           page: 1,
           size: 20,
         },
-        data: {},
+        data: [],
         totalPage: 0,
       },
 
@@ -124,7 +122,12 @@ export default {
   onLoad(options) {
     this.currentPage = options.page;
     this.currentPageInfo = mapCurrentInfo[this.currentPage];
-    this.currentPageInfo.api && this[this.currentPageInfo.api]();
+    if (this.currentPageInfo.api) {
+      this[this.currentPageInfo.api]();
+    } else {
+      this.loadingStatus = "hidden";
+      this.showNoData = true
+    }
   },
 
   methods: {
@@ -140,8 +143,6 @@ export default {
         ? this[this.currentPageInfo.api]()
         : (this.showNoData = true);
     },
-
-    
 
     // 获取足迹数据
     getFootPrint() {
@@ -241,7 +242,5 @@ export default {
       color: #fa5151ff;
     }
   }
-
-  
 }
 </style>

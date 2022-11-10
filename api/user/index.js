@@ -265,7 +265,14 @@ export const getVoucherRechargeHistoryApi = data => {
 }
 
 // 代金劵流水
-// export const getVoucher 
+export const getVoucherTansformApi = data => {
+  return RuanRequest('/voucher/getVoucherCircula', data, 'get')
+}
+
+// 代金劵，余额统计及充值次数
+export const getAccountVoucherHistoryTimes = data => {
+  return RuanRequest('/voucher/getMoney', data, 'get')
+}
 
 /**
  * 推广码

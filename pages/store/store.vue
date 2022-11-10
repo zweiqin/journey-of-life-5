@@ -135,6 +135,13 @@ export default {
           id: 0,
         },
         {
+          id: 14,
+          storeName: "附近美食",
+          addTime: "2022-10-31 11:41:35",
+          updateTime: "2022-10-31 11:41:35",
+          deleted: false,
+        },
+        {
           id: 21,
           storeName: "美甲美睫",
           addTime: "2022-10-31 11:43:50",
@@ -181,13 +188,6 @@ export default {
           storeName: "休闲娱乐",
           addTime: "2022-10-31 11:42:22",
           updateTime: "2022-10-31 11:42:22",
-          deleted: false,
-        },
-        {
-          id: 14,
-          storeName: "附近美食",
-          addTime: "2022-10-31 11:41:35",
-          updateTime: "2022-10-31 11:41:35",
           deleted: false,
         },
       ],

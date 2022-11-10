@@ -35,15 +35,12 @@
 </template>
 
 <script>
-import VoucherHistoryItem from "./components/vouche-history";
+// import VoucherHistoryItem from "./components/vouche-history";
 import { getVoucherRechargeHistoryApi } from "../../../api/user";
 import { getUserId } from "../../../utils";
 import { mapVoucherRechargeStatus } from "./config";
 
 export default {
-  components: {
-    VoucherHistoryItem,
-  },
 
   data() {
     return {

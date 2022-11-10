@@ -163,7 +163,9 @@ export default {
 
     // 回退
     handleBack() {
-      uni.navigateBack();
+      uni.switchTab({
+        url: "/pages/user/user",
+      });
     },
 
     // 获取列表数据
@@ -173,23 +175,18 @@ export default {
       });
       const res = await getMsgSentryListApi(this.query);
 
-      if (res.errno === 0) {
-        console.log(res);
-      } else {
-        uni.showToast({
-          title: "您还不是业务员，无法访问",
-          duration: 2000,
-          icon: "none",
-        });
-
+      if (res.errno && res.errmsg) {
+        this.$showToast("您还不是业务员，无法访问");
+        uni.hideLoading();
         setTimeout(() => {
           uni.switchTab({
             url: "/pages/user/user",
           });
         }, 2000);
+      } else {
+        this.list = res;
+        uni.hideLoading();
       }
-
-      uni.hideLoading();
     },
 
     // 转化成功

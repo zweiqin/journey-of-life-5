@@ -69,7 +69,7 @@ import {
   footerMenus,
 } from "./config";
 import PricePane from "./components/price-pane.vue";
-import { getVoucherNumberApi } from "../../../api/user";
+import { getAccountVoucherHistoryTimes } from "../../../api/user";
 import { getUserId } from "../../../utils";
 
 export default {
@@ -104,10 +104,13 @@ export default {
     },
 
     getVoucherHold() {
-      getVoucherNumberApi({
+      getAccountVoucherHistoryTimes({
         userId: getUserId(),
       }).then(({ data }) => {
-        this.allHistory.voucherNumber = data[0] ? data[0].number : 0;
+        console.log(data);
+        this.allHistory.voucherNumber = data.voucherHold;
+        this.allHistory.balance = data.account;
+        this.allHistory.rechrageHistory = data.voucherCount;
       });
     },
   },

@@ -1,32 +1,62 @@
 <template>
   <view class="voucher-history-container">
-    <view class="time"> 2022年9月支出账单 </view>
+    <!-- <view class="time"> 2022年9月支出账单 </view> -->
     <view class="item">
-      <JIcon type="voucher-recharge" width="50" height="45"></JIcon>
+      <JIcon
+        :type="type === 'userId' ? 'voucher-transform' : 'voucher-recharge'"
+        width="50"
+        height="45"
+      ></JIcon>
       <view class="voucher-detail">
         <view class="voucher-price voucher-detail-item">
-          <text>代金券充值</text>
-          <text>￥30</text>
+          <text
+            >{{ type === "userId" ? "转自" : "转给" }}：{{
+              data.userName
+            }}</text
+          >
+          <text
+            ><JIcon
+              style="margin-right: 5px"
+              type="color-voucher"
+              width="30"
+              height="30"
+            ></JIcon
+            >{{ data.number }}</text
+          >
         </view>
 
         <view class="voucher-text voucher-detail-item">
-          <text style="margin: 18upx 0 10upx 0">138 0013 8000</text>
+          <text style="margin: 18upx 0 10upx 0">
+            {{ type === "userId" ? "转赠者ID" : "赠与者ID：" }}
+            {{ data.userId }}</text
+          >
         </view>
 
         <view class="voucher-text voucher-detail-item">
-          <text>09-10 18:00:47</text>
-          <text>充值成功</text>
+          <text>{{ data.addTime }}</text>
+          <!-- <text>充值成功</text> -->
         </view>
       </view>
-      <view class="icon">
+      <!-- <view class="icon">
         <JIcon width="42" height="46" type="right-arrow"></JIcon>
-      </view>
+      </view> -->
     </view>
   </view>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+    type: {
+      type: String,
+      default: "holdId",
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
@@ -35,6 +65,8 @@ export default {};
   width: 100%;
   border-bottom: 1upx solid #d8d8d8;
   font-size: 28upx;
+  margin-bottom: 30px;
+  padding-bottom: 20upx;
 
   .time {
     padding-bottom: 10upx;
@@ -43,8 +75,8 @@ export default {};
   }
 
   .item {
-    padding: 30upx 18upx 18upx 32upx;
-    box-sizing: border-box;
+    // padding: 30upx 18upx 18upx 32upx;
+    // box-sizing: border-box;
     display: flex;
 
     .voucher-detail {

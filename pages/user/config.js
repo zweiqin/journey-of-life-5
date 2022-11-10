@@ -241,12 +241,14 @@ export const otherServe = {
     {
       label: "进销存",
       icon: require("../../static/images/user//jinxiaocun.png"),
-      type: 'mini-progress'
+      type: 'mini-progress',
+      role: [1,2]
     },
     {
       label: "代金券",
       icon: require("../../static/images/user/daijinjuanchongzhi.png"),
-      url: '/user/otherServe/voucher/index'
+      url: '/user/otherServe/voucher/index',
+      role: [1,2]
     },
     // {
     //   label: "代金券转赠",

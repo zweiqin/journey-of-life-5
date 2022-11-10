@@ -167,7 +167,9 @@ export default {
   },
   methods: {
     back() {
-      uni.navigateBack();
+      uni.switchTab({
+        url: "/pages/user/user",
+      });
     },
     fomartNumber,
 

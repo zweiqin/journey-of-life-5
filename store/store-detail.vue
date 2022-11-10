@@ -27,13 +27,19 @@
           "
         ></JAvatar>
         <view class="detail-info-ccontent">
-          <view class="name">{{ storeDetail.name }}</view>
+          <view class="name">{{ storeDetail.name }} </view>
+          <JTo
+            class="navigition-icon"
+            icon
+            animate
+            :address="storeDetail.address"
+          ></JTo>
+
           <view class="tags">
             <view class="tag">品牌老店</view>
             <view class="tag">品质保障</view>
           </view>
         </view>
-        <JTo :address="storeDetail.address"></JTo>
       </view>
 
       <view class="pub">
@@ -43,8 +49,9 @@
           alt=""
         />
 
-        <text class="text">店铺公告：佛山市亚洲国际材料城中央馆5栋3楼</text>
+        <text class="text">店铺公告：{{ storeDetail.address }}</text>
       </view>
+      <view class="ops"> </view>
     </view>
 
     <view class="main">
@@ -286,6 +293,7 @@ export default {
       font-weight: bold;
       text-shadow: 1px 0 0 rgba(0, 0, 0, 0.2), -1px 0 0 rgba(0, 0, 0, 0.2),
         0 1px 0 rgba(0, 0, 0, 0.2), 0 -1px 0 rgba(0, 0, 0, 0.2);
+      display: inline-block;
     }
 
     .tags {
@@ -358,5 +366,13 @@ export default {
   .goods-wrapper {
     margin: 30upx 0;
   }
+}
+
+.navigition-icon {
+  padding: 6upx;
+  border-radius: 4upx;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: inline-block;
+  margin-left: 20upx;
 }
 </style>

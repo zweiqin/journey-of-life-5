@@ -1,6 +1,9 @@
 <template>
-  <view class="j-to" @click="handleToHere">
-    <text class="title">{{ text }}</text>
+  <view
+    class="j-to"
+    @click="handleToHere"
+  >
+    <text v-if="!icon" class="title">{{ text }}</text>
     <JIcon width="46" height="34" type="to"></JIcon>
   </view>
 </template>
@@ -19,6 +22,10 @@ export default {
       default: "to",
     },
     address: String,
+    icon: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   methods: {
