@@ -1,14 +1,7 @@
 <template>
   <view class="store-detail" style="padding-bottom: 100upx">
     <view class="search-bar">
-      <view class="local-wrapper">
-        <img
-          class="location"
-          src="../../static/images/index/location.png"
-          alt=""
-        />
-        <text class="locale">佛山市</text></view
-      >
+      <JLocale></JLocale>
       <input type="text" />
       <img class="location" src="../../static/images/store/search.png" alt="" />
     </view>

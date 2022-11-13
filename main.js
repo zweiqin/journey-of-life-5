@@ -7,7 +7,7 @@ Vue.config.productionTip = false;
 Vue.mixin({
   data() {
     return {
-      baseUrl: ''
+      baseUrl: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/'
     }
   },
   methods: {

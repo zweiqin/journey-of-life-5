@@ -122,25 +122,71 @@ export default {
 
     // 获取types
     getTypes(value) {
-      const _this = this;
-      let types = uni.getStorageSync(J_STORE_TYPES);
-      if (!types) {
-        getStoreTypesApi({
-          page: 1,
-          size: 30,
-        })
-          .then(({ data }) => {
-            types = data.items;
-            uni.setStorageSync(J_STORE_TYPES, data.items);
-            return _this.setTypes(types, value);
-          })
-          .catch((e) => {
-            console.log(e);
-            _this.$showToast("门店类型获取失败");
-          });
-      } else {
-        return this.setTypes(types, value);
-      }
+      const stores = [
+        {
+          storeName: "综合",
+          id: 0,
+        },
+        {
+          id: 14,
+          storeName: "附近美食",
+          addTime: "2022-10-31 11:41:35",
+          updateTime: "2022-10-31 11:41:35",
+          deleted: false,
+        },
+        {
+          id: 21,
+          storeName: "美甲美睫",
+          addTime: "2022-10-31 11:43:50",
+          updateTime: "2022-10-31 11:43:50",
+          deleted: false,
+        },
+        {
+          id: 20,
+          storeName: "运动健身",
+          addTime: "2022-10-31 11:43:38",
+          updateTime: "2022-10-31 11:43:38",
+          deleted: false,
+        },
+        {
+          id: 19,
+          storeName: "亲子",
+          addTime: "2022-10-31 11:43:26",
+          updateTime: "2022-10-31 11:43:26",
+          deleted: false,
+        },
+        {
+          id: 18,
+          storeName: "住宿",
+          addTime: "2022-10-31 11:43:16",
+          updateTime: "2022-10-31 11:43:16",
+          deleted: false,
+        },
+        {
+          id: 17,
+          storeName: "丽人/美发",
+          addTime: "2022-10-31 11:43:05",
+          updateTime: "2022-10-31 11:43:05",
+          deleted: false,
+        },
+        {
+          id: 16,
+          storeName: "游玩",
+          addTime: "2022-10-31 11:42:34",
+          updateTime: "2022-10-31 11:42:34",
+          deleted: false,
+        },
+        {
+          id: 15,
+          storeName: "休闲娱乐",
+          addTime: "2022-10-31 11:42:22",
+          updateTime: "2022-10-31 11:42:22",
+          deleted: false,
+        },
+      ]
+      
+        return this.setTypes(stores, value);
+      
     },
 
     setTypes(types, type) {

@@ -287,3 +287,28 @@ export const getExtensionCodeApi = (data) => {
 export const bindLastUserApi = (data) => {
   return RuanRequest("/bindUser/add", data);
 };
+
+
+/**
+ * 名片
+ */
+
+// 新建名片
+export const buildNewMyCardApi = (data) => {
+  return RuanRequest('/businessCard/add', data)
+}
+
+// 获取名片列表
+export const getNameCardList = data => {
+  return RuanRequest("/businessCard/list", data, 'get')
+}
+
+// 修改明信片背景色
+export const changeNameCardBgApi = data => {
+  return RuanRequest('/businessCard/updateBgColor', data)
+}
+
+// 获取名片详情
+export const getNameCardDetailApi = (data) => {
+  return RuanRequest('/businessCard/detail', data, 'get')
+}

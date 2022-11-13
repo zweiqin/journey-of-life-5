@@ -150,8 +150,8 @@ export default {
       uni.getLocation({
         type: "gcj02",
         success: function (res) {
-          _this.longitude = res.longitude * 1;
-          _this.latitude = res.latitude * 1;
+          _this.longitude = res.longitude * 1 + 0.001;
+          _this.latitude = res.latitude * 1 + 0.001;
 
           uni.setStorageSync(J_LOACTION, {
             latitude: res.latitude,

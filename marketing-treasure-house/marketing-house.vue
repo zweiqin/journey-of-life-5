@@ -1,51 +1,29 @@
 <template>
   <view class="marketing-treasure-house-container">
     <view class="view-bg">
-      <!-- <h1>达人广场</h1> -->
-    </view>
-    <view class="search-bar" @click="serch('/pages/search-page/search-page')">
-      <JLocale></JLocale>
-      <view></view>
-      <img class="location" src="../../static/images/store/search.png" alt="" />
+      <JHeader
+        tabbar="/pages/marketing-treasure-house/marketing-treasure-house"
+        width="50"
+        height="50"
+        title="营销宝库"
+      ></JHeader>
     </view>
 
     <view class="main">
-      <img
-        v-for="item in advance"
-        :key="item.imgUrl"
-        @click="go(item.link)"
-        class="img animate__animated animate__fadeIn"
-        style="width: 100%"
-        :src="item.imgUrl"
-        alt=""
-      />
-      <JLineTitle color="#FA5151" title="任务广场"></JLineTitle>
-      <view class="daren-square-wrapper">
-        <view class="item" v-for="store in templateShowStore" :key="store.name">
-          <easy-loadimage
-            loading-mode="spin-circle"
-            class="avatar"
-            :image-src="store.avatar"
-          ></easy-loadimage>
-          <view class="info">
-            <view class="title">{{ store.name }}</view>
-            <view class="desc"
-              >{{ store.desc
-              }}<text class="precent">{{ store.precent }}</text></view
-            >
-          </view>
-          <button class="uni-btn">去报名</button>
-        </view>
-      </view>
+      <JNavs class="navs" @nav-click="handleNavItemClick" :navs="navs"></JNavs>
+
+      <JLineTitle color="#FA5151" title="免费案例"></JLineTitle>
+
+      <ArticlePane :status="loadingStatus" :data="allList"></ArticlePane>
     </view>
   </view>
 </template>
 
 <script>
-import ArticlePane from "./components/article-pane.vue";
-import { getIndustryInformationListApi } from "../../api/marketing-treasure-house";
-import { J_LOACTION } from "../../constant";
-import { advance, templateShowStore } from "./consfig";
+import { navs } from "./config";
+import ArticlePane from "../pages/marketing-treasure-house/components/article-pane.vue";
+import { getIndustryInformationListApi } from "../api/marketing-treasure-house";
+import { J_LOACTION } from "../constant";
 
 export default {
   components: {
@@ -59,9 +37,8 @@ export default {
   },
   data() {
     return {
+      navs,
       allList: [],
-      advance,
-      templateShowStore,
       queryInfo: {
         page: 1,
         size: 10,
@@ -123,7 +100,7 @@ export default {
 }
 .marketing-treasure-house-container {
   padding-top: 200upx;
-  padding-bottom: 120upx;
+  padding-bottom: 60upx;
 
   .view-bg {
     position: absolute;
@@ -133,6 +110,8 @@ export default {
       no-repeat;
     height: 700upx;
     width: 100%;
+    padding-top: 40upx;
+    box-sizing: border-box;
   }
 
   .search-bar {
@@ -174,12 +153,18 @@ export default {
     }
   }
 
+  /deep/ .j-line-title {
+    .text {
+      background-color: #fdeeee;
+    }
+  }
+
   .main {
     position: relative;
     padding: 20upx;
     box-sizing: border-box;
     z-index: 200;
-    top: -30upx;
+    top: -70upx;
 
     .navs {
       background-color: #fff;

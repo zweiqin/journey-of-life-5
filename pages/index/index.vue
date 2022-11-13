@@ -9,14 +9,7 @@
     </wx-open-launch-weapp> -->
 
     <view class="search-bar">
-      <view class="local-wrapper">
-        <img
-          class="location"
-          src="../../static/images/index/location.png"
-          alt=""
-        />
-        <text class="locale">佛山市</text></view
-      >
+      <JLocale></JLocale>
       <input type="text" />
       <img class="location" src="../../static/images/store/search.png" alt="" />
     </view>
@@ -36,6 +29,9 @@
         autoplay
         indicator-color="#fff"
         indicator-active-color="#fff"
+        :style="{
+          height: isShowItemPane ? 0 : '',
+        }"
       >
         <swiper-item>
           <img
@@ -173,6 +169,7 @@
               v-for="item in footerData"
               :key="item.id"
               :data="item"
+              :scroll-top="scrollTop"
             ></JGoods>
           </view>
         </view>
@@ -193,6 +190,7 @@
           :tabs="labelList"
           :data="data"
           type="goods"
+          :scroll-top="scrollTop"
           :status="listLoading"
         ></JSwipper>
       </view>
@@ -263,6 +261,7 @@ export default {
       hotGoodsList: [],
       footerData: [],
       currentIndex: "preferential",
+      scrollTop: 0,
     };
   },
 
@@ -281,7 +280,8 @@ export default {
     handleNavItemClick(nav) {
       this.currentCategoryId = nav.id;
       this.getOrderList();
-      this.$refs.swipperRef.$el.style.height = 0;
+      console.log("你他妈给我寄了", this.$refs.swipperRef.style);
+      // this.$refs.swipperRef.$el.style.height = 0;
       nav.background = nav.background.replace("137deg", "to bottom");
       this.currentNav = nav;
       this.currentActive = 0;
@@ -319,7 +319,6 @@ export default {
     // aside 两个操作icon
     handleOp(eventName) {
       if (eventName === "home") {
-        this.$refs.swipperRef.$el.style.height = "";
         this.isShowItemPane = false;
       } else {
         uni.pageScrollTo({
@@ -405,6 +404,10 @@ export default {
     this.queryInfo.page++;
     this.getOrderList(true);
   },
+
+  onPageScroll(scrollTop) {
+    this.scrollTop = scrollTop.scrollTop;
+  },
 };
 </script>
 
@@ -434,17 +437,6 @@ export default {
     font-size: 24upx;
     border-radius: 50upx;
     z-index: 200;
-
-    .local-wrapper {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .locale {
-        padding: 0 10upx;
-        border-right: 1px solid #ccc;
-      }
-    }
 
     .location {
       width: 40upx;

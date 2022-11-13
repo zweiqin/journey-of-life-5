@@ -17,7 +17,9 @@
         <slot name="store-title"></slot>
         <view class="swiper-item" v-for="(goods, index) in data" :key="index">
           <JGoods
+            class="j-goods"
             ref="jGoodsRef"
+            :scrollTop="scrollTop"
             :data="goods"
             v-if="type === 'goods'"
           ></JGoods>
@@ -66,6 +68,7 @@ export default {
       type: String,
       default: "loading",
     },
+    scrollTop: Number
   },
 
   mounted() {
@@ -98,6 +101,11 @@ export default {
       this.$nextTick(() => {
         let number = 0;
         let itemHeight = 0;
+
+        const a = uni.createSelectorQuery().in(this).select(".j-goods");
+        a.boundingClientRect((data) => {
+          console.log("去你妈的", data);
+        });
 
         setTimeout(() => {
           if (this.data && this.data.length) {

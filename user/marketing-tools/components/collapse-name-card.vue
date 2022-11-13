@@ -1,7 +1,7 @@
 <template>
   <view class="collapse-name-card">
     <view class="collapse-header" @click="handleCollapse">
-      <view class="title">基本信息</view>
+      <view class="title">{{ title }}</view>
       <JIcon
         :class="{
           isCollapse: isCollapse,
@@ -21,7 +21,6 @@
     >
       <slot></slot>
     </view>
-
   </view>
 </template>
 
@@ -32,6 +31,13 @@ export default {
       isCollapse: false,
       height: "",
     };
+  },
+
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
   },
 
   mounted() {
@@ -84,7 +90,5 @@ export default {
     // background-color: aqua;
     overflow: hidden;
   }
-
-
 }
 </style>

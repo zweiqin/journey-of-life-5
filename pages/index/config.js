@@ -71,18 +71,15 @@ export const homeNavs = {
       id: 1001007,
     },
 
-
-    
-
     {
-      label: "爆品选购",
+      label: "健身产品",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/j4c42vmwqg1ss4wel6ra.png",
       background: "linear-gradient(137deg, #FA5151, #FF8F1F)",
       width: "54upx",
       id: 100101465,
     },
     {
-      label: "特惠专区",
+      label: "家电",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/bil0fjlgzj1qvp3fnhok.png",
       background: "linear-gradient(137deg, #fd00e2, #ff0000)",
       width: "50upx",

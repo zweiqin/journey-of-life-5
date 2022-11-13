@@ -16,30 +16,31 @@
 
       <view class="card-info animate__animated animate__swing">
         <view class="title">总名片数</view>
-        <view class="card-number">1</view>
+        <view class="card-number">{{ totalNameCardNumber }}</view>
       </view>
 
       <view class="my-card-change" @click="changeBackgroundColor">
         更换背景
       </view>
 
-      <view class="card-list">
-        <view class="create-card-time">2022-10月</view>
-        <view class="card-wrapper">
-          <image
-            class="avatar"
-            src="https://img2.baidu.com/it/u=2489310734,2696445903&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1666890000&t=cc887312c46802d0388c02e63705b350"
-            mode=""
-          />
+      <view class="card-list" v-for="(item, index) in data" :key="index">
+        <view class="create-card-time">{{ index }}</view>
+        <view
+          class="card-wrapper"
+          @click="handleViewNameCard(nameCard)"
+          v-for="nameCard in item"
+          :key="nameCard.id"
+        >
+          <image class="avatar" :src="nameCard.headPic" mode="" />
 
           <view class="detail-info">
             <view class="name-wrapper">
-              <view class="name">庞文龙</view>
+              <view class="name">{{ nameCard.name }}</view>
               <JIcon width="36" height="36" type="share"></JIcon>
             </view>
 
-            <view class="text text1">营销策划师</view>
-            <view class="text">广东团蜂科技有限公司</view>
+            <view class="text text1">{{ nameCard.position }}</view>
+            <view class="text">{{ nameCard.business }}</view>
           </view>
         </view>
       </view>
@@ -112,16 +113,49 @@
 
 <script>
 import { getRestColor } from "./config";
+import { getNameCardList, changeNameCardBgApi } from "../../../api/user";
+import { getUserId } from "../../../utils";
+
 export default {
   data() {
     return {
       backgroundChangeVisble: false,
       currentChooseColor: "",
       currentBackgroundColor: "",
+      data: [],
+      totalNameCardNumber: 0,
     };
   },
 
+  onShow() {
+    this.getNameCardList();
+  },
+
   methods: {
+    // 获取名片列表
+    getNameCardList() {
+      const _this = this;
+      getNameCardList({
+        userId: getUserId(),
+        page: 1,
+        limit: 30,
+      }).then(({ data }) => {
+        const finalData = {};
+        _this.totalNameCardNumber = data.brandList.length;
+
+        for (const nameCard of data.brandList) {
+          const addTime = nameCard.addTime.split(" ")[0];
+          if (!finalData[addTime]) {
+            finalData[addTime] = [nameCard];
+          } else {
+            finalData[addTime].push(nameCard);
+          }
+        }
+
+        _this.data = finalData;
+      });
+    },
+
     // 更换背景
     changeBackgroundColor() {
       this.backgroundChangeVisble = true;
@@ -140,8 +174,21 @@ export default {
 
     // 确定选择该颜色值
     handleConfirmBackground() {
-      this.currentBackgroundColor = this.currentChooseColor;
-      this.closePopup();
+      const _this = this;
+      changeNameCardBgApi({
+        userId: getUserId(),
+        bgColor: _this.currentChooseColor,
+      }).then(() => {
+        _this.currentBackgroundColor = _this.currentChooseColor;
+        _this.closePopup();
+      })
+    },
+
+    // 去看详情
+    handleViewNameCard(info) {
+      this.go(
+        "/user/marketing-tools/contact-guide/name-card-detail?id=" + info.id
+      );
     },
   },
 
@@ -156,7 +203,6 @@ export default {
 <style lang="less" scoped>
 .my-card {
   width: 100%;
-  padding-bottom: 116upx;
 
   &-background {
     width: 100%;
@@ -172,6 +218,7 @@ export default {
     width: 100%;
     padding: 0 30upx;
     box-sizing: border-box;
+    padding-bottom: 166upx;
 
     .my-card-header {
       display: flex;

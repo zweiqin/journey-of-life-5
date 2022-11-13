@@ -30,7 +30,7 @@
 		{
 			"path": "pages/marketing-treasure-house/marketing-treasure-house",
 			"style": {
-				"navigationBarTitleText": "营销宝库"
+				"navigationBarTitleText": "达人广场"
 			}
 		},
 		{
@@ -139,7 +139,7 @@
 			},
 			{
 				"pagePath": "pages/marketing-treasure-house/marketing-treasure-house",
-				"text": "营销宝库",
+				"text": "达人广场",
 				"iconPath": "/static/images/tabbar/books.png",
 				"selectedIconPath": "/static/images/tabbar/books-active.png"
 			},
@@ -355,6 +355,12 @@
 					"style": {
 						"navigationBarTitleText": "代金劵转增"
 					}
+				},
+				{
+					"path": "marketing-tools/contact-guide/name-card-detail",
+					"style": {
+						"navigationBarTitleText": "我的名片"
+					}
 				}
 			]
 		},
@@ -400,6 +406,12 @@
 				},
 				{
 					"path": "article-detail"
+				},
+				{
+					"path": "marketing-house",
+					"style": {
+						"navigationBarTitleText": "营销宝库"
+					}
 				}
 			]
 		},

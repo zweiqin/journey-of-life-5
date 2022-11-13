@@ -69,34 +69,34 @@ export const navs = {
       width: "48upx",
       url: "/marketing-treasure-house/article-list?type=8&title=汽车美容",
     },
-    {
-      label: "爆粉秘籍",
-      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/5qvq36u9kv893o2g0z0d.png",
-      background: "linear-gradient(148deg, #FA5151, #FF8F1F)",
-      width: "44upx",
-      url: "/marketing-treasure-house/article-list?type=9&title=爆粉秘籍",
-    },
-    {
-      label: "抖音实例",
-      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6cex483e3vok0m3z5tw2.png",
-      background: "linear-gradient(138deg, #EB2F96, #FA5151)",
-      width: "36upx",
-      url: "/marketing-treasure-house/article-list?type=10&title抖音实例",
-    },
-    {
-      label: "营销课程",
-      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ioxwrg755riv30ippijz.png",
-      background: "linear-gradient(143deg, #8A38F5, #EB2F96)",
-      width: "54upx",
-      url: "/marketing-treasure-house/article-list?type=11&title=营销课程",
-    },
-    {
-      label: "赚钱教程",
-      icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/xs58stz7qxkphdxxwfjh.png",
-      background:
-        "linear-gradient(140deg, #FF8F1F, #FA5151)",
-      width: "50upx",
-      url: "/marketing-treasure-house/article-list?type=12&title=赚钱教程",
-    },
+    // {
+    //   label: "爆粉秘籍",
+    //   icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/5qvq36u9kv893o2g0z0d.png",
+    //   background: "linear-gradient(148deg, #FA5151, #FF8F1F)",
+    //   width: "44upx",
+    //   url: "/marketing-treasure-house/article-list?type=9&title=爆粉秘籍",
+    // },
+    // {
+    //   label: "抖音实例",
+    //   icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6cex483e3vok0m3z5tw2.png",
+    //   background: "linear-gradient(138deg, #EB2F96, #FA5151)",
+    //   width: "36upx",
+    //   url: "/marketing-treasure-house/article-list?type=10&title抖音实例",
+    // },
+    // {
+    //   label: "营销课程",
+    //   icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ioxwrg755riv30ippijz.png",
+    //   background: "linear-gradient(143deg, #8A38F5, #EB2F96)",
+    //   width: "54upx",
+    //   url: "/marketing-treasure-house/article-list?type=11&title=营销课程",
+    // },
+    // {
+    //   label: "赚钱教程",
+    //   icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/xs58stz7qxkphdxxwfjh.png",
+    //   background:
+    //     "linear-gradient(140deg, #FF8F1F, #FA5151)",
+    //   width: "50upx",
+    //   url: "/marketing-treasure-house/article-list?type=12&title=赚钱教程",
+    // },
   ],
 };

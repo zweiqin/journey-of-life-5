@@ -128,6 +128,11 @@ export function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+/**
+ * 根据地址获取经纬度
+ * @param {*} address
+ * @returns
+ */
 export const getAddressLongitudeAndLatitude = (address) => {
   return new Promise((resolve, reject) => {
     jsonp("https://apis.map.qq.com/ws/geocoder/v1/", {
@@ -144,3 +149,21 @@ export const getAddressLongitudeAndLatitude = (address) => {
   });
 };
 
+/**
+ * 根据经纬度逆解析地址
+ */
+export const getAdressDetailByLngLat = (lat, lng) => {
+  return new Promise((resolve, reject) => {
+    jsonp("http://apis.map.qq.com/ws/geocoder/v1/", {
+      key: "3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH",
+      location: `${lat},${lng}`,
+      output: "jsonp",
+    })
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};

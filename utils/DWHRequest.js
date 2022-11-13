@@ -19,7 +19,7 @@ const request = (base_url) => {
           } else if (res.data.errno == 403) {
             uni.showModal({
               title: "提示",
-              content: "你还未登录，请去登录",
+              content: "您还未登录，请先去登录",
               success: function (res) {
                 uni.navigateTo({
                   url: "/pages/login/login",

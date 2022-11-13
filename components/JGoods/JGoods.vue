@@ -1,6 +1,15 @@
 <template>
   <view class="j-goods-container" @click="handleToViewGoodsDetail">
-    <image class="img" :src="data.picUrl" alt="" />
+    <!-- <image @load="handleLoadingImg" class="img" :src="data.picUrl" alt="" /> -->
+    <easy-loadimage
+      loading-mode="skeleton-2"
+      class="img"
+      :scroll-top="scrollTop"
+      :image-src="data.picUrl"
+    ></easy-loadimage>
+
+    <!-- <fast-lazy-load class="img" src="data.picUrl"></fast-lazy-load> -->
+
     <view class="info">
       <view class="name">{{ data.name }}</view>
       <view class="tags">
@@ -30,6 +39,7 @@ export default {
       type: Object,
       required: true,
     },
+    scrollTop: [Number, String],
   },
   data() {
     return {
@@ -59,6 +69,10 @@ export default {
       uni.navigateTo({
         url: "/pages/prod/prod?goodsId=" + this.data.id,
       });
+    },
+
+    handleLoadingImg() {
+      console.log("加载成功");
     },
   },
 };
@@ -109,7 +123,7 @@ export default {
         padding: 4upx 8upx;
         border-radius: 10px;
         margin-right: 10upx;
-        color: rgb(0, 0, 0)
+        color: rgb(0, 0, 0);
       }
     }
 

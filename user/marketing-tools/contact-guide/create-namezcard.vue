@@ -1,5 +1,10 @@
 <template>
-  <view class="create-namecard">
+  <view
+    class="create-namecard"
+    :style="{
+      paddingBottom: form.video ? '440upx' : '120upx',
+    }"
+  >
     <view class="my-card-header">
       <JBack dark width="50" height="50"></JBack>
       <h2>新建名片</h2>
@@ -7,10 +12,19 @@
 
     <Collapse style="margin-top: 20px" title="基本信息">
       <view class="base-info">
-        <view class="avatar">
-          <view class="upload-icon">+</view>
+        <view class="avatar" @click="handleUploadAvatar">
+          <view v-if="!form.headPic" class="upload-icon">+</view>
+          <img class="avatar-img" :src="form.headPic" v-else alt="" />
           <view class="upload-desc">添加名片图像</view>
         </view>
+
+        <uni-img-cropper
+          ref="gmyImgCropper"
+          :quality="1"
+          cropperType="fixed"
+          :imgSrc="imgSrc"
+          @getImg="getImg"
+        ></uni-img-cropper>
 
         <view
           class="field-wrapper"
@@ -51,24 +65,42 @@
           placeholder="请输入业务简介"
           class="desc-detail"
         ></textarea>
-        <MaskS
+        <!-- <MaskS
           ref="editRef"
           @click="handleChangeEdit"
           width="42"
           height="42"
           type="edit-blue"
           text="填写业务介绍或个人简介"
-        ></MaskS>
+        ></MaskS> -->
       </view>
     </Collapse>
 
-    <Collapse style="margin-top: 20px" title="业务简介">
-      <JUpload style="margin-top: 20upx; margin-right: 30upx"></JUpload>
+    <Collapse style="margin-top: 20px" title="图片">
+      <JMoreUpload
+        @upload="handleUploadImg"
+        @delete="handleDeleteImg"
+        :imgs="form.imgs"
+      ></JMoreUpload>
+    </Collapse>
+
+    <Collapse style="margin-top: 20px" class="upload-video" title="视频">
+      <button
+        v-show="!form.video"
+        class="uni-btn upload-vido"
+        @click="uploadVidoe"
+      >
+        +
+      </button>
+
+      <video class="video-el" v-show="form.video" :src="form.video"></video>
     </Collapse>
 
     <view class="create-name-card-footer">
       <button class="uni-btn">删除名片</button>
-      <button class="uni-btn">一键生成名片</button>
+      <button class="uni-btn" @click="handleCreateNameCard">
+        一键生成名片
+      </button>
     </view>
   </view>
 </template>
@@ -76,7 +108,9 @@
 <script>
 import Collapse from "../components/collapse-name-card.vue";
 import MaskS from "../components/mask.vue";
+import { buildNewMyCardApi } from "../../../api/user";
 import { baseInfoFields, connects } from "./config";
+import { getUserId } from "../../../utils";
 export default {
   components: {
     Collapse,
@@ -95,7 +129,15 @@ export default {
         wechat: "",
         address: "",
         intro: "",
+        imgs: [],
+        headPic: "",
+        userId: getUserId(),
+        isDefault: false,
+        bgColor: "#183869",
+        video: "",
       },
+
+      imgSrc: "",
     };
   },
 
@@ -112,6 +154,101 @@ export default {
         classList.remove("animate__rotateOutUpRight");
         classList.add("animate__rotateInDownRight");
       }
+    },
+
+    // 点击一键生成名片
+    handleCreateNameCard() {
+      const _this = this;
+      for (const item of this.baseInfoFields) {
+        if (item.required && !this.form[item.field]) {
+          this.$showToast(`请输入${item.label}`);
+          return
+        }
+      }
+
+      buildNewMyCardApi(this.form).then(({ data }) => {
+        _this.$showToast("名片新建成功");
+        _this.form = {
+          name: "",
+          business: "",
+          phone: "",
+          position: "",
+          company: "",
+          wechat: "",
+          address: "",
+          intro: "",
+          imgs: [],
+          headPic: "",
+          userId: getUserId(),
+          isDefault: false,
+          bgColor: "#183869",
+        };
+      });
+    },
+
+    // 上传图片
+    handleUploadImg(img) {
+      this.form.imgs.push(this.baseUrl + img);
+    },
+
+    // 删除图片
+    handleDeleteImg(img) {
+      const index = this.form.imgs.findIndex((item) => item === img);
+      if (index !== 0) {
+      }
+    },
+
+    // 获取图片
+    getImg(e) {
+      const _this = this;
+      uni.showLoading({
+        title: "头像上传中",
+      });
+      uni.uploadFile({
+        url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
+        filePath: e,
+        name: "file",
+        success: (uploadFileRes) => {
+          _this.form.headPic =
+            _this.baseUrl + JSON.parse(uploadFileRes.data).data.url;
+          uni.hideLoading();
+        },
+        complete: () => {
+          uni.hideLoading();
+        },
+      });
+    },
+
+    // 上传头像
+    handleUploadAvatar() {
+      this.$refs.gmyImgCropper.chooseImage();
+    },
+
+    // 上传图片
+    uploadVidoe() {
+      const _this = this;
+      uni.chooseVideo({
+        count: 1,
+        sourceType: ["camera", "album"],
+        success: function (res) {
+          uni.showLoading({
+            title: "视频上传中",
+          });
+          uni.uploadFile({
+            url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
+            filePath: res.tempFilePath,
+            name: "file",
+            success: (uploadFileRes) => {
+              _this.$showToast("上传成功", "success");
+              _this.form.video =
+                _this.baseUrl + JSON.parse(uploadFileRes.data).data.url;
+            },
+            complete: () => {
+              uni.hideLoading();
+            },
+          });
+        },
+      });
     },
   },
 };
@@ -193,7 +330,6 @@ export default {
     border-radius: 20upx;
     margin-top: 20upx;
     position: relative;
-    overflow: hidden;
 
     .desc-detail {
       width: 100%;
@@ -212,6 +348,12 @@ export default {
     }
   }
 
+  .avatar-img {
+    width: 160upx;
+    height: 160upx;
+    border-radius: 20upx;
+  }
+
   .create-name-card-footer {
     position: fixed;
     bottom: 0;
@@ -224,6 +366,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    z-index: 10;
 
     .uni-btn {
       padding: 16upx 0;
@@ -232,15 +375,40 @@ export default {
       &:nth-child(1) {
         flex: 1;
         margin-right: 20upx;
-        color: #FA5151;
-        border: 1upx solid #FA5151;
+        color: #fa5151;
+        border: 1upx solid #fa5151;
       }
 
       &:nth-child(2) {
         flex: 2;
-        background-color: #3662EC;
+        background-color: #3662ec;
         color: #fff;
       }
+    }
+  }
+
+  .upload-vido {
+    margin-top: 32upx;
+    margin-left: 24upx;
+    width: 160upx;
+    height: 160upx;
+    border-radius: 20upx;
+    text-align: center;
+    line-height: 160upx;
+    font-size: 60upx;
+    background-color: #ececec;
+  }
+
+  .video-el {
+    border-radius: 20upx;
+    width: 100%;
+    height: 400upx;
+    margin-top: 20upx;
+  }
+
+  .upload-video {
+    /deep/ .collapse-wrapper {
+      overflow: inherit;
     }
   }
 }

@@ -60,7 +60,7 @@
         </view>
         <view class="item">
           <view class="title">
-            {{ userInfo.commission }}<view class="bl-text">元</view>
+            {{ userInfo.commission || 0 }}<view class="bl-text">元</view>
           </view>
           <view class="value"> 余额 </view>
         </view>
@@ -80,7 +80,7 @@
 
         <view class="item">
           <view class="title">
-            {{ userInfo.voucherNumber }}<view class="bl-text">元</view>
+            {{ userInfo.voucherNumber || 0 }}<view class="bl-text">元</view>
           </view>
           <view class="value"> 代金劵 </view>
         </view>
