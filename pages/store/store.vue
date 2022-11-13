@@ -88,6 +88,7 @@
 
       <view v-if="homeStores.length">
         <JStorePane
+          :scrollTop="scrollTop"
           v-for="item in homeStores"
           :data="item"
           :key="item.id"
@@ -196,6 +197,7 @@ export default {
 
       data: [],
       loadingStatus: "hidden",
+      scrollTop: 0,
     };
   },
 
@@ -281,6 +283,10 @@ export default {
         return item.goodsList && item.goodsList.length >= 1;
       });
     },
+  },
+
+  onPageScroll(scrollTop) {
+    this.scrollTop = scrollTop.scrollTop;
   },
 };
 </script>

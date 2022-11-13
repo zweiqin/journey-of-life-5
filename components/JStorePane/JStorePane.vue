@@ -22,26 +22,46 @@
 
     <!-- 三张图 -->
     <view class="goods-layout three" v-if="data.goodsList.length >= 3">
-      <img
-        @click="handleViewDetail(data.goodsList[0])"
-        class="store animate__backInLeft"
-        :src="data.goodsList[0].picUrl"
-        alt=""
-      />
+      <view @click="handleViewDetail(data.goodsList[0])">
+        <easy-loadimage
+          class="store"
+          :loading-mode="lazyLoadingMode"
+          :scroll-top="scrollTop"
+          :image-src="data.goodsList[0].picUrl"
+        ></easy-loadimage>
+      </view>
+
       <view class="right">
-        <img
+        <!-- <img
           class="animate__fadeInTopRight"
           :src="data.goodsList[1].picUrl"
           @click="handleViewDetail(data.goodsList[1])"
           alt=""
-        />
+        /> -->
+        <view @click="handleViewDetail(data.goodsList[1])">
+          <easy-loadimage
+            :loading-mode="lazyLoadingMode"
+            :scroll-top="scrollTop"
+            class="img"
+            :image-src="data.goodsList[1].picUrl"
+          ></easy-loadimage>
+        </view>
 
-        <img
+        <!-- <img
           class="animate__fadeInBottomRight"
           :src="data.goodsList[2].picUrl"
           @click="handleViewDetail(data.goodsList[2])"
           alt=""
-        />
+        /> -->
+
+        <view @click="handleViewDetail(data.goodsList[2])">
+          <easy-loadimage
+            :loading-mode="lazyLoadingMode"
+            class="img"
+            :scroll-top="scrollTop"
+            :image-src="data.goodsList[2].picUrl"
+          ></easy-loadimage>
+        </view>
       </view>
 
       <view class="price-icon" style="left: 0; top: 20upx"
@@ -59,30 +79,37 @@
     <view
       class="goods-layout one animate__flipInX"
       v-if="data.goodsList.length === 1"
+      @click="handleViewDetail(data.goodsList[0])"
     >
-      <img
+      <!-- <img class="img" :src="data.goodsList[0].picUrl" alt="" /> -->
+      <easy-loadimage
+        :loading-mode="lazyLoadingMode"
         class="img"
-        @click="handleViewDetail(data.goodsList[0])"
-        :src="data.goodsList[0].picUrl"
-        alt=""
-      />
+        :scroll-top="scrollTop"
+        :image-src="data.goodsList[0].picUrl"
+      ></easy-loadimage>
       <view class="price-icon">￥{{ data.goodsList[0].retailPrice }}</view>
     </view>
 
     <!-- 两张图 -->
     <view class="goods-layout two" v-if="data.goodsList.length === 2">
-      <img
-        class="img animate__lightSpeedInLeft"
-        :src="data.goodsList[0].picUrl"
-        @click="handleViewDetail(data.goodsList[0])"
-        alt=""
-      />
-      <img
-        class="img animate__lightSpeedInRight"
-        :src="data.goodsList[1].picUrl"
-        @click="handleViewDetail(data.goodsList[1])"
-        alt=""
-      />
+      <view @click="handleViewDetail(data.goodsList[0])">
+        <easy-loadimage
+          :loading-mode="lazyLoadingMode"
+          class="img"
+          :scroll-top="scrollTop"
+          :image-src="data.goodsList[0].picUrl"
+        ></easy-loadimage>
+      </view>
+
+      <view @click="handleViewDetail(data.goodsList[1])">
+        <easy-loadimage
+          :loading-mode="lazyLoadingMode"
+          class="img"
+          :scroll-top="scrollTop"
+          :image-src="data.goodsList[1].picUrl"
+        ></easy-loadimage>
+      </view>
 
       <view class="price-icon" style="left: 0; top: 20upx"
         >￥{{ data.goodsList[0].retailPrice }}</view
@@ -105,6 +132,7 @@ export default {
   },
   props: {
     data: Object,
+    scrollTop: Number,
   },
   data() {
     return {};
@@ -183,10 +211,9 @@ export default {
           updateTime: "2022-10-31 11:42:22",
           deleted: false,
         },
-      ]
-      
-        return this.setTypes(stores, value);
-      
+      ];
+
+      return this.setTypes(stores, value);
     },
 
     setTypes(types, type) {
@@ -289,7 +316,7 @@ export default {
       flex-direction: column;
       flex: 1;
 
-      img {
+      .img {
         height: 146upx;
         border-radius: 0 20upx 20upx 0;
       }

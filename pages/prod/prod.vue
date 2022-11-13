@@ -133,7 +133,7 @@
       </ul>
     </view>
 
-    <RecommendGoods :id="goodsId"></RecommendGoods>
+    <RecommendGoods :scrollTop="scrollTop" :id="goodsId"></RecommendGoods>
 
     <view
       class="choose-specificationList"
@@ -260,6 +260,7 @@ export default {
       shopCarList: [],
       carGoodsNumer: 0,
       isLogin: true,
+      scrollTop: 0,
     };
   },
   methods: {
@@ -572,6 +573,10 @@ export default {
         ? marked(this.goodsInfo.info.detail)
         : "";
     },
+  },
+
+  onPageScroll(scrollTop) {
+    this.scrollTop = scrollTop.scrollTop;
   },
 };
 </script>

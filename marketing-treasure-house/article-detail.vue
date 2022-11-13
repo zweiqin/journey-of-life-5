@@ -54,7 +54,7 @@
             src="https://img2.baidu.com/it/u=829931824,271545605&fm=253&fmt=auto&app=138&f=JPEG?w=450&h=228"
           />
         </view> -->
-        <ArticlePane status="more" :data="recommentList"></ArticlePane>
+        <ArticlePane :scrollTop="scrollTop" status="more" :data="recommentList"></ArticlePane>
       </view>
     </view>
   </view>
@@ -91,6 +91,7 @@ export default {
       articleId: null,
       articleInfo: {},
       recommentList: [],
+      scrollTop: 0
     };
   },
   methods: {
@@ -115,6 +116,10 @@ export default {
     },
 
     marked,
+  },
+
+  onPageScroll(scrollTop) {
+    this.scrollTop = scrollTop.scrollTop;
   },
 };
 </script>

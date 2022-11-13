@@ -75,6 +75,7 @@
           :key="goods.id"
           :imgUrl="goods.picUrl"
           :id="goods.id"
+          :scrollTop="scrollTop"
         ></GoodsPanel>
 
         <uni-load-more
@@ -164,6 +165,7 @@ export default {
       },
 
       loadingStatus: "loading",
+      scrollTop: 0,
     };
   },
 
@@ -229,6 +231,10 @@ export default {
     }
     this.query.page++;
     this.getGoodsDetail(true);
+  },
+
+  onPageScroll(scrollTop) {
+    this.scrollTop = scrollTop.scrollTop;
   },
 };
 </script>

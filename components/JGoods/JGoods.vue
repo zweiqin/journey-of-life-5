@@ -2,7 +2,7 @@
   <view class="j-goods-container" @click="handleToViewGoodsDetail">
     <!-- <image @load="handleLoadingImg" class="img" :src="data.picUrl" alt="" /> -->
     <easy-loadimage
-      loading-mode="skeleton-2"
+      :loading-mode="lazyLoadingMode"
       class="img"
       :scroll-top="scrollTop"
       :image-src="data.picUrl"

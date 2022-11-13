@@ -14,7 +14,11 @@
 
       <JLineTitle color="#FA5151" title="免费案例"></JLineTitle>
 
-      <ArticlePane :status="loadingStatus" :data="allList"></ArticlePane>
+      <ArticlePane
+        :scrollTop="scrollTop"
+        :status="loadingStatus"
+        :data="allList"
+      ></ArticlePane>
     </view>
   </view>
 </template>
@@ -47,6 +51,7 @@ export default {
       total: 0,
       loadingStatus: "loading",
       isLoading: false,
+      scrollTop: 0,
     };
   },
   onReachBottom() {
@@ -91,6 +96,9 @@ export default {
       });
     },
   },
+  onPageScroll(scrollTop) {
+    this.scrollTop = scrollTop.scrollTop;
+  },
 };
 </script>
 
@@ -106,8 +114,8 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    background: url("https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2rlfz31333yt1dzs9wiv.png")
-      no-repeat;
+    // background: url("https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2rlfz31333yt1dzs9wiv.png")
+    //   no-repeat;
     height: 700upx;
     width: 100%;
     padding-top: 40upx;
@@ -153,12 +161,6 @@ export default {
     }
   }
 
-  /deep/ .j-line-title {
-    .text {
-      background-color: #fdeeee;
-    }
-  }
-
   .main {
     position: relative;
     padding: 20upx;
@@ -168,10 +170,10 @@ export default {
 
     .navs {
       background-color: #fff;
-      padding: 32upx 40upx 10upx;
+      // padding: 32upx 40upx 10upx;
       box-sizing: border-box;
       border-radius: 20upx;
-      box-shadow: 0px 1px 2px 0px rgb(223, 223, 223);
+      // box-shadow: 0px 1px 2px 0px rgb(223, 223, 223);
       margin-bottom: 40upx;
     }
   }

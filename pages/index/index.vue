@@ -33,21 +33,10 @@
           height: isShowItemPane ? 0 : '',
         }"
       >
-        <swiper-item>
+        <swiper-item v-for="banner in bannerList" :key="banner.id">
           <img
-            src="https://img0.baidu.com/it/u=3866459166,2693507635&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=667"
-            alt=""
-          />
-        </swiper-item>
-        <swiper-item>
-          <img
-            src="https://img2.baidu.com/it/u=2075742647,1178517082&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=428"
-            alt=""
-          />
-        </swiper-item>
-        <swiper-item>
-          <img
-            src="https://img2.baidu.com/it/u=3592206539,1858276708&fm=253&fmt=auto&app=138&f=JPEG?w=600&h=354"
+            class="banner-img"
+            :src="banner.picUrl"
             alt=""
           />
         </swiper-item>
@@ -64,9 +53,7 @@
         class="navs"
         :style="{
           padding: isShowItemPane ? '20upx' : '',
-          'box-shadow': isShowItemPane
-            ? '0px 1px 2px 0px rgba(0, 0, 0, 0.1)'
-            : '',
+          'box-shadow': isShowItemPane ? '0px 1px 2px 0px rgba(0, 0, 0, 0.1)' : '',
           'margin-bottom': isShowItemPane ? '' : '-5px',
         }"
         @nav-click="handleNavItemClick"
@@ -114,9 +101,7 @@
             alt=""
           />
 
-          <button class="btn" @click="go('/user/sever/userUp')">
-            立即开通
-          </button>
+          <button class="btn" @click="go('/user/sever/userUp')">立即开通</button>
         </view>
 
         <!-- 附近联盟商家 -->
@@ -218,11 +203,7 @@ import JAside from "./components/Aside.vue";
 import NoData from "../../components/no-data";
 import { getIndexDataApi } from "../../api/home";
 import { J_LOACTION, J_REFRSH, J_STORE_TYPES } from "../../constant";
-import {
-  getTypeDetailList,
-  getGoodsById,
-  getAllCategoryList,
-} from "../../api/home";
+import { getTypeDetailList, getGoodsById, getAllCategoryList } from "../../api/home";
 
 export default {
   components: {
@@ -262,6 +243,7 @@ export default {
       footerData: [],
       currentIndex: "preferential",
       scrollTop: 0,
+      bannerList: [],
     };
   },
 
@@ -303,6 +285,9 @@ export default {
         this.preferential = data.newGoodsList;
         this.hotGoodsList = data.hotGoodsList;
         this.footerData = this.preferential;
+        this.bannerList = data.topicList.filter((item) => {
+          return item.title !== "团蜂科技开业盛典";
+        });
       });
     },
 
@@ -331,8 +316,7 @@ export default {
     //
     handleSwitchTab(index) {
       this.currentIndex = index;
-      this.footerData =
-        index === "preferential" ? this.preferential : this.hotGoodsList;
+      this.footerData = index === "preferential" ? this.preferential : this.hotGoodsList;
     },
 
     // 根据一级类目查询二级类目
@@ -370,16 +354,12 @@ export default {
   computed: {
     bannerComputed() {
       console.log(
-        this.currentNav.background.slice(
-          0,
-          this.currentNav.background.length - 1
-        ) + ", #fff)"
+        this.currentNav.background.slice(0, this.currentNav.background.length - 1) +
+          ", #fff)"
       );
       return (
-        this.currentNav.background.slice(
-          0,
-          this.currentNav.background.length - 1
-        ) + ", #fff)"
+        this.currentNav.background.slice(0, this.currentNav.background.length - 1) +
+        ", #fff)"
       );
     },
   },
@@ -421,6 +401,7 @@ export default {
 
   // 搜索
   .search-bar {
+    // opacity: 0;
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
@@ -428,7 +409,7 @@ export default {
     position: absolute;
     width: 95%;
     height: 72upx;
-    top: 54upx;
+    top: 32upx;
     left: 50%;
     padding: 16upx 24upx;
     transform: translateX(-50%);
@@ -472,9 +453,10 @@ export default {
         margin-right: 6upx;
       }
 
-      img {
+      .banner-img {
         width: 100%;
         height: 552upx;
+        object-fit: cover;
       }
     }
   }

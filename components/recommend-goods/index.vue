@@ -16,7 +16,7 @@
           :price="item.retailPrice"
         ></Goods> -->
 
-        <JGoods :data="item"></JGoods>
+        <JGoods :scrollTop="scrollTop" :data="item"></JGoods>
       </li>
     </ul>
   </view>
@@ -38,6 +38,7 @@ export default {
     },
 
     padding: [Number, String],
+    scrollTop: Number
   },
 
   components: {

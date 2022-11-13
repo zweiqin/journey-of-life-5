@@ -6,7 +6,12 @@
           <view class="name">{{ item.title }}</view>
           <view class="time">{{ item.updateTime }}</view>
         </view>
-        <img class="article-cover" :src="item.imgUrl" />
+        <easy-loadimage
+          :loading-mode="lazyLoadingMode"
+          class="article-cover"
+          :scroll-top="scrollTop"
+          :image-src="item.imgUrl"
+        ></easy-loadimage>
       </view>
     </view>
     <uni-load-more
@@ -30,6 +35,7 @@ export default {
       type: String,
       default: "loading",
     },
+    scrollTop: Number
   },
 
   data() {
