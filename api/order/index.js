@@ -43,3 +43,18 @@ export const getOrderRefundApi = (data) => {
 export const getOrderDetailApi = (data) => {
   return RuanRequest("/order/detail", data, "get");
 };
+
+
+/**
+ * 确认收货
+ */
+export const receiveGoodsApi = (data) => {
+  return RuanRequest("/order/confirm", data)
+}
+
+/**
+ * 评论
+ */
+export const sendCommentApi = data => {
+  return RuanRequest("/order/comment", data)
+}

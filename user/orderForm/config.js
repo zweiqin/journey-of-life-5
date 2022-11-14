@@ -38,11 +38,6 @@ export const orderOpButtons = [
     color: "#84c341",
   },
   {
-    label: "去评论",
-    key: "comment",
-    color: "#84c341",
-  },
-  {
     label: "取消订单",
     key: "cancel",
     color: "#ccc",
@@ -60,6 +55,11 @@ export const orderOpButtons = [
   {
     label: "再次购买",
     key: "rebuy",
+    color: "#84c341",
+  },
+  {
+    label: "去评论",
+    key: "comment",
     color: "#84c341",
   },
 ];

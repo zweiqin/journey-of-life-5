@@ -25,7 +25,11 @@
         </view>
 
         <view class="goods-list" @click="handleToViewOrderDetail(item)">
-          <view class="goods-item" v-for="goods in item.goodsList" :key="goods.id">
+          <view
+            class="goods-item"
+            v-for="goods in item.goodsList"
+            :key="goods.id"
+          >
             <image class="goods-img" :src="goods.picUrl" mode="" />
 
             <view class="info">
@@ -80,7 +84,12 @@
 
 <script>
 import { orderTypes, orderOpButtons } from "./config";
-import { getOrderListApi, orderCancelApi, orderDeleteApi } from "../../api/order";
+import {
+  getOrderListApi,
+  orderCancelApi,
+  orderDeleteApi,
+  receiveGoodsApi,
+} from "../../api/order";
 import { payOrderGoodsApi } from "../../api/goods";
 import { getUserId } from "../../utils";
 export default {
@@ -140,6 +149,10 @@ export default {
 
     // 点击操作按钮
     handleOpOrder(goods, key) {
+      if (key === "comment") {
+        this.handleToViewOrderDetail(goods);
+        return;
+      }
       const mapMethods = {
         cancel: {
           text: "确定要取消当前订单吗?",
@@ -149,10 +162,17 @@ export default {
           text: "确定要删除当前订单吗?",
           api: orderDeleteApi,
         },
+        confirm: {
+          text: "确定要收货吗",
+          api: receiveGoodsApi,
+        },
       };
 
       const _this = this;
-      if (goods.handleOption[key] && ["cancel", "delete"].includes(key)) {
+      if (
+        goods.handleOption[key] &&
+        ["cancel", "delete", "confirm"].includes(key)
+      ) {
         uni.showModal({
           title: "提示",
           content: mapMethods[key].text,
@@ -200,7 +220,6 @@ export default {
 
     // 查看详情
     handleToViewOrderDetail(goods) {
-      console.log(goods);
       uni.navigateTo({
         url: "/user/orderForm/order-form-detail?id=" + goods.id,
       });
