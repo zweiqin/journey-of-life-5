@@ -60,7 +60,7 @@
         </view>
         <view class="item">
           <view class="title">
-            {{ userInfo.commission || 0 }}<view class="bl-text">元</view>
+            {{ userInfo.account || 0 }}<view class="bl-text">元</view>
           </view>
           <view class="value"> 余额 </view>
         </view>
@@ -134,7 +134,13 @@
         :showShadow="false"
         :data="marketingTools"
       ></UserPanel>
-      <UserPanel :row="4" :showShadow="false" :data="otherServe"></UserPanel>
+
+      <UserPanel
+        @clickItem="handleClickItem"
+        :row="4"
+        :showShadow="false"
+        :data="otherServe"
+      ></UserPanel>
     </view>
 
     <view
@@ -268,6 +274,10 @@ export default {
     handleClickItem(item) {
       if (item.type && item.type === "extension") {
         this.getExtensionCode();
+      }
+
+      if(item.label === '进销存'){
+        location.href = "weixin://dl/business/?t=fT0Ivve8Fli"
       }
     },
 

@@ -18,10 +18,20 @@
 
     <!-- 黄色面板 -->
     <view class="data-total">
-      <view class="total-item" v-for="item in totalVoucher" :key="item.label">
+      <view
+        class="total-item"
+        v-for="item in totalVoucher"
+        @click="go(item.url)"
+        :key="item.label"
+      >
         <view class="title">
           <text class="text">{{ item.label }}</text>
-          <JIcon width="40" height="40" type="right-arrow"></JIcon>
+          <JIcon
+            v-if="item.url"
+            width="40"
+            height="40"
+            type="right-arrow"
+          ></JIcon>
         </view>
 
         <view class="total-value" :style="{ color: item.color }"
