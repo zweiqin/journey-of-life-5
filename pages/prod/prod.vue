@@ -57,19 +57,21 @@
         </view>
         <view class="right">
           <div class="item" @click="handleCollect">
-            <img
-              class="img"
-              src="../../static/images/goods/shoucang.png"
-              alt=""
-            />
-            <text class="text">收藏</text>
+            <JIcon
+              width="36"
+              height="36"
+              :type="
+                goodsInfo.userHasCollect
+                  ? 'collect-goods-active'
+                  : 'collect-goods'
+              "
+            ></JIcon>
+            <text class="text">{{
+              goodsInfo.userHasCollect ? "取消" : "收藏"
+            }}</text>
           </div>
           <div class="item">
-            <img
-              class="img"
-              src="../../static/images/goods/fenxiang.png"
-              alt=""
-            />
+            <JIcon width="36" height="36" type="share-goods"></JIcon>
             <text class="text" @click="handleShareGoods">分享</text>
           </div>
         </view>
@@ -313,6 +315,8 @@ export default {
         title: res.data.type === "add" ? "收藏成功" : "取消收藏成功",
         duration: 2000,
       });
+
+      this.getGoodsDetail()
     },
 
     // 点击选择规格
