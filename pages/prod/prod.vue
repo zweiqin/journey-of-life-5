@@ -506,7 +506,7 @@ export default {
             status: 0,
             ...this.goodsInfo,
             selectedProduct: productInfo,
-            brandId: this.goodsInfo.brand.id,
+            brandId: this.goodsInfo.brand.id
           });
           uni.navigateTo({
             url: "/pages/pre-order/pre-order",

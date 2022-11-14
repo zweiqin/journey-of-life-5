@@ -112,6 +112,25 @@
       <img src="../../static/images/common/chevron-states.png" alt="" />
     </view>
 
+    <!-- 代金劵使用 -->
+    <view
+      v-if="orderInfo.info.supportVoucher && voucherNumber"
+      class="item flex"
+      style="
+        justify-content: space-between;
+        margin-bottom: 10px;
+        border-bottom: 1upx solid #d8d8d8;
+      "
+    >
+      <view class="text" style="margin: 0">是否使用代金劵</view>
+      <view
+        class="text"
+        style="color: #fa5555; text-align: right; margin-left: 10px; flex: 1"
+        >{{ voucherNumber }}</view
+      >
+      <radio @click="handleUseVocher" name="12" :checked="isUserVoucher" />
+    </view>
+
     <!-- 详细信息 -->
     <!-- <view class="item detail">
       <view class="title" style="fontsize: 14px">详细信息</view>
@@ -166,6 +185,7 @@
 import PageHeader from "../page-header";
 import LineBar from "../line-bar";
 import Goods from "../goods";
+import { getAccountVoucherHistoryTimes } from "../../api/user";
 import { PAY_GOODS, J_SELECT_ADDRESS } from "../../constant";
 import { getBaseInfo } from "./config";
 import { getAddressListApi } from "../../api/address";
@@ -194,6 +214,8 @@ export default {
       },
       defaultAddress: null,
       allAddress: [],
+      voucherNumber: "",
+      isUserVoucher: true,
     };
   },
 
@@ -207,6 +229,9 @@ export default {
   mounted() {
     this.baseInfo = getBaseInfo(this.type);
     this.orderInfo = uni.getStorageSync(PAY_GOODS);
+    if (this.orderInfo.info.supportVoucher) {
+      this.getUserHoldVoucher();
+    }
     this.getAddressList();
   },
 
@@ -286,6 +311,7 @@ export default {
         goodsId: this.orderInfo.info.id,
         productId: this.orderInfo.selectedProduct.id,
         number: this.orderInfo.number,
+        useVoucher: this.isUserVoucher,
       };
       let carId = null;
       const res = await firstAddCar(data);
@@ -300,7 +326,8 @@ export default {
           useVoucher: false,
           grouponRulesId: "",
           grouponLinkId: "",
-          brandId: this.orderInfo.brandId,
+          brandId: _this.orderInfo.brandId,
+          useVoucher: _this.isUserVoucher,
         };
 
         const submitRes = await submitOrderApi(submitData);
@@ -342,6 +369,21 @@ export default {
         });
       }
       return;
+    },
+
+    // 获取代金劵
+    getUserHoldVoucher() {
+      const _this = this;
+      getAccountVoucherHistoryTimes({
+        userId: getUserId(),
+      }).then(({ data }) => {
+        _this.voucherNumber = data.voucherHold;
+      });
+    },
+
+    // 是否使用代金劵
+    handleUseVocher() {
+      this.isUserVoucher = !this.isUserVoucher;
     },
   },
 };
