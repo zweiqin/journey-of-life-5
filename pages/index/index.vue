@@ -34,11 +34,7 @@
         }"
       >
         <swiper-item v-for="banner in bannerList" :key="banner.id">
-          <img
-            class="banner-img"
-            :src="banner.picUrl"
-            alt=""
-          />
+          <img class="banner-img" :src="banner.picUrl" alt="" />
         </swiper-item>
       </swiper>
     </view>
@@ -53,7 +49,9 @@
         class="navs"
         :style="{
           padding: isShowItemPane ? '20upx' : '',
-          'box-shadow': isShowItemPane ? '0px 1px 2px 0px rgba(0, 0, 0, 0.1)' : '',
+          'box-shadow': isShowItemPane
+            ? '0px 1px 2px 0px rgba(0, 0, 0, 0.1)'
+            : '',
           'margin-bottom': isShowItemPane ? '' : '-5px',
         }"
         @nav-click="handleNavItemClick"
@@ -101,22 +99,10 @@
             alt=""
           />
 
-          <button class="btn" @click="go('/user/sever/userUp')">立即开通</button>
+          <button class="btn" @click="go('/user/sever/userUp')">
+            立即开通
+          </button>
         </view>
-
-        <!-- 附近联盟商家 -->
-        <!-- <Panel title="附近联盟商家" routeText="更多">
-          <view class="store-wrapper">
-            <Goods
-              v-for="store in storeList"
-              :key="store.id"
-              :url="store.picUrl"
-              :desc="store.desc"
-              :name="store.name"
-              :id="store.id"
-            ></Goods>
-          </view>
-        </Panel> -->
 
         <view class="footer-home">
           <view class="footer-navs">
@@ -203,7 +189,11 @@ import JAside from "./components/Aside.vue";
 import NoData from "../../components/no-data";
 import { getIndexDataApi } from "../../api/home";
 import { J_LOACTION, J_REFRSH, J_STORE_TYPES } from "../../constant";
-import { getTypeDetailList, getGoodsById, getAllCategoryList } from "../../api/home";
+import {
+  getTypeDetailList,
+  getGoodsById,
+  getAllCategoryList,
+} from "../../api/home";
 
 export default {
   components: {
@@ -244,11 +234,20 @@ export default {
       currentIndex: "preferential",
       scrollTop: 0,
       bannerList: [],
+
+      footerQuery: {
+        page: 1,
+        size: 20,
+        order: "desc",
+        sort: "add_time",
+        totalPages: 0,
+      },
     };
   },
 
   onLoad() {
     this.getHomeData();
+    this.getFooterData();
   },
 
   onShow() {
@@ -258,11 +257,29 @@ export default {
   },
 
   methods: {
+    // 获取底部商品数据
+    getFooterData(isLoadMore) {
+      this.footerQuery.isNew = this.currentIndex === "preferential";
+      this.footerQuery.isHot = !this.footerQuery.isNew;
+      if (this.footerQuery.isHot) {
+        delete this.footerQuery.isNew;
+      }
+      const _this = this;
+      getGoodsById({ ...this.footerQuery }).then(({ data }) => {
+        if (isLoadMore) {
+          _this.footerData.push(...data.goodsList);
+        } else {
+          _this.footerData = data.goodsList;
+        }
+        _this.footerQuery.totalPages = data.totalPages;
+        uni.hideLoading();
+      });
+    },
+
     // 点击navs
     handleNavItemClick(nav) {
       this.currentCategoryId = nav.id;
       this.getOrderList();
-      console.log("你他妈给我寄了", this.$refs.swipperRef.style);
       // this.$refs.swipperRef.$el.style.height = 0;
       nav.background = nav.background.replace("137deg", "to bottom");
       this.currentNav = nav;
@@ -284,9 +301,12 @@ export default {
       getIndexDataApi().then(({ data }) => {
         this.preferential = data.newGoodsList;
         this.hotGoodsList = data.hotGoodsList;
-        this.footerData = this.preferential;
+        // this.footerData = this.preferential;
         this.bannerList = data.topicList.filter((item) => {
-          return item.title !== "团蜂科技开业盛典";
+          return (
+            item.title !== "团蜂科技开业盛典" &&
+            item.title !== "千姿万丽内衣专场"
+          );
         });
       });
     },
@@ -316,7 +336,15 @@ export default {
     //
     handleSwitchTab(index) {
       this.currentIndex = index;
-      this.footerData = index === "preferential" ? this.preferential : this.hotGoodsList;
+      this.footerQuery = {
+        page: 1,
+        size: 20,
+        order: "desc",
+        sort: "add_time",
+        totalPages: 0,
+      };
+
+      this.getFooterData();
     },
 
     // 根据一级类目查询二级类目
@@ -354,12 +382,16 @@ export default {
   computed: {
     bannerComputed() {
       console.log(
-        this.currentNav.background.slice(0, this.currentNav.background.length - 1) +
-          ", #fff)"
+        this.currentNav.background.slice(
+          0,
+          this.currentNav.background.length - 1
+        ) + ", #fff)"
       );
       return (
-        this.currentNav.background.slice(0, this.currentNav.background.length - 1) +
-        ", #fff)"
+        this.currentNav.background.slice(
+          0,
+          this.currentNav.background.length - 1
+        ) + ", #fff)"
       );
     },
   },
@@ -376,13 +408,31 @@ export default {
   },
 
   onReachBottom() {
-    if (this.queryInfo.page >= this.queryInfo.totalPage) {
-      this.listLoading = "nomore";
-      return;
+    if (this.isShowItemPane) {
+      if (this.queryInfo.page >= this.queryInfo.totalPage) {
+        this.listLoading = "nomore";
+        return;
+      }
+      this.listLoading = "loading";
+      this.queryInfo.page++;
+      this.getOrderList(true);
+    } else {
+      if (this.footerData.length < this.footerQuery.size) {
+        return;
+      }
+
+      if (this.footerQuery.totalPages <= this.footerQuery.page) {
+        this.$showToast("亲，已经到底了");
+        return;
+      }
+
+      uni.showLoading({
+        title: "加载中",
+      });
+
+      this.footerQuery.page++;
+      this.getFooterData(true);
     }
-    this.listLoading = "loading";
-    this.queryInfo.page++;
-    this.getOrderList(true);
   },
 
   onPageScroll(scrollTop) {
