@@ -80,7 +80,7 @@ export default {
           size: 20,
         },
 
-        data: [],
+        data: {},
         totalPage: 0,
       },
 
@@ -126,7 +126,7 @@ export default {
       this[this.currentPageInfo.api]();
     } else {
       this.loadingStatus = "hidden";
-      this.showNoData = true
+      this.showNoData = true;
     }
   },
 
@@ -166,7 +166,7 @@ export default {
 
         this.loadingStatus = "hidden";
         this.$refs.footerPrintRef.setData(this.historyInfo.data);
-        this.showNoData = this.historyInfo.data.length === 0;
+        this.showNoData = JSON.stringify(this.historyInfo.data) === "{}";
       });
     },
 

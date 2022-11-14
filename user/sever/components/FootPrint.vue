@@ -13,10 +13,9 @@
         @confirm="handleChooseTime"
       ></JMonthPicker>
     </view> -->
-
     <view
       class="foot-print-item"
-      v-for="(item, index) in historyData"
+      v-for="(item, index) in historyData.data"
       :key="index"
     >
       <view class="foot-print-time">{{ index | fomartTime }}</view>
@@ -39,7 +38,7 @@
 export default {
   data() {
     return {
-      historyData: {},
+      historyData: {data: []},
       currentTime: "",
     };
   },
@@ -51,7 +50,9 @@ export default {
   },
   methods: {
     setData(data) {
-      this.historyData = data;
+      // this.historyData = data
+      this.$set(this.historyData, 'data', data)
+      console.log(this.historyData);
       this.$forceUpdate();
     },
 
