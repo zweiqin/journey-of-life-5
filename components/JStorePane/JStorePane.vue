@@ -5,7 +5,7 @@
         class="avatar"
         :src="
           data.brand.logo ||
-          'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/berqiue9nqc9c2ykl3ud.webp'
+          'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/alo7i1qewcuj4305mrr3.png'
         "
         alt=""
       />
@@ -22,12 +22,12 @@
 
     <!-- 三张图 -->
     <view class="goods-layout three" v-if="data.goodsList.length >= 3">
-      <view @click="handleViewDetail(data.goodsList[0])">
+      <view @click="handleEnterStore">
         <easy-loadimage
           class="store"
           :loading-mode="lazyLoadingMode"
           :scroll-top="scrollTop"
-          :image-src="data.goodsList[0].picUrl"
+          :image-src="data.brand.picUrl"
         ></easy-loadimage>
       </view>
 
@@ -64,9 +64,9 @@
         </view>
       </view>
 
-      <view class="price-icon" style="left: 0; top: 20upx"
+      <!-- <view class="price-icon" style="left: 0; top: 20upx"
         >￥{{ data.goodsList[0].retailPrice }}</view
-      >
+      > -->
       <view class="price-icon price-icon-1"
         >￥{{ data.goodsList[1].retailPrice }}</view
       >
@@ -124,8 +124,6 @@
 
 <script>
 import Rate from "../rate";
-import { J_STORE_TYPES } from "../../constant";
-import { getStoreTypesApi } from "../../api/user";
 export default {
   components: {
     Rate,
@@ -134,10 +132,6 @@ export default {
     data: Object,
     scrollTop: Number,
   },
-  data() {
-    return {};
-  },
-  mounted() {},
   methods: {
     /**
      * @description 点击进店

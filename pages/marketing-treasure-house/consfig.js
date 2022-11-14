@@ -7,7 +7,7 @@ export const advance = [
     imgUrl: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6qt300sgnnqxwr5gzt9k.png',
     link: ''
   },{
-    imgUrl: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/q5xze5ugt6jd5d6xiq90.png',
+    imgUrl: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/dwg7pe91zhz3r03ra4bj.png',
     link: ''
   },
 ]
