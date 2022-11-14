@@ -50,10 +50,10 @@
     </view>
 
     <!-- 评论 -->
-    <view class="evaluate-info pane" style="display: none">
+    <view class="evaluate-info pane" v-if="data.orderInfo.handleOption.comment">
       <view class="line">
         <view class="title">满意</view>
-        <uni-rate></uni-rate>
+        <uni-rate v-model="evForm.star"></uni-rate>
       </view>
 
       <view class="line">
@@ -62,24 +62,19 @@
           placeholder="请输入商品评论"
           class="evaluate-textarea"
           maxlength="200"
+          v-model="evForm.content"
         ></textarea>
       </view>
 
       <view class="line">
         <view class="title">晒图/视频</view>
         <view class="images">
-          <view v-for="item in 12" :key="item">
-            <image
-              class="user-upload-img"
-              src="https://img0.baidu.com/it/u=1370384016,828589411&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=313"
-              mode=""
-            />
+          <view v-for="item in evForm.picUrls" :key="item">
+            <image class="user-upload-img" :src="item" mode="" />
           </view>
-          <view class="upload-icon">+</view>
+          <view @click="handleUploadImg" class="upload-icon">+</view>
         </view>
       </view>
-
-      <button class="uni-btn sub-eval-btn">提交评论</button>
     </view>
 
     <!-- 详细信息 -->
@@ -99,11 +94,16 @@
     <view class="order-detail-footer" v-if="data">
       <view v-for="item in orderOpButtons" :key="item.label">
         <button
+          :style="{
+            background: item.label === '去评论' ? 'rgb(132, 195, 65)' : '',
+            color: item.label === '去评论' ? '#fff' : '',
+            border: item.label === '去评论' ? 'none' : '',
+          }"
           @click="handleOpOrder(data.orderInfo, item.key)"
           v-if="data.orderInfo.handleOption[item.key]"
           class="uni-btn"
         >
-          {{ item.label }}
+          {{ item.label === "去评论" ? "发布评论" : item.label }}
         </button>
       </view>
     </view>
@@ -115,6 +115,7 @@ import {
   getOrderDetailApi,
   orderCancelApi,
   orderDeleteApi,
+  sendCommentApi,
 } from "../../api/order";
 import { getUserId } from "../../utils";
 import { orderOpButtons } from "./config";
@@ -126,6 +127,13 @@ export default {
       orderId: null,
       data: null,
       orderOpButtons,
+      evForm: {
+        userId: getUserId(),
+        star: 5,
+        content: "",
+        hasPicture: true,
+        picUrls: [],
+      },
     };
   },
 
@@ -148,9 +156,28 @@ export default {
       uni.hideLoading();
     },
 
+    // 上传图片
+    handleUploadImg() {
+      const _this = this;
+      uni.chooseImage({
+        success: (chooseImageRes) => {
+          uni.uploadFile({
+            url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
+            filePath: chooseImageRes.tempFiles[0].path,
+            name: "file",
+            success: (uploadFileRes) => {
+              _this.evForm.picUrls.push(
+                JSON.parse(uploadFileRes.data).data.url
+              );
+            },
+          });
+        },
+      });
+    },
+
     // 点击操作按钮
     handleOpOrder(goods, key) {
-      console.log(goods);
+      const _this = this;
       const mapMethods = {
         cancel: {
           text: "确定要取消当前订单吗?",
@@ -162,9 +189,13 @@ export default {
           api: orderDeleteApi,
           success: "删除成功",
         },
+        // comment: {
+        //   text: "确定提交评价吗",
+        //   api: sendCommentApi,
+        //   success: "评论成功",
+        // },
       };
 
-      const _this = this;
       if (goods.handleOption[key] && ["cancel", "delete"].includes(key)) {
         uni.showModal({
           title: "提示",
@@ -212,6 +243,37 @@ export default {
             document.body.appendChild(form);
             form.submit();
             document.body.removeChild(form);
+          });
+        } else if (key === "comment") {
+          uni.showModal({
+            title: "提示",
+            content: "确定提交评价吗",
+            success: function (res) {
+              if (res.confirm) {
+                if (!_this.evForm.star) {
+                  _this.$showToast("请选择评分");
+                  return;
+                }
+
+                if (!_this.evForm.content) {
+                  _this.$showToast("请填写评价");
+                }
+
+                _this.evForm.hasPicture = !!_this.evForm.picUrls.length;
+                _this.evForm.picUrls = [..._this.evForm.picUrls];
+
+                const data = { ..._this.evForm, orderGoodsId: goods.id };
+
+                sendCommentApi(data).then(() => {
+                  uni.showToast({
+                    title: "评论成功",
+                    duration: 2000,
+                  });
+                });
+
+                _this.getOrderDetail();
+              }
+            },
           });
         }
       }
@@ -402,7 +464,7 @@ export default {
 
       .evaluate-textarea {
         flex: 1;
-        height: 100upx;
+        height: 200upx;
       }
 
       .images {
@@ -447,7 +509,7 @@ export default {
 
     .uni-btn {
       border: 1upx solid #3d3d3d;
-      padding: 18upx 48upx;
+      padding: 18upx 28upx;
       color: #3d3d3d;
       font-size: 28upx;
       margin-left: 30upx;
