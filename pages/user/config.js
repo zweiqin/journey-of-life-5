@@ -175,21 +175,26 @@ export const digitalStore = {
       label: "营销画像",
       icon: require("../../static/images/user/yingxiaohuaxiang.png"),
       url: "/user/digital-store/marketing-portrait",
+      role: [1,2]
+
     },
     {
       label: "信息哨兵",
       icon: require("../../static/images/user/xinxishaobing.png"),
       url: "/user/digital-store/information-sentry",
+      role: [1,2]
     },
     {
       label: "业绩哨兵",
       icon: require("../../static/images/user/yejishaobing.png"),
       url: "/user/digital-store/performance",
+      role: [1,2]
     },
     {
       label: "业务管理",
       icon: require("../../static/images/user/yewuguanli.png"),
       url: "/user/digital-store/business/index",
+      role: [1,2]
     },
   ],
 };
@@ -202,31 +207,39 @@ export const marketingTools = {
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/exu48rqu12mmp283gf7u.png",
       url: "/user/marketing-tools/contact-guide/index",
       width: "60upx",
+      role: [1,2]
     },
     {
       label: "红包发放",
       icon: require("../../static/images/user/hongbaofafang.png"),
       url: "/user/marketing-tools/red-envelope-distribution",
+      role: [1,2]
     },
     {
       label: "每日签到",
       icon: require("../../static/images/user/meiriqiandao.png"),
+      role: [1,2]
     },
     {
       label: "门店看板",
       icon: require("../../static/images/user/mendiankanban.png"),
+      role: [1,2]
     },
     {
       label: "智能画册",
       icon: require("../../static/images/user/zhinenghuace.png"),
+      role: [1,2]
     },
+
     {
       label: "秒杀活动",
       icon: require("../../static/images/user/miaoshahuodong.png"),
+      role: [1,2]
     },
     {
       label: "分享券",
       icon: require("../../static/images/user/fenxiangjuan.png"),
+      role: [1,2]
     },
     {
       label: "推广中心",

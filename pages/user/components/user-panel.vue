@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import { J_USER_INFO } from "../../../constant";
 export default {
   props: {
     data: {
@@ -77,6 +78,11 @@ export default {
   },
   methods: {
     bindtap(item) {
+      const userInfo = uni.getStorageSync(J_USER_INFO);
+      if (item.role && !item.role.includes(userInfo.userLevel)) {
+        this.$showToast("您暂时无权限访问");
+        return;
+      }
       this.$emit("clickItem", item);
       if (this.currentTab === 1) {
         uni.navigateTo({
