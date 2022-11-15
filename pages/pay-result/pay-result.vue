@@ -11,14 +11,7 @@
     <view class="main">
       <view class="item">
         <view class="title">当前状态</view>
-        <view
-          class="value"
-          :style="{
-            color: isPay ? 'green' : 'red',
-          }"
-        >
-          {{ isPay ? "支付成功" : "支付失败" }}</view
-        >
+        <view class="value" style="color: green"> 支付成功</view>
       </view>
 
       <!-- <view class="item">
@@ -47,48 +40,20 @@
 </template>
 
 <script>
-import { J_ORDER_NO } from "../../constant";
-import { getPayOrderResultApi } from "../../api/goods";
+
 const { formatTime } = require("../../utils/util");
-import { grantVoucherApi } from "../../api/user";
-import { getUserId } from "../../utils";
+
 
 export default {
   data() {
     return {
       orderInfo: "",
       isPay: false,
-      mapMethod: {
-        voucher: this.grantVoucher,
-      },
+      
     };
   },
-
-  onLoad() {
-    const orderInfo = uni.getStorageSync(J_ORDER_NO);
-    if (orderInfo) {
-      this.orderInfo = orderInfo;
-      getPayOrderResultApi({
-        payOrderNo: orderInfo.orderNo,
-      }).then((res) => {
-        this.isPay = res.errno;
-        this.mapMethod[orderInfo.type]();
-      });
-    }
-  },
-
   methods: {
     formatTime,
-
-    // 发放代金劵
-    grantVoucher() {
-      const _this = this;
-      grantVoucherApi({
-        orderId: _this.orderInfo.jfOrder,
-      }).then(() => {
-        uni.removeStorageSync(J_ORDER_NO);
-      });
-    },
   },
 };
 </script>

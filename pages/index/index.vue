@@ -189,11 +189,10 @@ import JAside from "./components/Aside.vue";
 import NoData from "../../components/no-data";
 import { getIndexDataApi } from "../../api/home";
 import { J_LOACTION, J_REFRSH, J_STORE_TYPES } from "../../constant";
-import {
-  getTypeDetailList,
-  getGoodsById,
-  getAllCategoryList,
-} from "../../api/home";
+import { getTypeDetailList, getGoodsById } from "../../api/home";
+import { J_ORDER_NO } from "../../constant";
+import { getPayOrderResultApi } from "../../api/goods";
+import { grantVoucherApi } from "../../api/user";
 
 export default {
   components: {
@@ -242,12 +241,26 @@ export default {
         sort: "add_time",
         totalPages: 0,
       },
+      mapMethod: {
+        voucher: this.grantVoucher,
+      },
     };
   },
 
   onLoad() {
     this.getHomeData();
     this.getFooterData();
+
+    const orderInfo = uni.getStorageSync(J_ORDER_NO);
+    if (orderInfo) {
+      this.orderInfo = orderInfo;
+      getPayOrderResultApi({
+        payOrderNo: orderInfo.orderNo,
+      }).then((res) => {
+        this.isPay = res.errno;
+        this.mapMethod[orderInfo.type]();
+      });
+    }
   },
 
   onShow() {
@@ -376,6 +389,15 @@ export default {
 
     handleToViewDetail(info) {
       this.go("/pages/prod/prod?goodsId=" + info.id);
+    },
+
+    grantVoucher() {
+      const _this = this;
+      grantVoucherApi({
+        orderId: _this.orderInfo.jfOrder,
+      }).then(() => {
+        uni.removeStorageSync(J_ORDER_NO);
+      });
     },
   },
 
