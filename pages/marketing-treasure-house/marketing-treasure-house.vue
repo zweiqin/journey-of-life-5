@@ -44,8 +44,10 @@
 <script>
 import ArticlePane from "./components/article-pane.vue";
 import { getIndustryInformationListApi } from "../../api/marketing-treasure-house";
-import { J_LOACTION } from "../../constant";
+import { J_LOACTION, J_USER_TOKEN, J_TOKEN_EXPIRE } from "../../constant";
+import { whoami } from "../../api/auth";
 import { advance, templateShowStore } from "./consfig";
+import { getUserId } from '../../utils';
 
 export default {
   components: {
@@ -53,6 +55,11 @@ export default {
   },
   onLoad() {
     this.getArticleList();
+    whoami(getUserId()).then(({ data }) => {
+      console.log(data);
+      uni.setStorageSync(J_TOKEN_EXPIRE, data.expireTime);
+      uni.setStorageSync(J_USER_TOKEN, data.token);
+    });
   },
   onShow() {
     uni.removeStorageSync(J_LOACTION);

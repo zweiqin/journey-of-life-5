@@ -124,8 +124,9 @@ export default {
     chnageGender(field) {
       const _this = this;
       uni.showActionSheet({
-        itemList: ["女", "男"],
+        itemList: ["男", "女"],
         success: function (res) {
+          console.log(res.tapIndex + 1);
           _this.form[field] = res.tapIndex + 1;
         },
       });
@@ -134,7 +135,7 @@ export default {
 
   filters: {
     fomartGender(gender) {
-      return gender === 0 ? "位置" : gender === 1 ? "男" : "女";
+      return gender === 0 ? "未知" : gender === 1 ? "男" : "女";
     },
   },
 

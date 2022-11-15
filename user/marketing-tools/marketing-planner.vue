@@ -95,7 +95,10 @@ export default {
     },
 
     // 删除图片
-    handleDeleteImg() {},
+    handleDeleteImg(field) {
+      this.form.imgs[field] = "";
+      this.$forceUpdate();
+    },
 
     // 提交表单
     submit(tag) {

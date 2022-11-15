@@ -8,7 +8,7 @@ const request = (base_url) => {
         data,
         method,
         success: (res) => {
-          if (res.data.errno !== 0) {
+          if (res.data.errno !== 0 && res.data.errno !== 403) {
             uni.showToast({
               title: res.data.errmsg,
               duration: 2000,
@@ -19,8 +19,9 @@ const request = (base_url) => {
           } else if (res.data.errno == 403) {
             uni.showModal({
               title: "提示",
-              content: "您还未登录，请先去登录",
+              content: "token 已过期请重新登录",
               success: function (res) {
+                uni.clearStorage();
                 uni.navigateTo({
                   url: "/pages/login/login",
                 });

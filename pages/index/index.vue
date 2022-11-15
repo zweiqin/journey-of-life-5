@@ -188,11 +188,19 @@ import Goods from "../../components/goods";
 import JAside from "./components/Aside.vue";
 import NoData from "../../components/no-data";
 import { getIndexDataApi } from "../../api/home";
-import { J_LOACTION, J_REFRSH, J_STORE_TYPES } from "../../constant";
+import {
+  J_LOACTION,
+  J_REFRSH,
+  J_STORE_TYPES,
+  J_TOKEN_EXPIRE,
+  J_USER_TOKEN,
+} from "../../constant";
 import { getTypeDetailList, getGoodsById } from "../../api/home";
 import { J_ORDER_NO } from "../../constant";
 import { getPayOrderResultApi } from "../../api/goods";
 import { grantVoucherApi } from "../../api/user";
+import { whoami } from "../../api/auth";
+import { getUserId } from "../../utils";
 
 export default {
   components: {
@@ -250,6 +258,11 @@ export default {
   onLoad() {
     this.getHomeData();
     this.getFooterData();
+    whoami(getUserId()).then(({ data }) => {
+      console.log(data);
+      uni.setStorageSync(J_TOKEN_EXPIRE, data.expireTime);
+      uni.setStorageSync(J_USER_TOKEN, data.token);
+    });
 
     const orderInfo = uni.getStorageSync(J_ORDER_NO);
     if (orderInfo) {

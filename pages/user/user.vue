@@ -181,10 +181,12 @@ import {
   marketingTools,
   otherServe,
 } from "./config";
-import { checkWhoami, getUserId } from "../../utils";
+import { getUserId } from "../../utils";
+import { whoami } from "../../api/auth";
 import {
   J_USER_INFO,
-  J_USER_ID,
+  J_TOKEN_EXPIRE,
+  J_USER_TOKEN,
   J_LOACTION,
   J_REFRSH,
   BIND_USER_ID,
@@ -214,6 +216,14 @@ export default {
       userInfo: null,
       extensionCodeUrl: "",
     };
+  },
+
+  onLoad() {
+    whoami(getUserId()).then(({ data }) => {
+      console.log(data);
+      uni.setStorageSync(J_TOKEN_EXPIRE, data.expireTime);
+      uni.setStorageSync(J_USER_TOKEN, data.token);
+    });
   },
 
   onShow() {
@@ -276,8 +286,8 @@ export default {
         this.getExtensionCode();
       }
 
-      if(item.label === '进销存'){
-        location.href = "weixin://dl/business/?t=fT0Ivve8Fli"
+      if (item.label === "进销存") {
+        location.href = "weixin://dl/business/?t=fT0Ivve8Fli";
       }
     },
 
