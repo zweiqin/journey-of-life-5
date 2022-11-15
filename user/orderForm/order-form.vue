@@ -41,7 +41,18 @@
               </view>
             </view>
 
-            <view class="number"> 共 {{ goods.number }} 件商品 </view>
+            <view>
+              <view class="number" style="text-align: right">
+                共 {{ goods.number }} 件商品
+              </view>
+              <button
+                v-if="item.handleOption.comment"
+                class="ev-btn uni-btn"
+                @click.stop="handleOpOrder(item, 'comment', goods)"
+              >
+                去评论
+              </button>
+            </view>
           </view>
         </view>
 
@@ -58,7 +69,7 @@
                 }"
                 @click="handleOpOrder(item, btn.key)"
                 class="uni-btn"
-                v-if="item.handleOption[btn.key]"
+                v-if="item.handleOption[btn.key] && btn.label !== '去评论'"
               >
                 {{ btn.label }}
               </button>
@@ -148,9 +159,9 @@ export default {
     },
 
     // 点击操作按钮
-    handleOpOrder(goods, key) {
+    handleOpOrder(goods, key, currentGoods) {
       if (key === "comment") {
-        this.handleToViewOrderDetail(goods);
+        this.handleToViewOrderDetail(goods, currentGoods);
         return;
       }
       const mapMethods = {
@@ -219,9 +230,12 @@ export default {
     },
 
     // 查看详情
-    handleToViewOrderDetail(goods) {
+    handleToViewOrderDetail(goods, currentGoods) {
       uni.navigateTo({
-        url: "/user/orderForm/order-form-detail?id=" + goods.id,
+        url:
+          "/user/orderForm/order-form-detail?id=" +
+          goods.id +
+          (currentGoods ? "&goodsId=" + currentGoods.id : ""),
       });
     },
   },
@@ -385,6 +399,17 @@ export default {
           }
         }
       }
+    }
+
+    .ev-btn {
+      font-size: 24upx;
+      color: #fff;
+      padding: 18upx 28upx;
+      background-color: rgb(132, 195, 65);
+      white-space: nowrap;
+      margin-left: 20upx;
+      border-radius: 4upx;
+      margin-top: 20upx;
     }
   }
 }

@@ -37,42 +37,57 @@
       <view class="goods-info">
         <view class="title">商品信息</view>
 
-        <view class="goods-item" v-for="item in data.orderGoods" :key="item.id">
-          <image :src="item.picUrl" class="goods-img" mode="" />
-          <view class="goods-info-content">
-            <view class="goods-name">{{ item.goodsName }}</view>
-            <view class="sp">{{ item.specifications | fomatSp }}</view>
-            <view class="goods-price"> ￥{{ item.price }}</view>
+        <view
+          style="border-bottom: 1upx dotted #ccc; padding-bottom: 20upx"
+          v-for="item in data.orderGoods"
+          :key="item.id"
+        >
+          <view
+            class="goods-item"
+            v-if="commentGoodsId ? item.id == commentGoodsId : true"
+          >
+            <image :src="item.picUrl" class="goods-img" mode="" />
+            <view class="goods-info-content">
+              <view class="goods-name">{{ item.goodsName }}</view>
+              <view class="sp">{{ item.specifications | fomatSp }}</view>
+              <view class="goods-price"> ￥{{ item.price }}</view>
+            </view>
+            <view class="goods-number">x1</view>
           </view>
-          <view class="goods-number">x1</view>
-        </view>
-      </view>
-    </view>
 
-    <!-- 评论 -->
-    <view class="evaluate-info pane" v-if="data.orderInfo.handleOption.comment">
-      <view class="line">
-        <view class="title">满意</view>
-        <uni-rate v-model="evForm.star"></uni-rate>
-      </view>
+          <!-- 评论 -->
+          <view
+            class="evaluate-info pane"
+            v-if="
+              data.orderInfo.handleOption.comment &&
+              item.id == commentGoodsId
+            "
+          >
+            <view class="line">
+              <view class="title">满意</view>
+              <uni-rate v-model="evForm.star"></uni-rate>
+            </view>
 
-      <view class="line">
-        <view class="title">评论</view>
-        <textarea
-          placeholder="请输入商品评论"
-          class="evaluate-textarea"
-          maxlength="200"
-          v-model="evForm.content"
-        ></textarea>
-      </view>
+            <view class="line">
+              <view class="title">评论</view>
+              <textarea
+                placeholder="请输入商品评论"
+                class="evaluate-textarea"
+                maxlength="200"
+                v-model="evForm.content"
+              ></textarea>
+            </view>
 
-      <view class="line">
-        <view class="title">晒图/视频</view>
-        <view class="images">
-          <view v-for="item in evForm.picUrls" :key="item">
-            <image class="user-upload-img" :src="item" mode="" />
+            <view class="line">
+              <view class="title">晒图/视频</view>
+              <view class="images">
+                <view v-for="item in evForm.picUrls" :key="item">
+                  <image class="user-upload-img" :src="item" mode="" />
+                </view>
+                <view @click="handleUploadImg" class="upload-icon">+</view>
+              </view>
+            </view>
           </view>
-          <view @click="handleUploadImg" class="upload-icon">+</view>
         </view>
       </view>
     </view>
@@ -127,6 +142,7 @@ export default {
       orderId: null,
       data: null,
       orderOpButtons,
+      commentGoodsId: null,
       evForm: {
         userId: getUserId(),
         star: 5,
@@ -139,6 +155,7 @@ export default {
 
   onLoad(options) {
     this.orderId = options.id;
+    this.commentGoodsId = options.goodsId;
     this.getOrderDetail();
   },
 
@@ -262,7 +279,7 @@ export default {
                 _this.evForm.hasPicture = !!_this.evForm.picUrls.length;
                 _this.evForm.picUrls = [..._this.evForm.picUrls];
 
-                const data = { ..._this.evForm, orderGoodsId: goods.id };
+                const data = { ..._this.evForm, orderGoodsId: _this.commentGoodsId * 1 };
 
                 sendCommentApi(data).then(() => {
                   uni.showToast({
@@ -310,7 +327,8 @@ export default {
   background-color: #f4f4f4;
   font-size: 28upx;
   color: #3d3d3d;
-  padding-bottom: 200upx;
+  padding-bottom: 400upx;
+  // box-sizing: border-box;
 
   /deep/ .j-header-container {
     padding: 20upx;
@@ -366,6 +384,7 @@ export default {
 
     .goods-info {
       margin: 20upx 0;
+      // border-bottom: 1upx dotted #f40;
 
       .goods-item {
         display: flex;
@@ -429,6 +448,7 @@ export default {
 
   .evaluate-info {
     margin-top: 20upx;
+    padding: 0;
 
     .sub-eval-btn {
       margin-top: 80upx;
