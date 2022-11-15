@@ -233,8 +233,7 @@
 				{
 					"path": "sever/userUp",
 					"style": {
-						"navigationBarTitleText": "",
-						"usingComponents": {}
+						"navigationBarTitleText": "会员升级"
 					}
 				},
 				{

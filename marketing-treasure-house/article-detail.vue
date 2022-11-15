@@ -20,14 +20,18 @@
       <image :src="articleInfo.imgUrl" class="adva" mode="" />
 
       <!-- <view class="content" v-html="articleInfo.content"></view> -->
-
-      <view v-if="!articleInfo.isVip" style="margin: 10px 0">
+      <view
+        v-if="
+          articleInfo.isVip ? [4, 1, 2].includes(userInfo.userLevel) : false
+        "
+        style="margin: 10px 0"
+      >
         <u-parse
           :content="articleInfo.content && marked(articleInfo.content)"
         ></u-parse>
       </view>
 
-      <view class="attention" v-else>
+      <view class="attention" v-else @click="go('/user/sever/userUp')">
         在疫情肆虐的上半年，九牧王的线上微商城月 GMV 基本平均保持在 1000w+
         的水平，其中私域用户贡献占到 90% 。私域会员增长了 10
         万多，其中新会员增加了 30% ，新会员的 GMV 占微商城总 GMV 的 30%
@@ -54,7 +58,11 @@
             src="https://img2.baidu.com/it/u=829931824,271545605&fm=253&fmt=auto&app=138&f=JPEG?w=450&h=228"
           />
         </view> -->
-        <ArticlePane :scrollTop="scrollTop" status="more" :data="recommentList"></ArticlePane>
+        <ArticlePane
+          :scrollTop="scrollTop"
+          status="more"
+          :data="recommentList"
+        ></ArticlePane>
       </view>
     </view>
   </view>
@@ -69,6 +77,7 @@ import ArticlePane from "../pages/marketing-treasure-house/components/article-pa
 import { getRandom } from "../utils";
 import { marked } from "marked";
 import uParse from "../components/u-parse/u-parse.vue";
+import { J_USER_INFO } from "../constant";
 
 export default {
   components: {
@@ -91,7 +100,8 @@ export default {
       articleId: null,
       articleInfo: {},
       recommentList: [],
-      scrollTop: 0
+      scrollTop: 0,
+      userInfo: uni.getStorageSync(J_USER_INFO),
     };
   },
   methods: {

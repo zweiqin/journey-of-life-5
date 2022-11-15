@@ -122,7 +122,7 @@
       >
         申请记录
       </button>
-      <button class="btn">我的会员</button>
+      <button class="btn" @click="getApplyHistory">刷新会员信息</button>
     </view>
   </view>
 </template>
@@ -179,17 +179,26 @@ export default {
           res.data.items.find((item) => item.newGrade === 1) || null;
         this.marketingPlannerInfo =
           res.data.items.find((item) => item.newGrade === 2) || null;
-        // if (this.vipInfo.upgradeOrder.payStatus === 2) {
-        //   const info = uni.getStorageSync(J_USER_INFO);
-        //   console.log(info);
-        //   // payVipApplySuccessApi({}).then(() => {
-        //   //   this.$showToast("升级vip", "success");
-        //   // });
-        // }
+        if (
+          this.vipInfo &&
+          this.vipInfo.upgradeOrder &&
+          this.vipInfo.upgradeOrder.payStatus === 2
+        ) {
+          const info = uni.getStorageSync(J_USER_INFO);
+          if (info.userLevel == 4) {
+            uni.hideLoading();
+            return;
+          }
+          payVipApplySuccessApi({
+            userId: getUserId(),
+            mobile: info.phone,
+          }).then(() => {
+            this.$showToast("升级vip成功", "success");
+          });
+        }
 
         if (this.storeInfo && this.storeInfo.status !== 1) {
           if (this.isReLoad) {
-            console.log('操了', this.storeInfo.upgradeOrder.payStatus);
             if (
               this.storeInfo.upgradeOrder &&
               this.storeInfo.upgradeOrder.payStatus === 2
@@ -261,6 +270,8 @@ export default {
         }
         uni.hideLoading();
       });
+
+      uni.stopPullDownRefresh();
     },
 
     handleToUp(item) {
@@ -296,7 +307,7 @@ export default {
             `您已经是${userInfo.userLevelDesc}等级了，无需重复申请`
           );
 
-          return
+          return;
         }
       }
 
