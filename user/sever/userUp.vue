@@ -145,8 +145,10 @@ import {
   J_MARKETING_PLANNER,
   J_USER_INFO,
   J_REFRSH,
+  PAY_TYPE,
 } from "../../constant";
 import { payOrderGoodsApi } from "../../api/goods";
+import { payFn } from "../../utils/pay";
 
 export default {
   data() {
@@ -270,46 +272,44 @@ export default {
         }
         uni.hideLoading();
       });
-
-      uni.stopPullDownRefresh();
     },
 
     handleToUp(item) {
-      if (item.type === 4) {
-        const userInfo = uni.getStorageSync(J_USER_INFO);
-        if (userInfo.userLevel >= 1 && userInfo.userLevel !== 5) {
-          this.$showToast(
-            `您已经是${userInfo.userLevelDesc}等级了，无需升级vip`
-          );
-          return;
-        }
-      }
+      // if (item.type === 4) {
+      //   const userInfo = uni.getStorageSync(J_USER_INFO);
+      //   if (userInfo.userLevel >= 1 && userInfo.userLevel !== 5) {
+      //     this.$showToast(
+      //       `您已经是${userInfo.userLevelDesc}等级了，无需升级vip`
+      //     );
+      //     return;
+      //   }
+      // }
 
-      if (item.type === 1) {
-        const userInfo = uni.getStorageSync(J_USER_INFO);
-        if (userInfo.userLevel === 1) {
-          this.$showToast(
-            `您已经是${userInfo.userLevelDesc}等级了，无需重复申请`
-          );
-          return;
-        } else if (userInfo.userLevel > 1 && userInfo.userLevel !== 5) {
-          this.$showToast(
-            `您已经是${userInfo.userLevelDesc}等级了，无需申请门店`
-          );
-          return;
-        }
-      }
+      // if (item.type === 1) {
+      //   const userInfo = uni.getStorageSync(J_USER_INFO);
+      //   if (userInfo.userLevel === 1) {
+      //     this.$showToast(
+      //       `您已经是${userInfo.userLevelDesc}等级了，无需重复申请`
+      //     );
+      //     return;
+      //   } else if (userInfo.userLevel > 1 && userInfo.userLevel !== 5) {
+      //     this.$showToast(
+      //       `您已经是${userInfo.userLevelDesc}等级了，无需申请门店`
+      //     );
+      //     return;
+      //   }
+      // }
 
-      if (item.type === 2) {
-        const userInfo = uni.getStorageSync(J_USER_INFO);
-        if (userInfo.userLevel === 2) {
-          this.$showToast(
-            `您已经是${userInfo.userLevelDesc}等级了，无需重复申请`
-          );
+      // if (item.type === 2) {
+      //   const userInfo = uni.getStorageSync(J_USER_INFO);
+      //   if (userInfo.userLevel === 2) {
+      //     this.$showToast(
+      //       `您已经是${userInfo.userLevelDesc}等级了，无需重复申请`
+      //     );
 
-          return;
-        }
-      }
+      //     return;
+      //   }
+      // }
 
       if (item.type === 1 && this.storeInfo) {
         return;
@@ -328,22 +328,7 @@ export default {
             userId: getUserId(),
             payType: 4,
           }).then((res) => {
-            const payData = JSON.parse(res.h5PayUrl);
-            const form = document.createElement("form");
-            form.setAttribute("action", payData.url);
-            form.setAttribute("method", "POST");
-            const data = JSON.parse(payData.data);
-            let input;
-            for (const key in data) {
-              input = document.createElement("input");
-              input.name = key;
-              input.value = data[key];
-              form.appendChild(input);
-            }
-
-            document.body.appendChild(form);
-            form.submit();
-            document.body.removeChild(form);
+            payFn(res, PAY_TYPE.VIP.value);
           });
         });
         return;
@@ -416,22 +401,7 @@ export default {
             userId: getUserId(),
             payType: 4,
           }).then((res) => {
-            const payData = JSON.parse(res.h5PayUrl);
-            const form = document.createElement("form");
-            form.setAttribute("action", payData.url);
-            form.setAttribute("method", "POST");
-            const data = JSON.parse(payData.data);
-            let input;
-            for (const key in data) {
-              input = document.createElement("input");
-              input.name = key;
-              input.value = data[key];
-              form.appendChild(input);
-            }
-
-            document.body.appendChild(form);
-            form.submit();
-            document.body.removeChild(form);
+            payFn(res, PAY_TYPE.VIP.value);
           });
         });
       } else if (type === 2) {
@@ -446,22 +416,7 @@ export default {
             userId: getUserId(),
             payType: 4,
           }).then((res) => {
-            const payData = JSON.parse(res.h5PayUrl);
-            const form = document.createElement("form");
-            form.setAttribute("action", payData.url);
-            form.setAttribute("method", "POST");
-            const data = JSON.parse(payData.data);
-            let input;
-            for (const key in data) {
-              input = document.createElement("input");
-              input.name = key;
-              input.value = data[key];
-              form.appendChild(input);
-            }
-
-            document.body.appendChild(form);
-            form.submit();
-            document.body.removeChild(form);
+            payFn(res, PAY_TYPE.VIP.value);
           });
         });
       }

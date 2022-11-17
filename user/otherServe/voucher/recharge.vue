@@ -29,7 +29,8 @@
 import { getVoucherConfigApi, rechargePrePayApi } from "../../../api/user";
 import { payOrderGoodsApi } from "../../../api/goods";
 import { getUserId } from "../../../utils";
-import { J_ORDER_NO } from "../../../constant";
+import { payFn } from "../../../utils/pay";
+import { PAY_TYPE } from "../../../constant";
 
 export default {
   onLoad(options) {
@@ -65,38 +66,12 @@ export default {
         voucherId: this.voucherConfig.id,
         userId: getUserId(),
       }).then(({ data }) => {
-        const orderInfo = uni.getStorageSync(J_ORDER_NO);
-        uni.setStorageSync(J_ORDER_NO, {
-          jfOrder: data.payOrderID,
-          ...orderInfo,
-        });
         payOrderGoodsApi({
           orderNo: data.payOrderID,
           userId: getUserId(),
           payType: 2,
         }).then((res) => {
-          const orderInfo = uni.getStorageSync(J_ORDER_NO);
-          uni.setStorageSync(J_ORDER_NO, {
-            type: "voucher",
-            orderNo: res.orderNo,
-            ...orderInfo,
-          });
-          const payData = JSON.parse(res.h5PayUrl);
-          const form = document.createElement("form");
-          form.setAttribute("action", payData.url);
-          form.setAttribute("method", "POST");
-          const data = JSON.parse(payData.data);
-          let input;
-          for (const key in data) {
-            input = document.createElement("input");
-            input.name = key;
-            input.value = data[key];
-            form.appendChild(input);
-          }
-
-          document.body.appendChild(form);
-          form.submit();
-          document.body.removeChild(form);
+          payFn(res, PAY_TYPE.VOUCHER.value, data.payOrderID);
         });
       });
 

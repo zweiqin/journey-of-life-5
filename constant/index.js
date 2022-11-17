@@ -21,11 +21,29 @@ export const J_LOACTION = "J_LOACTION";
 
 // vip
 export const J_STORE_INFO = "J_STORE_INFO";
-export const J_MARKETING_PLANNER = "J_MARKETING_PLANNER"
+export const J_MARKETING_PLANNER = "J_MARKETING_PLANNER";
 
 // page
-export const J_REFRSH = "J_REFRSH"
-export const BIND_USER_ID= "BIND_USER_ID"
+export const J_REFRSH = "J_REFRSH";
+export const BIND_USER_ID = "BIND_USER_ID";
 
 // pay
-export const J_ORDER_NO = "J_ORDER_NO"
+export const J_ORDER_NO = "J_ORDER_NO";
+export const J_PAY_ORDER = "J_PAY_ORDER";
+
+export const PAY_TYPE = {
+  RED_PACK: {
+    value: "RED_PACK",
+    success: "红包发送成功",
+  },
+
+  VOUCHER: {
+    value: "VOUCHER",
+    success: "代金劵发放成功",
+  },
+
+  VIP: {
+    value: 'VIP',
+    success: '升级成功'
+  }
+};

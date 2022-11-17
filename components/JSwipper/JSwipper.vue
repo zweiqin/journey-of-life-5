@@ -23,7 +23,12 @@
             :data="goods"
             v-if="type === 'goods'"
           ></JGoods>
-          <JStorePane :data="goods" ref="jStoreDetailRef" v-else></JStorePane>
+          <JStorePane
+            :data="goods"
+            class="store-pane-pane"
+            ref="jStoreDetailRef"
+            v-else
+          ></JStorePane>
         </view>
       </view>
       <NoData style="height: 400upx" v-else></NoData>
@@ -68,7 +73,7 @@ export default {
       type: String,
       default: "loading",
     },
-    scrollTop: Number
+    scrollTop: Number,
   },
 
   mounted() {
@@ -101,11 +106,6 @@ export default {
       this.$nextTick(() => {
         let number = 0;
         let itemHeight = 0;
-
-        const a = uni.createSelectorQuery().in(this).select(".j-goods");
-        a.boundingClientRect((data) => {
-          console.log("去你妈的", data);
-        });
 
         setTimeout(() => {
           if (this.data && this.data.length) {
