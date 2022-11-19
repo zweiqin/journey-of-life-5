@@ -446,6 +446,7 @@ export default {
   },
 
   onReachBottom() {
+    console.log("触底了");
     if (this.isShowItemPane) {
       if (this.queryInfo.page >= this.queryInfo.totalPage) {
         this.listLoading = "nomore";
@@ -698,13 +699,14 @@ export default {
       }
     }
   }
-
-  /* #ifdef APP-PLUS */
-  .goods-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  /* #endif */
 }
+
+/* #ifdef APP-PLUS */
+.goods-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+/* #endif */
 </style>

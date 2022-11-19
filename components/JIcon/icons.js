@@ -83,4 +83,7 @@ export const types = {
   weiXin:
     'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/cn6pi0k9jkuu3jfsv3wr.png', //微信，灰
   edit: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/eerrn9k4wio38zy6kg3k.png', // 编辑
+  kefu: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/sreeoxn1h15226grzxlp.png', // 客服
+  'shop-cart':
+    'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ui8w8y0j6e4jjjyeyw6m.png', // 购物车
 }

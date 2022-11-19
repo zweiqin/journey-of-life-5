@@ -149,6 +149,9 @@
       <view
         class="mask-main"
         ref="maskMainAreaRef"
+        :style="{
+          transform: `scaleY(${isShowChooseSpecificationInfoStr ? 1 : 0})`,
+        }"
         @transitionend="handleTransitionend"
       >
         <view class="info">
@@ -206,11 +209,14 @@
     <!-- 底部的操作 -->
     <view class="footer">
       <view class="item">
-        <img class="kefu" src="../../static/images/goods/kefu.png" alt="" />
+        <!-- <img src="../../static/images/goods/kefu.png" alt="" /> -->
+        <JIcon type="kefu" class="kefu"></JIcon>
         <text class="text">客服</text>
       </view>
       <view class="item" @click="toShopCar">
-        <img class="car" src="../../static/images/goods/gouwuche.png" alt="" />
+        <!-- <img src="../../static/images/goods/gouwuche.png" alt="" />
+         -->
+        <JIcon class="car" type="shop-cart"></JIcon>
         <view class="bage" v-if="carGoodsNumer">{{ carGoodsNumer }}</view>
         <text class="text">购物车</text>
       </view>
@@ -263,6 +269,7 @@ export default {
       carGoodsNumer: 0,
       isLogin: true,
       scrollTop: 0,
+      isShowChooseSpecificationInfoStr: false,
     };
   },
   methods: {
@@ -316,12 +323,13 @@ export default {
         duration: 2000,
       });
 
-      this.getGoodsDetail()
+      this.getGoodsDetail();
     },
 
     // 点击选择规格
     handleChoosespecificationList() {
-      this.$refs.maskMainAreaRef.$el.style.transform = "scaleY(1)";
+      // this.$refs.maskMainAreaRef.$el.style.transform = "scaleY(1)";
+      this.isShowChooseSpecificationInfoStr = true
       this.goodsInfo.specificationList.forEach((item) => {
         this.specificationListInfo.currentSpecification[item.name] = "";
       });
@@ -329,7 +337,8 @@ export default {
 
     // 点击阴影关闭
     handleCloseModal() {
-      this.$refs.maskMainAreaRef.$el.style.transform = "scaleY(0)";
+      // this.$refs.maskMainAreaRef.$el.style.transform = "scaleY(0)";
+      this.isShowChooseSpecificationInfoStr = false
       this.selectedSpecificationInfoStr = "";
       this.goodsInfo.specificationList.forEach((item) => {
         this.specificationListInfo.currentSpecification[item.name] = "";
@@ -506,7 +515,7 @@ export default {
             status: 0,
             ...this.goodsInfo,
             selectedProduct: productInfo,
-            brandId: this.goodsInfo.brand.id
+            brandId: this.goodsInfo.brand.id,
           });
           uni.navigateTo({
             url: "/pages/pre-order/pre-order",
@@ -1072,6 +1081,7 @@ export default {
 
       .kefu {
         width: 40upx;
+        height: 40upx;
       }
 
       .bage {
@@ -1093,6 +1103,7 @@ export default {
 
       .car {
         width: 34upx;
+        height: 34upx;
       }
     }
 
