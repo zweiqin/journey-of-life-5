@@ -31,21 +31,42 @@
 
     <!-- 商品信息 -->
     <view class="goods-wrapper">
-      <Goods
-        :name="item.goodsName"
-        :price="item.price"
-        :imgUrl="item.picUrl"
-        v-for="item in goodsList"
-        :desc="item.desc"
-        :key="item.id"
-        readOnly
-      ></Goods>
+      <view v-for="(brand, index) in goodsList" :key="brand.brandId">
+        <view class="shop-card-name">
+          <JIcon class="icon" width="30" height="30" type="full-store"></JIcon>
+          {{ brand.brandName }}
+        </view>
+        <Goods
+          :name="item.goodsName"
+          :price="item.price"
+          :imgUrl="item.picUrl"
+          v-for="item in brand.brandCartgoods"
+          :desc="item.desc"
+          :key="item.id"
+          readOnly
+        ></Goods>
+
+        <view class="line-pane" v-if="brand.brandName === '巨蜂自营'">
+          <view class="title">是否使用代金劵</view>
+          <view class="desc" style="color: #999">
+            <label
+              style="display: flex; align-items: center"
+              @click="handleUserVoucher(index)"
+            >
+              <radio :checked="brand.useVoucher" /><text
+                style="margin-left: 10px"
+                >持有：{{ voucherNumber }}</text
+              >
+            </label>
+          </view>
+        </view>
+      </view>
     </view>
 
     <!-- 汇总信息 -->
     <view class="line-pane">
       <view class="title">商品总额</view>
-      <view class="desc">￥{{ totalPrice }}</view>
+      <view class="desc">￥{{ payOrderInfo.actualPrice }}</view>
     </view>
 
     <view class="line-pane">
@@ -55,7 +76,9 @@
 
     <view class="footer">
       <view class="price-wrapper"
-        >待支付：<text class="price-pay">￥{{ totalPrice }}</text></view
+        >待支付：<text class="price-pay"
+          >￥{{ payOrderInfo.actualPrice }}</text
+        ></view
       >
       <button class="uni-btn pay-btn" @click="handleToPay">立即支付</button>
     </view>
@@ -67,7 +90,8 @@ import Goods from "../../store/components/goods-pane.vue";
 import { J_PAY_GOODS, J_SELECT_ADDRESS } from "../../constant";
 import { getAddressListApi } from "../../api/address";
 import { getUserId } from "../../utils";
-import { payShopCarApi } from "../../api/cart";
+import { payAllShopCarApi, payAllGoodsSubmit } from "../../api/cart";
+import { getVoucherNumberApi } from "../../api/user";
 import { submitOrderApi, payOrderGoodsApi } from "../../api/goods";
 
 export default {
@@ -78,6 +102,10 @@ export default {
   onLoad() {
     this.getGoods();
     this.getAddress();
+
+    getVoucherNumberApi({ userId: getUserId() }).then(({ data }) => {
+      this.voucherNumber = data[0].number;
+    });
   },
 
   onShow() {
@@ -94,6 +122,8 @@ export default {
       isNoAddress: false,
       defaultAddress: "",
       brandId: null,
+      voucherNumber: 0,
+      payOrderInfo: {},
     };
   },
 
@@ -101,28 +131,8 @@ export default {
     // 获取本地的购物车数据
     getGoods() {
       const payGoodsInfo = uni.getStorageSync(J_PAY_GOODS) || {};
-      if (!payGoodsInfo.goods.length) {
-        uni.showModal({
-          title: "提示",
-          content: "没有要支付的商品",
-          success: function () {
-            uni.navigateTo({
-              url: "/user/sever/shop-car",
-            });
-          },
-        });
-      } else {
-        this.brandId = payGoodsInfo.brandId;
-        this.goodsList = payGoodsInfo.goods.map((item) => {
-          let str = "";
-          for (const item of item.specifications) {
-            str += item + " ";
-          }
-          item.desc = str + "x" + item.number;
-          return item;
-        });
-        this.totalPrice = payGoodsInfo.pay;
-      }
+      this.goodsList = payGoodsInfo.cardsInfo;
+      this.totalPrice = payGoodsInfo.pay;
     },
     // 获取地址信息
     getAddress() {
@@ -140,6 +150,10 @@ export default {
         });
 
         _this.defaultAddress = defaultAddress || data[0];
+
+        if (_this.defaultAddress) {
+          this.handleBuildPayCount();
+        }
       });
     },
 
@@ -150,6 +164,52 @@ export default {
       });
     },
 
+    // 是否使用代金劵
+    handleUserVoucher(index) {
+      const currentBrand = this.goodsList[index];
+      this.$set(this.goodsList, index, {
+        ...currentBrand,
+        useVoucher: !currentBrand.useVoucher,
+      });
+
+      this.handleBuildPayCount();
+    },
+
+    // 获取数据
+    getPostData() {
+      const cartDtoList = [];
+
+      for (let item of this.goodsList) {
+        console.log(item);
+        cartDtoList.push({
+          couponId: -1,
+          brandId: item.brandId * 1,
+          useVoucher: !!item.useVoucher,
+          useBalance: false,
+        });
+      }
+
+      const subData = {
+        userId: getUserId(),
+        addressId: this.defaultAddress.id,
+        cartDtoList: cartDtoList,
+      };
+
+      return subData;
+    },
+
+    // 计算价格
+    handleBuildPayCount() {
+      uni.showLoading({
+        title: "加载中",
+      });
+      const _this = this;
+      payAllShopCarApi(this.getPostData()).then(({ data }) => {
+        _this.payOrderInfo = data;
+        uni.hideLoading();
+      });
+    },
+
     // 支付
     handleToPay() {
       if (!this.defaultAddress || !this.defaultAddress.id) {
@@ -157,51 +217,29 @@ export default {
         return;
       }
 
-      const data = {
-        userId: getUserId(),
-        addressId: this.defaultAddress.id,
-        useVoucher: 0,
-        cartId: 0,
-        couponId: "",
-        grouponRulesId: "",
-        brandId: this.brandId,
-      };
+      // return;
 
-      payShopCarApi(data).then(({ data }) => {
-        submitOrderApi({
+      payAllGoodsSubmit(this.getPostData()).then(({ data }) => {
+        payOrderGoodsApi({
+          orderNo: data.orderSn,
           userId: getUserId(),
-          cartId: 0,
-          addressId: data.addressId,
-          couponId: 0,
-          useVoucher: false,
-          message: "",
-          grouponLinkId: "",
-          grouponRulesId: "",
-          brandId: this.brandId,
-        }).then(({ data }) => {
-          payOrderGoodsApi({
-            orderNo: data.orderSn,
-            userId: getUserId(),
-            payType: 1,
-          }).then((res) => {
-            const payData = JSON.parse(res.h5PayUrl);
-
-            const form = document.createElement("form");
-            form.setAttribute("action", payData.url);
-            form.setAttribute("method", "POST");
-            const data = JSON.parse(payData.data);
-            let input;
-            for (const key in data) {
-              input = document.createElement("input");
-              input.name = key;
-              input.value = data[key];
-              form.appendChild(input);
-            }
-
-            document.body.appendChild(form);
-            form.submit();
-            document.body.removeChild(form);
-          });
+          payType: 1,
+        }).then((res) => {
+          const payData = JSON.parse(res.h5PayUrl);
+          const form = document.createElement("form");
+          form.setAttribute("action", payData.url);
+          form.setAttribute("method", "POST");
+          const data = JSON.parse(payData.data);
+          let input;
+          for (const key in data) {
+            input = document.createElement("input");
+            input.name = key;
+            input.value = data[key];
+            form.appendChild(input);
+          }
+          document.body.appendChild(form);
+          form.submit();
+          document.body.removeChild(form);
         });
       });
     },
@@ -230,7 +268,7 @@ export default {
   }
 
   .consignee-info {
-    margin: 60upx 0 120upx 0;
+    margin: 60upx 0 60upx 0;
     .pane {
       display: flex;
       align-items: center;
@@ -261,6 +299,21 @@ export default {
 
   .goods-wrapper {
     margin-bottom: 30upx;
+
+    .shop-card-name {
+      font-size: 24upx;
+      padding: 20upx 0;
+      margin-top: 30upx;
+      font-weight: bold;
+      border-bottom: 1upx solid #cdcdcd;
+      display: flex;
+      align-items: center;
+      margin-bottom: 20upx;
+
+      .icon {
+        margin-right: 10upx;
+      }
+    }
 
     .goods-pane {
       margin-bottom: 40upx;

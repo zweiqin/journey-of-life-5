@@ -19,7 +19,7 @@
         @click="handleChangeTab('userId')"
         class="uni-btn"
       >
-        收起
+        收到
       </button>
     </view>
 

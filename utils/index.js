@@ -9,5 +9,6 @@ export {
   handleDebounce,
   getRandom,
   getAddressLongitudeAndLatitude,
+  delayedLoginStatus
 } from "./DWHutils";
 export { formatTime, debounce } from "./util";

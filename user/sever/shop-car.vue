@@ -74,12 +74,12 @@
         </view>
       </view>
 
-      <uni-load-more
+      <!-- <uni-load-more
         style="margin-top: 60upx"
         type="snow"
         status="loading"
         v-if="loadingStatus === 'loading'"
-      ></uni-load-more>
+      ></uni-load-more> -->
 
       <view
         class="no-data"
@@ -97,6 +97,7 @@
         :name="item.name"
         :imgUrl="item.picUrl"
         :key="item.id"
+        :id="item.id"
       ></Goods>
     </view>
 
@@ -154,9 +155,8 @@ export default {
   onLoad() {
     this.getShopList();
     uni.removeStorageSync(J_SELECT_ADDRESS);
-    everyLookApi(24555).then(({ data }) => {
-      this.recommentList = data.goodsList.slice(0, 10);
-    });
+
+    this.getRecommentList();
   },
 
   data() {
@@ -185,6 +185,11 @@ export default {
   },
 
   methods: {
+    getRecommentList() {
+      everyLookApi(24438).then(({ data }) => {
+        this.recommentList = data.goodsList.slice(0, 10);
+      });
+    },
     // 操作按钮切换
     handleSwitchShopCarStatus() {
       if (!this.shopCarList.length && this.opStatus === EDIT) {
@@ -233,10 +238,12 @@ export default {
       })
         .then(({ data }) => {
           _this.shopCarList = data.brandCartgoods;
-          this.loadingStatus = "no-more";
+          uni.hideLoading();
+          _this.loadingStatus = "noMore";
         })
         .catch(() => {
-          this.loadingStatus = "no-more";
+          uni.hideLoading();
+          _this.loadingStatus = "noMore";
         });
     },
 
@@ -317,57 +324,63 @@ export default {
 
     // 是否全选
     handleChooseAll() {
-      return;
+      const _this = this;
       if (this.opStatus === EDIT) {
-        const needCheckedIds = this.shopCarList
-          .filter((item) => !item.checked === !this.allCheckStatus)
-          .map((item) => item.productId);
-
+        const needCheckedIds = [];
+        for (const shop of this.shopCarList) {
+          shop.cartList.forEach((item) => {
+            if (item.checked === _this.allCheckStatus) {
+              needCheckedIds.push(item.productId);
+            }
+          });
+        }
+        uni.showLoading();
         changeShopCarStatusApi({
           userId: getUserId(),
           productIds: needCheckedIds,
           isChecked: this.allCheckStatus ? 0 : 1,
-        }).then(({ data }) => {
-          this.setShopCarList(data);
+        }).then((res) => {
+          _this.getShopList();
         });
       } else {
-        this.opList = this.allCheckStatus
-          ? []
-          : this.shopCarList.map((item) => item.productId);
+        // this.opList = this.allCheckStatus
+        //   ? []
+        //   : this.shopCarList.map((item) => {});
+
+        if (this.allCheckStatus) {
+          this.opList = [];
+        } else {
+          const tempOp = [];
+          this.shopCarList.forEach((shop) => {
+            for (const item of shop.cartList) {
+              tempOp.push(item.productId);
+            }
+          });
+          this.opList = tempOp;
+        }
       }
     },
 
     // 去结算
     handleToPay() {
-      let currentBrand = null;
-      let tag = true;
-      const op = [];
-      for (const shop of this.shopCarList) {
-        for (const item of shop.cartList) {
-          if (item.checked) {
-            if (!currentBrand || currentBrand == shop.brandId) {
-              currentBrand = shop.brandId;
-              op.push(item);
-            } else {
-              tag = false;
-            }
-          }
-        }
-      }
+      uni.showLoading();
 
-      if (tag && !op.length) {
-        this.$showToast("请选择要结算的商品");
-        return;
-      } else if (!tag) {
-        this.$showToast("暂不支持跨门店结算");
-        return;
+      const op = [];
+
+      for (let item of this.shopCarList) {
+        op.push({
+          brandId: item.brandId,
+          brandName: item.brandName,
+          brandCartgoods: item.cartList.filter((item) => item.checked),
+        });
       }
 
       uni.setStorageSync(J_PAY_GOODS, {
-        goods: op,
-        brandId: currentBrand,
+        cardsInfo: op,
         pay: this.totalPrice,
       });
+
+      uni.hideLoading();
 
       uni.navigateTo({
         url: "/user/sever/pay-shop-card",
@@ -393,9 +406,11 @@ export default {
         return status;
       } else {
         let status = true;
-        for (const item of this.shopCarList) {
-          if (!this.opList.includes(item.productId)) {
-            status = false;
+        for (const shop of this.shopCarList) {
+          for (const item of shop.cartList) {
+            if (!this.opList.includes(item.productId)) {
+              status = false;
+            }
           }
         }
         return status;

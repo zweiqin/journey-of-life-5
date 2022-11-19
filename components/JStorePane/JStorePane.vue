@@ -43,6 +43,7 @@
             :loading-mode="lazyLoadingMode"
             :scroll-top="scrollTop"
             class="img"
+            style="border-radius: 0 20upx 0 0"
             :image-src="data.goodsList[1].picUrl"
           ></easy-loadimage>
         </view>
@@ -58,6 +59,7 @@
           <easy-loadimage
             :loading-mode="lazyLoadingMode"
             class="img"
+            style="border-radius: 0 0 20upx 0"
             :scroll-top="scrollTop"
             :image-src="data.goodsList[2].picUrl"
           ></easy-loadimage>
@@ -302,6 +304,7 @@ export default {
       height: 300upx;
       border-radius: 20upx 0 0 20upx;
       margin-right: 6upx;
+      overflow: hidden;
     }
 
     .right {
@@ -312,7 +315,7 @@ export default {
 
       .img {
         height: 146upx;
-        border-radius: 0 20upx 20upx 0;
+        overflow: hidden;
       }
     }
   }

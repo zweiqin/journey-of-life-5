@@ -26,10 +26,10 @@
         </view>
 
         <view class="voucher-text voucher-detail-item">
-          <text style="margin: 18upx 0 10upx 0">
+          <view style="margin: 18upx 0 10upx 0">
             {{ type === "userId" ? "转赠者ID" : "赠与者ID：" }}
-            {{ data.userId }}</text
-          >
+            {{ data.userId }}
+          </view>
         </view>
 
         <view class="voucher-text voucher-detail-item">

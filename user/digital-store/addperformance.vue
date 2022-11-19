@@ -158,9 +158,7 @@
         </view>
       </view>
     </view>
-    <view class="sumbit" @click="sumbit">
-      提交
-    </view>
+    <view class="sumbit" @click="sumbit"> 提交 </view>
   </view>
 </template>
 
@@ -195,23 +193,23 @@ export default {
     };
   },
   methods: {
-    back(){
+    back() {
       uni.navigateBack();
     },
-    sumbit(){
-      this.addperformance()
+    sumbit() {
+      this.addperformance();
     },
     targetTimechange(e) {
       this.targetTime = e;
       console.log(e);
-      this.thistime()
+      this.thistime();
       if (this.timestatus == 0) {
         this.day = "";
       }
     },
     timechange(e) {
       this.currentTime = e;
-      this.alarmTime =e
+      this.alarmTime = e;
     },
     bindheadNameinput: function (event) {
       this.headName = event.target.value;
@@ -256,7 +254,7 @@ export default {
     async addperformance() {
       const res = await addperformanceApi({
         month: this.month,
-        status: this.status*1,
+        status: this.status * 1,
         week: this.week,
         year: this.year,
         day: this.day,
@@ -264,8 +262,7 @@ export default {
         alarmMoney: this.alarmMoney,
         targetMoney: this.targetMoney,
         alarmTime: this.alarmTime,
-        userId:getUserId()
-        
+        userId: getUserId(),
 
         // // 传输的数据
         // alarmMoney: "333",
@@ -288,7 +285,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.all{
+.all {
   padding-bottom: 200upx;
 }
 .header {
@@ -447,14 +444,14 @@ export default {
     padding: 0upx;
   }
 }
-.sumbit{
-width: 380upx;
-height: 72upx;
-line-height: 72upx;
-border-radius: 100upx;
-color: white;
-background-color: #FF8F1F;
-text-align: center;
-margin: 0 auto;
+.sumbit {
+  width: 380upx;
+  height: 72upx;
+  line-height: 72upx;
+  border-radius: 100upx;
+  color: white;
+  background-color: #ff8f1f;
+  text-align: center;
+  margin: 0 auto;
 }
 </style>

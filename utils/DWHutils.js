@@ -1,6 +1,6 @@
-import { whoami } from "../api/auth";
-import { J_USER_ID } from "../constant";
-import { jsonp } from "vue-jsonp";
+import { whoami } from '../api/auth'
+import { J_USER_ID, J_USER_TOKEN, J_TOKEN_EXPIRE } from '../constant'
+import { jsonp } from 'vue-jsonp'
 
 /**
  * @description 解决小数计算精度问题（en，你应该使用big.js）
@@ -9,26 +9,26 @@ import { jsonp } from "vue-jsonp";
  * @returns
  */
 export const fomartNumber = (data, accuracy = 2) => {
-  let temp = data + "";
-  if (temp.includes(".")) {
-    return (data * 1).toFixed(accuracy);
+  let temp = data + ''
+  if (temp.includes('.')) {
+    return (data * 1).toFixed(accuracy)
   }
-  return data;
-};
+  return data
+}
 
 /**
  * @description 批量清除缓存
  * @param {String[]} cacheArr 要清除的缓存string数组
  */
-export const removeCache = (cacheArr) => {
+export const removeCache = cacheArr => {
   if (!Array.isArray(cacheArr)) {
-    return;
+    return
   }
 
   for (const item of cacheArr) {
-    uni.removeStorageSync(item);
+    uni.removeStorageSync(item)
   }
-};
+}
 
 /**
  * 检测登录是否有效
@@ -43,14 +43,14 @@ export const checkWhoami = () => {
   //     });
   //   }
   // });
-};
+}
 
 /**
  * 获取用户userid
  * @returns
  */
 export const getUserId = () => {
-  const userId = uni.getStorageSync(J_USER_ID);
+  const userId = uni.getStorageSync(J_USER_ID)
   if (!userId) {
     // uni.showToast({
     //   title: "登录已失效，请重新登录",
@@ -59,41 +59,41 @@ export const getUserId = () => {
     // });
 
     uni.showModal({
-      title: "提示",
-      content: "您还未登录，是否去登录？",
+      title: '提示',
+      content: '您还未登录，是否去登录？',
       success: function (res) {
         if (res.confirm) {
           uni.navigateTo({
-            url: "/pages/login/login",
-          });
+            url: '/pages/login/login',
+          })
         } else if (res.cancel) {
           // uni.navigateBack();
         }
       },
-    });
+    })
 
-    return;
+    return
   }
-  return userId;
+  return userId
   // return 200
   // return 265;
-};
+}
 
 /**
  * 点击复制
  * @param {*} text
  */
-export const useCopy = (text) => {
-  const input = document.createElement("input");
-  input.value = text;
-  document.body.appendChild(input);
-  input.select();
-  document.execCommand("Copy");
-  document.body.removeChild(input);
+export const useCopy = text => {
+  const input = document.createElement('input')
+  input.value = text
+  document.body.appendChild(input)
+  input.select()
+  document.execCommand('Copy')
+  document.body.removeChild(input)
   uni.showToast({
-    title: "单号复制成功",
-  });
-};
+    title: '单号复制成功',
+  })
+}
 
 /**
  * @description 防抖函数
@@ -103,29 +103,29 @@ export const useCopy = (text) => {
  * @returns
  */
 export function handleDebounce(func, wait, immediate) {
-  let timeout;
+  let timeout
 
   return function () {
-    let context = this;
-    let args = arguments;
+    let context = this
+    let args = arguments
 
-    if (timeout) clearTimeout(timeout);
+    if (timeout) clearTimeout(timeout)
     if (immediate) {
-      var callNow = !timeout;
+      var callNow = !timeout
       timeout = setTimeout(() => {
-        timeout = null;
-      }, wait);
-      if (callNow) func.apply(context, args);
+        timeout = null
+      }, wait)
+      if (callNow) func.apply(context, args)
     } else {
       timeout = setTimeout(function () {
-        func.apply(context, args);
-      }, wait);
+        func.apply(context, args)
+      }, wait)
     }
-  };
+  }
 }
 
 export function getRandom(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
+  return Math.floor(Math.random() * (max - min) + min)
 }
 
 /**
@@ -133,37 +133,62 @@ export function getRandom(min, max) {
  * @param {*} address
  * @returns
  */
-export const getAddressLongitudeAndLatitude = (address) => {
+export const getAddressLongitudeAndLatitude = address => {
   return new Promise((resolve, reject) => {
-    jsonp("https://apis.map.qq.com/ws/geocoder/v1/", {
-      key: "3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH",
+    jsonp('https://apis.map.qq.com/ws/geocoder/v1/', {
+      key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH',
       address: address,
-      output: "jsonp",
+      output: 'jsonp',
     })
-      .then((res) => {
-        resolve(res);
+      .then(res => {
+        resolve(res)
       })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-};
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
 
 /**
  * 根据经纬度逆解析地址
  */
 export const getAdressDetailByLngLat = (lat, lng) => {
   return new Promise((resolve, reject) => {
-    jsonp("http://apis.map.qq.com/ws/geocoder/v1/", {
-      key: "3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH",
+    jsonp('http://apis.map.qq.com/ws/geocoder/v1/', {
+      key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH',
       location: `${lat},${lng}`,
-      output: "jsonp",
+      output: 'jsonp',
     })
-      .then((res) => {
-        resolve(res);
+      .then(res => {
+        resolve(res)
       })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-};
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
+/**
+ * 延长登录
+ */
+export const delayedLoginStatus = () => {
+  const userId = uni.getStorageSync(J_USER_ID)
+  if (userId) {
+    whoami(userId).then(({ data }) => {
+      console.log(data)
+      uni.setStorageSync(J_TOKEN_EXPIRE, data.expireTime)
+      uni.setStorageSync(J_USER_TOKEN, data.token)
+    })
+  }
+}
+
+/**
+ * 随即色
+ * @returns 
+ */
+export const randomRGB = () => {
+  const r = Math.floor(Math.random() * 255)
+  const g = Math.floor(Math.random() * 255)
+  const b = Math.floor(Math.random() * 255)
+  return `rgb(${r}, ${g}, ${b})`
+}

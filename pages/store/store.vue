@@ -104,15 +104,12 @@
 <script>
 import ActivePane from "./components/active-pane.vue";
 import { getStoreAndGoods } from "../../api/store";
-import { whoami } from "../../api/auth";
 import {
   J_STORE_TYPES,
   J_LOACTION,
-  J_USER_TOKEN,
-  J_TOKEN_EXPIRE,
 } from "../../constant";
 import { getStoreTypesApi } from "../../api/user";
-import { getUserId } from '../../utils';
+import { delayedLoginStatus } from '../../utils';
 
 export default {
   components: {
@@ -121,11 +118,7 @@ export default {
 
   onLoad() {
     this.getStoreList();
-    whoami(getUserId()).then(({ data }) => {
-      console.log(data);
-      uni.setStorageSync(J_TOKEN_EXPIRE, data.expireTime);
-      uni.setStorageSync(J_USER_TOKEN, data.token);
-    });
+    delayedLoginStatus()
   },
 
   onShow() {

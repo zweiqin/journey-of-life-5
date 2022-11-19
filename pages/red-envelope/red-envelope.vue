@@ -34,12 +34,13 @@
 
 <script>
 import { getRedEnvelopeListApi, receiveRedEnvelopeApi } from "../../api/user";
-import { getUserId } from "../../utils";
+import { delayedLoginStatus, getUserId } from "../../utils";
 import { J_LOACTION } from "../../constant";
 
 export default {
   onLoad() {
     // this.getRedEnvelopeList();
+    delayedLoginStatus()
   },
 
   onReady() {
