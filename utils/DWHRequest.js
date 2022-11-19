@@ -8,7 +8,7 @@ const request = (base_url) => {
         data,
         method,
         success: (res) => {
-          if (res.data.errno !== 0 && res.data.errno !== 403) {
+          if (res.data.errno !== 0) {
             uni.showToast({
               title: res.data.errmsg,
               duration: 2000,

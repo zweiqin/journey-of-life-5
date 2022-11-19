@@ -9,8 +9,8 @@
 
     <view class="main">
       <view class="header">
-        <JBack></JBack>
-        <h2>我的名片</h2>
+        <JBack v-show="showEditBtn"></JBack>
+        <h2>{{ showEditBtn ? "我的名片" : `${nameCardDetail.name}的名片` }}</h2>
       </view>
       <view class="top-card">
         <view class="top">
@@ -49,19 +49,36 @@
         >
 
         <view class="icon">
-          <JIcon type="tuanfeng" width="124.5" height="42"></JIcon>
+          <JIcon
+            style="margin-top: 10px"
+            type="tuanfeng"
+            width="124.5"
+            height="42"
+          ></JIcon>
         </view>
       </view>
 
       <view class="sub-name-card top-card">
         <view class="top">
+          <JAvatar
+            :size="160"
+            radius="20"
+            :src="nameCardDetail.headPic"
+          ></JAvatar>
+
           <view class="right">
             <view class="name">{{ nameCardDetail.name }} </view>
-            <view>
-              <view class="position sub">{{ nameCardDetail.position }}</view>
-              <view class="company sub">{{ nameCardDetail.business }}</view>
-            </view>
+            <view class="position sub">{{ nameCardDetail.position }}</view>
+            <view class="company sub">{{ nameCardDetail.business }}</view>
           </view>
+
+          <JIcon
+            v-if="showEditBtn"
+            @click="handleEditNameCard"
+            type="edit"
+            width="36"
+            height="36"
+          ></JIcon>
         </view>
       </view>
 
@@ -91,26 +108,24 @@
         <view class="content">{{ nameCardDetail.intro }}</view>
       </view>
 
-      <view
-        class="pane"
-        v-if="
-          !nameCardDetail.imgs &&
-          !nameCardDetail.imgs.length &&
-          !nameCardDetail.video
-        "
-      >
+      <view class="pane">
         <view class="pane-title">图片/视频</view>
         <view
           class="img-wrapper"
-          v-if="!nameCardDetail.imgs && !nameCardDetail.imgs.length"
+          v-if="nameCardDetail.imgs && nameCardDetail.imgs.length"
         >
           <img
-            v-for="item in nameCardDetail.imgs"
+            v-for="(item, index) in nameCardDetail.imgs"
             :key="item"
             class="img"
             :src="item"
             alt=""
+            @click="preview(index)"
           />
+        </view>
+
+        <view class="video-wrapper">
+          <video :src="nameCardDetail.video"></video>
         </view>
       </view>
     </view>
@@ -119,6 +134,8 @@
 
 <script>
 import { getNameCardDetailApi } from "../../../api/user";
+import { J_USER_ID } from "../../../constant";
+
 export default {
   data() {
     return {
@@ -130,7 +147,13 @@ export default {
     this.nameCardId = options.id;
     this.getNameCardDetail();
   },
-
+  computed: {
+    showEditBtn() {
+      const userId = uni.getStorageSync(J_USER_ID);
+      if (!userId) return false;
+      return userId === this.nameCardDetail.userId;
+    },
+  },
   methods: {
     getNameCardDetail() {
       const _this = this;
@@ -138,7 +161,24 @@ export default {
         id: this.nameCardId,
       }).then(({ data }) => {
         _this.nameCardDetail = data.businessCard;
-        console.log(_this.nameCardDetail);
+      });
+    },
+
+    // 编辑名片
+    handleEditNameCard() {
+      uni.navigateTo({
+        url:
+          "/user/marketing-tools/contact-guide/create-namezcard?edit=" +
+          this.nameCardId,
+      });
+    },
+
+    // 预览图
+    preview(index) {
+      const _this = this;
+      uni.previewImage({
+        urls: _this.nameCardDetail.imgs,
+        current: index,
       });
     },
   },
@@ -152,14 +192,14 @@ export default {
 
   .bg {
     width: 100%;
-    height: 508upx;
+    height: 400upx;
     background-color: #183869;
     transition: all 350ms;
   }
 
   .main {
     position: absolute;
-    top: 100upx;
+    top: 30upx;
     width: 100%;
     padding: 30upx;
     box-sizing: border-box;
@@ -236,15 +276,13 @@ export default {
 
       .right {
         margin-left: 10upx;
+        font-size: 28upx;
+        flex: 1;
       }
 
       .sub {
         font-size: 24upx;
         margin-top: 0 !important;
-      }
-
-      .right {
-        margin-left: 0 !important;
       }
     }
   }
@@ -252,9 +290,10 @@ export default {
   .pane {
     margin-bottom: 60upx;
     .pane-title {
-      font-size: 28upx;
+      font-size: 32upx;
       font-weight: bold;
       margin-bottom: 30upx;
+      white-space: nowrap;
     }
 
     .pane-cheat-item {
@@ -265,6 +304,7 @@ export default {
 
       .title {
         margin: 0 28upx 0 10upx;
+        white-space: nowrap;
       }
     }
 
@@ -286,6 +326,16 @@ export default {
         margin-bottom: 20upx;
         border-radius: 20upx;
       }
+    }
+  }
+
+  .video-wrapper {
+    width: 100%;
+    border-radius: 20upx;
+    overflow: hidden;
+
+    video {
+      width: 100%;
     }
   }
 }

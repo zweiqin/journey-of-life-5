@@ -65,26 +65,24 @@
           placeholder="请输入业务简介"
           class="desc-detail"
         ></textarea>
-        <!-- <MaskS
-          ref="editRef"
-          @click="handleChangeEdit"
-          width="42"
-          height="42"
-          type="edit-blue"
-          text="填写业务介绍或个人简介"
-        ></MaskS> -->
       </view>
     </Collapse>
 
-    <Collapse style="margin-top: 20px" title="图片">
+    <Collapse ref="collapseRef" title="图片" :collapse="false">
       <JMoreUpload
+        style="margin-top: 20px"
         @upload="handleUploadImg"
         @delete="handleDeleteImg"
         :imgs="form.imgs"
       ></JMoreUpload>
     </Collapse>
 
-    <Collapse style="margin-top: 20px" class="upload-video" title="视频">
+    <Collapse
+      :collapse="false"
+      style="margin-top: 20px"
+      class="upload-video"
+      title="视频"
+    >
       <button
         v-show="!form.video"
         class="uni-btn upload-vido"
@@ -94,12 +92,16 @@
       </button>
 
       <video class="video-el" v-show="form.video" :src="form.video"></video>
+
+      <view class="reupload" @click="uploadVidoe" v-show="form.video"
+        >重新上传</view
+      >
     </Collapse>
 
     <view class="create-name-card-footer">
       <button class="uni-btn">删除名片</button>
       <button class="uni-btn" @click="handleCreateNameCard">
-        一键生成名片
+        {{ editId ? "确认修改" : "一键生成名片" }}
       </button>
     </view>
   </view>
@@ -108,7 +110,11 @@
 <script>
 import Collapse from "../components/collapse-name-card.vue";
 import MaskS from "../components/mask.vue";
-import { buildNewMyCardApi } from "../../../api/user";
+import {
+  buildNewMyCardApi,
+  getNameCardDetailApi,
+  updateUserInfoApi,
+} from "../../../api/user";
 import { baseInfoFields, connects } from "./config";
 import { getUserId } from "../../../utils";
 export default {
@@ -141,13 +147,17 @@ export default {
     };
   },
 
+  onLoad(options) {
+    this.editId = options.edit;
+    if (this.editId) {
+      uni.setNavigationBarTitle({
+        title: "编辑名片",
+      });
+      this.getNameCardDetail();
+    }
+  },
+
   methods: {
-    handleChangeEdit() {
-      this.$refs.editRef.$el.classList.add("animate__rotateOutUpRight");
-
-      this.$refs.textareaRef.$el.autofocus = true;
-    },
-
     handleTextareaBlur() {
       if (!this.form.intro) {
         const classList = this.$refs.editRef.$el.classList;
@@ -162,12 +172,14 @@ export default {
       for (const item of this.baseInfoFields) {
         if (item.required && !this.form[item.field]) {
           this.$showToast(`请输入${item.label}`);
-          return
+          return;
         }
       }
 
-      buildNewMyCardApi(this.form).then(({ data }) => {
-        _this.$showToast("名片新建成功");
+      const api = this.editId ? updateUserInfoApi : buildNewMyCardApi;
+
+      api({ ...this.form, id: this.editId * 1 }).then(() => {
+        _this.$showToast(_this.editId ? "编辑成功" : "名片新建成功");
         _this.form = {
           name: "",
           business: "",
@@ -188,13 +200,14 @@ export default {
 
     // 上传图片
     handleUploadImg(img) {
-      this.form.imgs.push(this.baseUrl + img);
+      this.form.imgs.push(img);
     },
 
     // 删除图片
     handleDeleteImg(img) {
       const index = this.form.imgs.findIndex((item) => item === img);
       if (index !== 0) {
+        this.form.imgs.splice(index, 1);
       }
     },
 
@@ -209,8 +222,7 @@ export default {
         filePath: e,
         name: "file",
         success: (uploadFileRes) => {
-          _this.form.headPic =
-            _this.baseUrl + JSON.parse(uploadFileRes.data).data.url;
+          _this.form.headPic = JSON.parse(uploadFileRes.data).data.url;
           uni.hideLoading();
         },
         complete: () => {
@@ -224,7 +236,7 @@ export default {
       this.$refs.gmyImgCropper.chooseImage();
     },
 
-    // 上传图片
+    // 上传视频
     uploadVidoe() {
       const _this = this;
       uni.chooseVideo({
@@ -240,14 +252,37 @@ export default {
             name: "file",
             success: (uploadFileRes) => {
               _this.$showToast("上传成功", "success");
-              _this.form.video =
-                _this.baseUrl + JSON.parse(uploadFileRes.data).data.url;
+              _this.form.video = JSON.parse(uploadFileRes.data).data.url;
             },
             complete: () => {
               uni.hideLoading();
             },
           });
         },
+      });
+    },
+
+    // 获取名片详情
+    getNameCardDetail() {
+      const _this = this;
+      getNameCardDetailApi({
+        id: this.editId,
+      }).then(({ data }) => {
+        console.log(data.businessCard);
+        const detailInfo = data.businessCard;
+        _this.form.headPic = detailInfo.headPic;
+        _this.form.name = detailInfo.name;
+        _this.form.intro = detailInfo.intro;
+        _this.form.address = detailInfo.address;
+        _this.form.company = detailInfo.company;
+        _this.form.business = detailInfo.business;
+        _this.form.phone = detailInfo.phone;
+        _this.form.position = detailInfo.position;
+        _this.form.wechat = detailInfo.wechat;
+        _this.form.imgs = detailInfo.imgs;
+        _this.form.video = detailInfo.video;
+
+        // Object.assign(_this.form, detailInfo);
       });
     },
   },
@@ -410,6 +445,17 @@ export default {
     /deep/ .collapse-wrapper {
       overflow: inherit;
     }
+  }
+
+  .reupload {
+    text-align: right;
+    padding: 4upx 20upx;
+    border-radius: 20px;
+    background-color: #3662ec;
+    display: inline-block;
+    color: #fff;
+    margin-top: 10px;
+    float: right;
   }
 }
 </style>

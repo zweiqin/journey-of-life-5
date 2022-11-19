@@ -6,78 +6,78 @@
  * @FilePath: \团蜂商城 - 副本\tuan-uniapp\api\user\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { LTRequest, getUserId, RuanRequest } from "../../utils";
+import { LTRequest, getUserId, RuanRequest } from '../../utils'
 
 // 更新用户信息
-export const updateUserInfoApi = (data) => {
-  return RuanRequest("/user/update", data);
-};
+export const updateUserInfoApi = data => {
+  return RuanRequest('/user/update', data)
+}
 
 // 刷新用户信息
-export const refrshUserInfoApi = (data) => {
-  return RuanRequest("/user/refreshUser", data, "get");
-};
+export const refrshUserInfoApi = data => {
+  return RuanRequest('/user/refreshUser', data, 'get')
+}
 
 // 业务管理升级
-export const upbussinessApi = (data) => {
-  return LTRequest("/api/business/setMsgSentryStatus", data);
-};
+export const upbussinessApi = data => {
+  return LTRequest('/api/business/setMsgSentryStatus', data)
+}
 // 业务管理查询
-export const queryMsgSentryListApi = (data) => {
-  return LTRequest("/api/msgSentry/queryMsgSentryList", data);
-};
+export const queryMsgSentryListApi = data => {
+  return LTRequest('/api/msgSentry/queryMsgSentryList', data)
+}
 // 业务管理新增
-export const saveMsgSentryApi = (data) => {
-  return LTRequest("/api/business/saveMsgSentry", data);
-};
+export const saveMsgSentryApi = data => {
+  return LTRequest('/api/business/saveMsgSentry', data)
+}
 // addperformance:DWHTestUrl +'/api/performance/savePerformance', //业绩管理增加信息
 // performanceList:DWHTestUrl +'/api/performance/getPerformanceList', //业绩管理查询
 // performanceInfo:DWHTestUrl + '/api/performance/getPerformanceInfo', //业绩管理明细查询
 // savePerformance:DWHTestUrl + '/api/performance/savePerformance', //业绩管理添加
-export const addperformanceApi = (data) => {
-  return LTRequest("/api/performance/savePerformance", data);
-};
-export const performanceListApi = (data) => {
-  return LTRequest("/api/performance/getPerformanceList", data);
-};
-export const getPerformanceInfoApi = (data) => {
-  return LTRequest("/api/performance/getPerformanceInfo", data);
-};
+export const addperformanceApi = data => {
+  return LTRequest('/api/performance/savePerformance', data)
+}
+export const performanceListApi = data => {
+  return LTRequest('/api/performance/getPerformanceList', data)
+}
+export const getPerformanceInfoApi = data => {
+  return LTRequest('/api/performance/getPerformanceInfo', data)
+}
 
 /**
  * 获取营销画像的数据
  */
 export const getMarketingPortraitDataApi = () => {
-  return LTRequest(`/api/statistical/home/${getUserId()}`, null, "get");
-};
+  return LTRequest(`/api/statistical/home/${getUserId()}`, null, 'get')
+}
 
 /**
  * @description 获取信息哨兵列表
  * @param {*} data
  */
-export const getMsgSentryListApi = (data) => {
-  return LTRequest("/api/msgSentry/queryMsgSentryList", data);
-};
+export const getMsgSentryListApi = data => {
+  return LTRequest('/api/msgSentry/queryMsgSentryList', data)
+}
 
 /**
  * 收集 -> 转化
  * @param {*} ids
  * @returns
  */
-export const postConversionApi = (ids) => {
+export const postConversionApi = ids => {
   return LTRequest(
     `/api/msgSentry/conversion/${ids.id}/${ids.userId}`,
     null,
-    "get"
-  );
-};
+    'get'
+  )
+}
 
 /**
  * @description 获取话术列表
  */
-export const getWordsApi = (id) => {
-  return LTRequest(`/api/msgSentry/queryMsgSayList/${id}`, null, "get");
-};
+export const getWordsApi = id => {
+  return LTRequest(`/api/msgSentry/queryMsgSayList/${id}`, null, 'get')
+}
 
 /**
  * @description 是否回访
@@ -86,9 +86,9 @@ export const getWordsApi = (id) => {
  *    status: 下一个状态
  * } 请求数据
  */
-export const changeUserStatusApi = (data) => {
-  return LTRequest("/api/msgSentry/isConversion", data);
-};
+export const changeUserStatusApi = data => {
+  return LTRequest('/api/msgSentry/isConversion', data)
+}
 
 /**
  * @description 添加信息哨兵客户信息
@@ -101,9 +101,9 @@ export const changeUserStatusApi = (data) => {
  *   }
  * } data
  */
-export const addCustomerApi = (data) => {
-  return LTRequest("/api/msgSentry/saveWxMsgSentry", data);
-};
+export const addCustomerApi = data => {
+  return LTRequest('/api/msgSentry/saveWxMsgSentry', data)
+}
 
 /**
  * 新增话术
@@ -113,50 +113,50 @@ export const addCustomerApi = (data) => {
  * } data
  * @returns
  */
-export const addMyWordsApi = (data) => {
-  return LTRequest("/api/msgSentry/saveMsgSay", data);
-};
+export const addMyWordsApi = data => {
+  return LTRequest('/api/msgSentry/saveMsgSay', data)
+}
 
 // 上传图片
-export const uploadFle = (data) => {
-  return RuanRequest("/storage/upload", data);
-};
+export const uploadFle = data => {
+  return RuanRequest('/storage/upload', data)
+}
 
 // 获取门店类型
 export const getStoreTypesApi = () => {
-  return RuanRequest("/storeType/list", {}, "get");
-};
+  return RuanRequest('/storeType/list', {}, 'get')
+}
 
 // 提交申请门店
 // 该字段决定保存或提交 （true 为提交）
 export const submitApplyStoreInfo = (type, data) => {
-  return RuanRequest("/userUpInfo/save?isSubmit=" + type, data);
-};
+  return RuanRequest('/userUpInfo/save?isSubmit=' + type, data)
+}
 
 // vip 预支付
-export const applyVipApi = (data) => {
-  return RuanRequest("/levelPay/VipPrepayBySyb", data);
-};
+export const applyVipApi = data => {
+  return RuanRequest('/levelPay/VipPrepayBySyb', data)
+}
 
 // vip 升级成功
-export const payVipApplySuccessApi = (data) => {
-  return RuanRequest("/userUpInfo/upToVip", data, "get");
-};
+export const payVipApplySuccessApi = data => {
+  return RuanRequest('/userUpInfo/upToVip', data, 'get')
+}
 
 // 获取申请记录
-export const getApplyVipHistoryApi = (data) => {
-  return RuanRequest("/upRecord/list", data, "success");
-};
+export const getApplyVipHistoryApi = data => {
+  return RuanRequest('/upRecord/list', data, 'success')
+}
 
 // 所有的申请记录
-export const getAllApplyVipHistoryListApi = (data) => {
-  return RuanRequest("/userUpInfo/list", data, "get");
-};
+export const getAllApplyVipHistoryListApi = data => {
+  return RuanRequest('/userUpInfo/list', data, 'get')
+}
 
 // 获取省市区地址
-export const getCitiesApi = (data) => {
-  return RuanRequest("/region/list", data, "get");
-};
+export const getCitiesApi = data => {
+  return RuanRequest('/region/list', data, 'get')
+}
 
 /**
  * 地图红包
@@ -164,98 +164,98 @@ export const getCitiesApi = (data) => {
 
 // 获取商家信息
 export const getBusinessInfoByUserIdApi = () => {
-  return RuanRequest("/api/redpack/getByUserId/" + getUserId(), {}, "get");
-};
+  return RuanRequest('/api/redpack/getByUserId/' + getUserId(), {}, 'get')
+}
 
 // 发送红包
-export const sendRedEnvelopeApi = (data) => {
-  return LTRequest("/api/redpack/createMapredpack", data);
-};
+export const sendRedEnvelopeApi = data => {
+  return LTRequest('/api/redpack/createMapredpack', data)
+}
 
 // 获取红包列表
 export const getRedEnvelopeListApi = () => {
-  return RuanRequest("/api/redpack/queryList", {}, "get");
-};
+  return RuanRequest('/api/redpack/queryList', {}, 'get')
+}
 
 // 领取红包
-export const receiveRedEnvelopeApi = (data) => {
-  return RuanRequest("/api/redpack/getReceiveMapredpack", data);
-};
+export const receiveRedEnvelopeApi = data => {
+  return RuanRequest('/api/redpack/getReceiveMapredpack', data)
+}
 
 // 查询用户足迹
-export const getUserViewHistoryApi = (data) => {
-  return RuanRequest("/footprint/list", data, "get");
-};
+export const getUserViewHistoryApi = data => {
+  return RuanRequest('/footprint/list', data, 'get')
+}
 
 // 获取收藏数据
-export const getUserCollectionListApi = (data) => {
-  return RuanRequest("/collect/list", data, "get");
-};
+export const getUserCollectionListApi = data => {
+  return RuanRequest('/collect/list', data, 'get')
+}
 
 // 查询会员升级的信息
-export const getStoreSaveInfoApi = (data) => {
-  return RuanRequest("/userUpInfo/read", data, "get");
-};
+export const getStoreSaveInfoApi = data => {
+  return RuanRequest('/userUpInfo/read', data, 'get')
+}
 
 // 获取申请记录表
-export const getApplyTableApi = (data) => {
-  return RuanRequest("/upRecord/list", data, "get");
-};
+export const getApplyTableApi = data => {
+  return RuanRequest('/upRecord/list', data, 'get')
+}
 
 // 撤销会员升级申请
-export const widthDrawApi = (data) => {
-  return RuanRequest("/userUpInfo/revoke", data, "get");
-};
+export const widthDrawApi = data => {
+  return RuanRequest('/userUpInfo/revoke', data, 'get')
+}
 
 // 营销/门店 升级预支付
-export const payStoreAndYingApi = (data) => {
-  return RuanRequest("/levelPay/SalesmanPrepayBySyb", data);
-};
+export const payStoreAndYingApi = data => {
+  return RuanRequest('/levelPay/SalesmanPrepayBySyb', data)
+}
 
 // 营销/门店 试用预支付
-export const payTryStoreAndYingApi = (data) => {
-  return RuanRequest("/levelPay/TryStorePrepayBySyb", data);
-};
+export const payTryStoreAndYingApi = data => {
+  return RuanRequest('/levelPay/TryStorePrepayBySyb', data)
+}
 
 // 后续操作
-export const houxucaozuoApi = (data) => {
-  return RuanRequest("/userUpInfo/signin", data, "get");
-};
+export const houxucaozuoApi = data => {
+  return RuanRequest('/userUpInfo/signin', data, 'get')
+}
 
 // 优惠劵
 // 查询用户优惠劵
-export const getCouponListApi = (data) => {
-  return RuanRequest("/coupon/getUserCoupon", data, "get");
-};
+export const getCouponListApi = data => {
+  return RuanRequest('/coupon/getUserCoupon', data, 'get')
+}
 
 // 代金劵
 // 获取代金劵配置
 export const getVoucherConfigApi = () => {
-  return RuanRequest("/voucher/getVoucher", {}, "get");
-};
+  return RuanRequest('/voucher/getVoucher', {}, 'get')
+}
 
 // 代金劵预支付
-export const rechargePrePayApi = (data) => {
-  return RuanRequest("/voucherRecord/prepayBySyb", data);
-};
+export const rechargePrePayApi = data => {
+  return RuanRequest('/voucherRecord/prepayBySyb', data)
+}
 
 // 获取代金劵持有
-export const getVoucherNumberApi = (data) => {
-  return RuanRequest("/voucher/getVoucherHold", data, "get");
-};
+export const getVoucherNumberApi = data => {
+  return RuanRequest('/voucher/getVoucherHold', data, 'get')
+}
 
 // 代金劵发放
-export const grantVoucherApi = (data) => {
-  return RuanRequest("/voucher/add", data);
-};
+export const grantVoucherApi = data => {
+  return RuanRequest('/voucher/add', data)
+}
 
 // 代金劵转增
 export const giveVoucherToUserApi = data => {
-  return RuanRequest("/voucher/circula", data)
+  return RuanRequest('/voucher/circula', data)
 }
 
 // 查找用户
-export const searchUserApi = (data) => {
+export const searchUserApi = data => {
   return RuanRequest('/voucher/query', data, 'get')
 }
 
@@ -279,28 +279,27 @@ export const getAccountVoucherHistoryTimes = data => {
  */
 
 // 获取推广码
-export const getExtensionCodeApi = (data) => {
-  return RuanRequest("/qrCode/getQrCodeByH5", data, "get");
-};
+export const getExtensionCodeApi = data => {
+  return RuanRequest('/qrCode/getQrCodeByH5', data, 'get')
+}
 
 // 绑定上级
-export const bindLastUserApi = (data) => {
-  return RuanRequest("/bindUser/add", data);
-};
-
+export const bindLastUserApi = data => {
+  return RuanRequest('/bindUser/add', data)
+}
 
 /**
  * 名片
  */
 
 // 新建名片
-export const buildNewMyCardApi = (data) => {
+export const buildNewMyCardApi = data => {
   return RuanRequest('/businessCard/add', data)
 }
 
 // 获取名片列表
 export const getNameCardList = data => {
-  return RuanRequest("/businessCard/list", data, 'get')
+  return RuanRequest('/businessCard/list', data, 'get')
 }
 
 // 修改明信片背景色
@@ -309,6 +308,11 @@ export const changeNameCardBgApi = data => {
 }
 
 // 获取名片详情
-export const getNameCardDetailApi = (data) => {
+export const getNameCardDetailApi = data => {
   return RuanRequest('/businessCard/detail', data, 'get')
+}
+
+// 修改名片
+export const updateNameCardApi = data => {
+  return RuanRequest('/businessCard/update', data)
 }

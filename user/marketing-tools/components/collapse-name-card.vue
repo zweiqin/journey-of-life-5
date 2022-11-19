@@ -15,7 +15,9 @@
     <view
       ref="mainContentRef"
       class="collapse-wrapper"
+      id="collapse-wrapper"
       :style="{
+        overflow: collapse ? 'hidden' : 'none',
         height: !isCollapse ? height + 'px' : 0,
       }"
     >
@@ -38,24 +40,43 @@ export default {
       type: String,
       required: true,
     },
-  },
 
-  mounted() {
-    this.$nextTick(() => {
-      const location = this.$refs.mainContentRef.$el.getBoundingClientRect();
-      this.height = location.height;
-    });
-  },
-
-  props: {
-    title: {
-      type: String,
+    collapse: {
+      type: Boolean,
+      default: true,
     },
   },
 
+  mounted() {
+    if (this.collapse) {
+      this.$nextTick(() => {
+        this.setCollapseHeight();
+      });
+    }
+  },
   methods: {
     handleCollapse() {
+      if (!this.collapse) return;
       this.isCollapse = !this.isCollapse;
+    },
+
+    setCollapseHeight() {
+      const _this = this;
+
+      this.$nextTick(() => {
+        const query = uni.createSelectorQuery().in(this);
+        query
+          .select("#collapse-wrapper")
+          .boundingClientRect((data) => {
+            _this.height = data.height;
+          })
+          .exec();
+      });
+
+      // this.$nextTick(() => {
+      //   const location = this.$refs.mainContentRef.$el.getBoundingClientRect();
+      //   this.height = location.height;
+      // });
     },
   },
 };
