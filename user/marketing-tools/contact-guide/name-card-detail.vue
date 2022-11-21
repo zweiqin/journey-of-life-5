@@ -137,8 +137,16 @@
     </view>
 
     <view class="footer">
-      <button class="uni-btn"></button>
-      <button class="uni-btn"></button>
+      <button
+        class="uni-btn"
+        @click="go('/user/marketing-tools/contact-guide/create-namezcard')"
+      >
+        新建名片
+      </button>
+      <button class="uni-btn" @click="handleTo">
+        <JIcon width="60" height="60" type="weixin-icon"></JIcon>
+        分享名片
+      </button>
     </view>
   </view>
 </template>
@@ -190,6 +198,14 @@ export default {
       uni.previewImage({
         urls: _this.nameCardDetail.imgs,
         current: index,
+      });
+    },
+
+    handleTo() {
+      uni.redirectTo({
+        url:
+          "/user/marketing-tools/contact-guide/share-card?id=" +
+          this.nameCardId,
       });
     },
   },
@@ -355,6 +371,39 @@ export default {
     background-color: #fff;
     width: 100%;
     height: 116upx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10000;
+    padding: 0 30upx;
+    box-sizing: border-box;
+
+    .uni-btn {
+      height: 72upx;
+      border-radius: 100px;
+      padding: 20upx 50upx;
+      font-size: 32upx;
+
+      &:first-child {
+        color: #999;
+        border: 1upx solid #999;
+        flex: 1;
+        margin-right: 20upx;
+      }
+
+      &:last-child {
+        color: #fff;
+        background-color: #3662ec;
+        flex: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        /deep/ .j-icon {
+          margin-right: 10upx;
+        }
+      }
+    }
   }
 }
 </style>

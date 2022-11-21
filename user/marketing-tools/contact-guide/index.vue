@@ -8,7 +8,7 @@
       >数字化营销的领跑者</view
     >
 
-    <button class="uni-btn animate__animated animate__fadeInLeft">
+    <button class="uni-btn animate__animated animate__fadeInLeft" @click="go('/user/marketing-tools/contact-guide/create-namezcard')">
       新建名片
     </button>
     <button

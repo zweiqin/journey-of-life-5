@@ -36,7 +36,12 @@
           <view class="detail-info">
             <view class="name-wrapper">
               <view class="name">{{ nameCard.name }}</view>
-              <JIcon width="36" height="36" type="share"></JIcon>
+              <JIcon
+                @click="go('/user/marketing-tools/contact-guide/share-card')"
+                width="36"
+                height="36"
+                type="share"
+              ></JIcon>
             </view>
 
             <view class="text text1">{{ nameCard.position }}</view>
@@ -44,7 +49,12 @@
           </view>
         </view>
       </view>
-      <JNoData v-if="JSON.stringify(data) === '{}'" type="namecard" width="300" text="未添加名片"></JNoData>
+      <JNoData
+        v-if="JSON.stringify(data) === '{}'"
+        type="namecard"
+        width="300"
+        text="未添加名片"
+      ></JNoData>
     </view>
 
     <view class="my-card-footer">
@@ -182,7 +192,7 @@ export default {
       }).then(() => {
         _this.currentBackgroundColor = _this.currentChooseColor;
         _this.closePopup();
-      })
+      });
     },
 
     // 去看详情
