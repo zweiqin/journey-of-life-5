@@ -68,6 +68,18 @@
       </view>
     </Collapse>
 
+    <Collapse style="margin-top: 20px" title="公司简介">
+      <view class="detail-wrapper">
+        <textarea
+          ref="textareaRef"
+          @blur="handleTextareaBlur"
+          v-model="form.intro"
+          placeholder="请输入业务简介"
+          class="desc-detail"
+        ></textarea>
+      </view>
+    </Collapse>
+
     <Collapse ref="collapseRef" title="图片" :collapse="false">
       <JMoreUpload
         style="margin-top: 20px"
@@ -113,10 +125,11 @@ import MaskS from "../components/mask.vue";
 import {
   buildNewMyCardApi,
   getNameCardDetailApi,
-  updateUserInfoApi,
+  updateNameCardApi,
 } from "../../../api/user";
 import { baseInfoFields, connects } from "./config";
 import { getUserId } from "../../../utils";
+
 export default {
   components: {
     Collapse,
@@ -176,7 +189,7 @@ export default {
         }
       }
 
-      const api = this.editId ? updateUserInfoApi : buildNewMyCardApi;
+      const api = this.editId ? updateNameCardApi : buildNewMyCardApi;
 
       api({ ...this.form, id: this.editId * 1 }).then(() => {
         _this.$showToast(_this.editId ? "编辑成功" : "名片新建成功");
@@ -195,6 +208,11 @@ export default {
           isDefault: false,
           bgColor: "#183869",
         };
+        setTimeout(() => {
+          uni.navigateTo({
+            url: "/user/marketing-tools/contact-guide/my-cards",
+          });
+        }, 1000);
       });
     },
 

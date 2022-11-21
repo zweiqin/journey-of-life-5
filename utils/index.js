@@ -9,6 +9,7 @@ export {
   handleDebounce,
   getRandom,
   getAddressLongitudeAndLatitude,
-  delayedLoginStatus
+  delayedLoginStatus,
+  domToImage
 } from "./DWHutils";
 export { formatTime, debounce } from "./util";

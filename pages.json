@@ -35,8 +35,8 @@
 		},
 		{
 			"path": "pages/pre-order/pre-order",
-			"navigationBarTitleText": "订单详情",
 			"style": {
+				"navigationBarTitleText": "订单详情",
 				"usingComponents": {
 					"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
 					"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"

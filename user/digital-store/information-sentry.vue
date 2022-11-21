@@ -110,7 +110,7 @@ import StanPane from "./components/stan-pane.vue";
 import { getMsgSentryListApi, getWordsApi } from "../../api/user";
 import { getUserId } from "../../utils";
 import NoData from "../../components/no-data";
-import { WORDS_LIST, SELECT_WORDS } from "../../constant";
+import { WORDS_LIST, J_SELECT_WORDS } from "../../constant";
 import AddPopup from "./components/add-popup.vue";
 const { debounce } = require("../../utils/util");
 
@@ -158,7 +158,7 @@ export default {
       this.getListData();
       this.getWordsList();
       this.$refs.addPopupRef.clear();
-      uni.setStorageSync(SELECT_WORDS, "");
+      uni.setStorageSync(J_SELECT_WORDS, "");
     },
 
     // 回退
@@ -217,7 +217,7 @@ export default {
   },
 
   onShow() {
-    this.words = uni.getStorageSync(SELECT_WORDS);
+    this.words = uni.getStorageSync(J_SELECT_WORDS);
   },
 };
 </script>

@@ -58,7 +58,7 @@
 <script>
 import { addMyWordsApi, getWordsApi } from "../../api/user";
 import NoData from "../../components/no-data";
-import { SELECT_WORDS } from "../../constant";
+import { J_SELECT_WORDS } from "../../constant";
 
 export default {
   components: {
@@ -89,8 +89,9 @@ export default {
     },
 
     chooseWords(item) {
+      console.log(this.select);
       if (this.select === "true") {
-        uni.setStorageSync(SELECT_WORDS, item.say);
+        uni.setStorageSync(J_SELECT_WORDS, item.say);
         uni.navigateBack();
       } else {
         uni.setClipboardData({

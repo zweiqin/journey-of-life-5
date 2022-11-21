@@ -86,4 +86,5 @@ export const types = {
   kefu: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/sreeoxn1h15226grzxlp.png', // 客服
   'shop-cart':
     'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ui8w8y0j6e4jjjyeyw6m.png', // 购物车
+  namecard: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/mnklo384f6thu2fwje9t.png", // 名片 
 }

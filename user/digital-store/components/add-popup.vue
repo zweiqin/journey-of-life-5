@@ -169,8 +169,11 @@ export default {
         this.form.words = value;
       },
 
-      immediate: true,
+      immediate: true
     },
+  },
+  mounted() {
+    this.form.words = this.words
   },
 };
 </script>

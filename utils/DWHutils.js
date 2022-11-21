@@ -1,6 +1,7 @@
 import { whoami } from '../api/auth'
 import { J_USER_ID, J_USER_TOKEN, J_TOKEN_EXPIRE } from '../constant'
 import { jsonp } from 'vue-jsonp'
+import html2canvas from 'html2canvas'
 
 /**
  * @description 解决小数计算精度问题（en，你应该使用big.js）
@@ -191,4 +192,16 @@ export const randomRGB = () => {
   const g = Math.floor(Math.random() * 255)
   const b = Math.floor(Math.random() * 255)
   return `rgb(${r}, ${g}, ${b})`
+}
+
+/**
+ * dom -> image
+ */
+export const domToImage = el => {
+  html2canvas(el, {
+    backgroundColor: '#fff',
+  }).then(canvas => {
+    const image = canvas.toDataURL('image/png')
+    console.log("来了", image);
+  })
 }

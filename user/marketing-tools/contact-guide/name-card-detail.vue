@@ -15,6 +15,7 @@
       <view class="top-card">
         <view class="top">
           <JAvatar
+            v-if="nameCardDetail.headPic"
             :size="160"
             radius="20"
             :src="nameCardDetail.headPic"
@@ -64,6 +65,7 @@
             :size="160"
             radius="20"
             :src="nameCardDetail.headPic"
+            v-if="nameCardDetail.headPic"
           ></JAvatar>
 
           <view class="right">
@@ -105,7 +107,11 @@
 
       <view class="pane">
         <view class="pane-title">业务简介</view>
-        <view class="content">{{ nameCardDetail.intro }}</view>
+        <view
+          v-if="nameCardDetail.intro"
+          class="content"
+          v-html="nameCardDetail.intro.replaceAll('\n', '<br />')"
+        ></view>
       </view>
 
       <view class="pane">
@@ -128,6 +134,11 @@
           <video :src="nameCardDetail.video"></video>
         </view>
       </view>
+    </view>
+
+    <view class="footer">
+      <button class="uni-btn"></button>
+      <button class="uni-btn"></button>
     </view>
   </view>
 </template>
@@ -316,12 +327,10 @@ export default {
 
     .img-wrapper {
       display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
+      flex-direction: column;
 
       .img {
-        width: 334upx;
-        height: 334upx;
+        width: 100%;
         object-fit: cover;
         margin-bottom: 20upx;
         border-radius: 20upx;
@@ -337,6 +346,15 @@ export default {
     video {
       width: 100%;
     }
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    width: 100%;
+    height: 116upx;
   }
 }
 </style>

@@ -27,6 +27,9 @@ export const J_MARKETING_PLANNER = "J_MARKETING_PLANNER";
 export const J_REFRSH = "J_REFRSH";
 export const BIND_USER_ID = "BIND_USER_ID";
 
+// J_SELECT_WORDS
+export const J_SELECT_WORDS = "J_SELECT_WORDS"
+
 // pay
 export const J_ORDER_NO = "J_ORDER_NO";
 export const J_PAY_ORDER = "J_PAY_ORDER";

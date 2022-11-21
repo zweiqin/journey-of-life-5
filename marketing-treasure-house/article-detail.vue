@@ -21,9 +21,7 @@
 
       <!-- <view class="content" v-html="articleInfo.content"></view> -->
       <view
-        v-if="
-          articleInfo.isVip ? [4, 1, 2].includes(userInfo.userLevel) : false
-        "
+        v-if="articleInfo.isVip ? [4, 1, 2].includes(userInfo.userLevel) : true"
         style="margin: 10px 0"
       >
         <u-parse

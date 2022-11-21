@@ -44,6 +44,7 @@
           </view>
         </view>
       </view>
+      <JNoData v-if="JSON.stringify(data) === '{}'" type="namecard" width="300" text="未添加名片"></JNoData>
     </view>
 
     <view class="my-card-footer">
@@ -114,7 +115,7 @@
 <script>
 import { getRestColor } from "./config";
 import { getNameCardList, changeNameCardBgApi } from "../../../api/user";
-import { getUserId } from "../../../utils";
+import { domToImage, getUserId } from "../../../utils";
 
 export default {
   data() {
