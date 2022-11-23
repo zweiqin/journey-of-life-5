@@ -7,8 +7,6 @@
         :url="url"
         @hideQrcode="hideQrcode"
         :height="122"
-        :is_themeImg="true"
-        themeImg="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/pneekvw6xc2nmlk5cd0y.ico"
         :h_w_img="40"
         :width="122"
         themeColor="#183869"
@@ -23,9 +21,11 @@
 <script>
 import StyleOne from "./mould/style-one.vue";
 import { getNameCardDetailApi } from "../../../api/user";
+import { getConfigApi } from "../../../api/auth";
 import ayQrcode from "../../../components/ay-qrcode/ay-qrcode.vue";
 import { J_USER_TOKEN } from "../../../constant";
 import { domToImage } from "../../../utils";
+import share from "../../../utils/wxshare";
 
 export default {
   components: {
@@ -72,7 +72,7 @@ export default {
 
     handleBack() {
       uni.redirectTo({
-         url: '/user/marketing-tools/contact-guide/my-cards'
+        url: "/user/marketing-tools/contact-guide/my-cards",
       });
     },
 
@@ -83,24 +83,54 @@ export default {
       });
       // const url = domToImage(this.$refs.namecardRef.$el);
       // uni.uploadFile({
-      //   url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
+      //   url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/uploadByBase64",
       //   filePath: url,
-      //   name: "file",
+      //   formData: {
+      //     fileName: new Date().getTime(),
+      //   },
+      //   name: "base64",
       //   success: (uploadFileRes) => {
       //     console.log(uploadFileRes);
       //   },
       // });
 
-      uni.request({
-        url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/qrCode/getSignature",
-        data: {
-          url: "xxxxxx",
-          token: uni.getStorageSync(J_USER_TOKEN),
-        },
-        methods: "GET",
-        success: (res) => {
-          console.log(res.data);
-        },
+      // uni.request({
+      //   url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/uploadByBase64",
+      //   data: {
+      //     fileName: new Date().getTime(),
+      //     base64: url,
+      //   },
+      //   methods: "POST",
+      //   success(res) {
+      //     console.log(res);
+      //   },
+      // });
+
+      // return;
+
+      // uni.request({
+      //   url: "https://www.tuanfengkeji.cn:9527/dts-app-api/wx/qrCode/getSignature",
+      //   data: {
+      //     url: "xxxxxx",
+      //     token: uni.getStorageSync(J_USER_TOKEN),
+      //   },
+      //   methods: "GET",
+      //   success: (res) => {
+      //     console.log(res.data);
+      //   },
+      // });
+
+      const currentUrl = window.location.href.replace("#", "ericToken");
+      getConfigApi({
+        url: currentUrl,
+        token: uni.getStorageSync(J_USER_TOKEN),
+      }).then(({ data }) => {
+        share.wxRegister(data, {
+          title: "我的名片",
+          desc: "我的名片",
+          imgUrl:
+            "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0udwnj86t8zl505ndrlf.ico",
+        });
       });
 
       uni.hideLoading();
@@ -138,6 +168,12 @@ export default {
       margin-top: 32upx;
     }
   }
+}
+
+.img-avatr {
+  border-radius: 20upx;
+  width: 160upx;
+  height: 160upx;
 }
 
 /deep/ .box-qrcode {

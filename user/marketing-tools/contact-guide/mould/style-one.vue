@@ -53,12 +53,20 @@ export default {
     },
     code: String,
   },
+
+  methods: {},
 };
 </script>
 
 <style lang="less" scoped>
 /deep/ .j-icon {
   flex-shrink: 0;
+}
+
+.img-avatr {
+  border-radius: 20upx;
+  width: 160upx;
+  height: 160upx;
 }
 
 .top-card {

@@ -16,7 +16,7 @@ const request = (base_url) => {
             });
             reject(res.data.errmsg);
             return;
-          } else if (res.data.errno == 401) {
+          } else if (res.data.errno == 501) {
             uni.showModal({
               title: "提示",
               content: "token 已过期请重新登录",

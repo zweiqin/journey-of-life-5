@@ -79,6 +79,12 @@ export default {
   },
 
   onLoad() {
+    window.addEventListener("pageshow", function (e) {
+      // 通过persisted属性判断是否存在 BF Cache
+      if (e.persisted) {
+        location.reload();
+      }
+    });
     const _this = this;
     const orderInfo = uni.getStorageSync(J_PAY_ORDER);
     this.orderInfo = orderInfo;
@@ -98,6 +104,8 @@ export default {
         }
       });
     }
+
+    
   },
 
   methods: {

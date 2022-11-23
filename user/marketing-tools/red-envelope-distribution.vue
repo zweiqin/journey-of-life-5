@@ -211,6 +211,7 @@ export default {
     chooseImg() {
       const _this = this;
       uni.chooseImage({
+        count: 9,
         success: (chooseImageRes) => {
           uni.uploadFile({
             url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
