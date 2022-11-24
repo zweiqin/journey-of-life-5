@@ -13,3 +13,8 @@ export const getStoreDetailApi = (storeId) => {
 export const getStoreAndGoods = (data) => {
   return RuanRequest("/brand/listBySelect", data, "get");
 };
+
+// 获取预约商品
+// export const getAppointGoodsApi = data => {
+//   return RuanRequest("", data)
+// }

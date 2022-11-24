@@ -51,3 +51,7 @@ export const getUserCouponApi = (data) => {
 export const getAllCategoryList = () => {
   return RuanRequest("/catalog/all", {}, 'get');
 };
+
+export const getApponitGoodsApi = (data) => {
+  return RuanRequest('/appointGoods/list', data, 'get')
+}

@@ -2,14 +2,6 @@
   <view class="site">
     <view class="site-title">
       <view class="title-left-view">
-        <!-- <view>
-          <img
-            class="back"
-            @click="handleBack"
-            src="../../static/images/store/chevron-states.png"
-          />
-        </view> -->
-
         <JBack
           :tabbar="backUrl"
           style="margin-top: 10upx; margin-left: 20upx"
@@ -34,12 +26,12 @@
       <view class="site-detail-frame">
         <view class="site-detail-fram-text">
           <view class="site-detail-top">
-            <img
+            <image
               src="../../static/images/lqb/site/site-pitch.png"
               class="site-detail-icon"
               v-if="item.isDefault"
             />
-            <img
+            <image
               src="../../static/images/lqb/site/site-nopitch.png"
               class="site-detail-icon"
               v-else
@@ -55,9 +47,10 @@
                 <view class="city">佛山市</view>
                 <view class="area">顺德区</view> -->
               </view>
-              <img
+              <image
                 v-if="!isSelect"
                 class="compile"
+                mode="widthFix"
                 src="../../static/images/lqb/site/compile.png"
                 @click="editAddress(item)"
               />
@@ -77,7 +70,7 @@
                   <view style="display: flex"> </view>
                 </view>
                 <view>
-                  <img
+                  <image
                     class="site-delete"
                     src="../../static/images/lqb/site/delete.png"
                     alt=""
@@ -302,7 +295,7 @@ export default {
       font-weight: 350;
     }
     .compile {
-      height: 32upx;
+      width: 32upx;
       height: 32upx;
     }
     .site-detail-pca1 {

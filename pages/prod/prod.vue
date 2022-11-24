@@ -329,7 +329,7 @@ export default {
     // 点击选择规格
     handleChoosespecificationList() {
       // this.$refs.maskMainAreaRef.$el.style.transform = "scaleY(1)";
-      this.isShowChooseSpecificationInfoStr = true
+      this.isShowChooseSpecificationInfoStr = true;
       this.goodsInfo.specificationList.forEach((item) => {
         this.specificationListInfo.currentSpecification[item.name] = "";
       });
@@ -338,7 +338,7 @@ export default {
     // 点击阴影关闭
     handleCloseModal() {
       // this.$refs.maskMainAreaRef.$el.style.transform = "scaleY(0)";
-      this.isShowChooseSpecificationInfoStr = false
+      this.isShowChooseSpecificationInfoStr = false;
       this.selectedSpecificationInfoStr = "";
       this.goodsInfo.specificationList.forEach((item) => {
         this.specificationListInfo.currentSpecification[item.name] = "";
@@ -501,7 +501,7 @@ export default {
             }
           });
 
-          if (!productInfo) {
+          if (!productInfo || !productInfo.number) {
             uni.showToast({
               title: "该商品暂无库存",
               duration: 2000,
@@ -776,12 +776,13 @@ export default {
 
       .text {
         white-space: nowrap;
+
       }
 
       .name {
         color: #3d3d3d;
         font-size: 28upx;
-        line-height: 32upx;
+        line-height: 1.5;
         font-weight: bold;
         margin-bottom: 20upx;
         margin-right: 70upx;
@@ -826,8 +827,8 @@ export default {
 
           .text {
             color: #999;
-            font-size: 16upx;
-            transform: scale(0.9);
+            font-size: 24upx;
+            margin-top: 10upx;
           }
         }
       }
@@ -1064,12 +1065,13 @@ export default {
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 116upx;
+    height: 140upx;
     display: flex;
     align-items: center;
     padding: 14upx 22upx;
     background-color: #fff;
     z-index: 201;
+    box-sizing: border-box;
 
     .item {
       display: flex;
@@ -1109,7 +1111,8 @@ export default {
 
     .btns {
       display: flex;
-      margin-top: -20upx;
+      flex: 1;
+      justify-content: end;
 
       button {
         display: flex;
@@ -1120,6 +1123,7 @@ export default {
         color: #fff;
         font-size: 36upx;
         background-color: #07b9b9;
+        margin: 0;
 
         &:nth-child(1) {
           border-radius: 40upx 0 0 40upx;

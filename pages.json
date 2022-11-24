@@ -392,6 +392,18 @@
 					"style": {
 						"navigationBarTitleText": "抽奖"
 					}
+				},
+				{
+					"path": "goods-detail",
+					"style": {
+						"navigationBarTitleText": "商品详情"
+					}
+				},
+				{
+					"path": "brand-pay",
+					"style": {
+						"navigationBarTitleText": "商品订单详情"
+					}
 				}
 			]
 		},

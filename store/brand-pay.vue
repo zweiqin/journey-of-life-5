@@ -17,17 +17,15 @@
       <JIcon type="right-arrow" width="34" height="40"></JIcon>
     </view>
 
-    <view class="order container" v-if="orderInfo">
-      <view class="store-name">
-        <text class="title">店铺名称</text>：{{ orderInfo.brand.name }}
-      </view>
-      <view class="goods">
-        <image class="goods-img" :src="orderInfo.currentGoodsImg" mode="" />
+    <view class="order container" v-if="goodsList">
+      <view class="store-name"> <text class="title">店铺名称</text>： </view>
+      <view class="goods" v-for="item in goodsList" :key="item.id">
+        <image class="goods-img" :src="item.picUrl" mode="" />
 
         <view class="info">
-          <view class="goods-name">{{ orderInfo.info.name }}</view>
-          <view class="spa">{{ goodsSp }}</view>
-          <view class="dan-price">￥{{ orderInfo.selectedProduct.price }}</view>
+          <view class="goods-name">{{ item.goodsName }}</view>
+          <view class="spa">{{ getSp(item) }}</view>
+          <view class="dan-price">￥{{ item.price }}</view>
         </view>
       </view>
 
@@ -51,19 +49,6 @@
         <view class="title">运费：</view>
         <view class="value">￥0</view>
       </view>
-
-      <view class="line" v-if="orderInfo.info.supportVoucher">
-        <view class="title">是否使用代金劵：</view>
-
-        <view>
-          <text>代金劵持有 {{ voucherNumber }}</text>
-          <switch
-            @change="handleChangeUseVoucherStatus"
-            :disabled="!voucherNumber"
-            style="transform: scale(0.7)"
-          />
-        </view>
-      </view>
     </view>
 
     <view class="prder-cost container" v-if="calcOrderMsg">
@@ -86,15 +71,16 @@
 </template>
 
 <script>
-import { getAddressListApi } from "../../api/address";
-import { getVoucherNumberApi } from "../../api/user";
-import { firstAddCar, submitOrderApi, payOrderGoodsApi } from "../../api/goods";
-import { getUserId } from "../../utils";
-import { payShopCarApi } from "../../api/cart";
-import { PAY_GOODS, J_SELECT_ADDRESS } from "../../constant";
+import { getShopCarApi } from "../api/goods";
+import { getAddressListApi } from "../api/address";
+import { getVoucherNumberApi } from "../api/user";
+import { firstAddCar, submitOrderApi, payOrderGoodsApi } from "../api/goods";
+import { getUserId } from "../utils";
+import { payShopCarApi } from "../api/cart";
+import { J_SELECT_ADDRESS } from "../constant";
 export default {
-  onLoad() {
-    this.getAddressList();
+  onLoad(options) {
+    this.brandId = options.brandId;
     this.getOrderInfo();
   },
 
@@ -106,13 +92,14 @@ export default {
     return {
       defaultAddress: "", // 收货地址
       voucherNumber: "", // 代金卷持有
-      orderInfo: null, // 订单相关信息
+      goodsList: null, // 订单相关信息
       cartId: "", // 购物车id
       opForm: {
         message: "",
-        useVoucher: false,
+        useVoucher: false
       },
       calcOrderMsg: null, // 计算现在的费用
+      brandId: null, // 门店id
     };
   },
 
@@ -127,7 +114,6 @@ export default {
       getAddressListApi({
         userId: getUserId(),
       }).then(({ data }) => {
-        console.log(data);
         const _this = this;
         data.forEach((address) => {
           if (address.isDefault) {
@@ -140,40 +126,18 @@ export default {
       });
     },
 
-    // 获取代金劵持有
-    getVoucherHold() {
-      getVoucherNumberApi({
-        userId: getUserId(),
-      }).then(({ data }) => {
-        this.voucherNumber = (data && data.length && data[0].number) || 0;
-      });
-    },
-
     // 获取订单信息
     getOrderInfo() {
-      this.orderInfo = uni.getStorageSync(PAY_GOODS);
-      // console.log(this.orderInfo);
-      if (this.orderInfo.info.supportVoucher) {
-        this.getVoucherHold();
-      }
-      this.getCardId();
-    },
-
-    // 计算订单费用
-    getCardId() {
       const _this = this;
-      const data = {
+      getShopCarApi({
         userId: getUserId(),
-        goodsId: this.orderInfo.info.id,
-        productId: this.orderInfo.selectedProduct.id,
-        number: this.orderInfo.number,
-        useVoucher: this.isUserVoucher,
-      };
-
-      firstAddCar(data).then(({ data }) => {
-        _this.cartId = data;
-        _this.calcOrderCost();
+        brandId: this.brandId,
+      }).then(({ data }) => {
+        console.log(data);
+        _this.goodsList = data.cartList;
       });
+
+      this.calcOrderCost();
     },
 
     // 计算订单费用
@@ -181,24 +145,17 @@ export default {
       uni.showLoading();
       const _this = this;
       const data = {
-        // addressId: this.defaultAddress.id,
-        brandId: this.orderInfo.info.brandId,
-        cartId: this.cartId,
+        brandId: this.brandId,
         userId: getUserId(),
         couponId: 0,
         grouponRulesId: "",
-        useVoucher: this.opForm.useVoucher,
+        useVoucher: false,
       };
       payShopCarApi(data).then(({ data }) => {
+        console.log(data);
         _this.calcOrderMsg = data;
         uni.hideLoading();
       });
-    },
-
-    // 是否使用代金劵
-    handleChangeUseVoucherStatus(e) {
-      this.opForm.useVoucher = e.detail.value;
-      this.calcOrderCost();
     },
 
     // 提交订单支付
@@ -211,12 +168,12 @@ export default {
       const _this = this;
       const submitData = {
         userId: getUserId(),
-        cartId: this.cartId,
         addressId: _this.defaultAddress.id,
         couponId: 0,
+        cartId: 0,
         grouponRulesId: "",
         grouponLinkId: "",
-        brandId: _this.orderInfo.brandId,
+        brandId: _this.brandId * 1,
         ..._this.opForm,
       };
       submitOrderApi(submitData).then(({ data }) => {
@@ -244,26 +201,27 @@ export default {
         });
       });
     },
+
+    // 获取规格
+    getSp(item) {
+      let str = "";
+      for (const sp in item.specifications) {
+        str += item.specifications[sp] + "，";
+      }
+      return str + item.number + (item.unit || "个");
+    },
   },
 
   computed: {
-    // 用户选中的规格
-    goodsSp() {
-      if (this.orderInfo) {
-        let str = "";
-        for (const sp in this.orderInfo.currentSpecification) {
-          str += this.orderInfo.currentSpecification[sp] + "，";
-        }
-        return str + this.orderInfo.number + (this.orderInfo.info.unit || "个");
-      }
-
-      return;
-    },
-
     // 商品总金额
     sumGoodsPrice() {
-      if (this.orderInfo) {
-        return this.orderInfo.number * this.orderInfo.selectedProduct.price;
+      if (this.goodsList) {
+        let price = 0;
+        for (const goods of this.goodsList) {
+          price += goods.number * goods.price;
+        }
+
+        return price;
       }
     },
   },
@@ -340,6 +298,7 @@ export default {
       }
 
       .info {
+        flex: 1;
         .goods-name {
           margin-bottom: 20upx;
         }

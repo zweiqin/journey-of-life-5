@@ -87,5 +87,8 @@ export const types = {
   'shop-cart':
     'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ui8w8y0j6e4jjjyeyw6m.png', // 购物车
   namecard: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/mnklo384f6thu2fwje9t.png", // 名片 
-  'weixin-icon': "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/mp13epm07en21h6dkh9o.png" // white-weixin
+  'weixin-icon': "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/mp13epm07en21h6dkh9o.png", // white-weixin
+  "store-car": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/3yil4a3cfe6kscd1bq1q.png", // 门店购物车
+  "collect-heart": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lwidrgylqiwps7og2a8i.png",
+  "white-share": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/zpq9fjq7kh6l4roblmkj.png", // 分享，白
 }
