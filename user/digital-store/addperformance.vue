@@ -117,10 +117,9 @@
       <view class="headName">
         <view class="headName-text">报警时间：</view>
         <view class="example-body">
-          <uni-datetime-picker
-            v-model="currentTime"
-            @change="timechange"
-          ></uni-datetime-picker>
+          <uni-datetime-picker v-model="currentTime" @change="timechange">{{
+            currentTime || "选择报警时间"
+          }}</uni-datetime-picker>
         </view>
       </view>
       <view class="headName">
@@ -135,7 +134,7 @@
         />
       </view>
     </view>
-    <view class="performance-detail">
+    <!-- <view class="performance-detail">
       <view class="detail-title"
         >业绩详情<text
           style="font-size: 12px; font-weight: normal; color: #999999"
@@ -157,7 +156,7 @@
           />
         </view>
       </view>
-    </view>
+    </view> -->
     <view class="sumbit" @click="sumbit"> 提交 </view>
   </view>
 </template>
@@ -276,10 +275,28 @@ export default {
         // week: "3",
         // year: "2022",
       });
+      console.log(res);
+      if (res.errno == 0 || res.errmsg == "成功") {
+        uni.showToast({
+          title: "添加成功",
+          icon: "success",
+          mask: true,
+        });
+        setTimeout(() => {
+          uni.navigateBack({});
+        }, 2000);
+      } else {
+        uni.showToast({
+          title: "添加失败，" + res.errmsg,
+          icon: "none",
+          mask: true,
+        });
+      }
     },
   },
   onLoad() {
     this.thistime();
+    this.currentTime = "";
   },
 };
 </script>
