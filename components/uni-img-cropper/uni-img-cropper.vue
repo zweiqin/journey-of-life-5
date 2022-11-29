@@ -190,18 +190,18 @@
 				uni.chooseImage({
 					count: e,
 					success: function(res) {
-						if(res.tempFiles[0].size / 1024 < 1024) {
+						// if(res.tempFiles[0].size / 1024 < 1024) {
 							_this.setData({
 								imageSrc: res.tempFilePaths[0],
 							});
 							_this.loadImage();
 							_this.isShow = true;
-						} else {
-							uni.showToast({
-								title: '图片大小不能超过1024KB，当前大小' + (res.tempFiles[0].size / 1024).toFixed(2) + 'KB',
-								icon: 'none'
-							})
-						}
+						// } else {
+						// 	uni.showToast({
+						// 		title: '图片大小不能超过1024KB，当前大小' + (res.tempFiles[0].size / 1024).toFixed(2) + 'KB',
+						// 		icon: 'none'
+						// 	})
+						// }
 					},
 				});
 			},

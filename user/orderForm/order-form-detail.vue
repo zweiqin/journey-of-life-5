@@ -14,7 +14,7 @@
 
     <!-- 订单信息 -->
     <view class="order-info pane">
-      <view class="co-info">
+      <view class="co-info" v-if="!data.userAppoint">
         <view class="line">
           <JIcon width="32" height="46" class="line-icon" type="modal"></JIcon>
           <view class="sub-title">姓名</view>
@@ -32,6 +32,12 @@
           <view class="sub-title">地址</view>
           <view style="color: #07b9b9">{{ data.orderInfo.address }}</view>
         </view>
+      </view>
+
+      <!-- 是预约商品 -->
+      <view v-else class="apponit-info">
+        <view class="title">提货地址：{{ data.orderInfo.brandName }}</view>
+        <view class="value"></view>
       </view>
 
       <view class="goods-info">
@@ -59,8 +65,7 @@
           <view
             class="evaluate-info pane"
             v-if="
-              data.orderInfo.handleOption.comment &&
-              item.id == commentGoodsId
+              data.orderInfo.handleOption.comment && item.id == commentGoodsId
             "
           >
             <view class="line">
@@ -104,6 +109,13 @@
         <view class="title">下单时间</view>
         <view class="text">{{ data.orderInfo.addTime }}</view>
       </view>
+    </view>
+
+    <!-- 核销相关 -->
+    <view class="apponit pane" v-if="data.userAppoint">
+      <view class="tip">请到店向商家出示该核销码</view>
+      <image class="qrcode" :src="data.userAppoint.appointUrl" mode="" />
+      <view class="code">{{ data.userAppoint.appointCode }}</view>
     </view>
 
     <view class="order-detail-footer" v-if="data">
@@ -242,7 +254,7 @@ export default {
           payOrderGoodsApi({
             orderNo: goods.orderSn,
             userId: getUserId(),
-            payType: 1,
+            payType: goods.isAppoint ? 6 : 1,
           }).then((res) => {
             const payData = JSON.parse(res.h5PayUrl);
             const form = document.createElement("form");
@@ -279,7 +291,10 @@ export default {
                 _this.evForm.hasPicture = !!_this.evForm.picUrls.length;
                 _this.evForm.picUrls = [..._this.evForm.picUrls];
 
-                const data = { ..._this.evForm, orderGoodsId: _this.commentGoodsId * 1 };
+                const data = {
+                  ..._this.evForm,
+                  orderGoodsId: _this.commentGoodsId * 1,
+                };
 
                 sendCommentApi(data).then(() => {
                   uni.showToast({
@@ -533,6 +548,36 @@ export default {
       color: #3d3d3d;
       font-size: 28upx;
       margin-left: 30upx;
+    }
+  }
+
+  .apponit-info {
+    display: flex;
+    align-items: center;
+  }
+
+  .apponit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20upx;
+    flex-direction: column;
+    padding-bottom: 100upx;
+
+    .tip {
+      color: red;
+    }
+
+    .qrcode {
+      width: 700upx;
+      height: 700upx;
+      object-fit: cover;
+    }
+
+    .code {
+      font-size: 40upx;
+      font-weight: bold;
+      color: #ccc;
     }
   }
 }

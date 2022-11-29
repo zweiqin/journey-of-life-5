@@ -101,6 +101,7 @@ import {
   orderDeleteApi,
   receiveGoodsApi,
 } from "../../api/order";
+import { payAppointOrderApi } from "../../api/store";
 import { payOrderGoodsApi } from "../../api/goods";
 import { getUserId } from "../../utils";
 export default {
@@ -206,7 +207,7 @@ export default {
           payOrderGoodsApi({
             orderNo: goods.orderSn,
             userId: getUserId(),
-            payType: 1,
+            payType: goods.isAppoint ? 6 : 1,
           }).then((res) => {
             const payData = JSON.parse(res.h5PayUrl);
             const form = document.createElement("form");

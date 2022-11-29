@@ -1,15 +1,13 @@
 <template>
-  <view class="apponit-goods-container">
-    <image
-      class="goods-img"
-      src="https://img0.baidu.com/it/u=1199506365,281604388&fm=253&app=138&size=w931&n=0&f=JPEG&fmt=auto?sec=1667840400&t=122fd3f324f607d67ae111fee67dfbc6"
-      mode=""
-    />
+  <view
+    class="apponit-goods-container"
+    v-if="data"
+    @click="go('/store/goods-detail?goodsId=' + data.id)"
+  >
+    <image class="goods-img" :src="data.picUrl" mode="" />
 
     <view class="info">
-      <view class="goods-title"
-        >loglogloglogloglogloglogloglogloglogloglogloglogloglogloglog</view
-      >
+      <view class="goods-title">{{ data.name }}</view>
       <view class="tags">
         <view class="tag">官方直售</view>
         <view class="tag">新品首发</view>
@@ -23,7 +21,7 @@
       <view class="price-info">
         <view class="price">
           <text class="icon">￥</text>
-          <text class="price-">199.9</text>
+          <text class="price-">{{ data.counterPrice }}</text>
         </view>
 
         <button class="uni-btn">立即预约</button>
@@ -33,7 +31,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
@@ -42,7 +47,7 @@ export default {};
   display: flex;
   font-size: 28upx;
   color: #3d3d3d;
-  margin-bottom: 26upx;
+  margin: 26upx;
 
   .goods-img {
     width: 200upx;

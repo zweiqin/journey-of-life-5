@@ -105,12 +105,19 @@
         </view>
       </view>
 
-      <view class="pane">
+      <view class="pane" v-if="nameCardDetail.intro">
         <view class="pane-title">业务简介</view>
         <view
-          v-if="nameCardDetail.intro"
           class="content"
           v-html="nameCardDetail.intro.replaceAll('\n', '<br />')"
+        ></view>
+      </view>
+
+      <view class="pane" v-if="nameCardDetail.companyProfile">
+        <view class="pane-title">公司简介</view>
+        <view
+          class="content"
+          v-html="nameCardDetail.companyProfile.replaceAll('\n', '<br />')"
         ></view>
       </view>
 
@@ -130,13 +137,13 @@
           />
         </view>
 
-        <view class="video-wrapper">
+        <view class="video-wrapper" v-if="nameCardDetail.video">
           <video :src="nameCardDetail.video"></video>
         </view>
       </view>
     </view>
 
-    <view class="footer">
+    <view class="footer" v-if="showEditBtn">
       <button
         class="uni-btn"
         @click="go('/user/marketing-tools/contact-guide/create-namezcard')"

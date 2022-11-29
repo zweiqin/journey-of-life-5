@@ -32,12 +32,6 @@
       </view>
 
       <view class="right">
-        <!-- <img
-          class="animate__fadeInTopRight"
-          :src="data.goodsList[1].picUrl"
-          @click="handleViewDetail(data.goodsList[1])"
-          alt=""
-        /> -->
         <view @click="handleViewDetail(data.goodsList[1])">
           <easy-loadimage
             :loading-mode="lazyLoadingMode"
@@ -47,13 +41,6 @@
             :image-src="data.goodsList[1].picUrl"
           ></easy-loadimage>
         </view>
-
-        <!-- <img
-          class="animate__fadeInBottomRight"
-          :src="data.goodsList[2].picUrl"
-          @click="handleViewDetail(data.goodsList[2])"
-          alt=""
-        /> -->
 
         <view @click="handleViewDetail(data.goodsList[2])">
           <easy-loadimage
@@ -66,9 +53,6 @@
         </view>
       </view>
 
-      <!-- <view class="price-icon" style="left: 0; top: 20upx"
-        >￥{{ data.goodsList[0].retailPrice }}</view
-      > -->
       <view class="price-icon price-icon-1"
         >￥{{ data.goodsList[1].retailPrice }}</view
       >
@@ -83,7 +67,6 @@
       v-if="data.goodsList.length === 1"
       @click="handleViewDetail(data.goodsList[0])"
     >
-      <!-- <img class="img" :src="data.goodsList[0].picUrl" alt="" /> -->
       <easy-loadimage
         :loading-mode="lazyLoadingMode"
         class="img"
@@ -94,7 +77,7 @@
     </view>
 
     <!-- 两张图 -->
-    <view class="goods-layout two" v-if="data.goodsList.length === 2">
+    <!-- <view class="goods-layout two" v-if="data.goodsList.length === 2">
       <view @click="handleViewDetail(data.goodsList[0])">
         <easy-loadimage
           :loading-mode="lazyLoadingMode"
@@ -120,7 +103,7 @@
         style="top: 20upx; right: 0; border-radius: 100px 0 0 100px"
         >￥{{ data.goodsList[1].retailPrice }}</view
       >
-    </view>
+    </view> -->
   </div>
 </template>
 

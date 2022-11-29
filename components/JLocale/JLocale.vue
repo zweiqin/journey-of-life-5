@@ -38,7 +38,8 @@ export default {
                 _this.address = result.district ? result.district : result.city;
               }
             })
-            .catch(() => {
+            .catch((err) => {
+              console.log("定位失败了", err);
               _this.address = "定位失败";
             });
         },

@@ -2,6 +2,7 @@
   <view class="user-page">
     <view class="tools">
       <img
+        @click="go(item.url)"
         class="tool-img"
         v-for="item in tools"
         :key="item.icon"
@@ -216,7 +217,7 @@ export default {
   },
 
   onLoad() {
-    delayedLoginStatus()
+    delayedLoginStatus();
   },
 
   onShow() {
@@ -331,7 +332,7 @@ export default {
 }
 .user-page {
   padding: 20upx;
-  padding-bottom: 80upx;
+  padding-bottom: 120upx;
   background-color: #fdfdfd;
 
   .tools {

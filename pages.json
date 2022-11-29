@@ -50,6 +50,12 @@
 			}
 		},
 		{
+			"path": "pages/qrcode/qrcode",
+			"style": {
+				"navigationBarTitleText": "扫码"
+			}
+		},
+		{
 			"path": "pages/user/user",
 			"style": {
 				"navigationBarTitleText": "会员中心"
@@ -158,7 +164,7 @@
 		"navigationBarTitleText": "WeChat",
 		"navigationBarTextStyle": "black",
 		"app-plus": {
-			"animationType": "fade-in",
+			"animationType": "pop-in",
 			"animationDuration": 500
 		}
 	},
@@ -401,6 +407,12 @@
 				},
 				{
 					"path": "brand-pay",
+					"style": {
+						"navigationBarTitleText": "商品订单详情"
+					}
+				},
+				{
+					"path": "apponit-order",
 					"style": {
 						"navigationBarTitleText": "商品订单详情"
 					}

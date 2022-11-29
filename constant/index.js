@@ -16,6 +16,7 @@ export const J_STORE_TYPES = "J_STORE_TYPES";
 export const PAY_GOODS = "PAY_GOODS";
 export const J_SELECT_ADDRESS = "J_SELECT_ADDRESS";
 export const J_PAY_GOODS = "J_PAY_GOODS";
+export const J_APPONIT_GOODS = "J_APPONIT_GOODS"
 
 export const J_LOACTION = "J_LOACTION";
 

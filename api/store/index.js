@@ -15,6 +15,16 @@ export const getStoreAndGoods = (data) => {
 };
 
 // 获取预约商品
-// export const getAppointGoodsApi = data => {
-//   return RuanRequest("", data)
-// }
+export const getAppointGoodsApi = data => {
+  return RuanRequest("/appointGoods/list", data, 'get')
+}
+
+// 预约商品购买
+export const payAppointGoodsApi = data => {
+  return RuanRequest('/appointOrder/fastout', data)
+}
+
+// 预约商品提交订单
+export const payAppointOrderApi = data => {
+  return RuanRequest('/appointOrder/submit', data)
+}

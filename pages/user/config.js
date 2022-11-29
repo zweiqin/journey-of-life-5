@@ -9,6 +9,7 @@
 export const tools = [
   {
     icon: require("../../static/images/user/erweima.png"),
+    url: '/pages/qrcode/qrcode'
   },
   {
     icon: require("../../static/images/user/shezhi.png"),
@@ -263,12 +264,22 @@ export const otherServe = {
       url: '/user/otherServe/voucher/index',
       role: [1,2]
     },
+    {
+      label: "",
+      icon: '',
+      type: '',
+    },
+    {
+      label: "",
+      icon: '',
+      url: '',
+    },
     // {
     //   label: "代金券转赠",
     //   icon: require("../../static/images/user/daijinjuanzhuanzeng.png"),
     // },
-    {},
-    {}
+    // {},
+    // {}
     // {
     //   label: "联系客服",
     //   icon: require("../../static/images/user/lianxikefu.png"),

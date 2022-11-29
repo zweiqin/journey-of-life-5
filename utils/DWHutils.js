@@ -1,7 +1,16 @@
-import { whoami } from '../api/auth'
-import { J_USER_ID, J_USER_TOKEN, J_TOKEN_EXPIRE } from '../constant'
-import { jsonp } from 'vue-jsonp'
+import {
+  whoami
+} from '../api/auth'
+import {
+  J_USER_ID,
+  J_USER_TOKEN,
+  J_TOKEN_EXPIRE
+} from '../constant'
+import {
+  jsonp
+} from 'vue-jsonp'
 import html2canvas from 'html2canvas'
+import QQMapWX from '../utils/qqmap-wx-jssdk.min.js'
 
 /**
  * @description 解决小数计算精度问题（en，你应该使用big.js）
@@ -147,6 +156,21 @@ export const getAddressLongitudeAndLatitude = address => {
       .catch(error => {
         reject(error)
       })
+
+    // uni.request({
+    //   url: 'https://apis.map.qq.com/ws/geocoder/v1/',
+    //   method: 'GET',
+    //   data: {
+    //     key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH',
+    //     address: address,
+    //     output: 'jsonp',
+    //   },
+    //   success: (res) => {
+    //     console.log("成功了", res);
+    //   },
+    //   fail: () => { },
+    //   complete: () => { }
+    // })
   })
 }
 
@@ -155,6 +179,7 @@ export const getAddressLongitudeAndLatitude = address => {
  */
 export const getAdressDetailByLngLat = (lat, lng) => {
   return new Promise((resolve, reject) => {
+    // #ifdef H5
     jsonp('http://apis.map.qq.com/ws/geocoder/v1/', {
       key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH',
       location: `${lat},${lng}`,
@@ -166,6 +191,25 @@ export const getAdressDetailByLngLat = (lat, lng) => {
       .catch(err => {
         reject(err)
       })
+    // #endif
+
+    // #ifdef APP-PLUS
+    const TMap = new QQMapWX({
+      key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH'
+    })
+    TMap.reverseGeocoder({
+      location: {
+        latitude: lat,
+        longitude: lng
+      },
+      success: (res) => {
+        resolve(res)
+      },
+      fail: () => {
+        reject('定位失败')
+      }
+    })
+    // #endif
   })
 }
 
@@ -175,8 +219,9 @@ export const getAdressDetailByLngLat = (lat, lng) => {
 export const delayedLoginStatus = () => {
   const userId = uni.getStorageSync(J_USER_ID)
   if (userId) {
-    whoami(userId).then(({ data }) => {
-      console.log(data)
+    whoami(userId).then(({
+      data
+    }) => {
       uni.setStorageSync(J_TOKEN_EXPIRE, data.expireTime)
       uni.setStorageSync(J_USER_TOKEN, data.token)
     })

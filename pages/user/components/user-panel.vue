@@ -107,6 +107,8 @@ export default {
 
 			.icon {
 				width: 50upx;
+				height: 50upx;
+				object-fit: cover;
 			}
 
 			.name {

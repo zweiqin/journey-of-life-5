@@ -53,6 +53,7 @@ export default {
       // uni.hideLoading()
       this.$refs.qrcode.crtQrCode();
       uni.hideLoading();
+      this.shareNamecard()
     }, 50);
   },
 
@@ -121,15 +122,16 @@ export default {
       // });
 
       const currentUrl = window.location.href.replace("#", "ericToken");
+      const _this = this
       getConfigApi({
         url: currentUrl,
         token: uni.getStorageSync(J_USER_TOKEN),
       }).then(({ data }) => {
         share.wxRegister(data, {
-          title: "我的名片",
-          desc: "我的名片",
-          imgUrl:
-            "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0udwnj86t8zl505ndrlf.ico",
+          title: this.data.name,
+          desc: this.data.position + "-" + this.data.intro,
+          imgUrl: this.data.headPic,
+          link: 'https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/marketing-tools/contact-guide/name-card-detail?id=' + _this.data.id
         });
       });
 

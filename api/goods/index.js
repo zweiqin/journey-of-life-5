@@ -80,3 +80,11 @@ export const payOrderGoodsApi = (data) => {
 export const getPayOrderResultApi = (data) => {
   return LTRequest("/api/syb/getIsPaySucceed", data, 'get')
 }
+
+// 获取预约商品详情
+export const getApponitGoodsDetailApi = goodsId => {
+  return RuanRequest('/appointGoods/detail', {
+    userId: getUserId(),
+    id: goodsId
+  }, 'get')
+}

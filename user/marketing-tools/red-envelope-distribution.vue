@@ -110,7 +110,7 @@
 </template>
 
 <script>
-import { J_USER_TOKEN, J_ORDER_NO, PAY_TYPE } from "../../constant";
+import { J_USER_TOKEN, J_ORDER_NO, PAY_TYPE, J_USER_INFO } from "../../constant";
 import { uploadFle } from "../../api/user";
 import { payFn } from "../../utils/pay";
 import { getUserId } from "../../utils";
@@ -262,10 +262,15 @@ export default {
         return;
       }
 
+      if(this.businessInfo.id === 999999){
+        const userInfo = uni.getStorageSync(J_USER_INFO)
+        this.businessInfo.name = userInfo.nickName
+      }
+
       const data = {
         ...this.redForm,
         userId: getUserId(),
-        brandName: this.businessInfo.name,
+        brandName:  this.businessInfo.name,
         brandId: this.businessInfo.id,
         longitude: this.redForm.longitude,
         latitude: this.redForm.latitude,

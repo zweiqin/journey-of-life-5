@@ -20,41 +20,60 @@
     </view>
 
     <!-- active -->
-    <!-- <view class="main">
+    <view v-if="goodsList.length" class="main">
       <view v-if="currentTab === 0" class="goods-apponit-wrapper">
-        <ApponitGoods></ApponitGoods>
-        <ApponitGoods></ApponitGoods>
-        <ApponitGoods></ApponitGoods>
-        <ApponitGoods></ApponitGoods>
-        <ApponitGoods></ApponitGoods>
-        <ApponitGoods></ApponitGoods>
-        <ApponitGoods></ApponitGoods>
+        <ApponitGoods
+          v-for="goods in goodsList"
+          :key="goods.id"
+          :data="goods"
+        ></ApponitGoods>
       </view>
 
       <view v-if="currentTab === 1">
+        <!-- <JActive></JActive>
         <JActive></JActive>
         <JActive></JActive>
         <JActive></JActive>
         <JActive></JActive>
         <JActive></JActive>
         <JActive></JActive>
-        <JActive></JActive>
-        <JActive></JActive>
+        <JActive></JActive> -->
       </view>
-    </view> -->
+    </view>
 
-    <JNoData type="active" text="暂无活动"></JNoData>
+    <JNoData
+      v-else
+      type="active"
+      :text="currentTab === 0 ? '暂无预约商品' : '暂无预约活动'"
+    ></JNoData>
   </view>
 </template>
 
 <script>
 import ApponitGoods from "./components/apponit-goods";
+import { getAppointGoodsApi } from "../api/store";
 
 export default {
   data() {
     return {
       currentTab: 0,
+      // 门店 id
+      brandId: null,
+      query: {
+        page: 1,
+        size: 10,
+      },
+      // 预约商品列表
+      goodsList: [],
+      // 总页数
+      totalPages: 0,
     };
+  },
+
+  onLoad(options) {
+    // 1001178
+    this.brandId = options.brandId;
+    this.getApponitGoods();
   },
 
   components: {
@@ -66,7 +85,24 @@ export default {
     changeApponitPane(data) {
       this.currentTab = data;
     },
+
+    // 获取预约商品
+    getApponitGoods() {
+      const _this = this;
+      uni.showLoading();
+      getAppointGoodsApi({
+        brandId: this.brandId,
+        ...this.query,
+      }).then(({ data }) => {
+        console.log(data);
+        _this.totalPages = data.totalPages;
+        _this.goodsList = data.goodsList;
+        uni.hideLoading();
+      });
+    },
   },
+
+  onReachBottom() {},
 };
 </script>
 
@@ -84,7 +120,7 @@ export default {
     color: #fff;
   }
 
-  /deep/ .j-back-container{
+  /deep/ .j-back-container {
     position: relative;
     z-index: 12;
   }
@@ -141,7 +177,7 @@ export default {
     z-index: 11;
     background-color: #ffffff;
     border-radius: 20upx;
-    padding: 18upx;
+    padding: 10upx 0;
     box-sizing: border-box;
   }
 }

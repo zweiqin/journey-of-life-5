@@ -1,5 +1,5 @@
 <template>
-  <view>
+  <view class="style-one">
     <view class="top-card">
       <view class="top">
         <JAvatar
@@ -61,6 +61,10 @@ export default {
 <style lang="less" scoped>
 /deep/ .j-icon {
   flex-shrink: 0;
+}
+
+.style-one{
+  min-width: 690upx;
 }
 
 .img-avatr {

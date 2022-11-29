@@ -86,16 +86,14 @@
         <ActivePane type="recommend"></ActivePane>
       </view>
 
-      <view v-if="homeStores.length">
+      <view v-if="data.length">
         <JStorePane
           :scrollTop="scrollTop"
-          v-for="item in homeStores"
+          v-for="item in data"
           :data="item"
           :key="item.id"
         ></JStorePane>
       </view>
-
-      <!-- <view v-else class="no-data"> 暂无门店信息 </view> -->
       <JNoData v-else text="暂无门店信息" type="store"></JNoData>
     </view>
   </view>
@@ -104,12 +102,9 @@
 <script>
 import ActivePane from "./components/active-pane.vue";
 import { getStoreAndGoods } from "../../api/store";
-import {
-  J_STORE_TYPES,
-  J_LOACTION,
-} from "../../constant";
+import { J_STORE_TYPES, J_LOACTION } from "../../constant";
 import { getStoreTypesApi } from "../../api/user";
-import { delayedLoginStatus } from '../../utils';
+import { delayedLoginStatus } from "../../utils";
 
 export default {
   components: {
@@ -118,7 +113,7 @@ export default {
 
   onLoad() {
     this.getStoreList();
-    delayedLoginStatus()
+    delayedLoginStatus();
   },
 
   onShow() {
@@ -225,9 +220,15 @@ export default {
       getStoreAndGoods(this.query).then(({ data }) => {
         this.totalPage = data.totalPage;
         if (isMore) {
-          this.data.push(data.brandList);
+          this.data.push(
+            data.brandList.filter((item) => {
+              return item.goodsList && item.goodsList.length >= 1;
+            })
+          );
         } else {
-          this.data = data.brandList;
+          this.data = data.brandList.filter((item) => {
+            return item.goodsList && item.goodsList.length >= 1;
+          });
         }
       });
     },
@@ -284,9 +285,13 @@ export default {
 
   computed: {
     homeStores() {
-      return this.data.filter((item) => {
-        return item.goodsList && item.goodsList.length >= 1;
-      });
+      if (this.data.length) {
+        return this.data.filter((item) => {
+          return item.goodsList && item.goodsList.length >= 1;
+        });
+      }
+
+      return [];
     },
   },
 

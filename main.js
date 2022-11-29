@@ -50,6 +50,15 @@ Vue.mixin({
         url: url,
       });
     },
+
+    switchTab(url) {
+      if (!url) {
+        return;
+      }
+      uni.switchTab({
+        url: url
+      })
+    }
   },
 });
 
