@@ -142,7 +142,7 @@ export default {
       });
     },
     getrepetitionMonth() {
-      var arr = this.timeList;
+      var arr = this.timeList.data;
       var map = {},
         dest = [];
       for (var i = 0; i < arr.length; i++) {
@@ -169,7 +169,7 @@ export default {
       this.monthList = dest;
     },
     getrepetitionWeek() {
-      var arr1 = this.timeList;
+      var arr1 = this.timeList.data;
       var map1 = {},
         dest1 = [];
 
@@ -210,7 +210,7 @@ export default {
 
     //判断天----------------------------------------------------------------------------------
     getrepetitionDay() {
-      var arr2 = this.timeList;
+      var arr2 = this.timeList.data;
       var map1 = {},
         dest2 = [];
 
@@ -300,33 +300,33 @@ export default {
     // 增加用户
     async addperformance() {
       const res = await addperformanceApi({
-        // month: this.month,
-        // status: this.status,
-        // week: this.week,
-        // year: this.year,
-        // day: this.day,
-        // headName: this.headName,
-        // alarmMoney: this.alarmMoney,
-        // targetMoney: this.targetMoney,
-        // alarmTime: this.alarmTime,
+        month: this.month,
+        status: this.status,
+        week: this.week,
+        year: this.year,
+        day: this.day,
+        headName: this.headName,
+        alarmMoney: this.alarmMoney,
+        targetMoney: this.targetMoney,
+        alarmTime: this.alarmTime,
 
         // 传输的数据
-        alarmMoney: "333",
-        alarmTime: "2022-09-19 16:37:37",
-        day: "19",
-        headName: "123",
-        month: "09",
-        status: 1,
-        targetMoney: "223",
-        userId: 200,
-        week: "3",
-        year: "2022",
+        // alarmMoney: "333",
+        // alarmTime: "2022-09-19 16:37:37",
+        // day: "19",
+        // headName: "123",
+        // month: "09",
+        // status: 1,
+        // targetMoney: "223",
+        // userId: 200,
+        // week: "3",
+        // year: "2022",
       });
     },
     // 查询业绩列表
     async performanceList() {
       const res = await performanceListApi({
-        // userId: getUserId(),
+        // userId: 219,
         userId: getUserId(),
         month: this.month * 1,
         status: this.status,
@@ -335,7 +335,22 @@ export default {
         day: this.day * 1,
       });
       this.timeList = res;
-      console.log(this.timeList);
+      console.log(res.errno);
+      if (res.errno == 780) {
+        uni.showToast({
+          title: "您还不是业务员",
+          duration: 1500,
+          icon: "none",
+        });
+
+        setTimeout(() => {
+          uni.switchTab({
+            url: "/pages/user/user",
+          });
+        }, 2000);
+      } else {
+        this.info = res.data;
+      }
       this.getrepetitionMonth();
     },
     // 查询业绩明细
@@ -347,6 +362,13 @@ export default {
     },
   },
   onLoad() {
+    this.thistime();
+    this.week = "";
+    this.day = "";
+    this.performanceList();
+    this.getrepetitionMonth();
+  },
+  onShow() {
     this.thistime();
     this.week = "";
     this.day = "";
@@ -403,11 +425,11 @@ export default {
   position: fixed;
   bottom: 0px;
   left: 0px;
+  padding-top: 20upx;
   margin-top: 20upx;
-  margin-bottom: 20upx;
   background-color: white;
   width: 750upx;
-  height: 110upx;
+  height: 90upx;
   font-size: 28upx;
   text-align: center;
   .item {

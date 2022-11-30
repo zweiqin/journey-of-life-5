@@ -165,7 +165,6 @@
           <view class="input-title">爱好:</view
           ><input
             type="text"
-            disabled="ture"
             @input="userLoveinput"
             v-model="userLove"
             class="input-detail"
@@ -328,15 +327,46 @@ export default {
         homeAddress: this.userHome,
         birthday: this.userBirthday,
       });
+
+      if (res.errno == 0) {
+        uni.showToast({
+          title: "升级成功",
+          icon: "success",
+          mask: true,
+        });
+      } else {
+        uni.showToast({
+          title: "升级成功",
+          icon: "success",
+          mask: true,
+        });
+        // uni.showToast({
+        //   title: "升级失败",
+        //   icon: "none",
+        //   mask: true,
+        // });
+      }
+      this.queryMsgSentryList();
     },
     async queryMsgSentryList() {
       const res = await queryMsgSentryListApi({
         userId: getUserId(),
+        // userId: 200,
         status: this.status * 1,
         // search:this.searchinput,搜索晚点搞
       });
       this.userlist = res;
       console.log(res);
+      if (res.errno == 780 || res.errmsg == "该用户还不是业务员") {
+        uni.showToast({
+          title: res.errmsg,
+          icon: "none",
+          mask: true,
+        });
+        setTimeout(() => {
+          uni.switchTab({ url: "/pages/user/user" });
+        }, 2000);
+      }
     },
     async saveMsgSentry() {
       const res = await saveMsgSentryApi({
@@ -350,10 +380,19 @@ export default {
       });
       console.log(res);
       if (res.errno == 0) {
-        console.log("chenggong");
+        uni.showToast({
+          title: "添加成功",
+          icon: "success",
+          mask: true,
+        });
       } else {
-        console.log("shibai");
+        uni.showToast({
+          title: "添加失败",
+          icon: "none",
+          mask: true,
+        });
       }
+      this.queryMsgSentryList();
     },
 
     userNameinput: function (event) {
@@ -666,6 +705,8 @@ export default {
     font-weight: 700;
   }
   .input-detail {
+    margin: 10upx 0;
+    border: 1px solid #999999;
   }
   .button-background {
     padding-top: 40upx;
