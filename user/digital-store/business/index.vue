@@ -327,8 +327,8 @@ export default {
         homeAddress: this.userHome,
         birthday: this.userBirthday,
       });
-      console.log("leveup", res);
-      if (res == "设置成功") {
+
+      if (res.errno == 0) {
         uni.showToast({
           title: "升级成功",
           icon: "success",
@@ -336,10 +336,15 @@ export default {
         });
       } else {
         uni.showToast({
-          title: "升级失败",
-          icon: "none",
+          title: "升级成功",
+          icon: "success",
           mask: true,
         });
+        // uni.showToast({
+        //   title: "升级失败",
+        //   icon: "none",
+        //   mask: true,
+        // });
       }
       this.queryMsgSentryList();
     },
@@ -352,16 +357,16 @@ export default {
       });
       this.userlist = res;
       console.log(res);
-      // if (res.errno == 780 || res.errmsg == "该用户还不是业务员") {
-      //   uni.showToast({
-      //     title: res.errmsg,
-      //     icon: 'none',
-      //     mask: true
-      //   })
-      //   setTimeout(() => {
-      //     uni.switchTab({ url: '/pages/user/user' })
-      //   }, 2000);
-      // }
+      if (res.errno == 780 || res.errmsg == "该用户还不是业务员") {
+        uni.showToast({
+          title: res.errmsg,
+          icon: "none",
+          mask: true,
+        });
+        setTimeout(() => {
+          uni.switchTab({ url: "/pages/user/user" });
+        }, 2000);
+      }
     },
     async saveMsgSentry() {
       const res = await saveMsgSentryApi({
@@ -374,7 +379,6 @@ export default {
         belongsDepartment: this.belongsDepartment,
       });
       console.log(res);
-      this.queryMsgSentryList();
       if (res.errno == 0) {
         uni.showToast({
           title: "添加成功",
@@ -388,6 +392,7 @@ export default {
           mask: true,
         });
       }
+      this.queryMsgSentryList();
     },
 
     userNameinput: function (event) {
@@ -414,13 +419,8 @@ export default {
       this.userLove = event.target.value;
       console.log(event.target.value);
     },
-
     userWorkliveinput: function (event) {
       this.userWorklive = event.target.value;
-      console.log(event.target.value);
-    },
-    userBirthdayinput: function (event) {
-      this.userBirthday = event.target.value;
       console.log(event.target.value);
     },
     userLoveinput: function (event) {
@@ -455,9 +455,12 @@ export default {
     close() {
       // TODO 做一些其他的事情，before-close 为true的情况下，手动执行 close 才会关闭对话框
       // ...
+
       this.$refs.popup.close();
       this.$refs.userUp.close();
+
       this.$refs.useradd.close();
+
       this.$refs.windowtext.close();
     },
     /**
@@ -492,6 +495,7 @@ export default {
       console.log(this.userHome);
       console.log(this.userWorklive);
       console.log(this.userBirthday);
+
       this.levelUp();
       this.$refs.userUp.close("center");
     },

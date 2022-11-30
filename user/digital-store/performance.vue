@@ -142,7 +142,7 @@ export default {
       });
     },
     getrepetitionMonth() {
-      var arr = this.timeList;
+      var arr = this.timeList.data;
       var map = {},
         dest = [];
       for (var i = 0; i < arr.length; i++) {
@@ -169,7 +169,7 @@ export default {
       this.monthList = dest;
     },
     getrepetitionWeek() {
-      var arr1 = this.timeList;
+      var arr1 = this.timeList.data;
       var map1 = {},
         dest1 = [];
 
@@ -210,7 +210,7 @@ export default {
 
     //判断天----------------------------------------------------------------------------------
     getrepetitionDay() {
-      var arr2 = this.timeList;
+      var arr2 = this.timeList.data;
       var map1 = {},
         dest2 = [];
 
@@ -326,7 +326,7 @@ export default {
     // 查询业绩列表
     async performanceList() {
       const res = await performanceListApi({
-        // userId: 200,
+        // userId: 219,
         userId: getUserId(),
         month: this.month * 1,
         status: this.status,
@@ -335,11 +335,8 @@ export default {
         day: this.day * 1,
       });
       this.timeList = res;
-      console.log(this.timeList);
-      this.getrepetitionMonth();
-      if (res.errno === 0) {
-        this.info = res.data;
-      } else {
+      console.log(res.errno);
+      if (res.errno == 780) {
         uni.showToast({
           title: "您还不是业务员",
           duration: 1500,
@@ -351,7 +348,10 @@ export default {
             url: "/pages/user/user",
           });
         }, 2000);
+      } else {
+        this.info = res.data;
       }
+      this.getrepetitionMonth();
     },
     // 查询业绩明细
     async getPerformanceInfo() {
