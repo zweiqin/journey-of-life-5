@@ -3,7 +3,7 @@
     <view class="detail-info">
       <image class="background-img" :src="storeDetail.picUrl" mode="" />
       <view class="icons">
-        <JBack></JBack>
+        <JBack tabbar="/pages/store/store"></JBack>
         <view class="right">
           <image
             class="icon"
@@ -59,7 +59,7 @@
         <view
           class="item"
           v-for="nav in storeDetailNavs"
-          @click="go(nav.url)"
+          @click="go(nav.url + '?brandId=' + storeId)"
           :key="nav.name"
         >
           <image class="icon" :src="nav.icon" mode="" />
@@ -200,6 +200,7 @@ import { getGoodsById } from "../api/home";
 import NoData from "../components/no-data";
 import StoreGoods from "./components/store-goods.vue";
 import { getUserId } from "../utils";
+import { J_USER_ID } from "../constant";
 
 export default {
   data() {
@@ -258,7 +259,10 @@ export default {
   },
 
   onShow() {
-    this.getShopCarList();
+    const userId = uni.getStorageSync(J_USER_ID);
+    if (userId) {
+      this.getShopCarList();
+    }
   },
 
   components: {
@@ -280,7 +284,6 @@ export default {
     getStoreDetail() {
       const _this = this;
       getStoreDetailApi(this.storeId).then(({ data }) => {
-        console.log(data);
         _this.storeDetail = data.brand;
       });
     },
@@ -318,7 +321,6 @@ export default {
         userId: getUserId(),
         brandId: this.storeId,
       }).then(({ data }) => {
-        console.log(data);
         _this.shopCarInfo = data;
       });
     },
@@ -409,6 +411,10 @@ export default {
 <style lang="less" scoped>
 @import "../style/mixin.less";
 @import "../style/var.less";
+
+.store-detail-container {
+  overflow: scroll;
+}
 
 .goods-pane {
   margin-bottom: 32upx;
@@ -565,6 +571,7 @@ export default {
 
   .shop-car-popup {
     width: 100%;
+    height: 844upx;
     position: absolute;
     bottom: 105upx;
     left: 0;
@@ -573,6 +580,7 @@ export default {
     box-sizing: border-box;
     font-size: 28upx;
     transition: all 350ms;
+    overflow: scroll;
     .header {
       display: flex;
       justify-content: space-between;

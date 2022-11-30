@@ -7,7 +7,7 @@
         bottom: value ? bottom + 'upx' : -2000 + 'upx',
       }"
     >
-      <view class="goods-info">
+      <view class="goods-info" v-if="product">
         <image
           class="image"
           :src="(product && product.url) || data.info.picUrl"
@@ -89,10 +89,12 @@ export default {
         str += this.sps[sp] + "，";
       }
 
-      this.spStr =
-        str +
-        this.number +
-        this.data.info.unit.replaceAll("‘", "").replaceAll("’", "");
+      // this.spStr =
+      //   str +
+      //   this.number +
+      //   (this.data.info.unit + "").replaceAll("‘", "").replaceAll("’", "");
+
+      this.spStr = str + this.number + this.data.info.unit;
     },
 
     // 获取product
@@ -112,7 +114,7 @@ export default {
         }
       });
 
-      return currentProduct ? currentProduct : this.data.productList[0]
+      return currentProduct ? currentProduct : this.data.productList[0];
     },
 
     // 获取结果
@@ -128,12 +130,14 @@ export default {
   watch: {
     data: {
       handler(newVal) {
-        for (const sp of newVal.specificationList) {
-          this.sps[sp.name] = sp.valueList[0].value;
-        }
+        if (newVal) {
+          for (const sp of newVal.specificationList) {
+            this.sps[sp.name] = sp.valueList[0].value;
+          }
 
-        this.getSpStr();
-        this.product = this.getProduct();
+          this.getSpStr();
+          this.product = this.getProduct();
+        }
       },
       immediate: true,
       deep: true,
@@ -148,7 +152,7 @@ export default {
     maskStyle() {
       return {
         opacity: this.value ? 1 : 0,
-        zIndex: this.value ? 10 : -1,
+        zIndex: this.value ? 12 : -1,
       };
     },
   },

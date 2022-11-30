@@ -1,8 +1,18 @@
 <template>
   <view class="local-wrapper" @click.stop="handleClick">
     <JIcon type="locale" width="34" height="40"></JIcon>
-    <text class="locale">{{ address }}</text></view
-  >
+    <text class="locale">{{ address }}</text>
+
+    <view class="popup" :style="{
+      transform: show ? 'scale(1)' : 'scale(0)'
+    }">
+      <view>定位失败</view>
+      <view>
+        {{ error }}
+      </view>
+      <button @click.prevent.stop="show = false">关闭</button>
+    </view>
+  </view>
 </template>
 
 <script>
@@ -16,6 +26,8 @@ export default {
   data() {
     return {
       address: "位置",
+      error: null,
+      show: false,
     };
   },
 
@@ -30,7 +42,7 @@ export default {
             latitude: res.latitude,
             longitude: res.longitude,
           });
-          
+
           getAdressDetailByLngLat(res.latitude, res.longitude)
             .then((res) => {
               if (res.status === 0) {
@@ -39,7 +51,8 @@ export default {
               }
             })
             .catch((err) => {
-              console.log("定位失败了", err);
+              _this.error = err;
+              _this.show = true
               _this.address = "定位失败";
             });
         },
@@ -75,5 +88,22 @@ export default {
     padding: 0 10upx;
     border-right: 1px solid #ccc;
   }
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  // transform: translate(-45vw, 45vh);
+  margin-left: -45vw;
+
+  width: 90vw;
+  height: 90vh;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transform: scale(0);
 }
 </style>

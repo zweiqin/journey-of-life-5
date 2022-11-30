@@ -43,7 +43,7 @@
 
     <JNoData
       v-else
-      type="active"
+      type="none"
       :text="currentTab === 0 ? '暂无预约商品' : '暂无预约活动'"
     ></JNoData>
   </view>

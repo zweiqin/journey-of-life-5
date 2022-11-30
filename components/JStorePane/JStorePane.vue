@@ -1,19 +1,19 @@
 <template>
-  <div class="panel">
+  <view class="panel">
     <view class="header">
       <img
         class="avatar"
         :src="
-          data.brand.logo ||
+          storeInfo.brand.logo ||
           'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/alo7i1qewcuj4305mrr3.png'
         "
         alt=""
       />
       <view class="info">
-        <view class="name">{{ data.brand.name }}</view>
+        <view class="name">{{ storeInfo.brand.name }}</view>
         <view class="tem">
           <Rate :rate="5" :size="10"></Rate>
-          <view class="type">{{ getTypes(data.brand.brandgenre) }}</view>
+          <view class="type">{{ getTypes(storeInfo.brand.brandgenre) }}</view>
           <view class="year">10年老店</view>
         </view>
       </view>
@@ -21,90 +21,90 @@
     </view>
 
     <!-- 三张图 -->
-    <view class="goods-layout three" v-if="data.goodsList.length >= 3">
+    <view class="goods-layout three" v-if="storeInfo.goodsList.length >= 3">
       <view @click="handleEnterStore">
         <easy-loadimage
           class="store"
           :loading-mode="lazyLoadingMode"
           :scroll-top="scrollTop"
-          :image-src="data.brand.picUrl"
+          :image-src="storeInfo.brand.picUrl"
         ></easy-loadimage>
       </view>
 
       <view class="right">
-        <view @click="handleViewDetail(data.goodsList[1])">
+        <view @click="handleViewDetail(storeInfo.goodsList[1])">
           <easy-loadimage
             :loading-mode="lazyLoadingMode"
             :scroll-top="scrollTop"
             class="img"
             style="border-radius: 0 20upx 0 0"
-            :image-src="data.goodsList[1].picUrl"
+            :image-src="storeInfo.goodsList[1].picUrl"
           ></easy-loadimage>
         </view>
 
-        <view @click="handleViewDetail(data.goodsList[2])">
+        <view @click="handleViewDetail(storeInfo.goodsList[2])">
           <easy-loadimage
             :loading-mode="lazyLoadingMode"
             class="img"
             style="border-radius: 0 0 20upx 0"
             :scroll-top="scrollTop"
-            :image-src="data.goodsList[2].picUrl"
+            :image-src="storeInfo.goodsList[2].picUrl"
           ></easy-loadimage>
         </view>
       </view>
 
       <view class="price-icon price-icon-1"
-        >￥{{ data.goodsList[1].retailPrice }}</view
+        >￥{{ storeInfo.goodsList[1].retailPrice }}</view
       >
       <view class="price-icon price-icon-2"
-        >￥{{ data.goodsList[2].retailPrice }}</view
+        >￥{{ storeInfo.goodsList[2].retailPrice }}</view
       >
     </view>
 
     <!-- 一张图 -->
     <view
       class="goods-layout one animate__flipInX"
-      v-if="data.goodsList.length === 1"
-      @click="handleViewDetail(data.goodsList[0])"
+      v-if="storeInfo.goodsList.length === 1"
+      @click="handleViewDetail(storeInfo.goodsList[0])"
     >
       <easy-loadimage
         :loading-mode="lazyLoadingMode"
         class="img"
         :scroll-top="scrollTop"
-        :image-src="data.goodsList[0].picUrl"
+        :image-src="storeInfo.goodsList[0].picUrl"
       ></easy-loadimage>
-      <view class="price-icon">￥{{ data.goodsList[0].retailPrice }}</view>
+      <view class="price-icon">￥{{ storeInfo.goodsList[0].retailPrice }}</view>
     </view>
 
     <!-- 两张图 -->
-    <!-- <view class="goods-layout two" v-if="data.goodsList.length === 2">
-      <view @click="handleViewDetail(data.goodsList[0])">
+    <!-- <view class="goods-layout two" v-if="info.goodsList.length === 2">
+      <view @click="handleViewDetail(info.goodsList[0])">
         <easy-loadimage
           :loading-mode="lazyLoadingMode"
           class="img"
           :scroll-top="scrollTop"
-          :image-src="data.goodsList[0].picUrl"
+          :image-src="info.goodsList[0].picUrl"
         ></easy-loadimage>
       </view>
 
-      <view @click="handleViewDetail(data.goodsList[1])">
+      <view @click="handleViewDetail(info.goodsList[1])">
         <easy-loadimage
           :loading-mode="lazyLoadingMode"
           class="img"
           :scroll-top="scrollTop"
-          :image-src="data.goodsList[1].picUrl"
+          :image-src="info.goodsList[1].picUrl"
         ></easy-loadimage>
       </view>
 
       <view class="price-icon" style="left: 0; top: 20upx"
-        >￥{{ data.goodsList[0].retailPrice }}</view
+        >￥{{ info.goodsList[0].retailPrice }}</view
       ><view
         class="price-icon"
         style="top: 20upx; right: 0; border-radius: 100px 0 0 100px"
-        >￥{{ data.goodsList[1].retailPrice }}</view
+        >￥{{ info.goodsList[1].retailPrice }}</view
       >
     </view> -->
-  </div>
+  </view>
 </template>
 
 <script>
@@ -114,16 +114,33 @@ export default {
     Rate,
   },
   props: {
-    data: Object,
+    storeInfo: Object,
     scrollTop: Number,
   },
+  data() {
+    return {
+      info: {},
+    };
+  },
+
+  // watch: {
+  //   storeInfo: {
+  //     handler(value) {
+  //       console.log("来了门店信息", value);
+  //       this.storeInfo = value;
+  //     },
+
+  //     immediate: true,
+  //     deep: true,
+  //   },
+  // },
   methods: {
     /**
      * @description 点击进店
      */
     handleEnterStore() {
       uni.navigateTo({
-        url: "/store/store-detail?storeId=" + this.data.brand.id,
+        url: "/store/store-detail?storeId=" + this.storeInfo.brand.id,
       });
     },
 

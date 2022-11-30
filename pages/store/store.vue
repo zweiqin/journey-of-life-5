@@ -36,20 +36,6 @@
       </swiper>
     </view>
 
-    <!-- <view class="navs">
-        <view class="item" v-for="item in storeLabelList" :key="item.name">{{
-          item.name
-        }}</view>
-      </view> -->
-
-    <!-- <JTabs
-      @change="handleChangeCurrentPane"
-      :activeIndex="currentActive"
-      :tabs="storeLabelList"
-      class="j-tabs"
-      noScrollBar
-    ></JTabs> -->
-
     <scroll-view scroll-x="true">
       <view class="navs">
         <view
@@ -63,23 +49,6 @@
       </view>
     </scroll-view>
 
-    <!-- <view class="list-wrapper">
-      <JSwipper
-        @change="handleChangeCurrentPane"
-        :activeIndex="currentActive"
-        :tabs="storeLabelList"
-        :data="data"
-        type="store"
-      >
-        <template #store-title>
-          <view class="active-pane">
-            <ActivePane></ActivePane>
-            <ActivePane type="recommend"></ActivePane>
-          </view>
-        </template>
-      </JSwipper>
-    </view> -->
-
     <view class="store-list">
       <view class="header">
         <ActivePane></ActivePane>
@@ -89,9 +58,9 @@
       <view v-if="data.length">
         <JStorePane
           :scrollTop="scrollTop"
-          v-for="item in data"
-          :data="item"
-          :key="item.id"
+          v-for="(item, index) in data"
+          :storeInfo="item"
+          :key="index"
         ></JStorePane>
       </view>
       <JNoData v-else text="暂无门店信息" type="store"></JNoData>
@@ -103,7 +72,6 @@
 import ActivePane from "./components/active-pane.vue";
 import { getStoreAndGoods } from "../../api/store";
 import { J_STORE_TYPES, J_LOACTION } from "../../constant";
-import { getStoreTypesApi } from "../../api/user";
 import { delayedLoginStatus } from "../../utils";
 
 export default {
@@ -118,7 +86,6 @@ export default {
 
   onShow() {
     uni.removeStorageSync(J_LOACTION);
-    // this.getStoreTypes();
   },
 
   data() {
@@ -217,55 +184,21 @@ export default {
 
     // 获取门店列表
     getStoreList(isMore) {
+      const _this = this
       getStoreAndGoods(this.query).then(({ data }) => {
-        this.totalPage = data.totalPage;
+        _this.totalPage = data.totalPage;
         if (isMore) {
-          this.data.push(
+          _this.data.push(
             data.brandList.filter((item) => {
               return item.goodsList && item.goodsList.length >= 1;
             })
           );
         } else {
-          this.data = data.brandList.filter((item) => {
+          _this.data = data.brandList.filter((item) => {
             return item.goodsList && item.goodsList.length >= 1;
           });
         }
       });
-    },
-
-    // 获取门店类型
-    getStoreTypes() {
-      const _this = this;
-      let types = uni.getStorageSync(J_STORE_TYPES);
-
-      if (!types) {
-        getStoreTypesApi({
-          page: 1,
-          size: 30,
-        })
-          .then(({ data }) => {
-            types = data.items;
-            uni.setStorageSync(J_STORE_TYPES, data.items);
-            this.$forceUpdate();
-          })
-          .catch((err) => {
-            _this.$showToast("门店类型获取失败");
-          });
-      } else {
-        this.storeLabelList = types.map((item) => {
-          return {
-            name: item.storeName,
-            value: item.id,
-          };
-        });
-
-        this.storeLabelList.unshift({
-          name: "综合",
-          value: 0,
-        });
-      }
-
-      this.$forceUpdate();
     },
   },
 

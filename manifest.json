@@ -2,8 +2,8 @@
     "name" : "巨蜂商城",
     "appid" : "__UNI__B07FE0F",
     "description" : "",
-    "versionName" : "1.0.6",
-    "versionCode" : 107,
+    "versionName" : "1.0.7",
+    "versionCode" : 108,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true,
@@ -16,7 +16,8 @@
             "delay" : 0
         },
         "modules" : {
-            "Maps" : {}
+            "Maps" : {},
+            "Share" : {}
         },
         "distribute" : {
             "android" : {
@@ -57,7 +58,12 @@
                         "appkey_android" : "2b352cfd249b580bd87da6d9ec37f010"
                     }
                 },
-                "share" : {}
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wx603b04a561e4683e",
+                        "UniversalLinks" : ""
+                    }
+                }
             },
             "icons" : {
                 "android" : {
@@ -92,7 +98,13 @@
                 }
             },
             "splashscreen" : {
-                "androidStyle" : "default"
+                "androidStyle" : "default",
+                "iosStyle" : "common",
+                "android" : {
+                    "hdpi" : "C:/Users/86176/Desktop/e3cede98e1dce528adb25d9902c7774.png",
+                    "xhdpi" : "C:/Users/86176/Desktop/e3cede98e1dce528adb25d9902c7774.png",
+                    "xxhdpi" : "C:/Users/86176/Desktop/e3cede98e1dce528adb25d9902c7774.png"
+                }
             }
         }
     },

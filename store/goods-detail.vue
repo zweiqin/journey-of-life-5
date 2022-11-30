@@ -7,7 +7,7 @@
         :top="0"
         :radius="0"
       ></Carousel>
-      <img
+      <image
         @click="back"
         class="back"
         src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ozsrolc809fc5y260e8c.png"
@@ -84,8 +84,9 @@
 <script>
 import Carousel from "../components/carousel";
 import { getApponitGoodsDetailApi, getGoodsDetailApi } from "../api/goods";
-import { J_APPONIT_GOODS } from "../constant";
+import { J_APPONIT_GOODS, J_USER_ID } from "../constant";
 import { marked } from "marked";
+import { getUserId } from "../utils";
 
 export default {
   components: {
@@ -120,6 +121,9 @@ export default {
 
     //
     handlePay() {
+      if (!getUserId()) {
+        return;
+      }
       if (this.showSps) {
         const goodsInfo = this.$refs.specificationRef.getVal();
         console.log(goodsInfo);
@@ -135,6 +139,10 @@ export default {
       } else {
         this.showSps = true;
       }
+    },
+
+    back() {
+      uni.navigateBack();
     },
   },
 

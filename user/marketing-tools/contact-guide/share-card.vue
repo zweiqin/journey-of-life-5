@@ -25,7 +25,10 @@ import { getConfigApi } from "../../../api/auth";
 import ayQrcode from "../../../components/ay-qrcode/ay-qrcode.vue";
 import { J_USER_TOKEN } from "../../../constant";
 import { domToImage } from "../../../utils";
+
+// #ifdef H5
 import share from "../../../utils/wxshare";
+// #endif
 
 export default {
   components: {
@@ -53,7 +56,9 @@ export default {
       // uni.hideLoading()
       this.$refs.qrcode.crtQrCode();
       uni.hideLoading();
-      this.shareNamecard()
+      // #ifdef H5
+      this.shareNamecard();
+      // #endif
     }, 50);
   },
 
@@ -79,9 +84,7 @@ export default {
 
     // 分享名片
     shareNamecard() {
-      uni.showLoading({
-        title: "链接生成中...",
-      });
+      // #ifdef H5
       // const url = domToImage(this.$refs.namecardRef.$el);
       // uni.uploadFile({
       //   url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/uploadByBase64",
@@ -122,7 +125,7 @@ export default {
       // });
 
       const currentUrl = window.location.href.replace("#", "ericToken");
-      const _this = this
+      const _this = this;
       getConfigApi({
         url: currentUrl,
         token: uni.getStorageSync(J_USER_TOKEN),
@@ -131,11 +134,40 @@ export default {
           title: this.data.name,
           desc: this.data.position + "-" + this.data.intro,
           imgUrl: this.data.headPic,
-          link: 'https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/marketing-tools/contact-guide/name-card-detail?id=' + _this.data.id
+          link:
+            "https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/marketing-tools/contact-guide/name-card-detail?id=" +
+            _this.data.id,
         });
       });
 
-      uni.hideLoading();
+      // #endif
+
+      // #ifdef APP-PLUS
+      uni.share({
+        provider: "weixin",
+        scene: "WXSceneSession",
+        type: 0,
+        href:
+          "https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/marketing-tools/contact-guide/name-card-detail?id=" +
+          this.data.id, // 分享跳转的链接
+        title: this.data.name, // 分享标题
+        summary: this.data.position + "-" + this.data.intro, // 分享内容文字
+        imageUrl: this.data.headPic, //分享封面图片
+        success: function (res) {
+          // 此处是调起微信分享成功的回调
+          uni.showToast({
+            title: "分享成功",
+            duration: 2000,
+          });
+        },
+        fail: function (err) {
+          uni.showToast({
+            title: "分享失败",
+            icon: "none",
+          });
+        },
+      });
+      // #endif
     },
   },
 };

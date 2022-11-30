@@ -1,5 +1,5 @@
 <template>
-  <view class="map-container">
+  <view class="map-container" v-if="showMap">
     <map
       :longitude="longitude"
       :latitude="latitude"
@@ -40,7 +40,7 @@ import { J_LOACTION } from "../../constant";
 export default {
   onLoad() {
     // this.getRedEnvelopeList();
-    delayedLoginStatus()
+    delayedLoginStatus();
   },
 
   onReady() {
@@ -61,6 +61,7 @@ export default {
       },
       allMarks: [],
       showRedPackage: false,
+      showMap: false
     };
   },
 
@@ -97,6 +98,7 @@ export default {
           // });
         }
         this.markers = made;
+        this.showMap = true
       });
     },
 
