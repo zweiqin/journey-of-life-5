@@ -28,3 +28,18 @@ export const payAppointGoodsApi = data => {
 export const payAppointOrderApi = data => {
   return RuanRequest('/appointOrder/submit', data)
 }
+
+// 优惠劵
+export const getCouponListApi = data => {
+  return RuanRequest('/coupon/list', data, 'get')
+}
+
+// 个人可领取优惠劵
+export const getCanPickCouponApi = data => {
+  return RuanRequest("/coupon/getUserCoupon", data, 'get')
+}
+
+// 个人优惠劵列表
+export const getMyCouponList = data => {
+  return RuanRequest('/coupon/mylist', data, 'get')
+}

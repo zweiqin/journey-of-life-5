@@ -416,6 +416,12 @@
 					"style": {
 						"navigationBarTitleText": "商品订单详情"
 					}
+				},
+				{
+					"path": "store-intro",
+					"style": {
+						"navigationBarTitleText": "门店详情"
+					}
 				}
 			]
 		},

@@ -11,7 +11,7 @@
       </view>
     </view>
 
-    <view class="evaluate-item">
+    <!-- <view class="evaluate-item">
       <view class="cust-info">
         <JAvatar
           src="https://img2.baidu.com/it/u=1577053018,3245596189&fm=253&fmt=auto&app=138&f=JPEG?w=400&h=400"
@@ -45,79 +45,7 @@
           </view>
         </view>
       </view>
-    </view>
-
-    <view class="evaluate-item">
-      <view class="cust-info">
-        <JAvatar
-          src="https://img2.baidu.com/it/u=1577053018,3245596189&fm=253&fmt=auto&app=138&f=JPEG?w=400&h=400"
-          :size="80"
-        ></JAvatar>
-        <view class="info-wrapper">
-          <view class="name">黄苟</view>
-          <Rate :rate="5" :size="13"></Rate>
-        </view>
-        <view class="time">2022-06-06 03：01：00</view>
-      </view>
-
-      <view class="evaluate-text">
-        正品，质量非常好!!!正品，质量非常好!!!正品，质量非常好!!!正品，质量非常好!!!正品，质量非常好!!!
-      </view>
-
-      <view class="goods-info">
-        <JAvatar
-          src="http://t14.baidu.com/it/u=3604961094,856486922&fm=224&app=112&f=JPEG?w=500&h=500&s=0061D115E44676EE5AFD4D610300E030"
-          :size="80"
-          radius="10"
-        ></JAvatar>
-
-        <view class="goods-wrapper">
-          <view class="goods-name"
-            >舒克宽头高密旋洁牙刷舒克宽头高密旋洁牙刷舒克宽头高密旋洁牙刷</view
-          >
-          <view style="display: flex; justify-content: space-between"
-            ><view class="goods-price">￥27.98</view>
-            <view class="saled">已售 200+</view>
-          </view>
-        </view>
-      </view>
-    </view>
-
-    <view class="evaluate-item">
-      <view class="cust-info">
-        <JAvatar
-          src="https://img2.baidu.com/it/u=1577053018,3245596189&fm=253&fmt=auto&app=138&f=JPEG?w=400&h=400"
-          :size="80"
-        ></JAvatar>
-        <view class="info-wrapper">
-          <view class="name">黄苟</view>
-          <Rate :rate="5" :size="13"></Rate>
-        </view>
-        <view class="time">2022-06-06 03：01：00</view>
-      </view>
-
-      <view class="evaluate-text">
-        正品，质量非常好!!!正品，质量非常好!!!正品，质量非常好!!!正品，质量非常好!!!正品，质量非常好!!!
-      </view>
-
-      <view class="goods-info">
-        <JAvatar
-          src="http://t14.baidu.com/it/u=3604961094,856486922&fm=224&app=112&f=JPEG?w=500&h=500&s=0061D115E44676EE5AFD4D610300E030"
-          :size="80"
-          radius="10"
-        ></JAvatar>
-
-        <view class="goods-wrapper">
-          <view class="goods-name"
-            >舒克宽头高密旋洁牙刷舒克宽头高密旋洁牙刷舒克宽头高密旋洁牙刷</view
-          >
-          <view style="display: flex; justify-content: space-between"
-            ><view class="goods-price">￥27.98</view>
-            <view class="saled">已售 200+</view>
-          </view>
-        </view>
-      </view>
-    </view>
+    </view> -->
   </view>
 </template>
 
@@ -144,23 +72,14 @@ export default {
     .evaluate-container-header-item {
       width: 334upx;
       height: 150upx;
-      background: linear-gradient(
-        131deg,
-        #ff8f1f 0%,
-        rgba(250, 81, 81, 0) 100%
-      );
+      background: linear-gradient(131deg, #ff8f1f 0%, #fbad85);
       border-radius: 10upx;
 
       .flex(center, center);
       flex-direction: column;
 
       &:last-child {
-        background: linear-gradient(
-          133deg,
-          #07b9b9 0%,
-          rgba(7, 185, 185, 0) 100%,
-          rgba(7, 185, 185, 0) 100%
-        );
+        background: linear-gradient(133deg, #07b9b9 0%, #65d1d8);
       }
 
       .count {

@@ -19,13 +19,7 @@
       </view>
 
       <view class="detail-info-wrapper">
-        <JAvatar
-          :size="160"
-          :src="
-            storeDetail.logo ||
-            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/berqiue9nqc9c2ykl3ud.webp'
-          "
-        ></JAvatar>
+        <JAvatar :size="160" :src="storeDetail.picUrl"></JAvatar>
         <view class="detail-info-ccontent">
           <view class="name">{{ storeDetail.name }} </view>
           <JTo
@@ -67,55 +61,45 @@
         </view>
       </view>
 
-      <view class="goods-wrapper" v-if="goodsList.length">
-        <GoodsPanel
-          :price="goods.retailPrice"
-          :name="goods.name"
-          v-for="goods in goodsList"
-          :key="goods.id"
-          :imgUrl="goods.picUrl"
-          :id="goods.id"
-          :scrollTop="scrollTop"
-        ></GoodsPanel>
-
-        <!-- <StoreGoods
-          v-for="goods in goodsList"
-          :data="goods"
-          :key="goods.id"
-          :number="template"
-          @add="template += $event"
-        ></StoreGoods> -->
-
-        <uni-load-more
-          v-if="loadingStatus !== 'hidden'"
-          :status="loadingStatus"
-        ></uni-load-more>
+      <view class="sub-navs">
+        <view
+          class="sub-nav-item"
+          v-for="(item, index) in storeDetailLabels"
+          :class="{
+            active: currentActive == item.value,
+          }"
+          @click="handleChangeCurrentPane(index)"
+          :key="item.value"
+          >{{ item.name }}</view
+        >
       </view>
 
-      <NoData v-else></NoData>
+      <view class="goods-wrapper" v-if="currentActive === 0">
+        <view class="goods-wrapper" v-if="goodsList.length">
+          <GoodsPanel
+            :price="goods.retailPrice"
+            :name="goods.name"
+            v-for="goods in goodsList"
+            :key="goods.id"
+            :imgUrl="goods.picUrl"
+            :id="goods.id"
+            :scrollTop="scrollTop"
+          ></GoodsPanel>
 
-      <!-- <JTabs
-        @change="handleChangeCurrentPane"
-        :tabs="storeDetailLabels"
-        :activeIndex="currentActive"
-        class="j-tabs"
-      ></JTabs> -->
+          <uni-load-more
+            v-if="loadingStatus !== 'hidden'"
+            :status="loadingStatus"
+          ></uni-load-more>
+        </view>
 
-      <!-- <JSwipper
-        @change="handleChangeCurrentPane"
-        :activeIndex="currentActive"
-        :tabs="storeDetailLabels"
-        isSlot
-        :height="swipterHeight"
-      >
-        <template #goods>
-          <JSideClassification ref="JSideClassificationRef">
-            <GoodsPanel v-for="item in 3" :key="item"></GoodsPanel>
-          </JSideClassification>
-        </template>
-        <template #evaluate> <Evaluate ref="evaluateRef"></Evaluate> </template>
-        <template #coupon> <Coupon ref="couponRef"></Coupon> </template>
-      </JSwipper> -->
+        <JNoData v-else text="暂无商品" type="empty"></JNoData>
+      </view>
+
+      <view v-if="currentActive == 1">
+        <Evaluate></Evaluate>
+      </view>
+
+      <Coupon ref="couponRef" v-if="currentActive == 2"></Coupon>
     </view>
 
     <view
@@ -127,7 +111,13 @@
       @click="shopCarVisible = false"
     ></view>
 
-    <view class="footer" v-if="shopCarInfo && shopCarInfo.cartTotal.goodsCount">
+    <view
+      :style="{
+        transform: currentActive == 0 ? 'translateY(0)' : 'translateY(100px)',
+      }"
+      class="footer"
+      v-if="shopCarInfo && shopCarInfo.cartTotal.goodsCount"
+    >
       <view class="shop-car" @click="handleShowCar">
         <JIcon width="80" height="80" type="store-car"></JIcon>
         <view class="number">{{ shopCarInfo.cartTotal.goodsCount }}</view>
@@ -276,8 +266,12 @@ export default {
   methods: {
     // 设置高度
     handleChangeCurrentPane(index) {
-      // this.swipterHeight = this.$refs[this.mapRef[index]].$el.clientHeight * 2 + 20;
       this.currentActive = index;
+      if (index == 2) {
+        this.$nextTick(() => {
+          this.$refs.couponRef.getCouponList(this.storeId);
+        });
+      }
     },
 
     // 获取门店详情
@@ -285,6 +279,9 @@ export default {
       const _this = this;
       getStoreDetailApi(this.storeId).then(({ data }) => {
         _this.storeDetail = data.brand;
+        uni.setNavigationBarTitle({
+          title: _this.storeDetail.name,
+        });
       });
     },
 
@@ -438,6 +435,7 @@ export default {
     object-fit: cover;
     border-radius: 0 0 40upx 40upx;
     z-index: -1;
+    filter: blur(7px);
   }
 
   .icons {
@@ -532,7 +530,7 @@ export default {
       object-fit: cover;
     }
     .name {
-      font-size: @f12;
+      font-size: 28upx;
       color: @c3d;
       margin-top: 6upx;
     }
@@ -568,6 +566,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   z-index: 10;
+  transition: all 350ms;
 
   .shop-car-popup {
     width: 100%;
@@ -731,5 +730,23 @@ export default {
   background-color: #2b2b2bba;
   z-index: 2;
   transition: all 350ms;
+}
+
+.sub-navs {
+  display: flex;
+  align-items: center;
+  font-size: 28upx;
+  margin: 44upx 0;
+
+  .sub-nav-item {
+    border-bottom: 4upx solid transparent;
+    padding-bottom: 10upx;
+    margin-right: 60upx;
+
+    &.active {
+      color: #fa5151;
+      border-bottom-color: #fa5151;
+    }
+  }
 }
 </style>

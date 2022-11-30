@@ -11,6 +11,7 @@ export const storeDetailNavs = [
   {
     name: "门店",
     icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/49v4d50y00gge7ker9iz.png",
+    url: '/store/store-intro'
   },
   {
     name: "抽奖",
