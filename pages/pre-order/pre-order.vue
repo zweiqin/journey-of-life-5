@@ -49,7 +49,7 @@
 
       <view class="line">
         <view class="title">运费：</view>
-        <view class="value">￥0</view>
+        <view class="value">￥{{ calcOrderMsg.freightPrice }}</view>
       </view>
 
       <view class="line" v-if="orderInfo.info.supportVoucher">
@@ -340,6 +340,7 @@ export default {
       }
 
       .info {
+        flex: 1;
         .goods-name {
           margin-bottom: 20upx;
         }

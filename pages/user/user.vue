@@ -159,11 +159,27 @@
           transform: extensionCodeUrl ? 'scale(1)' : 'scale(0)',
         }"
       >
-        <view class="code-title"
-          >{{ userInfo && userInfo.nickName }}
-          {{ userInfo && userInfo.userId }}</view
-        >
-        <img class="code" :src="extensionCodeUrl" alt="" />
+        <view class="header">
+          <image
+            class="header-icon"
+            src="/static/images/user/ju-icon.png"
+            mode=""
+          />
+          <text>巨蜂商城</text>
+        </view>
+
+        <view class="big-wrapper">
+          <image src="/static/images/user/ju-icon-p.png" class="big-icon" />
+        </view>
+
+        <view class="images">
+          <view class="zhiwen">
+            <image src="/static/images/user/zhi.png" alt="" />
+            <text>长按扫码</text>
+          </view>
+          <image class="code" :src="extensionCodeUrl" alt="" />
+        </view>
+
         <button class="uni-btn" @click="extensionCodeUrl = ''">取消</button>
       </view>
     </view>
@@ -304,7 +320,7 @@ export default {
 
   onLoad() {
     const bindUserId = uni.getStorageSync(BIND_USER_ID);
-    if (bindUserId) {
+    if (bindUserId && bindUserId !== getUserId()) {
       bindLastUserApi({
         userId: [getUserId()],
         salesmanId: bindUserId,
@@ -489,6 +505,56 @@ export default {
     transform: scale(0);
     transition: all 350ms;
 
+    .images {
+      display: flex;
+      margin: 30upx 0;
+      justify-content: space-around;
+
+      .zhiwen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: #999999;
+
+        image {
+          width: 120upx;
+          height: 120upx;
+          margin-bottom: 10upx;
+        }
+      }
+
+      image {
+        width: 200upx;
+        height: 200upx;
+        object-fit: cover;
+      }
+    }
+
+    .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .header-icon {
+        width: 60upx;
+        height: 60upx;
+        margin-right: 10px;
+      }
+    }
+
+    .big-wrapper {
+      width: 100%;
+      margin-top: 70upx;
+      justify-content: center;
+      display: flex;
+      .big-icon {
+        width: 400upx;
+        height: 400upx;
+        object-fit: cover;
+      }
+    }
+
     .code-title {
       text-align: center;
       font-size: 36upx;
@@ -500,6 +566,7 @@ export default {
       width: 540upx;
       height: 540upx;
       object-fit: cover;
+      border-radius: 54upx;
     }
 
     .uni-btn {

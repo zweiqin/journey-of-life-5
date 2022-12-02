@@ -107,21 +107,21 @@
 
       <view class="pane" v-if="nameCardDetail.intro">
         <view class="pane-title">业务简介</view>
-        <view
-          class="content"
-          v-html="nameCardDetail.intro"
-        ></view>
+        <view class="content" v-html="nameCardDetail.intro"></view>
       </view>
 
       <view class="pane" v-if="nameCardDetail.companyProfile">
         <view class="pane-title">公司简介</view>
-        <view
-          class="content"
-          v-html="nameCardDetail.companyProfile"
-        ></view>
+        <view class="content" v-html="nameCardDetail.companyProfile"></view>
       </view>
 
-      <view class="pane">
+      <view
+        class="pane"
+        v-if="
+          (nameCardDetail.imgs && nameCardDetail.imgs.length) ||
+          nameCardDetail.video
+        "
+      >
         <view class="pane-title">图片/视频</view>
         <view
           class="img-wrapper"

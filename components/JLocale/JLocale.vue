@@ -3,9 +3,12 @@
     <JIcon type="locale" width="34" height="40"></JIcon>
     <text class="locale">{{ address }}</text>
 
-    <view class="popup" :style="{
-      transform: show ? 'scale(1)' : 'scale(0)'
-    }">
+    <view
+      class="popup"
+      :style="{
+        transform: show ? 'scale(1)' : 'scale(0)',
+      }"
+    >
       <view>定位失败</view>
       <view>
         {{ error }}
@@ -45,14 +48,14 @@ export default {
 
           getAdressDetailByLngLat(res.latitude, res.longitude)
             .then((res) => {
-              if (res.status === 0) {
-                const result = res.result.address_component;
-                _this.address = result.district ? result.district : result.city;
+              if (res.status == "1") {
+                const result = res.regeocode.addressComponent.city;
+                _this.address = result;
               }
             })
             .catch((err) => {
               _this.error = err;
-              _this.show = true
+              _this.show = true;
               _this.address = "定位失败";
             });
         },

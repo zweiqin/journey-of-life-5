@@ -1,13 +1,13 @@
 import {
-  whoami
+	whoami
 } from '../api/auth'
 import {
-  J_USER_ID,
-  J_USER_TOKEN,
-  J_TOKEN_EXPIRE
+	J_USER_ID,
+	J_USER_TOKEN,
+	J_TOKEN_EXPIRE
 } from '../constant'
 import {
-  jsonp
+	jsonp
 } from 'vue-jsonp'
 import html2canvas from 'html2canvas'
 import QQMapWX from '../utils/qqmap-wx-jssdk.min.js'
@@ -19,11 +19,11 @@ import QQMapWX from '../utils/qqmap-wx-jssdk.min.js'
  * @returns
  */
 export const fomartNumber = (data, accuracy = 2) => {
-  let temp = data + ''
-  if (temp.includes('.')) {
-    return (data * 1).toFixed(accuracy)
-  }
-  return data
+	let temp = data + ''
+	if (temp.includes('.')) {
+		return (data * 1).toFixed(accuracy)
+	}
+	return data
 }
 
 /**
@@ -31,28 +31,28 @@ export const fomartNumber = (data, accuracy = 2) => {
  * @param {String[]} cacheArr 要清除的缓存string数组
  */
 export const removeCache = cacheArr => {
-  if (!Array.isArray(cacheArr)) {
-    return
-  }
+	if (!Array.isArray(cacheArr)) {
+		return
+	}
 
-  for (const item of cacheArr) {
-    uni.removeStorageSync(item)
-  }
+	for (const item of cacheArr) {
+		uni.removeStorageSync(item)
+	}
 }
 
 /**
  * 检测登录是否有效
  */
 export const checkWhoami = () => {
-  // new Promise(async (resolve, reject) => {
-  //   const userId = getUserId();
-  //   const res = await whoami(userId);
-  //   if (res.errno !== 0) {
-  //     uni.navigateTo({
-  //       url: "/pages/login/login",
-  //     });
-  //   }
-  // });
+	// new Promise(async (resolve, reject) => {
+	//   const userId = getUserId();
+	//   const res = await whoami(userId);
+	//   if (res.errno !== 0) {
+	//     uni.navigateTo({
+	//       url: "/pages/login/login",
+	//     });
+	//   }
+	// });
 }
 
 /**
@@ -60,33 +60,33 @@ export const checkWhoami = () => {
  * @returns
  */
 export const getUserId = () => {
-  const userId = uni.getStorageSync(J_USER_ID)
-  if (!userId) {
-    // uni.showToast({
-    //   title: "登录已失效，请重新登录",
-    //   duration: 2000,
-    //   icon: "none",
-    // });
+	const userId = uni.getStorageSync(J_USER_ID)
+	if (!userId) {
+		// uni.showToast({
+		//   title: "登录已失效，请重新登录",
+		//   duration: 2000,
+		//   icon: "none",
+		// });
 
-    uni.showModal({
-      title: '提示',
-      content: '您还未登录，是否去登录？',
-      success: function (res) {
-        if (res.confirm) {
-          uni.navigateTo({
-            url: '/pages/login/login',
-          })
-        } else if (res.cancel) {
-          // uni.navigateBack();
-        }
-      },
-    })
+		uni.showModal({
+			title: '提示',
+			content: '您还未登录，是否去登录？',
+			success: function(res) {
+				if (res.confirm) {
+					uni.navigateTo({
+						url: '/pages/login/login',
+					})
+				} else if (res.cancel) {
+					// uni.navigateBack();
+				}
+			},
+		})
 
-    return
-  }
-  return userId
-  // return 200
-  // return 265;
+		return
+	}
+	return userId
+	// return 200
+	// return 265;
 }
 
 /**
@@ -94,15 +94,15 @@ export const getUserId = () => {
  * @param {*} text
  */
 export const useCopy = text => {
-  const input = document.createElement('input')
-  input.value = text
-  document.body.appendChild(input)
-  input.select()
-  document.execCommand('Copy')
-  document.body.removeChild(input)
-  uni.showToast({
-    title: '单号复制成功',
-  })
+	const input = document.createElement('input')
+	input.value = text
+	document.body.appendChild(input)
+	input.select()
+	document.execCommand('Copy')
+	document.body.removeChild(input)
+	uni.showToast({
+		title: '单号复制成功',
+	})
 }
 
 /**
@@ -113,29 +113,29 @@ export const useCopy = text => {
  * @returns
  */
 export function handleDebounce(func, wait, immediate) {
-  let timeout
+	let timeout
 
-  return function () {
-    let context = this
-    let args = arguments
+	return function() {
+		let context = this
+		let args = arguments
 
-    if (timeout) clearTimeout(timeout)
-    if (immediate) {
-      var callNow = !timeout
-      timeout = setTimeout(() => {
-        timeout = null
-      }, wait)
-      if (callNow) func.apply(context, args)
-    } else {
-      timeout = setTimeout(function () {
-        func.apply(context, args)
-      }, wait)
-    }
-  }
+		if (timeout) clearTimeout(timeout)
+		if (immediate) {
+			var callNow = !timeout
+			timeout = setTimeout(() => {
+				timeout = null
+			}, wait)
+			if (callNow) func.apply(context, args)
+		} else {
+			timeout = setTimeout(function() {
+				func.apply(context, args)
+			}, wait)
+		}
+	}
 }
 
 export function getRandom(min, max) {
-  return Math.floor(Math.random() * (max - min) + min)
+	return Math.floor(Math.random() * (max - min) + min)
 }
 
 /**
@@ -144,88 +144,106 @@ export function getRandom(min, max) {
  * @returns
  */
 export const getAddressLongitudeAndLatitude = address => {
-  return new Promise((resolve, reject) => {
-    jsonp('https://apis.map.qq.com/ws/geocoder/v1/', {
-      key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH',
-      address: address,
-      output: 'jsonp',
-    })
-      .then(res => {
-        resolve(res)
-      })
-      .catch(error => {
-        reject(error)
-      })
+	return new Promise((resolve, reject) => {
+		jsonp('https://apis.map.qq.com/ws/geocoder/v1/', {
+				key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH',
+				address: address,
+				output: 'jsonp',
+			})
+			.then(res => {
+				resolve(res)
+			})
+			.catch(error => {
+				reject(error)
+			})
 
-    // uni.request({
-    //   url: 'https://apis.map.qq.com/ws/geocoder/v1/',
-    //   method: 'GET',
-    //   data: {
-    //     key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH',
-    //     address: address,
-    //     output: 'jsonp',
-    //   },
-    //   success: (res) => {
-    //     console.log("成功了", res);
-    //   },
-    //   fail: () => { },
-    //   complete: () => { }
-    // })
-  })
+		// uni.request({
+		//   url: 'https://apis.map.qq.com/ws/geocoder/v1/',
+		//   method: 'GET',
+		//   data: {
+		//     key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH',
+		//     address: address,
+		//     output: 'jsonp',
+		//   },
+		//   success: (res) => {
+		//     console.log("成功了", res);
+		//   },
+		//   fail: () => { },
+		//   complete: () => { }
+		// })
+	})
 }
 
 /**
  * 根据经纬度逆解析地址
  */
 export const getAdressDetailByLngLat = (lat, lng) => {
-  return new Promise((resolve, reject) => {
-    // #ifdef H5
-    jsonp('http://apis.map.qq.com/ws/geocoder/v1/', {
-      key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH',
-      location: `${lat},${lng}`,
-      output: 'jsonp',
-    })
-      .then(res => {
-        resolve(res)
-      })
-      .catch(err => {
-        reject(err)
-      })
-    // #endif
+	return new Promise((resolve, reject) => {
+		// #ifdef H5
+		jsonp('https://restapi.amap.com/v3/geocode/regeo', {
+				key: 'fcd4b7ee70f357abeffaef7b43d364b3',
+				location: `${lng},${lat}`
+			})
+			.then(res => {
+				resolve(res)
+			})
+			.catch(err => {
+				reject(err)
+			});
+		// #endif
 
-    // #ifdef APP-PLUS
-    const TMap = new QQMapWX({
-      key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH'
-    })
-    TMap.reverseGeocoder({
-      location: {
-        latitude: lat,
-        longitude: lng
-      },
-      success: (res) => {
-        resolve(res)
-      },
-      fail: () => {
-        reject('定位失败')
-      }
-    })
-    // #endif
-  })
+		// #ifdef APP-PLUS
+		uni.request({
+			url: 'https://restapi.amap.com/v3/geocode/regeo', //仅为示例，并非真实接口地址。
+			data: {
+				key: 'fcd4b7ee70f357abeffaef7b43d364b3',
+				location: `${lng},${lat}`
+			},
+			header: {},
+			success: (res) => {
+				resolve(res.data)
+			},
+			fail() {
+				reject()
+			}
+		});
+		// #endif
+
+
+		// // #ifdef APP-PLUS
+		// const TMap = new QQMapWX({
+		//   key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH'
+		// })
+
+		// TMap.reverseGeocoder({
+		//   location: {
+		//     latitude: lat,
+		//     longitude: lng
+		//   },
+		//   success: (res) => {
+		//     resolve(res)
+		//   },
+		//   fail: () => {
+		//     reject('定位失败')
+		//   }
+		// })
+		// // #endif
+	})
 }
 
 /**
  * 延长登录
  */
 export const delayedLoginStatus = () => {
-  const userId = uni.getStorageSync(J_USER_ID)
-  if (userId) {
-    whoami(userId).then(({
-      data
-    }) => {
-      uni.setStorageSync(J_TOKEN_EXPIRE, data.expireTime)
-      uni.setStorageSync(J_USER_TOKEN, data.token)
-    })
-  }
+	const userId = uni.getStorageSync(J_USER_ID)
+	if (userId) {
+		whoami(userId).then(({
+			data
+		}) => {
+			uni.setStorageSync(J_TOKEN_EXPIRE, data.expireTime)
+			uni.setStorageSync(J_USER_TOKEN, data.token)
+		})
+	}
 }
 
 /**
@@ -233,20 +251,20 @@ export const delayedLoginStatus = () => {
  * @returns 
  */
 export const randomRGB = () => {
-  const r = Math.floor(Math.random() * 255)
-  const g = Math.floor(Math.random() * 255)
-  const b = Math.floor(Math.random() * 255)
-  return `rgb(${r}, ${g}, ${b})`
+	const r = Math.floor(Math.random() * 255)
+	const g = Math.floor(Math.random() * 255)
+	const b = Math.floor(Math.random() * 255)
+	return `rgb(${r}, ${g}, ${b})`
 }
 
 /**
  * dom -> image
  */
 export const domToImage = el => {
-  html2canvas(el, {
-    backgroundColor: '#fff',
-  }).then(canvas => {
-    const image = canvas.toDataURL('image/png')
-    console.log("来了", image);
-  })
+	html2canvas(el, {
+		backgroundColor: '#fff',
+	}).then(canvas => {
+		const image = canvas.toDataURL('image/png')
+		console.log("来了", image);
+	})
 }

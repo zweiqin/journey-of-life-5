@@ -2,10 +2,11 @@
     "name" : "巨蜂商城",
     "appid" : "__UNI__B07FE0F",
     "description" : "",
-    "versionName" : "1.0.7",
-    "versionCode" : 108,
+    "versionName" : "2.0.5",
+    "versionCode" : 2050,
     "transformPx" : false,
     "app-plus" : {
+        "runmode" : "liberate",
         "usingComponents" : true,
         "nvueCompiler" : "uni-app",
         "compilerVersion" : 3,
@@ -16,8 +17,9 @@
             "delay" : 0
         },
         "modules" : {
-            "Maps" : {},
-            "Share" : {}
+            "Share" : {},
+            "Geolocation" : {},
+            "Maps" : {}
         },
         "distribute" : {
             "android" : {
@@ -54,14 +56,24 @@
                 "ad" : {},
                 "maps" : {
                     "amap" : {
-                        "appkey_ios" : "2b352cfd249b580bd87da6d9ec37f010",
-                        "appkey_android" : "2b352cfd249b580bd87da6d9ec37f010"
+                        "appkey_ios" : "790b1546d12c20cc6c95f45c4d8b376c",
+                        "appkey_android" : "790b1546d12c20cc6c95f45c4d8b376c"
                     }
                 },
                 "share" : {
                     "weixin" : {
                         "appid" : "wx603b04a561e4683e",
                         "UniversalLinks" : ""
+                    }
+                },
+                "geolocation" : {
+                    "system" : {
+                        "__platform__" : [ "ios", "android" ]
+                    },
+                    "amap" : {
+                        "__platform__" : [ "ios", "android" ],
+                        "appkey_ios" : "790b1546d12c20cc6c95f45c4d8b376c",
+                        "appkey_android" : "790b1546d12c20cc6c95f45c4d8b376c"
                     }
                 }
             },

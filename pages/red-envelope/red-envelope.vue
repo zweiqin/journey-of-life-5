@@ -10,8 +10,7 @@
       style="width: 100vw; height: 100vh"
       :markers="markers"
       @markertap="handleReceive"
-    >
-    </map>
+    ></map>
 
     <view
       class="preview-wrapper"
@@ -61,7 +60,7 @@ export default {
       },
       allMarks: [],
       showRedPackage: false,
-      showMap: false
+      showMap: false,
     };
   },
 
@@ -70,35 +69,45 @@ export default {
       getRedEnvelopeListApi().then((res) => {
         this.allMarks = res.data;
         const made = [];
+        // #ifdef H5
         for (const redPack of res.data) {
           made.push({
             id: redPack.id,
             latitude: redPack.latitude,
             longitude: redPack.longitude,
             title: redPack.brandName + "的红包",
-            width: 28,
-            height: 37,
+            width: 40,
+            height: 50,
             anchor: {
               x: 0.5,
               y: 0.5,
             },
             iconPath:
-              "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/n6p0qgt26t6wu1onofpa.webp",
+              "/static/images/index/red-pack.png",
           });
-
-          // this.markers.push({
-          //   id: Date.now() + Math.random(),
-          //   latitude: '117.53414',
-          //   longitude: '25.00446',
-          //   title: "尼玛的红包",
-          //   width: 28,
-          //   height: 37,
-          //   iconPath:
-          //     "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/n6p0qgt26t6wu1onofpa.webp",
-          // });
         }
+        // #endif
+
+        // #ifdef APP-PLUS
+        for (const redPack of res.data) {
+          made.push({
+            id: redPack.id,
+            latitude: redPack.latitude,
+            longitude: redPack.longitude,
+            title: redPack.brandName + "的红包",
+            width: 80,
+            height: 50,
+            anchor: {
+            	x: 0.5,
+            	y: 0.5
+            },
+            iconPath:
+              "/static/images/index/red-an.png",
+          });
+        }
+        // #endif
         this.markers = made;
-        this.showMap = true
+        this.showMap = true;
       });
     },
 
