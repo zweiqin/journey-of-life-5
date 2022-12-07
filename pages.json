@@ -447,6 +447,12 @@
 					"style": {
 						"navigationBarTitleText": "营销宝库"
 					}
+				},
+				{
+					"path": "daren-square/daren-center",
+					"style": {
+						"navigationBarTitleText": "我的达人"
+					}
 				}
 			]
 		},

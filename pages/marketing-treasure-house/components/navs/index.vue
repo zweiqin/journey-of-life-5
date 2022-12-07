@@ -36,7 +36,7 @@ export default {
         {
           imageUrl: require("../../../../static/images/square/icon2.png"),
           icon: require("../../../../static/images/square/squire-icon.png"),
-          url: "",
+          url: "/marketing-treasure-house/daren-square/daren-center",
           desc: ["达人入驻", "网红达人", "营销策划师"],
           width: "106",
         },
@@ -54,6 +54,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+uni-image {
+  overflow: inherit;
+}
+
 .navs {
   width: 100%;
   display: flex;
@@ -63,10 +67,24 @@ export default {
   padding: 44upx 0;
 
   .img1 {
+    position: relative;
     width: 110upx;
     height: 110upx;
     border-radius: 50%;
-    overflow: hidden;
+    // overflow: hidden;
+    margin-bottom: 20px;
+
+    &::after {
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 4px;
+      bottom: -24upx;
+      left: 0;
+
+      background: linear-gradient(180deg, #ffebd6, #fff4e9);
+      border-radius: 50%;
+    }
   }
 
   .img2 {
@@ -76,12 +94,19 @@ export default {
   }
 
   .item {
+    width: 212upx;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     color: #777;
     line-height: 1.5;
+    background-color: #fafafa;
+    padding: 20upx 0;
+
+    .descs {
+      font-size: 20upx;
+    }
   }
 }
 </style>
