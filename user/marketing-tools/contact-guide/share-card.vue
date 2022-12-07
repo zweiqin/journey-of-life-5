@@ -132,7 +132,7 @@ export default {
       }).then(({ data }) => {
         share.wxRegister(data, {
           title: this.data.name,
-          desc: this.data.position + "-" + this.data.intro,
+          desc: this.data.position + "-" + this.data.intro.replaceAll('\n', ','),
           imgUrl: this.data.headPic,
           link:
             "https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/marketing-tools/contact-guide/name-card-detail?id=" +

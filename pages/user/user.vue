@@ -73,7 +73,7 @@
         </view> -->
         <view class="item">
           <view class="title">
-            0
+            {{ userInfo.commission || 0 }}
             <view class="bl-text">元</view>
           </view>
           <view class="value"> 收入佣金 </view>

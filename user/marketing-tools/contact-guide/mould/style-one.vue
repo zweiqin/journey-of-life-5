@@ -28,8 +28,14 @@
       <view class="main-card-item">
         <JIcon width="30" height="30" type="phone"></JIcon
         ><view class="main-card-text">{{ data.phone }}</view>
-        <JIcon type="tuanfeng" width="124.5" height="42"></JIcon
-      ></view>
+        <!-- <JIcon type="tuanfeng" width="124.5" height="42"></JIcon -->
+        <!-- > -->
+        <image
+          src="../../../../static/images/user/jf-name.png"
+          style="width: 124.5upx; height: 42upx"
+          mode=""
+        />
+      </view>
 
       <view class="main-card-item">
         <JIcon width="26" height="30" type="main-locale"></JIcon
@@ -63,7 +69,7 @@ export default {
   flex-shrink: 0;
 }
 
-.style-one{
+.style-one {
   min-width: 690upx;
 }
 

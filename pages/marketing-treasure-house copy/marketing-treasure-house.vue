@@ -1,33 +1,52 @@
 <template>
   <view class="marketing-treasure-house-container">
     <view class="view-bg">
-      <JHeader
-        tabbar="/pages/marketing-treasure-house/marketing-treasure-house"
-        width="50"
-        height="50"
-        title="营销宝库"
-      ></JHeader>
+      <!-- <h1>达人广场</h1> -->
+    </view>
+    <view class="search-bar" @click="serch('/pages/search-page/search-page')">
+      <JLocale></JLocale>
+      <view></view>
+      <img class="location" src="../../static/images/store/search.png" alt="" />
     </view>
 
     <view class="main">
-      <JNavs class="navs" @nav-click="handleNavItemClick" :navs="navs"></JNavs>
-
-      <JLineTitle color="#FA5151" title="免费案例"></JLineTitle>
-
-      <ArticlePane
-        :scrollTop="scrollTop"
-        :status="loadingStatus"
-        :data="allList"
-      ></ArticlePane>
+      <img
+        v-for="item in advance"
+        :key="item.imgUrl"
+        @click="go(item.link)"
+        class="img animate__animated animate__fadeIn"
+        style="width: 100%"
+        :src="item.imgUrl"
+        alt=""
+      />
+      <JLineTitle color="#FA5151" title="任务广场"></JLineTitle>
+      <view class="daren-square-wrapper">
+        <view class="item" v-for="store in templateShowStore" :key="store.name">
+          <easy-loadimage
+            loading-mode="spin-circle"
+            class="avatar"
+            :image-src="store.avatar"
+          ></easy-loadimage>
+          <view class="info">
+            <view class="title">{{ store.name }}</view>
+            <view class="desc"
+              >{{ store.desc
+              }}<text class="precent">{{ store.precent }}</text></view
+            >
+          </view>
+          <button class="uni-btn">去报名</button>
+        </view>
+      </view>
     </view>
   </view>
 </template>
 
 <script>
-import { navs } from "./config";
-import ArticlePane from "../pages/marketing-treasure-house copy/components/article-pane.vue";
-import { getIndustryInformationListApi } from "../api/marketing-treasure-house";
-import { J_LOACTION } from "../constant";
+import ArticlePane from "./components/article-pane.vue";
+import { getIndustryInformationListApi } from "../../api/marketing-treasure-house";
+import { J_LOACTION } from "../../constant";
+import { advance, templateShowStore } from "./consfig";
+import { delayedLoginStatus } from "../../utils";
 
 export default {
   components: {
@@ -35,14 +54,16 @@ export default {
   },
   onLoad() {
     this.getArticleList();
+    delayedLoginStatus();
   },
   onShow() {
     uni.removeStorageSync(J_LOACTION);
   },
   data() {
     return {
-      navs,
       allList: [],
+      advance,
+      templateShowStore,
       queryInfo: {
         page: 1,
         size: 10,
@@ -51,7 +72,6 @@ export default {
       total: 0,
       loadingStatus: "loading",
       isLoading: false,
-      scrollTop: 0,
     };
   },
   onReachBottom() {
@@ -96,9 +116,6 @@ export default {
       });
     },
   },
-  onPageScroll(scrollTop) {
-    this.scrollTop = scrollTop.scrollTop;
-  },
 };
 </script>
 
@@ -108,18 +125,16 @@ export default {
 }
 .marketing-treasure-house-container {
   padding-top: 200upx;
-  padding-bottom: 60upx;
+  padding-bottom: 120upx;
 
   .view-bg {
     position: absolute;
     top: 0;
     left: 0;
-    // background: url("https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2rlfz31333yt1dzs9wiv.png")
-    //   no-repeat;
+    background: url("https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2rlfz31333yt1dzs9wiv.png")
+      no-repeat;
     height: 700upx;
     width: 100%;
-    padding-top: 40upx;
-    box-sizing: border-box;
   }
 
   .search-bar {
@@ -166,14 +181,14 @@ export default {
     padding: 20upx;
     box-sizing: border-box;
     z-index: 200;
-    top: -70upx;
+    top: -30upx;
 
     .navs {
       background-color: #fff;
-      // padding: 32upx 40upx 10upx;
+      padding: 32upx 40upx 10upx;
       box-sizing: border-box;
       border-radius: 20upx;
-      // box-shadow: 0px 1px 2px 0px rgb(223, 223, 223);
+      box-shadow: 0px 1px 2px 0px rgb(223, 223, 223);
       margin-bottom: 40upx;
     }
   }
