@@ -453,6 +453,12 @@
 					"style": {
 						"navigationBarTitleText": "我的达人"
 					}
+				},
+				{
+					"path": "daren-square/apply-daren",
+					"style": {
+						"navigationBarTitleText": "达人入驻"
+					}
 				}
 			]
 		},
