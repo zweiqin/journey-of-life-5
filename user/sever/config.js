@@ -28,7 +28,7 @@ export const vips = [
     label: "会员升级",
     powerUrl:
       "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/78ixjkl9eg69fjlcgi22.png",
-    price: "99",
+    price: "1000",
     type: 4,
     style: {
       height: "133upx",

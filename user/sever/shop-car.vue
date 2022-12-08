@@ -123,7 +123,7 @@
 
       <!-- 完成 -->
       <view class="confirm-op" v-show="opStatus === 'CONFIRM'">
-        <button class="uni-btn op-btn">移入收藏</button>
+        <button class="uni-btn op-btn" @click="addCollections">移入收藏</button>
         <button class="uni-btn op-btn" @click="removeShopCarGoods">删除</button>
       </view>
     </view>
@@ -138,6 +138,7 @@ import {
   changeShopCarStatusApi,
   updateShopCarCountApi,
   deleteShopCarGoodsApi,
+  addCollectionsApi,
 } from "../../api/cart";
 import { everyLookApi } from "../../api/goods";
 import { getUserId, fomartNumber } from "../../utils";
@@ -168,6 +169,7 @@ export default {
       loadingStatus: "noMore",
       isChangeNumber: false,
       recommentList: [],
+      opGoodsList: [],
     };
   },
 
@@ -222,10 +224,13 @@ export default {
     // 编辑选中的列表
     handleOp(goods) {
       const index = this.opList.findIndex((item) => item === goods.productId);
+      console.log(goods);
       if (index === -1) {
         this.opList.push(goods.productId);
+        this.opGoodsList.push(goods.goodsId);
       } else {
         this.opList.splice(index, 1);
+        this.opGoodsList.splice(index, 1);
       }
     },
 
@@ -384,6 +389,28 @@ export default {
 
       uni.navigateTo({
         url: "/user/sever/pay-shop-card",
+      });
+    },
+
+    // 移入收藏
+    addCollections() {
+      const _this = this;
+      if (!this.opGoodsList.length) {
+        this.$showToast("请选择要添加收藏的商品");
+        return;
+      }
+      addCollectionsApi({
+        userId: getUserId(),
+        type: 0,
+        valueId: this.opGoodsList,
+      }).then(() => {
+        uni.showToast({
+          title: "移入收藏成功",
+          duration: 2000,
+        });
+
+        _this.opList = [];
+        _this.opGoodsList = [];
       });
     },
   },

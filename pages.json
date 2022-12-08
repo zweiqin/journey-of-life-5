@@ -459,6 +459,12 @@
 					"style": {
 						"navigationBarTitleText": "达人入驻"
 					}
+				},
+				{
+					"path": "daren-square/task-detail",
+					"style": {
+						"navigationBarTitleText": "任务详情"
+					}
 				}
 			]
 		},

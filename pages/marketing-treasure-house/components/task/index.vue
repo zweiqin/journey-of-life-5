@@ -1,5 +1,8 @@
 <template>
-  <view class="task-container">
+  <view
+    class="task-container"
+    @click="go('/marketing-treasure-house/daren-square/task-detail')"
+  >
     <view class="info">
       <view class="left">
         <view class="name">安缇可丽美容（佛山市云剪 20人）</view>
@@ -27,7 +30,11 @@
       </view>
 
       <view class="join">
-        <img class="view" src="../../../../static/images/con-center/visited.png" alt="" />
+        <img
+          class="view"
+          src="../../../../static/images/con-center/visited.png"
+          alt=""
+        />
         100+
         <button class="uni-btn">去报名</button>
       </view>
@@ -46,7 +53,7 @@ export default {};
   font-size: 28upx;
   padding: 26upx 30upx;
   box-sizing: border-box;
-margin-top: 20upx;
+  margin-top: 20upx;
 
   .info {
     display: flex;
@@ -115,7 +122,7 @@ margin-top: 20upx;
       display: flex;
       align-items: center;
 
-      .requirement-item-tag{
+      .requirement-item-tag {
         border: 1upx solid #777;
         border-radius: 8upx;
         padding: 2px 4px;
@@ -128,19 +135,19 @@ margin-top: 20upx;
       align-items: center;
       color: #777777;
 
-      .view{
+      .view {
         width: 30upx;
         margin-right: 8upx;
       }
     }
 
-    .uni-btn{
+    .uni-btn {
       width: 120upx;
       height: 44upx;
       line-height: 44upx;
       text-align: center;
       color: #fff;
-      background-color: #FA5151;
+      background-color: #fa5151;
       padding: 2px 5px;
       box-sizing: content-box;
       margin-left: 5px;

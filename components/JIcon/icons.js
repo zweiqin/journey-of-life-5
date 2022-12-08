@@ -89,4 +89,7 @@ export const types = {
   "store-car": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/3yil4a3cfe6kscd1bq1q.png", // 门店购物车
   "collect-heart": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lwidrgylqiwps7og2a8i.png",
   "white-share": "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/zpq9fjq7kh6l4roblmkj.png", // 分享，白
+  "cand": require('../../static/images/square/calendar-2-fill.png'), // 日历
+  "square-share": require('../../static/images/square/share.png'),
+  "square-collection": require('../../static/images/square/collect.png')
 }
