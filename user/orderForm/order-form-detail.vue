@@ -58,7 +58,7 @@
               <view class="sp">{{ item.specifications | fomatSp }}</view>
               <view class="goods-price"> ￥{{ item.price }}</view>
             </view>
-            <view class="goods-number">x1</view>
+            <view class="goods-number">x{{ item.number }}</view>
           </view>
 
           <!-- 评论 -->
@@ -108,6 +108,10 @@
       <view class="line">
         <view class="title">下单时间</view>
         <view class="text">{{ data.orderInfo.addTime }}</view>
+      </view>
+      <view class="line">
+        <view class="title">实付金额</view>
+        <view class="text" style="color: red">￥{{ data.orderInfo.actualPrice }}</view>
       </view>
     </view>
 
@@ -301,6 +305,10 @@ export default {
                     title: "评论成功",
                     duration: 2000,
                   });
+
+                  setTimeout(() => {
+                    uni.navigateBack();
+                  }, 1000);
                 });
 
                 _this.getOrderDetail();

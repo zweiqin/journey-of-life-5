@@ -46,7 +46,7 @@
                 共 {{ goods.number }} 件商品
               </view>
               <button
-                v-if="item.handleOption.comment"
+                v-if="item.handleOption.comment && !goods.comment"
                 class="ev-btn uni-btn"
                 @click.stop="handleOpOrder(item, 'comment', goods)"
               >
