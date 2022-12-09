@@ -81,7 +81,7 @@
 
         <view class="item">
           <view class="title">
-            {{ userInfo.voucherNumber || 0 }}<view class="bl-text">元</view>
+            {{ transformBigNumber(userInfo.voucherNumber || 0) }}<view class="bl-text">元</view>
           </view>
           <view class="value"> 代金劵 </view>
         </view>
@@ -198,7 +198,7 @@ import {
   marketingTools,
   otherServe,
 } from "./config";
-import { delayedLoginStatus, getUserId } from "../../utils";
+import { delayedLoginStatus, getUserId, transformBigNumber } from "../../utils";
 import {
   J_USER_INFO,
   J_LOACTION,
@@ -313,6 +313,8 @@ export default {
         uni.hideLoading();
       });
     },
+
+    transformBigNumber
   },
   mounted() {
     // checkWhoami();
@@ -431,6 +433,7 @@ export default {
           font-size: 28upx;
           font-weight: bold;
           margin-bottom: 16upx;
+          white-space: nowrap;
 
           .bl-text {
             font-weight: normal;

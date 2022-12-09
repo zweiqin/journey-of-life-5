@@ -17,9 +17,19 @@
         >
       </view>
 
-      <view class="level">
+      <view class="level-wrapper">
         <view class="item">
-          
+          <view class="level">Lv3</view>
+          <view class="j-price-l">任务金额￥12</view>
+          <view class="count">数量26</view>
+          <view class="rest">剩余0</view>
+        </view>
+
+        <view class="item">
+          <view class="level">Lv3</view>
+          <view class="j-price-l">任务金额￥12</view>
+          <view class="count">数量26</view>
+          <view class="rest">剩余0</view>
         </view>
       </view>
     </view>
@@ -64,10 +74,24 @@ export default {};
     border-radius: 0 0 20upx 20upx;
     box-sizing: border-box;
 
-    .top-desc{
+    .top-desc {
       color: #777;
       padding-bottom: 34upx;
       border-bottom: 1upx solid #fa5151;
+    }
+  }
+
+  .level-wrapper {
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20upx 0;
+      color: #fa5151;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 }

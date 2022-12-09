@@ -33,7 +33,7 @@
       style="animation-duration: 300ms"
       class="task-wrapper animate__animated animate__fadeInUp"
     >
-      <Task></Task>
+      <Task full></Task>
       <Task></Task>
     </view>
   </view>

@@ -17,11 +17,16 @@
         </view>
       </view>
 
-      <image
-        class="task-image"
-        src="https://img0.baidu.com/it/u=561734853,2461096286&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500"
-        mode=""
-      />
+      <view style="position: relative">
+        <image
+          class="task-image"
+          src="https://img0.baidu.com/it/u=561734853,2461096286&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500"
+          mode=""
+        />
+        <view class="mask" v-if="full">
+          <image src="../../../../static/images/square/icon3.png" mode="" />
+        </view>
+      </view>
     </view>
 
     <view class="requirement">
@@ -36,14 +41,21 @@
           alt=""
         />
         100+
-        <button class="uni-btn">去报名</button>
+        <button class="uni-btn" :style="{background: full ? '#4968F6' : ''}">{{ full ? '已爆满' : '去报名' }}</button>
       </view>
     </view>
   </view>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    full: {
+      type: Boolean,
+      default: false,
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
@@ -109,6 +121,23 @@ export default {};
 
     .name {
       font-size: 32upx;
+    }
+  }
+
+  .mask{
+    position: absolute;
+    width: 194upx;
+    height: 194upx;
+    background-color: rgba(216, 216, 216, 0.7);
+    top: 0;
+    left: 0;
+    border-radius: 20upx;
+
+    image{
+      margin-top: 37upx;
+      margin-left: 37upx;
+      width: 120upx;
+      height: 120upx;
     }
   }
 

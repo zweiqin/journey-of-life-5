@@ -13,7 +13,7 @@
         <JIcon width="40" height="40" type="voucher"></JIcon>
       </view>
       <view class="my-voucher">我的代金券 {{ allHistory.voucherNumber }}</view>
-      <button class="uni-btn">签到有惊喜</button>
+      <!-- <button class="uni-btn">签到有惊喜</button> -->
     </view>
 
     <!-- 黄色面板 -->

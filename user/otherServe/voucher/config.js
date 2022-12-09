@@ -22,7 +22,7 @@ export const transFormVoucher = [10, 20, 30, 50, 100, 300, 500, 1000];
 export const footerMenus = [
   {
     label: "我的代金劵",
-    url: "",
+    url: '/user/otherServe/voucher/index',
   },
   {
     label: "代金劵流水",
