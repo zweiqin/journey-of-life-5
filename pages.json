@@ -115,7 +115,8 @@
 		{
 			"path": "pages/store/store",
 			"style": {
-				"navigationBarTitleText": "本地生活"
+				"navigationBarTitleText": "本地生活",
+				"enablePullDownRefresh": true
 			}
 		}
 	],

@@ -92,5 +92,6 @@ export const types = {
   "cand": require('../../static/images/square/calendar-2-fill.png'), // 日历
   "square-share": require('../../static/images/square/share.png'),
   "square-collection": require('../../static/images/square/collect.png'),
-  "coupon-color": require("../../static/images/user/conpon.webp")
+  "coupon-color": require("../../static/images/user/conpon.webp"),
+  search: require('../../static/images/store/search.png')
 }
