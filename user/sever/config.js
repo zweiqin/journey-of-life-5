@@ -9,15 +9,19 @@ export const mapApplyStats = (status) => {
 
 export const couponNavs = [
   {
+    label: "全部",
+    value: -1
+  },
+  {
     label: "未使用",
     value: 0,
   },
   {
-    label: "已使用",
+    label: "已过期",
     value: 1,
   },
   {
-    label: "已过期",
+    label: "已下架",
     value: 2,
   }
 ];
