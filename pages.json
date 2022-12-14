@@ -373,6 +373,12 @@
 					"style": {
 						"navigationBarTitleText": "分享名片"
 					}
+				},
+				{
+					"path": "otherServe/brand-manage/index",
+					"style": {
+						"navigationBarTitleText": "门店管理"
+					}
 				}
 			]
 		},
