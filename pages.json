@@ -191,6 +191,12 @@
 						"navigationBarTitleText": "",
 						"usingComponents": {}
 					}
+				},			{
+					"path": "promotionCenter/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
 				},
 				{
 					"path": "site/site-manage",

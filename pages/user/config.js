@@ -245,6 +245,8 @@ export const marketingTools = {
     {
       label: "推广中心",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/o63eczbr410ozaj831bx.png",
+      url:"/user/promotionCenter/index"
+    
     },
   ],
 };

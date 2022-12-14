@@ -13,3 +13,4 @@ export {
   domToImage
 } from "./DWHutils";
 export { formatTime, debounce } from "./util";
+export { nums } from './filter'
