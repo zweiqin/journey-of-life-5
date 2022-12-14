@@ -402,7 +402,7 @@ export default {
       addCollectionsApi({
         userId: getUserId(),
         type: 0,
-        valueId: this.opGoodsList,
+        valueIds: this.opGoodsList,
       }).then(() => {
         uni.showToast({
           title: "移入收藏成功",

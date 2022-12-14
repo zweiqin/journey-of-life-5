@@ -57,6 +57,8 @@ const avatars = [
   "https://img2.baidu.com/it/u=624961992,3958208033&fm=253&fmt=auto&app=138&f=JPEG?w=200&h=200",
 ];
 
+// https://www.jianshu.com/p/74b648b9b9ad
+
 export default {
   props: {
     data: {
