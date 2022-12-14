@@ -96,12 +96,12 @@ export default {
         await api(data);
 
         uni.showToast({
-          title: "注册成功",
+          title: this.type === "register" ? "注册成功" : "密码重置成功",
           duration: 2000,
         });
 
         uni.navigateTo({
-          url: "/pages/login/login?type=register&redirect=/pages/index/index&tabbar=1",
+          url: `/pages/login/login?type=${this.type === 'register' ? 'register' : 'forget'}&redirect=/pages/index/index&tabbar=1`,
         });
       } catch (error) {}
     },
@@ -110,6 +110,9 @@ export default {
   onLoad(options) {
     this.type = options.type;
     this.pageInfo = mapText[options.type];
+    uni.setNavigationBarTitle({
+      title: this.type === "register" ? "注册" : "重置密码",
+    });
   },
 };
 </script>

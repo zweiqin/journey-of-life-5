@@ -25,7 +25,7 @@
 
 <script>
 import { navs } from "./config";
-import ArticlePane from "../pages/marketing-treasure-house/components/article-pane.vue";
+import ArticlePane from "../pages/marketing-treasure-house copy/components/article-pane.vue";
 import { getIndustryInformationListApi } from "../api/marketing-treasure-house";
 import { J_LOACTION } from "../constant";
 

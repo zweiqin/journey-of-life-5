@@ -59,6 +59,7 @@
     <Collapse style="margin-top: 20px" title="业务简介">
       <view class="detail-wrapper">
         <textarea
+          maxlength="1000"
           ref="textareaRef"
           @blur="handleTextareaBlur"
           v-model.trim="form.intro"
@@ -71,6 +72,7 @@
     <Collapse style="margin-top: 20px" title="公司简介">
       <view class="detail-wrapper">
         <textarea
+          maxlength="1000"
           ref="textareaRef"
           v-model="form.companyProfile"
           placeholder="请输入公司简介"
@@ -153,7 +155,7 @@ export default {
         isDefault: false,
         bgColor: "#183869",
         video: "",
-        companyProfile:''
+        companyProfile: "",
       },
 
       imgSrc: "",
@@ -189,9 +191,16 @@ export default {
         }
       }
 
+      if (!this.form.headPic) {
+        this.$showToast("请上传头像");
+        return;
+      }
+
       const api = this.editId ? updateNameCardApi : buildNewMyCardApi;
 
+      uni.showLoading();
       api({ ...this.form, id: this.editId * 1 }).then(() => {
+        uni.hideLoading();
         _this.$showToast(_this.editId ? "编辑成功" : "名片新建成功");
         _this.form = {
           name: "",
@@ -224,7 +233,7 @@ export default {
     // 删除图片
     handleDeleteImg(img) {
       const index = this.form.imgs.findIndex((item) => item === img);
-      if (index !== 0) {
+      if (index !== -1) {
         this.form.imgs.splice(index, 1);
       }
     },
@@ -261,9 +270,17 @@ export default {
         count: 1,
         sourceType: ["camera", "album"],
         success: function (res) {
+          console.log(res.size, res, res.size / 1024);
+
+          if (res.size / 1024 / 1024 > 50) {
+            _this.$showToast("视频最大为50M，请重新上传");
+            return;
+          }
+
           uni.showLoading({
             title: "视频上传中",
           });
+
           uni.uploadFile({
             url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
             filePath: res.tempFilePath,
@@ -299,6 +316,7 @@ export default {
         _this.form.wechat = detailInfo.wechat;
         _this.form.imgs = detailInfo.imgs;
         _this.form.video = detailInfo.video;
+        _this.form.companyProfile = detailInfo.companyProfile;
 
         // Object.assign(_this.form, detailInfo);
       });

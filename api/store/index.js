@@ -43,3 +43,8 @@ export const getCanPickCouponApi = data => {
 export const getMyCouponList = data => {
   return RuanRequest('/coupon/mylist', data, 'get')
 }
+
+// 门店订阅
+export const subscribeStoreApi = data => {
+  return RuanRequest("/userAccount/Rss", data, 'get')
+}

@@ -177,6 +177,8 @@ export default {
           url: "/pages/user/user?bind=" + this.bindUserId,
         });
       }
+    }else if(this.type === 'forget'){
+      this.$showToast("密码重置成功", "success");
     }
   },
 };

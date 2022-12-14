@@ -10,7 +10,8 @@ export {
   getRandom,
   getAddressLongitudeAndLatitude,
   delayedLoginStatus,
-  domToImage
+  domToImage,
+  transformBigNumber
 } from "./DWHutils";
 export { formatTime, debounce } from "./util";
 export { nums } from './filter'

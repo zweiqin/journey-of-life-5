@@ -67,3 +67,9 @@ export const payAllShopCarApi = data => {
 export const payAllGoodsSubmit = data => {
   return RuanRequest('/order/allSubmit', data)
 }
+
+
+// 移入收藏
+export const addCollectionsApi = data => {
+  return RuanRequest("/collect/addBatch", data)
+}

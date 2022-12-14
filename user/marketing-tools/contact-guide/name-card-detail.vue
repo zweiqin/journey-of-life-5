@@ -14,12 +14,20 @@
       </view>
       <view class="top-card">
         <view class="top">
-          <JAvatar
+          <!-- <JAvatar
             v-if="nameCardDetail.headPic"
             :size="160"
             radius="20"
             :src="nameCardDetail.headPic"
+          ></JAvatar> -->
+          <JAvatar
+            v-if="nameCardDetail.headPic"
+            :size="160"
+            radius="20"
+            style="margin-left: 10px"
+            :src="nameCardDetail.headPic"
           ></JAvatar>
+
           <view class="right">
             <view class="name"
               >{{ nameCardDetail.name }}
@@ -29,17 +37,34 @@
                 width="34"
                 height="40"
               ></JIcon>
+              <image
+                style="width: 124.5upx; height: 42upx; float: right"
+                src="../../../static/images/user/jf-name.png"
+                mode=""
+              />
             </view>
             <view>
               <view class="position sub">{{ nameCardDetail.position }}</view>
               <view class="company sub">{{ nameCardDetail.business }}</view>
             </view>
           </view>
+
+          <!-- <view style="font-size: 16px; width: 40px; margin-left: 10px">
+            <image
+              style="margin-top: 10px; width: 124.5upx; height: 42upx"
+              src="../../../static/images/user/jf-name.png"
+              mode=""
+            />
+          </view> -->
         </view>
 
         <view class="main-card-item">
           <JIcon width="30" height="30" type="phone"></JIcon
-          ><view class="main-card-text">{{ nameCardDetail.phone }}</view></view
+          ><view
+            class="main-card-text"
+            @click="callPhone(nameCardDetail.phone)"
+            >{{ nameCardDetail.phone }}</view
+          ></view
         >
 
         <view class="main-card-item">
@@ -49,14 +74,20 @@
           }}</view></view
         >
 
-        <view class="icon">
+        <!-- <view class="icon">
           <JIcon
             style="margin-top: 10px"
             type="tuanfeng"
             width="124.5"
             height="42"
           ></JIcon>
-        </view>
+
+          <image
+            style="margin-top: 10px; width: 124.5upx; height: 42upx"
+            src="../../../static/images/user/jf-name.png"
+            mode=""
+          />
+        </view> -->
       </view>
 
       <view class="sub-name-card top-card">
@@ -89,7 +120,9 @@
         <view class="pane-cheat-item">
           <JIcon width="36" height="36" type="mobile"></JIcon>
           <view class="title">手机</view>
-          <view class="value">{{ nameCardDetail.phone }}</view>
+          <view class="value" @click="callPhone(nameCardDetail.phone)">{{
+            nameCardDetail.phone
+          }}</view>
         </view>
 
         <view class="pane-cheat-item">
@@ -107,12 +140,18 @@
 
       <view class="pane" v-if="nameCardDetail.intro">
         <view class="pane-title">业务简介</view>
-        <view class="content" v-html="nameCardDetail.intro"></view>
+        <view
+          class="content"
+          v-html="nameCardDetail.intro.replaceAll('\n', '<br/>')"
+        ></view>
       </view>
 
       <view class="pane" v-if="nameCardDetail.companyProfile">
         <view class="pane-title">公司简介</view>
-        <view class="content" v-html="nameCardDetail.companyProfile"></view>
+        <view
+          class="content"
+          v-html="nameCardDetail.companyProfile.replaceAll('\n', '<br/>')"
+        ></view>
       </view>
 
       <view
@@ -182,11 +221,13 @@ export default {
   },
   methods: {
     getNameCardDetail() {
+      uni.showLoading();
       const _this = this;
       getNameCardDetailApi({
         id: this.nameCardId,
       }).then(({ data }) => {
         _this.nameCardDetail = data.businessCard;
+        uni.hideLoading();
       });
     },
 
@@ -213,6 +254,14 @@ export default {
         url:
           "/user/marketing-tools/contact-guide/share-card?id=" +
           this.nameCardId,
+      });
+    },
+
+    // 拨打电话
+    callPhone(phone) {
+      console.log(phone);
+      uni.makePhoneCall({
+        phoneNumber: phone,
       });
     },
   },
@@ -276,6 +325,7 @@ export default {
         margin-bottom: 30upx;
 
         .right {
+          flex: 1;
           margin-left: 26upx;
           display: flex;
           justify-content: space-between;
@@ -343,7 +393,7 @@ export default {
     }
 
     .content {
-      font-size: 24upx;
+      font-size: 28upx;
       color: #3d3d3d;
       line-height: 2;
     }

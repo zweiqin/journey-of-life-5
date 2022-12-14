@@ -115,7 +115,8 @@
 		{
 			"path": "pages/store/store",
 			"style": {
-				"navigationBarTitleText": "本地生活"
+				"navigationBarTitleText": "本地生活",
+				"enablePullDownRefresh": true
 			}
 		}
 	],
@@ -378,6 +379,12 @@
 					"style": {
 						"navigationBarTitleText": "分享名片"
 					}
+				},
+				{
+					"path": "otherServe/brand-manage/index",
+					"style": {
+						"navigationBarTitleText": "门店管理"
+					}
 				}
 			]
 		},
@@ -452,6 +459,24 @@
 					"path": "marketing-house",
 					"style": {
 						"navigationBarTitleText": "营销宝库"
+					}
+				},
+				{
+					"path": "daren-square/daren-center",
+					"style": {
+						"navigationBarTitleText": "我的达人"
+					}
+				},
+				{
+					"path": "daren-square/apply-daren",
+					"style": {
+						"navigationBarTitleText": "达人入驻"
+					}
+				},
+				{
+					"path": "daren-square/task-detail",
+					"style": {
+						"navigationBarTitleText": "任务详情"
 					}
 				}
 			]

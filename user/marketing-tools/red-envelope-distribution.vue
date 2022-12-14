@@ -16,6 +16,7 @@
       <view class="title">红包金额</view>
       <input
         type="number"
+        placeholder="请输入红包金额"
         v-model.number="redForm.redpackMonkey"
         class="input-el"
       />
@@ -31,6 +32,7 @@
       <view class="title">红包个数</view>
       <input
         type="number"
+        placeholder="请输入红包个数"
         v-model.number="redForm.redpackNumber"
         class="input-el"
       />
@@ -145,8 +147,8 @@ export default {
   data() {
     return {
       redForm: {
-        redpackNumber: 1,
-        redpackMonkey: 1,
+        redpackNumber: '',
+        redpackMonkey: '',
         remark: "",
         imageUrl: "",
         effectiveDistance: 1,
@@ -347,6 +349,7 @@ export default {
     display: flex;
     align-items: center;
     padding: 20upx 0;
+    padding-right: 20upx;
     border-bottom: 1upx solid #d8d8d8;
 
     .title {

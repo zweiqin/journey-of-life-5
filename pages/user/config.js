@@ -267,9 +267,10 @@ export const otherServe = {
       role: [1,2]
     },
     {
-      label: "",
-      icon: '',
-      type: '',
+      label: "门店管理",
+      icon: require('../../static/images/user/brand-manage.png'),
+      role: [1,2],
+      url: '/user/otherServe/brand-manage/index'
     },
     {
       label: "",

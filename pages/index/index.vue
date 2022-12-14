@@ -419,12 +419,11 @@ export default {
 
   computed: {
     bannerComputed() {
-      console.log(
-        this.currentNav.background.slice(
-          0,
-          this.currentNav.background.length - 1
-        ) + ", #fff)"
-      );
+      this.currentNav.background.slice(
+        0,
+        this.currentNav.background.length - 1
+      ) + ", #fff)";
+
       return (
         this.currentNav.background.slice(
           0,
@@ -436,7 +435,7 @@ export default {
 
   watch: {
     isShowItemPane(value) {
-      if (value) {
+      if (!value) {
         uni.pageScrollTo({
           scrollTop: 0,
           duration: 300,

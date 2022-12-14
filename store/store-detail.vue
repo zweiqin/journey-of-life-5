@@ -11,6 +11,12 @@
             mode=""
           />
           <image
+            @click="handleSub"
+            class="icon"
+            src="/static/images/store/sub.png"
+            mode=""
+          />
+          <image
             class="icon"
             src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/11ndambq3umo4c3imxqx.png"
             mode=""
@@ -183,7 +189,7 @@ import { storeDetailNavs } from "./config";
 import GoodsPanel from "./components/goods-pane.vue";
 import Evaluate from "./components/evaluate.vue";
 import Coupon from "./components/coupon.vue";
-import { getStoreDetailApi } from "../api/store";
+import { getStoreDetailApi, subscribeStoreApi } from "../api/store";
 import { updateShopCarCountApi, deleteShopCarGoodsApi } from "../api/cart";
 import { getShopCarApi } from "../api/goods";
 import { getGoodsById } from "../api/home";
@@ -379,6 +385,14 @@ export default {
         _this.shopCarVisible = false;
       });
     },
+
+    // 订阅
+    handleSub() {
+      const _this = this
+      subscribeStoreApi({userId: getUserId(), brandId: this.storeId}).then(({data}) => {
+      _this.$showToast(data ? '订阅成功' : '取消订阅成功')
+      });
+    },
   },
 
   mounted() {
@@ -445,10 +459,11 @@ export default {
     .icon {
       width: 40upx;
       height: 40upx;
+      margin-left: 30upx;
 
-      &:last-child {
-        margin-left: 30upx;
-      }
+      // &:last-child {
+      //   margin-left: 30upx;
+      // }
     }
   }
 

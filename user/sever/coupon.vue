@@ -30,6 +30,8 @@
       <Coupon></Coupon>
       <Coupon></Coupon> -->
     </view>
+
+    <JNoData text="暂无优惠劵" type="coupon-color"></JNoData>
   </view>
 </template>
 
@@ -46,8 +48,12 @@ export default {
   data() {
     return {
       couponNavs,
-      currentNav: 0,
+      currentNav: -1,
       currentFilter: "",
+      query: {
+        page: 1,
+        size: 10
+      }
     };
   },
 
@@ -59,17 +65,21 @@ export default {
     // 切换tab
     switchTab(currentNav) {
       this.currentNav = currentNav;
+      this.getCoupons()
     },
 
     // 获取优惠劵
     getCoupons() {
+      uni.showLoading({
+        title: "加载中",
+      });
       getMyCouponListApi({
         userId: getUserId(),
         brandId: 0,
-        page: 1,
-        size: 10
+        ...this.query
       }).then((res) => {
         console.log(res);
+        uni.hideLoading()
       });
     },
   },

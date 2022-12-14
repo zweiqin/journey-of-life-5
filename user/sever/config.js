@@ -9,15 +9,19 @@ export const mapApplyStats = (status) => {
 
 export const couponNavs = [
   {
+    label: "全部",
+    value: -1
+  },
+  {
     label: "未使用",
     value: 0,
   },
   {
-    label: "已使用",
+    label: "已过期",
     value: 1,
   },
   {
-    label: "已过期",
+    label: "已下架",
     value: 2,
   }
 ];
@@ -28,7 +32,7 @@ export const vips = [
     label: "会员升级",
     powerUrl:
       "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/78ixjkl9eg69fjlcgi22.png",
-    price: "99",
+    price: "1000",
     type: 4,
     style: {
       height: "133upx",

@@ -1,3 +1,5 @@
+import * as _ from 'lodash'
+
 import {
 	whoami
 } from '../api/auth'
@@ -71,7 +73,7 @@ export const getUserId = () => {
 		uni.showModal({
 			title: '提示',
 			content: '您还未登录，是否去登录？',
-			success: function(res) {
+			success: function (res) {
 				if (res.confirm) {
 					uni.navigateTo({
 						url: '/pages/login/login',
@@ -115,7 +117,7 @@ export const useCopy = text => {
 export function handleDebounce(func, wait, immediate) {
 	let timeout
 
-	return function() {
+	return function () {
 		let context = this
 		let args = arguments
 
@@ -127,7 +129,7 @@ export function handleDebounce(func, wait, immediate) {
 			}, wait)
 			if (callNow) func.apply(context, args)
 		} else {
-			timeout = setTimeout(function() {
+			timeout = setTimeout(function () {
 				func.apply(context, args)
 			}, wait)
 		}
@@ -146,10 +148,10 @@ export function getRandom(min, max) {
 export const getAddressLongitudeAndLatitude = address => {
 	return new Promise((resolve, reject) => {
 		jsonp('https://apis.map.qq.com/ws/geocoder/v1/', {
-				key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH',
-				address: address,
-				output: 'jsonp',
-			})
+			key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH',
+			address: address,
+			output: 'jsonp',
+		})
 			.then(res => {
 				resolve(res)
 			})
@@ -181,9 +183,9 @@ export const getAdressDetailByLngLat = (lat, lng) => {
 	return new Promise((resolve, reject) => {
 		// #ifdef H5
 		jsonp('https://restapi.amap.com/v3/geocode/regeo', {
-				key: 'fcd4b7ee70f357abeffaef7b43d364b3',
-				location: `${lng},${lat}`
-			})
+			key: 'fcd4b7ee70f357abeffaef7b43d364b3',
+			location: `${lng},${lat}`
+		})
 			.then(res => {
 				resolve(res)
 			})
@@ -267,4 +269,24 @@ export const domToImage = el => {
 		const image = canvas.toDataURL('image/png')
 		console.log("来了", image);
 	})
+}
+
+
+// 大数转换
+export const transformBigNumber = (number) => {
+	if (typeof Number(number) === 'number') {
+		let str = number + ''
+		if (str.includes('.')) {
+			const index = str.indexOf('.')
+			str = index !== -1 ? str.slice(0, index) : str
+		}
+
+		if (str.length > 4 && str.length <= 8) {
+			return `${_.round(str.slice(0, -(str.length - 4)) + '.' + str.slice(-4).slice(0, 1))}万`
+		} else if (str.length > 8) {
+			return `${_.round(str.slice(0, -(str.length - 8)) + "." + str.slice(-8).slice(0, 1))}亿`
+		}
+	}
+
+	return number
 }
