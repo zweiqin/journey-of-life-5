@@ -1,6 +1,7 @@
 import Vue from "vue";
 import App from "./App";
-
+import * as echarts from 'echarts';
+Vue.prototype.$echarts = echarts;
 Vue.config.productionTip = false;
 // import 'animate.css'
 

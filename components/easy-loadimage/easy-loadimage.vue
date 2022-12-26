@@ -17,7 +17,6 @@
     <view class="loadfail-img" v-else-if="isLoadError"></view>
     <view
       :class="['loading-img']"
-      :style="{background: randomRGB()}"
       v-show="!showImg && !isLoadError"
     ></view>
   </view>

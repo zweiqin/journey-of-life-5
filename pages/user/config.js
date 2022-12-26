@@ -194,7 +194,7 @@ export const digitalStore = {
     {
       label: "业务管理",
       icon: require("../../static/images/user/yewuguanli.png"),
-      url: "/user/digital-store/business/index",
+      url: "/user/digital-store/newBusiness/index",
       role: [1,2]
     },
   ],
@@ -245,6 +245,8 @@ export const marketingTools = {
     {
       label: "推广中心",
       icon: "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/o63eczbr410ozaj831bx.png",
+      url:"/user/promotionCenter/index"
+    
     },
   ],
 };

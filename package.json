@@ -21,7 +21,8 @@
   "dependencies": {
     "animate.css": "^4.1.1",
     "crypto-js": "^4.1.1",
-    "echarts": "^5.3.3",
+    "dayjs": "^1.11.7",
+    "echarts": "^5.4.0",
     "html2canvas": "^1.4.1",
     "jsqr": "^1.4.0",
     "jweixin-module": "^1.6.0",

@@ -16,6 +16,18 @@
 			}
 		},
 		{
+			"path": "user/digital-store/newBusiness/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "user/digital-store/newBusiness/addUser/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
 			"path": "pages/red-envelope/red-envelope",
 			"style": {
 				"navigationBarTitleText": "地图红包"
@@ -118,6 +130,12 @@
 				"navigationBarTitleText": "本地生活",
 				"enablePullDownRefresh": true
 			}
+		},
+		{
+			"path": "pages/categoryGoods/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
 		}
 	],
 	"tabBar": {
@@ -188,6 +206,13 @@
 				},
 				{
 					"path": "sever/shop-car",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "promotionCenter/index",
 					"style": {
 						"navigationBarTitleText": "",
 						"usingComponents": {}

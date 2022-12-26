@@ -99,6 +99,7 @@ export default {
   methods: {
     handleAwipperChange(e) {
       const current = e.detail.current;
+      console.log(e);
       this.$emit("change", current);
     },
 

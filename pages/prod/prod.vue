@@ -26,7 +26,7 @@
 
         <view class="bottom">
           <view class="tag">厂家直销</view>
-          <view class="tag">会员促销</view>
+          <view class="tag">代金券100%抵扣</view>
         </view>
       </view>
     </view>
@@ -121,9 +121,7 @@
     </view>
 
     <!-- <view class="detail-img" v-html="goodsInfo.info.detail"></view> -->
-
     <u-parse v-if="goodsInfo.info.detail" :content="goodsInfoDetail"></u-parse>
-
     <!-- 常见问题 -->
     <view class="problems">
       <view class="title"></view>
@@ -776,7 +774,6 @@ export default {
 
       .text {
         white-space: nowrap;
-
       }
 
       .name {

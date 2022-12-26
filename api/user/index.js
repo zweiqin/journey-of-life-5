@@ -316,3 +316,13 @@ export const getNameCardDetailApi = data => {
 export const updateNameCardApi = data => {
   return RuanRequest('/businessCard/update', data)
 }
+
+export const promotionCommissionApi = data => {
+  return RuanRequest('/promotion/commission', data, 'get')
+}
+//推广中心
+
+export const promotionOrderAndFansApi = data => {
+  return RuanRequest('/promotion/orderAndFans', data, 'get')
+}
+
