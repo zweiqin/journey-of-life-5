@@ -53,7 +53,6 @@
     </view>
 
     <button
-      :disabled="!btnOp"
       class="btn"
       type="primary"
       @click="handleGiveVoucher"
