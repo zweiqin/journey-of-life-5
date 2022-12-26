@@ -1,7 +1,11 @@
 <template>
   <view class="store-detail-container" v-if="storeDetail">
     <view class="detail-info">
-      <image class="background-img" :src="storeDetail.picUrl" mode="" />
+      <image
+        class="background-img"
+        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/d56tkrtxkmzsbkifhem8.png "
+        mode=""
+      />
       <view class="icons">
         <JBack tabbar="/pages/store/store"></JBack>
         <view class="right">
@@ -25,7 +29,7 @@
       </view>
 
       <view class="detail-info-wrapper">
-        <JAvatar :size="160" :src="storeDetail.picUrl"></JAvatar>
+        <JAvatar :size="160" :src="picUrl"></JAvatar>
         <view class="detail-info-ccontent">
           <view class="name">{{ storeDetail.name }} </view>
           <JTo
@@ -49,7 +53,7 @@
           alt=""
         />
 
-        <text class="text">店铺公告：{{ storeDetail.address }}</text>
+        <text class="text">店铺公告：{{ storeDetail.desc || "暂无公告" }}</text>
       </view>
       <view class="ops"> </view>
     </view>
@@ -201,6 +205,7 @@ import { J_USER_ID } from "../constant";
 export default {
   data() {
     return {
+      picUrl: "",
       storeDetailNavs,
       swipterHeight: 0,
       storeDetailLabels: [
@@ -285,6 +290,8 @@ export default {
       const _this = this;
       getStoreDetailApi(this.storeId).then(({ data }) => {
         _this.storeDetail = data.brand;
+        this.getHttpPicUrl();
+
         uni.setNavigationBarTitle({
           title: _this.storeDetail.name,
         });
@@ -388,10 +395,21 @@ export default {
 
     // 订阅
     handleSub() {
-      const _this = this
-      subscribeStoreApi({userId: getUserId(), brandId: this.storeId}).then(({data}) => {
-      _this.$showToast(data ? '订阅成功' : '取消订阅成功')
-      });
+      const _this = this;
+      subscribeStoreApi({ userId: getUserId(), brandId: this.storeId }).then(
+        ({ data }) => {
+          _this.$showToast(data ? "订阅成功" : "取消订阅成功");
+        }
+      );
+    },
+    getHttpPicUrl() {
+      if (this.storeDetail.picUrl.includes("https")) {
+        this.picUrl = this.storeDetail.picUrl
+      } else {
+        this.picUrl =
+          "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/" +
+          this.storeDetail.picUrl;
+      }
     },
   },
 
@@ -449,7 +467,7 @@ export default {
     object-fit: cover;
     border-radius: 0 0 40upx 40upx;
     z-index: -1;
-    filter: blur(7px);
+    filter: blur(2px);
   }
 
   .icons {

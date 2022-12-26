@@ -49,7 +49,8 @@ export default {
           getAdressDetailByLngLat(res.latitude, res.longitude)
             .then((res) => {
               if (res.status == "1") {
-                const result = res.regeocode.addressComponent.city;
+                // console.log(123, res);
+                const result = res.regeocode.addressComponent.township;
                 _this.address = result;
               }
             })

@@ -56,13 +56,19 @@
       </view>
 
       <view v-if="data.length">
-        <JStorePane
+        <!-- <JStorePane
           :scrollTop="scrollTop"
           v-for="(item, index) in data"
           :storeInfo="item"
           :key="index"
-        ></JStorePane>
-      </view>
+        ></JStorePane> -->
+        <view class="storeBackground">
+          <JStorePane
+            v-for="item in data"
+            :key="item.id"
+            :storeInfo="item"
+          ></JStorePane> </view
+      ></view>
       <JNoData v-else text="暂无门店信息" type="store"></JNoData>
     </view>
   </view>
@@ -70,6 +76,7 @@
 
 <script>
 import ActivePane from "./components/active-pane.vue";
+
 import { getStoreAndGoods } from "../../api/store";
 import { J_STORE_TYPES, J_LOACTION } from "../../constant";
 import { delayedLoginStatus } from "../../utils";
@@ -184,7 +191,7 @@ export default {
 
     // 获取门店列表
     getStoreList(isMore) {
-      const _this = this
+      const _this = this;
       getStoreAndGoods(this.query).then(({ data }) => {
         _this.totalPage = data.totalPage;
         if (isMore) {
@@ -198,6 +205,7 @@ export default {
             return item.goodsList && item.goodsList.length >= 1;
           });
         }
+        console.log(_this.data);
       });
     },
   },
@@ -362,13 +370,14 @@ export default {
 }
 
 .store-list {
-  padding: 16upx;
   box-sizing: border-box;
-
   .header {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20upx;
+  }
+  .storeBackground{
+    background: #EFEFEF;
   }
 }
 

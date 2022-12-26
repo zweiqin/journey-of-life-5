@@ -194,7 +194,7 @@ export const digitalStore = {
     {
       label: "业务管理",
       icon: require("../../static/images/user/yewuguanli.png"),
-      url: "/user/digital-store/business/index",
+      url: "/user/digital-store/newBusiness/index",
       role: [1,2]
     },
   ],

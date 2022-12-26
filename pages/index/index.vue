@@ -293,6 +293,8 @@ export default {
       if (this.footerQuery.isHot) {
         delete this.footerQuery.isNew;
       }
+
+      
       const _this = this;
       getGoodsById({ ...this.footerQuery }).then(({ data }) => {
         if (isLoadMore) {
@@ -307,22 +309,25 @@ export default {
 
     // 点击navs
     handleNavItemClick(nav) {
-      this.currentCategoryId = nav.id;
-      this.getOrderList();
-      // this.$refs.swipperRef.$el.style.height = 0;
-      nav.background = nav.background.replace("137deg", "to bottom");
-      this.currentNav = nav;
-      this.currentActive = 0;
-      this.queryInfo = {
-        page: 1,
-        size: 10,
-        totalPage: 0,
-      };
-      this.isShowItemPane = true;
+      const id = nav.id
+      uni.navigateTo({ url: `/pages/categoryGoods/index?id=${id}` })
 
-      this.$nextTick(() => {
-        this.$refs.jTabsRef.setScrollBar();
-      });
+      // this.currentCategoryId = nav.id;
+      // this.getOrderList();
+      // // this.$refs.swipperRef.$el.style.height = 0;
+      // nav.background = nav.background.replace("137deg", "to bottom");
+      // this.currentNav = nav;
+      // this.currentActive = 0;
+      // this.queryInfo = {
+      //   page: 1,
+      //   size: 10,
+      //   totalPage: 0,
+      // };
+      // this.isShowItemPane = true;
+
+      // this.$nextTick(() => {
+      //   this.$refs.jTabsRef.setScrollBar();
+      // });
     },
 
     // 获取首页数据

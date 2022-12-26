@@ -46,7 +46,9 @@
 import { brokerageTime, brokerageTitle } from "./config";
 export default {
   name: "promotionBrokerage",
-  props: {},
+  props: {
+    data: [String, Object],
+  },
   data() {
     return { brokerageTime, brokerageTitle, currentTab: 0 };
   },
@@ -54,6 +56,7 @@ export default {
   methods: {
     touchTime(tab) {
       this.currentTab = tab;
+      this.$emit("dayNumber", tab);
     },
   },
   watch: {},

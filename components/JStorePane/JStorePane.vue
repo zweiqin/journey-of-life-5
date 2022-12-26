@@ -1,407 +1,294 @@
 <template>
-  <view class="panel">
-    <view class="header">
-      <img
-        class="avatar"
-        :src="
-          storeInfo.brand.logo ||
-          'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/alo7i1qewcuj4305mrr3.png'
-        "
-        alt=""
-      />
-      <view class="info">
-        <view class="name">{{ storeInfo.brand.name }}</view>
-        <view class="tem">
-          <Rate :rate="5" :size="10"></Rate>
-          <view class="type">{{ getTypes(storeInfo.brand.brandgenre) }}</view>
-          <view class="year">10年老店</view>
+  <view class="service-station">
+    <view class="centre">
+      <view class="top">
+        <view class="left">
+          <view class="title">{{
+            storeInfo.brand.name || "团蜂家居社区服务站"
+          }}</view>
+          <view class="eva">
+            <img
+              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/g58vmepof8496v2stqvc.png"
+              alt=""
+              class="img"
+            />
+            <view class="year">1年</view>
+            <star rate="5" style="white-space: nowrap"></star>
+            <view class="star">5.0星</view>
+          </view>
+          <view class="sign">
+            <view class="text">及时服务</view>
+            <view class="text">官方直营</view>
+          </view>
+          <view class="main">
+            <view class="name">简介：</view>
+            <view class="home">{{ storeInfo.brand.desc || "暂无介绍" }}</view>
+          </view>
+        </view>
+        <view class="right">
+          <view class="enter" @click="handleEnterStore">进店</view>
+          <view class="address">
+            <img
+              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/siqsm9fzuch90mdw5rep.png"
+              alt=""
+              class="location"
+            />
+            <view class="name">{{
+              storeInfo.brand.address.slice(0, 6) || "暂无地址"
+            }}</view>
+          </view>
         </view>
       </view>
-      <button class="btn" @click="handleEnterStore">进店</button>
-    </view>
-
-    <!-- 三张图 -->
-    <view class="goods-layout three" v-if="storeInfo.goodsList.length >= 3">
-      <view @click="handleEnterStore">
-        <easy-loadimage
-          class="store"
-          :loading-mode="lazyLoadingMode"
-          :scroll-top="scrollTop"
-          :image-src="storeInfo.brand.picUrl"
-        ></easy-loadimage>
-      </view>
-
-      <view class="right">
-        <view @click="handleViewDetail(storeInfo.goodsList[1])">
-          <easy-loadimage
-            :loading-mode="lazyLoadingMode"
-            :scroll-top="scrollTop"
-            class="img"
-            style="border-radius: 0 20upx 0 0"
-            :image-src="storeInfo.goodsList[1].picUrl"
-          ></easy-loadimage>
-        </view>
-
-        <view @click="handleViewDetail(storeInfo.goodsList[2])">
-          <easy-loadimage
-            :loading-mode="lazyLoadingMode"
-            class="img"
-            style="border-radius: 0 0 20upx 0"
-            :scroll-top="scrollTop"
-            :image-src="storeInfo.goodsList[2].picUrl"
-          ></easy-loadimage>
+      <view class="mid">
+        <view class="shop-list">
+          <view
+            class="item"
+            @click="handleToViewGoodsDetail(item.id)"
+            v-for="item in goodsList"
+            :key="item.id"
+          >
+            <img :src="item.picUrl" alt="" class="shop" />
+            <view class="sub">
+              <view class="goodsName">{{ item.name }}</view>
+              <view class="p">
+                <view class="symbol">￥</view>
+                <view class="money">{{ item.retailPrice }}</view>
+              </view>
+            </view>
+          </view>
+          <!-- <view class="item">
+            <img
+              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lgu5io706xc02zrlkezh.png"
+              alt=""
+              class="shop"
+            />
+            <view class="sub">
+              <view class="name">北欧科技布沙发</view>
+              <view class="p">
+                <view class="symbol">￥</view>
+                <view class="money">3099</view>
+              </view>
+            </view>
+          </view> -->
         </view>
       </view>
-
-      <view class="price-icon price-icon-1"
-        >￥{{ storeInfo.goodsList[1].retailPrice }}</view
-      >
-      <view class="price-icon price-icon-2"
-        >￥{{ storeInfo.goodsList[2].retailPrice }}</view
-      >
     </view>
-
-    <!-- 一张图 -->
-    <view
-      class="goods-layout one animate__flipInX"
-      v-if="storeInfo.goodsList.length === 1"
-      @click="handleViewDetail(storeInfo.goodsList[0])"
-    >
-      <easy-loadimage
-        :loading-mode="lazyLoadingMode"
-        class="img"
-        :scroll-top="scrollTop"
-        :image-src="storeInfo.goodsList[0].picUrl"
-      ></easy-loadimage>
-      <view class="price-icon">￥{{ storeInfo.goodsList[0].retailPrice }}</view>
-    </view>
-
-    <!-- 两张图 -->
-    <!-- <view class="goods-layout two" v-if="info.goodsList.length === 2">
-      <view @click="handleViewDetail(info.goodsList[0])">
-        <easy-loadimage
-          :loading-mode="lazyLoadingMode"
-          class="img"
-          :scroll-top="scrollTop"
-          :image-src="info.goodsList[0].picUrl"
-        ></easy-loadimage>
-      </view>
-
-      <view @click="handleViewDetail(info.goodsList[1])">
-        <easy-loadimage
-          :loading-mode="lazyLoadingMode"
-          class="img"
-          :scroll-top="scrollTop"
-          :image-src="info.goodsList[1].picUrl"
-        ></easy-loadimage>
-      </view>
-
-      <view class="price-icon" style="left: 0; top: 20upx"
-        >￥{{ info.goodsList[0].retailPrice }}</view
-      ><view
-        class="price-icon"
-        style="top: 20upx; right: 0; border-radius: 100px 0 0 100px"
-        >￥{{ info.goodsList[1].retailPrice }}</view
-      >
-    </view> -->
   </view>
 </template>
 
 <script>
-import Rate from "../rate";
+import star from "../../components/rate";
 export default {
-  components: {
-    Rate,
-  },
+  name: "community",
   props: {
-    storeInfo: Object,
-    scrollTop: Number,
+    storeInfo: [Object, Array],
   },
+  components: { star },
+
   data() {
     return {
-      info: {},
+      goodsList: "",
+      picUrl: "",
     };
   },
-
-  // watch: {
-  //   storeInfo: {
-  //     handler(value) {
-  //       console.log("来了门店信息", value);
-  //       this.storeInfo = value;
-  //     },
-
-  //     immediate: true,
-  //     deep: true,
-  //   },
-  // },
+  computed: {},
   methods: {
-    /**
-     * @description 点击进店
-     */
+    getGoodsList() {
+      if (this.storeInfo.goodsList.length >= 3) {
+        this.goodsList = this.storeInfo.goodsList.slice(0, 3);
+        console.log(this.goodsList);
+      }
+    },
     handleEnterStore() {
       uni.navigateTo({
         url: "/store/store-detail?storeId=" + this.storeInfo.brand.id,
       });
     },
-
-    // 获取types
-    getTypes(value) {
-      const stores = [
-        {
-          storeName: "综合",
-          id: 0,
-        },
-        {
-          id: 14,
-          storeName: "附近美食",
-          addTime: "2022-10-31 11:41:35",
-          updateTime: "2022-10-31 11:41:35",
-          deleted: false,
-        },
-        {
-          id: 21,
-          storeName: "美甲美睫",
-          addTime: "2022-10-31 11:43:50",
-          updateTime: "2022-10-31 11:43:50",
-          deleted: false,
-        },
-        {
-          id: 20,
-          storeName: "运动健身",
-          addTime: "2022-10-31 11:43:38",
-          updateTime: "2022-10-31 11:43:38",
-          deleted: false,
-        },
-        {
-          id: 19,
-          storeName: "亲子",
-          addTime: "2022-10-31 11:43:26",
-          updateTime: "2022-10-31 11:43:26",
-          deleted: false,
-        },
-        {
-          id: 18,
-          storeName: "住宿",
-          addTime: "2022-10-31 11:43:16",
-          updateTime: "2022-10-31 11:43:16",
-          deleted: false,
-        },
-        {
-          id: 17,
-          storeName: "丽人/美发",
-          addTime: "2022-10-31 11:43:05",
-          updateTime: "2022-10-31 11:43:05",
-          deleted: false,
-        },
-        {
-          id: 16,
-          storeName: "游玩",
-          addTime: "2022-10-31 11:42:34",
-          updateTime: "2022-10-31 11:42:34",
-          deleted: false,
-        },
-        {
-          id: 15,
-          storeName: "休闲娱乐",
-          addTime: "2022-10-31 11:42:22",
-          updateTime: "2022-10-31 11:42:22",
-          deleted: false,
-        },
-      ];
-
-      return this.setTypes(stores, value);
-    },
-
-    setTypes(types, type) {
-      const item = types.find((item) => item.id === type);
-      return item && item.storeName;
-    },
-
-    handleViewDetail(info) {
+    handleToViewGoodsDetail(e) {
       uni.navigateTo({
-        url: "/pages/prod/prod?goodsId=" + info.id,
+        url: "/pages/prod/prod?goodsId=" + e,
       });
     },
+
   },
+  watch: {},
+
+  // 组件周期函数--监听组件挂载完毕
+  mounted() {
+    this.getGoodsList();
+  },
+  // 组件周期函数--监听组件数据更新之前
+  beforeUpdate() {},
+  // 组件周期函数--监听组件数据更新之后
+  updated() {},
+  // 组件周期函数--监听组件激活(显示)
+  activated() {},
+  // 组件周期函数--监听组件停用(隐藏)
+  deactivated() {},
+  // 组件周期函数--监听组件销毁之前
+  beforeDestroy() {},
 };
 </script>
-
 <style lang="less" scoped>
-.panel {
-  margin-bottom: 52upx;
-
-  .header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20upx;
-
-    .avatar {
-      width: 80upx;
-      height: 80upx;
-      border-radius: 50%;
-      margin-right: 28upx;
-    }
-
-    .info {
-      flex: 1;
-      .name {
-        color: #3d3d3d;
-        font-size: 24upx;
-        font-weight: bold;
-        margin-bottom: 12upx;
-      }
-      .tem {
-        display: flex;
-        align-items: center;
-      }
-      .rate {
-        margin-right: 6upx;
-        img {
-          width: 22upx;
-          height: 22upx;
-          vertical-align: -4upx;
-          margin-right: 4upx;
-        }
-      }
-
-      .tem,
-      .year {
-        color: #3d3d3d;
-        font-size: 20upx;
-      }
-
-      .type {
-        padding: 0 14upx 0 4upx;
-        border-right: 4upx solid #ccc;
-      }
-
-      .year {
-        padding-left: 14upx;
-      }
-    }
-
-    .btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 110upx;
-      height: 36upx;
-      background-color: #07b9b9;
-      border-radius: 40upx;
-      color: #fff;
-      font-size: 20upx;
-      padding-top: 2upx;
-    }
-  }
-
-  .goods-layout {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-
-    .store {
-      width: 496upx;
-      height: 300upx;
-      border-radius: 20upx 0 0 20upx;
-      margin-right: 6upx;
-      overflow: hidden;
-    }
-
-    .right {
+.service-station {
+  padding: 20upx;
+  margin: 0 0 15upx 0;
+  background: #ffffff;
+  .centre {
+    .top {
       display: flex;
       justify-content: space-between;
-      flex-direction: column;
-      flex: 1;
-
-      .img {
-        height: 146upx;
-        overflow: hidden;
+      .left {
+        width: 60%;
+        height: 192upx;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .title {
+          font-size: 32upx;
+          font-weight: 600;
+          color: #3d3d3d;
+          white-space: nowrap;
+        }
+        .eva {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .img {
+            width: 28upx;
+            height: 28upx;
+          }
+          .year {
+            font-size: 28upx;
+            color: #999999;
+            white-space: nowrap;
+          }
+          .star {
+            font-size: 28upx;
+            color: #ff8f1f;
+            white-space: nowrap;
+          }
+        }
+        .sign {
+          display: flex;
+          // width: 60%;
+          // justify-content: space-between;
+          .text {
+            // width: 112upx;
+            // height: 36upx;
+            padding: 3upx 10upx;
+            border-radius: 4upx;
+            border: 2upx solid #3662ec;
+            box-sizing: border-box;
+            font-size: 24upx;
+            font-weight: 500;
+            color: #3662ec;
+            text-align: center;
+            white-space: nowrap;
+            margin-right: 28upx;
+          }
+        }
+        .main {
+          font-size: 28upx;
+          color: #999999;
+          display: flex;
+          // justify-content: space-between;
+          // width: 65%;
+          white-space: nowrap;
+          .name {
+            width: 100upx;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .home {
+            height: 36upx;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          .repair {
+            margin-left: 26upx;
+          }
+        }
+      }
+      .right {
+        height: 192upx;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: flex-end;
+        .enter {
+          width: 100upx;
+          height: 42upx;
+          border-radius: 10upx;
+          background: #3662ec;
+          font-size: 28upx;
+          font-weight: 500;
+          color: #ffffff;
+          text-align: center;
+        }
+        .address {
+          display: flex;
+          align-items: center;
+          .location {
+            width: 28upx;
+            height: 28upx;
+          }
+          .name {
+            font-size: 28upx;
+            color: #999999;
+          }
+        }
       }
     }
-  }
-
-  .one {
-    position: relative;
-    width: 100%;
-    border-radius: 20upx;
-    overflow: hidden;
-
-    .img {
-      width: 100%;
-      height: 300upx;
-      object-fit: cover;
-    }
-
-    .price-icon {
-      position: absolute;
-      left: 0;
-      top: 20upx;
-      width: 110upx;
-      height: 54upx;
-      background-color: rgba(0, 0, 0, 0.3);
-      border-radius: 0 100px 100px 0;
-      color: #fff;
-      font-size: 28upx;
-      text-align: center;
-      line-height: 54upx;
-    }
-  }
-
-  .two {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: 300upx;
-    .img {
-      border-radius: 20upx;
-      width: 49.3%;
-      object-fit: cover;
-    }
-
-    .price-icon {
-      position: absolute;
-      top: 20upx;
-      width: 110upx;
-      height: 54upx;
-      background-color: rgba(0, 0, 0, 0.3);
-      border-radius: 0 100px 100px 0;
-      color: #fff;
-      font-size: 28upx;
-      text-align: center;
-      line-height: 54upx;
-    }
-  }
-
-  .three {
-    position: relative;
-    .price-icon {
-      position: absolute;
-      width: 110upx;
-      height: 54upx;
-      background-color: rgba(0, 0, 0, 0.3);
-      border-radius: 0 100px 100px 0;
-      color: #fff;
-      font-size: 28upx;
-      text-align: center;
-      line-height: 54upx;
-
-      &-1 {
-        width: 76upx;
-        height: 32upx;
-        right: 0;
-        font-size: 24upx;
-        line-height: 32upx;
-        top: 26upx;
-      }
-
-      &-2 {
-        width: 76upx;
-        height: 32upx;
-        right: 0;
-        font-size: 24upx;
-        line-height: 32upx;
-        bottom: 20upx;
+    .mid {
+      padding-top: 12upx;
+      // width: 100%;
+      // height: 300upx;
+      .shop-list {
+        // width: 100%;
+        display: flex;
+        justify-content: space-between;
+        .item {
+          width: 200upx;
+          // height: 300upx;
+          .shop {
+            width: 200upx;
+            height: 200upx;
+            border-radius: 10upx;
+          }
+          .sub {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            width: 200upx;
+            height: 92upx;
+            .goodsName {
+              font-size: 28upx;
+              width: 200upx;
+              font-weight: 500;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+            .p {
+              display: flex;
+              align-items: center;
+              .symbol {
+                font-size: 28upx;
+                font-weight: 500;
+                color: red;
+              }
+              .money {
+                font-size: 36upx;
+                font-weight: 500;
+                color: red;
+              }
+            }
+          }
+        }
       }
     }
   }

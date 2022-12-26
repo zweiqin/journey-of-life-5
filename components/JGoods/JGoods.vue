@@ -5,7 +5,7 @@
       :loading-mode="lazyLoadingMode"
       class="img"
       :scroll-top="scrollTop"
-      :image-src="data.picUrl"
+      :image-src="picUrl"
     ></easy-loadimage>
 
     <!-- <fast-lazy-load class="img" src="data.picUrl"></fast-lazy-load> -->
@@ -44,6 +44,7 @@ export default {
   data() {
     return {
       goodsNumber: 1,
+      picUrl: "",
     };
   },
   methods: {
@@ -52,6 +53,15 @@ export default {
       this.$refs.numbersRef.$el.style.opacity = "1";
       if (!this.goodsNumber) {
         this.goodsNumber = 1;
+      }
+    },
+    getHttpPicUrl() {
+      if (this.data.picUrl.includes("https")) {
+        this.picUrl = this.data.picUrl;
+      } else {
+        this.picUrl =
+          "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/" +
+          this.data.picUrl;
       }
     },
 
@@ -74,6 +84,9 @@ export default {
     handleLoadingImg() {
       console.log("加载成功");
     },
+  },
+  mounted() {
+    this.getHttpPicUrl();
   },
 };
 </script>

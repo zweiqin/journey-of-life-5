@@ -5,7 +5,10 @@
       <view class="last"></view>
       <promotionUser></promotionUser>
       <view class="last"></view>
-      <promotionBrokerage></promotionBrokerage>
+      <promotionBrokerage
+        @dayNumber="getDayNumber"
+        :data="commissionData"
+      ></promotionBrokerage>
       <view class="last"></view>
       <view style="display: flex; justify-content: space-evenly">
         <view
@@ -134,7 +137,10 @@
 </template>
 
 <script>
-import { promotionCommissionApi } from "../../api/user";
+import {
+  promotionOrderAndFansApi,
+  promotionCommissionApi,
+} from "../../api/user";
 import {
   incomeInfotmation,
   jurisdictionDetail,
@@ -153,6 +159,7 @@ import incomeProportion from "./incomeProportion";
 import jurisdiction from "./jurisdiction";
 import fans from "./fans";
 import fansChange from "./fansChange";
+import { getUserId } from "../../utils";
 export default {
   name: "promotionCenter",
   components: {
@@ -181,10 +188,33 @@ export default {
       otherIncome,
       promotion,
       promotionTab: 0,
+      day: 0,
+      commissionData: "",
     };
   },
   computed: {},
   methods: {
+    getDayNumber(e) {
+      this.day = e;
+      this.promotionCommission();
+    },
+    async promotionCommission() {
+      const res = await promotionCommissionApi({
+        userId: getUserId(),
+        days: this.day,
+        // userId: 245,
+        // days: 0,
+      });
+      console.log(res);
+      this.commissionData = res.data;
+    },
+    async promotionOrderAndFans() {
+      const res = await promotionOrderAndFansApi({
+        userId: getUserId(),
+        type: 1,
+      });
+      console.log(res);
+    },
     incomeAll(e) {
       uni.navigateTo({ url: e });
     },
@@ -215,18 +245,18 @@ export default {
       //   const bbb = aaa.push(td);
       //   this.showTime = aaa;
       // }
-      console.log(this.showTime);
+      // console.log(this.showTime);
       let td = dayjs().format("MM-DD");
       const a = td.split("-");
       const b = a[0] + "/" + a[1];
-      console.log(b); // 2022-03-03 17:07:11
+      // console.log(b); // 2022-03-03 17:07:11
       // let atd = dayjs().add(-1, 'day').format('YYYY-MM-DD HH:mm:ss')
       let atd = dayjs().subtract(1, "day").format("YYYY-MM-DD HH:mm:ss");
-      console.log(atd); // 2022-03-02 17:10:32
+      // console.log(atd); // 2022-03-02 17:10:32
 
       // 未来
       let btd = dayjs().add(1, "day").format("YYYY-MM-DD HH:mm:ss");
-      console.log(btd); // 2022-03-04 17:10:32
+      // console.log(btd); // 2022-03-04 17:10:32
     },
   },
   watch: {},
@@ -234,6 +264,7 @@ export default {
   // 页面周期函数--监听页面加载
   onLoad() {
     this.getDayTime();
+    this.promotionOrderAndFans();
   },
   // 页面周期函数--监听页面初次渲染完成
   onReady() {},
