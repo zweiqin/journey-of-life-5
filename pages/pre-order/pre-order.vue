@@ -26,8 +26,10 @@
 
         <view class="info">
           <view class="goods-name">{{ orderInfo.info.name }}</view>
-          <view class="spa">{{ goodsSp }}</view>
-          <view class="dan-price">￥{{ orderInfo.selectedProduct.price }}</view>
+          <view class="spa">{{ orderInfo.currentSpecification }}</view>
+          <view class="dan-price"
+            >￥{{ orderInfo.selectedProduct.product.price }}</view
+          >
         </view>
       </view>
 
@@ -44,7 +46,7 @@
 
       <view class="line">
         <view class="title">商品金额：</view>
-        <view class="value">￥{{ sumGoodsPrice }}</view>
+        <view class="value">￥{{ calcOrderMsg.goodsTotalPrice }}</view>
       </view>
 
       <view class="line">
@@ -162,10 +164,11 @@ export default {
     // 计算订单费用
     getCardId() {
       const _this = this;
+      console.log("丢俩", this.orderInfo);
       const data = {
         userId: getUserId(),
         goodsId: this.orderInfo.info.id,
-        productId: this.orderInfo.selectedProduct.id,
+        productId: this.orderInfo.selectedProduct.product.id,
         number: this.orderInfo.number,
         useVoucher: this.isUserVoucher,
       };
@@ -243,28 +246,6 @@ export default {
           document.body.removeChild(form);
         });
       });
-    },
-  },
-
-  computed: {
-    // 用户选中的规格
-    goodsSp() {
-      if (this.orderInfo) {
-        let str = "";
-        for (const sp in this.orderInfo.currentSpecification) {
-          str += this.orderInfo.currentSpecification[sp] + "，";
-        }
-        return str + this.orderInfo.number + (this.orderInfo.info.unit || "个");
-      }
-
-      return;
-    },
-
-    // 商品总金额
-    sumGoodsPrice() {
-      if (this.orderInfo) {
-        return this.orderInfo.number * this.orderInfo.selectedProduct.price;
-      }
     },
   },
 };

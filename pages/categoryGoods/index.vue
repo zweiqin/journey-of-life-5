@@ -142,6 +142,8 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 20px;
+    box-sizing: border-box;
     .backImg {
       width: 48upx;
       height: 48upx;

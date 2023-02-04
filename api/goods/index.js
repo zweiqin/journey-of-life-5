@@ -4,8 +4,8 @@ import { getUserId, LTRequest, RuanRequest } from "../../utils";
  * @description 查询商品详情
  * @param {*} id 商品id
  */
-export const getGoodsDetailApi = (id) => {
-  return RuanRequest("/goods/detail", { id: id, userId: getUserId() }, "get");
+export const getGoodsDetailApi = (id, userId) => {
+  return RuanRequest("/goods/detail", { id: id, userId: userId }, "get");
 };
 
 /**
@@ -87,4 +87,9 @@ export const getApponitGoodsDetailApi = goodsId => {
     userId: getUserId(),
     id: goodsId
   }, 'get')
+}
+
+// 获取当前门店的商品
+export const goodsListApi = (data) =>{
+  return RuanRequest("/goods/list",data,'get')
 }

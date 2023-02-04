@@ -49,6 +49,7 @@ export default {
   },
   methods: {
     handleAddCar() {
+      return
       this.$refs.addCarRef.$el.style.flex = "0";
       this.$refs.numbersRef.$el.style.opacity = "1";
       if (!this.goodsNumber) {
