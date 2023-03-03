@@ -10,7 +10,7 @@
       ></JBack>
       <h2>购物车</h2>
       <button class="edit" @click="handleSwitchShopCarStatus">
-        {{ opStatus === "EDIT" ? "编辑" : "完成" }}
+        {{ opStatus === 'EDIT' ? '编辑' : '完成' }}
       </button>
     </view>
 
@@ -89,7 +89,7 @@
     </view>
 
     <!-- 热销推荐 -->
-    <view class="all-look">
+    <view class="all-look" v-if="recommentList.length">
       <JLineTitle title="热销推荐"></JLineTitle>
       <Goods
         v-for="item in recommentList"
@@ -131,21 +131,21 @@
 </template>
 
 <script>
-import RecommendGoods from "../../components/recommend-goods";
-import Goods from "../../store/components/goods-pane.vue";
+import RecommendGoods from '../../components/recommend-goods'
+import Goods from '../../store/components/goods-pane.vue'
 import {
   getShopCarListApi,
   changeShopCarStatusApi,
   updateShopCarCountApi,
   deleteShopCarGoodsApi,
   addCollectionsApi,
-} from "../../api/cart";
-import { everyLookApi } from "../../api/goods";
-import { getUserId, fomartNumber } from "../../utils";
-import { J_PAY_GOODS, J_SELECT_ADDRESS } from "../../constant";
+} from '../../api/cart'
+import { everyLookApi } from '../../api/goods'
+import { getUserId, fomartNumber } from '../../utils'
+import { J_PAY_GOODS, J_SELECT_ADDRESS } from '../../constant'
 
-const EDIT = "EDIT";
-const CONFIRM = "CONFIRM";
+const EDIT = 'EDIT'
+const CONFIRM = 'CONFIRM'
 
 export default {
   components: {
@@ -154,10 +154,10 @@ export default {
   },
 
   onLoad() {
-    this.getShopList();
-    uni.removeStorageSync(J_SELECT_ADDRESS);
+    this.getShopList()
+    uni.removeStorageSync(J_SELECT_ADDRESS)
 
-    this.getRecommentList();
+    // this.getRecommentList();
   },
 
   data() {
@@ -166,44 +166,44 @@ export default {
       opList: [],
       shopCarList: [],
       carTotalInfo: [],
-      loadingStatus: "noMore",
+      loadingStatus: 'noMore',
       isChangeNumber: false,
       recommentList: [],
       opGoodsList: [],
-    };
+    }
   },
 
   filters: {
     getDesc(specifications) {
       if (!specifications || !specifications.length) {
-        return "";
+        return ''
       }
-      let str = "";
+      let str = ''
       for (const item of specifications) {
-        str += item + " ";
+        str += item + ' '
       }
-      return str;
+      return str
     },
   },
 
   methods: {
-    getRecommentList() {
-      everyLookApi(24438).then(({ data }) => {
-        this.recommentList = data.goodsList.slice(0, 10);
-      });
+    getRecommentList(id) {
+      everyLookApi(id).then(({ data }) => {
+        this.recommentList = data.goodsList.slice(0, 10)
+      })
     },
     // 操作按钮切换
     handleSwitchShopCarStatus() {
       if (!this.shopCarList.length && this.opStatus === EDIT) {
-        this.$showToast("没有商品可以编辑");
-        return;
+        this.$showToast('没有商品可以编辑')
+        return
       }
-      this.opStatus = this.opStatus === EDIT ? CONFIRM : EDIT;
+      this.opStatus = this.opStatus === EDIT ? CONFIRM : EDIT
       if (this.opStatus === CONFIRM) {
-        this.opList = [];
+        this.opList = []
       }
 
-      this.$forceUpdate();
+      this.$forceUpdate()
     },
 
     // 改变商品勾选状态
@@ -216,63 +216,64 @@ export default {
           isChecked: goods.checked ? 0 : 1,
           brandId: store.brandId,
         }).then(() => {
-          store.cartList[index].checked = !store.cartList[index].checked;
-        });
+          store.cartList[index].checked = !store.cartList[index].checked
+        })
       }
     },
 
     // 编辑选中的列表
     handleOp(goods) {
-      const index = this.opList.findIndex((item) => item === goods.productId);
-      console.log(goods);
+      const index = this.opList.findIndex(item => item === goods.productId)
+      console.log(goods)
       if (index === -1) {
-        this.opList.push(goods.productId);
-        this.opGoodsList.push(goods.goodsId);
+        this.opList.push(goods.productId)
+        this.opGoodsList.push(goods.goodsId)
       } else {
-        this.opList.splice(index, 1);
-        this.opGoodsList.splice(index, 1);
+        this.opList.splice(index, 1)
+        this.opGoodsList.splice(index, 1)
       }
     },
 
     // 获取购物车列表
     getShopList() {
-      this.loadingStatus = "loading";
-      const _this = this;
+      this.loadingStatus = 'loading'
+      const _this = this
       getShopCarListApi({
         userId: getUserId(),
       })
         .then(({ data }) => {
-          _this.shopCarList = data.brandCartgoods;
-          uni.hideLoading();
-          _this.loadingStatus = "noMore";
+          _this.shopCarList = data.brandCartgoods
+          _this.getRecommentList(data.brandCartgoods[0].cartList[0].goodsId)
+          uni.hideLoading()
+          _this.loadingStatus = 'noMore'
         })
         .catch(() => {
-          uni.hideLoading();
-          _this.loadingStatus = "noMore";
-        });
+          uni.hideLoading()
+          _this.loadingStatus = 'noMore'
+        })
     },
 
     // 购物车数量的添加
     handleChangeNumber(number, goods, index, store) {
       if (this.isChangeNumber) {
-        this.$showToast("操作太快啦~");
-        return;
+        this.$showToast('操作太快啦~')
+        return
       }
-      const _this = this;
-      this.isChangeNumber = true;
+      const _this = this
+      this.isChangeNumber = true
       if (number === -1 && goods.number === 1) {
         uni.showModal({
-          title: "提示",
-          content: "是否将该商品移出购物车？",
+          title: '提示',
+          content: '是否将该商品移出购物车？',
           success: function (res) {
             if (res.confirm) {
-              _this.deleteGoods([goods.productId], store);
+              _this.deleteGoods([goods.productId], store)
             }
           },
-        });
-        _this.isChangeNumber = false;
+        })
+        _this.isChangeNumber = false
       } else {
-        uni.showLoading();
+        uni.showLoading()
         updateShopCarCountApi({
           userId: getUserId(),
           goodsId: goods.goodsId,
@@ -281,30 +282,30 @@ export default {
           id: goods.id,
         })
           .then(() => {
-            _this.getShopList();
-            _this.isChangeNumber = false;
-            uni.hideLoading();
+            _this.getShopList()
+            _this.isChangeNumber = false
+            uni.hideLoading()
           })
           .catch(() => {
-            this.$showToast("数量修改失败");
-            _this.isChangeNumber = false;
-            uni.hideLoading();
-          });
+            this.$showToast('数量修改失败')
+            _this.isChangeNumber = false
+            uni.hideLoading()
+          })
       }
     },
 
     // 点击删除按钮
     removeShopCarGoods() {
-      const _this = this;
+      const _this = this
       uni.showModal({
-        title: "提示",
-        content: "是否删除当前选中的商品？",
+        title: '提示',
+        content: '是否删除当前选中的商品？',
         success: function (res) {
           if (res.confirm) {
-            _this.deleteGoods(_this.opList);
+            _this.deleteGoods(_this.opList)
           }
         },
-      });
+      })
     },
 
     // 删除购物车的商品
@@ -313,91 +314,91 @@ export default {
         productIds,
         userId: getUserId(),
       }).then(() => {
-        this.getShopList();
-      });
+        this.getShopList()
+      })
     },
 
     // 设置购物车的数据
     setShopCarList(data) {
-      this.shopCarList = [];
-      this.carTotalInfo = data.cartTotal;
+      this.shopCarList = []
+      this.carTotalInfo = data.cartTotal
       for (const item of data.brandCartgoods) {
-        this.shopCarList = [...this.shopCarList, ...item.cartList];
+        this.shopCarList = [...this.shopCarList, ...item.cartList]
       }
-      this.loadingStatus = "no-more";
+      this.loadingStatus = 'no-more'
     },
 
     // 是否全选
     handleChooseAll() {
-      const _this = this;
+      const _this = this
       if (this.opStatus === EDIT) {
-        const needCheckedIds = [];
+        const needCheckedIds = []
         for (const shop of this.shopCarList) {
-          shop.cartList.forEach((item) => {
+          shop.cartList.forEach(item => {
             if (item.checked === _this.allCheckStatus) {
-              needCheckedIds.push(item.productId);
+              needCheckedIds.push(item.productId)
             }
-          });
+          })
         }
-        uni.showLoading();
+        uni.showLoading()
         changeShopCarStatusApi({
           userId: getUserId(),
           productIds: needCheckedIds,
           isChecked: this.allCheckStatus ? 0 : 1,
-        }).then((res) => {
-          _this.getShopList();
-        });
+        }).then(res => {
+          _this.getShopList()
+        })
       } else {
         // this.opList = this.allCheckStatus
         //   ? []
         //   : this.shopCarList.map((item) => {});
 
         if (this.allCheckStatus) {
-          this.opList = [];
+          this.opList = []
         } else {
-          const tempOp = [];
-          this.shopCarList.forEach((shop) => {
+          const tempOp = []
+          this.shopCarList.forEach(shop => {
             for (const item of shop.cartList) {
-              tempOp.push(item.productId);
+              tempOp.push(item.productId)
             }
-          });
-          this.opList = tempOp;
+          })
+          this.opList = tempOp
         }
       }
     },
 
     // 去结算
     handleToPay() {
-      uni.showLoading();
+      uni.showLoading()
 
-      const op = [];
+      const op = []
 
       for (let item of this.shopCarList) {
         op.push({
           brandId: item.brandId,
           brandName: item.brandName,
-          brandCartgoods: item.cartList.filter((item) => item.checked),
-        });
+          brandCartgoods: item.cartList.filter(item => item.checked),
+        })
       }
 
       uni.setStorageSync(J_PAY_GOODS, {
         cardsInfo: op,
         pay: this.totalPrice,
-      });
+      })
 
-      uni.hideLoading();
+      uni.hideLoading()
 
       uni.navigateTo({
-        url: "/user/sever/pay-shop-card",
-      });
+        url: '/user/sever/pay-shop-card',
+      })
     },
 
     // 移入收藏
     addCollections() {
-      const _this = this;
+      const _this = this
       if (!this.opGoodsList.length) {
-        this.$showToast("请选择要添加收藏的商品");
-        return;
+        this.$showToast('请选择要添加收藏的商品')
+        return
       }
       addCollectionsApi({
         userId: getUserId(),
@@ -405,60 +406,60 @@ export default {
         valueIds: this.opGoodsList,
       }).then(() => {
         uni.showToast({
-          title: "移入收藏成功",
+          title: '移入收藏成功',
           duration: 2000,
-        });
+        })
 
-        _this.opList = [];
-        _this.opGoodsList = [];
-      });
+        _this.opList = []
+        _this.opGoodsList = []
+      })
     },
   },
 
   computed: {
     allCheckStatus() {
       if (!this.shopCarList.length) {
-        return false;
+        return false
       }
       if (this.opStatus === EDIT) {
-        let status = true;
+        let status = true
         for (const shop of this.shopCarList) {
           for (const item of shop.cartList) {
             if (!item.checked) {
-              status = false;
-              break;
+              status = false
+              break
             }
           }
         }
-        return status;
+        return status
       } else {
-        let status = true;
+        let status = true
         for (const shop of this.shopCarList) {
           for (const item of shop.cartList) {
             if (!this.opList.includes(item.productId)) {
-              status = false;
+              status = false
             }
           }
         }
-        return status;
+        return status
       }
     },
 
     totalPrice() {
-      let price = 0;
+      let price = 0
       for (const shop of this.shopCarList) {
         for (const item of shop.cartList) {
           if (item.checked) {
-            price += item.number * item.price;
+            price += item.number * item.price
           }
         }
       }
-      return fomartNumber(price);
+      return fomartNumber(price)
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
-@import "./css/shop-car.less";
+@import './css/shop-car.less';
 </style>

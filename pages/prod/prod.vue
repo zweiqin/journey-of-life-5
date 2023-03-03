@@ -87,13 +87,13 @@
         />
       </view>
 
-      <view class="sub-info">
+      <!-- <view class="sub-info">
         <view class="item" v-for="(item, index) in subInfoConfig" :key="index">
           <image :src="item.icon" mode="" />
           <text>{{ item.label }}</text>
           <text class="attribute">{{ item.default }}</text>
         </view>
-      </view>
+      </view> -->
 
       <view class="buy-info">
         <view

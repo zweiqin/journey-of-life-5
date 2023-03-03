@@ -19,7 +19,7 @@
           class="avatar"
           :src="
             userInfo
-              ? userInfo.avatarUrl
+              ? 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + userInfo.avatarUrl
               : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4x1yzf4dw5q4y8q3o16m.webp'
           "
           alt=""

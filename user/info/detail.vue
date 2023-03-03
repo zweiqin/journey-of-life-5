@@ -11,7 +11,14 @@
     </view>
 
     <view class="avatar-container">
-      <img :src="userInfo.avatarUrl" alt="" class="avatar" />
+      <img
+        :src="
+          'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' +
+          userInfo.avatarUrl
+        "
+        alt=""
+        class="avatar"
+      />
       <view class="change-btn font-14" @click="handleChangeAvatar"
         >更换头像</view
       >
@@ -127,61 +134,61 @@
 </template>
 
 <script>
-import { layoutApi } from "../../api/auth";
-import { updateUserInfoApi, refrshUserInfoApi } from "../../api/user";
-import { getUserId } from "../../utils";
-import { J_USER_INFO } from "../../constant";
+import { layoutApi } from '../../api/auth'
+import { updateUserInfoApi, refrshUserInfoApi } from '../../api/user'
+import { getUserId } from '../../utils'
+import { J_USER_INFO } from '../../constant'
 
 export default {
   data() {
     return {
       showLogout: false,
-      nickname: "",
+      nickname: '',
       userInfo: {},
-    };
+    }
   },
 
   mounted() {
-    this.userInfo = uni.getStorageSync(J_USER_INFO);
-    this.nickName = this.userInfo.nickName;
+    this.userInfo = uni.getStorageSync(J_USER_INFO)
+    this.nickName = this.userInfo.nickName
   },
   methods: {
     handleClickLogout() {
-      this.showLogout = true;
+      this.showLogout = true
     },
 
     handleBack() {
       uni.switchTab({
-        url: "/pages/user/user",
-      });
+        url: '/pages/user/user',
+      })
     },
 
     /**
      * @description 点击解绑微信
      */
     handleUnboundWX() {
-      this.$refs.inputDialog.open();
+      this.$refs.inputDialog.open()
     },
 
     /**
      * @description 点击修改昵称
      */
     showEditDialog() {
-      this.$refs.editNicknameDialogRef.open();
+      this.$refs.editNicknameDialogRef.open()
     },
 
     /**
      * @description 确认解绑微信号
      */
     handleUnboundWXConfirm() {
-      console.log("解绑");
+      console.log('解绑')
     },
 
     /**
      * @description 点击确定修改昵称
      */
     handleConfirmEditNickname() {
-      this.updateUserInfo("nickname", this.nickname);
+      this.updateUserInfo('nickname', this.nickname)
     },
 
     /**
@@ -189,62 +196,62 @@ export default {
      */
     async handleLagout() {
       // await layoutApi(getUserId());
-      uni.clearStorageSync();
+      uni.clearStorageSync()
       uni.showToast({
-        title: "退出成功",
+        title: '退出成功',
         duration: 2000,
-      });
+      })
 
       setTimeout(() => {
         uni.redirectTo({
-          url: "/pages/login/login",
-        });
-      }, 2000);
+          url: '/pages/login/login',
+        })
+      }, 2000)
     },
 
     // 点击更换头像
     handleChangeAvatar() {
-      this.$refs.jUploadAvatarRef.$el.style.left = "0";
+      this.$refs.jUploadAvatarRef.$el.style.left = '0'
     },
 
     // 点击关闭
     handleCloseUpload() {
-      this.$refs.jUploadAvatarRef.$el.style.left = "-100%";
+      this.$refs.jUploadAvatarRef.$el.style.left = '-100%'
     },
 
     // 更换头像
     handleUpDateAvatar(res) {
-      const url = JSON.parse(res.data).data.url;
-      this.updateUserInfo("avatar", url);
+      const url = JSON.parse(res.data).data.url
+      this.updateUserInfo('avatar', url)
     },
 
     // 更新用户信息
     updateUserInfo(key, value) {
-      uni.showLoading();
-      const _this = this;
+      uni.showLoading()
+      const _this = this
       const originData = {
         nickname: this.userInfo.nickName,
         avatar: this.userInfo.avatarUrl,
         password: this.userInfo.password,
         id: getUserId(),
-      };
+      }
 
-      originData[key] = value;
+      originData[key] = value
 
       updateUserInfoApi(originData).then(() => {
         refrshUserInfoApi({
           userId: getUserId(),
         }).then(({ data }) => {
-          uni.hideLoading();
-          _this.handleCloseUpload();
-          _this.$showToast("修改成功", "success");
-          uni.setStorageSync(J_USER_INFO, data);
-          _this.userInfo = uni.getStorageSync(J_USER_INFO);
-        });
-      });
+          uni.hideLoading()
+          _this.handleCloseUpload()
+          _this.$showToast('修改成功', 'success')
+          uni.setStorageSync(J_USER_INFO, data)
+          _this.userInfo = uni.getStorageSync(J_USER_INFO)
+        })
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

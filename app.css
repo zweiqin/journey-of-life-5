@@ -204,3 +204,46 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
   color: #0078d4;
   padding: 0 20upx;
 }
+
+view,
+text {
+  line-height: 1.5;
+  font-size: 28upx;
+}
+
+.l-34 {
+  line-height: 34upx;
+}
+
+.f-12 {
+  font-size: 24upx;
+}
+
+.page {
+  width: 100vw;
+  min-height: 100vh;
+}
+
+.bee-btn {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  margin: 0;
+  line-height: 1.5;
+  border-radius: 0;
+  font-size: 28upx;
+  color: #000;
+  padding: 0;
+}
+
+
+.bee-btn::after {
+  border: none;
+}
+
+
+.hiden-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
