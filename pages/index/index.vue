@@ -35,6 +35,14 @@
             :data="item"
           ></NewGoods>
         </view>
+
+        <LoadMore v-show="goodsList.length" :status="status"></LoadMore>
+
+        <GoodsSkeleton
+          background="linear-gradient(180deg, #ffffff 0%, #f6f6f6 6%)"
+          padding="20upx"
+          v-if="status === 'loading' && !goodsList.length"
+        ></GoodsSkeleton>
       </view>
     </view>
   </view>
@@ -61,6 +69,7 @@ export default {
       },
       goodsList: [],
       totalPages: 2,
+      status: 'none'
     }
   },
   onLoad() {},
@@ -73,13 +82,14 @@ export default {
         title: '加载中',
       })
       getGoodsById(this.query).then(({ data }) => {
-        console.log(data)
+        this.status = 'loading'
         this.totalPages = data.totalPages
         if (isLoadMore) {
           this.goodsList.push(...data.goodsList)
         } else {
           this.goodsList = data.goodsList
         }
+        this.status = 'none'
       })
       uni.hideLoading()
     },

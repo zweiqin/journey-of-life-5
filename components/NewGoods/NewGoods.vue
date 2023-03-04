@@ -8,7 +8,13 @@
     <tui-lazyload-img
       width="100%"
       height="300rpx"
-      :src="data.picUrl"
+      mode="scaleToFill"
+      :src="
+        data.picUrl.includes('http')
+          ? data.picUrl
+          : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' +
+            data.picUrl
+      "
     ></tui-lazyload-img>
 
     <view class="goods-info">
@@ -51,6 +57,7 @@ export default {
 .goods-container {
   border-radius: 20upx;
   overflow: hidden;
+  background-color: #fff;
 
   .goods-info {
     padding: 14upx 22upx;

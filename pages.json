@@ -6,7 +6,8 @@
 				"backgroundTextStyle": "dark",
 				"navigationBarBackgroundColor": "#fff",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "商城"
+				"navigationBarTitleText": "商城",
+				"onReachBottomDistance": 400
 			}
 		},
 		{
@@ -135,6 +136,13 @@
 			"path": "pages/categoryGoods/index",
 			"style": {
 				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/index/shop/shop",
+			"style": {
+				"navigationBarTitleText": "巨蜂商城",
+				"onReachBottomDistance": 100
 			}
 		}
 	],

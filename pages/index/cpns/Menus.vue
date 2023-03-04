@@ -5,6 +5,7 @@
       :style="{ width: 100 / column + '%' }"
       v-for="item in data"
       :key="item.name"
+      @click="go(item.url)"
     >
       <BeeIcon :src="item.icon" :size="40"></BeeIcon>
       <text>{{ item.name }}</text>
@@ -35,7 +36,7 @@ export default {
   justify-content: space-between;
   flex-wrap: wrap;
   background-color: #fff;
-  padding: 30upx 0;
+  padding: 30upx 0 0 0;
   border-radius: 20upx;
   margin-top: 33upx;
 

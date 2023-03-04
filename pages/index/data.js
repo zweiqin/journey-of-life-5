@@ -1,7 +1,8 @@
 export const menusData = [
   {
     name: '巨蜂商城',
-    icon: require('../../static/index/menus/bee.png')
+    icon: require('../../static/index/menus/bee.png'),
+    url: '/pages/index/shop/shop'
   },
   {
     name: '便民服务',

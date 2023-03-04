@@ -39,7 +39,7 @@ import { J_LOACTION } from "../../constant";
 export default {
   onLoad() {
     // this.getRedEnvelopeList();
-    delayedLoginStatus();
+    // delayedLoginStatus();
   },
 
   onReady() {
