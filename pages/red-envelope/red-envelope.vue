@@ -1,10 +1,10 @@
 <template>
   <view class="map-container" v-if="showMap">
     <map
+      id="mapRef"
       :longitude="longitude"
       :latitude="latitude"
-      :scale="40"
-      :max-scale="40"
+      :scale="scale"
       show-compass
       show-location
       style="width: 100vw; height: 100vh"
@@ -28,13 +28,35 @@
 
       <button class="receive-btn" @click="handleClose">确定</button>
     </view>
+
+    <view class="scale-container">
+      <view @click="handleScale(+1)">+</view>
+      <view @click="handleScale(-1)">-</view>
+    </view>
+
+    <view
+      class="send"
+      @click="go('/user/marketing-tools/red-envelope-distribution')"
+    >
+      <image src="../../static/images/index/red.png" mode="" />
+      <text>发红包</text>
+    </view>
+
+    <view @click="toCenter" class="location">
+      <tui-icon name="location" :size="25"></tui-icon>
+    </view>
+
+    <view class="search-wrapper">
+      <SearchBar></SearchBar>
+      <PhotoSearch></PhotoSearch>
+    </view>
   </view>
 </template>
 
 <script>
-import { getRedEnvelopeListApi, receiveRedEnvelopeApi } from "../../api/user";
-import { delayedLoginStatus, getUserId } from "../../utils";
-import { J_LOACTION } from "../../constant";
+import { getRedEnvelopeListApi, receiveRedEnvelopeApi } from '../../api/user'
+import { delayedLoginStatus, getUserId } from '../../utils'
+import { J_LOACTION } from '../../constant'
 
 export default {
   onLoad() {
@@ -43,11 +65,11 @@ export default {
   },
 
   onReady() {
-    this.getRedEnvelopeList();
+    this.getRedEnvelopeList()
   },
 
   created() {
-    this.getLoaction();
+    this.getLoaction()
   },
 
   data() {
@@ -56,35 +78,35 @@ export default {
       longitude: 0,
       latitude: 0,
       redForm: {
-        name: "",
+        name: '',
       },
       allMarks: [],
       showRedPackage: false,
       showMap: false,
-    };
+      scale: 16,
+    }
   },
 
   methods: {
     getRedEnvelopeList() {
-      getRedEnvelopeListApi().then((res) => {
-        this.allMarks = res.data;
-        const made = [];
+      getRedEnvelopeListApi().then(res => {
+        this.allMarks = res.data
+        const made = []
         // #ifdef H5
         for (const redPack of res.data) {
           made.push({
             id: redPack.id,
             latitude: redPack.latitude,
             longitude: redPack.longitude,
-            title: redPack.brandName + "的红包",
+            title: redPack.brandName + '的红包',
             width: 40,
             height: 50,
             anchor: {
               x: 0.5,
               y: 0.5,
             },
-            iconPath:
-              "/static/images/index/red-pack.png",
-          });
+            iconPath: '/static/images/index/red-pack.png',
+          })
         }
         // #endif
 
@@ -94,40 +116,39 @@ export default {
             id: redPack.id,
             latitude: redPack.latitude,
             longitude: redPack.longitude,
-            title: redPack.brandName + "的红包",
+            title: redPack.brandName + '的红包',
             width: 80,
             height: 50,
             anchor: {
-            	x: 0.5,
-            	y: 0.5
+              x: 0.5,
+              y: 0.5,
             },
-            iconPath:
-              "/static/images/index/red-an.png",
-          });
+            iconPath: '/static/images/index/red-an.png',
+          })
         }
         // #endif
-        this.markers = made;
-        this.showMap = true;
-      });
+        this.markers = made
+        this.showMap = true
+      })
     },
 
     handleReceive(e) {
-      const userId = getUserId();
+      const userId = getUserId()
       if (!userId) {
-        return;
+        return
       }
-      const _this = this;
-      const { markerId } = e.detail;
-      console.log(markerId);
+      const _this = this
+      const { markerId } = e.detail
+      console.log(markerId)
       if (markerId) {
-        const currentMark = this.allMarks.find((item) => item.id === markerId);
+        const currentMark = this.allMarks.find(item => item.id === markerId)
         if (currentMark) {
-          this.redForm = currentMark;
+          this.redForm = currentMark
           // this.showRedPackage = true;
         }
 
         uni.getLocation({
-          type: "gcj02",
+          type: 'gcj02',
           success: function (res) {
             receiveRedEnvelopeApi({
               id: currentMark.id,
@@ -135,63 +156,101 @@ export default {
               longitude: res.longitude * 1,
               latitude: res.latitude * 1,
             }).then(() => {
-              _this.showRedPackage = true;
-              _this.getRedEnvelopeList();
-            });
+              _this.showRedPackage = true
+              _this.getRedEnvelopeList()
+            })
           },
           fail: () => {
             uni.showToast({
-              title: "领取失败",
+              title: '领取失败',
               duration: 2000,
-              icon: "none",
-            });
+              icon: 'none',
+            })
           },
-        });
+        })
       }
     },
 
     getLoaction() {
-      const locationInfo = uni.getStorageSync(J_LOACTION);
+      const locationInfo = uni.getStorageSync(J_LOACTION)
       if (locationInfo) {
-        this.latitude = locationInfo.latitude;
-        this.longitude = locationInfo.longitude;
-        return;
+        this.latitude = locationInfo.latitude
+        this.longitude = locationInfo.longitude
+        return
       }
 
-      const _this = this;
+      const _this = this
       uni.getLocation({
-        type: "gcj02",
+        type: 'gcj02',
         success: function (res) {
-          _this.longitude = res.longitude * 1 + 0.001;
-          _this.latitude = res.latitude * 1 + 0.001;
+          _this.longitude = res.longitude * 1 + 0.001
+          _this.latitude = res.latitude * 1 + 0.001
 
           uni.setStorageSync(J_LOACTION, {
             latitude: res.latitude,
             longitude: res.longitude,
-          });
+          })
 
-          location.reload();
+          location.reload()
         },
         fail: function (err) {
-          _this.$showToast("获取定位失败，请确保您开启了定位");
+          _this.$showToast('获取定位失败，请确保您开启了定位')
         },
-      });
+      })
     },
 
     handleClose() {
-      this.showRedPackage = false;
-      this.getRedEnvelopeList();
+      this.showRedPackage = false
+      this.getRedEnvelopeList()
+    },
+
+    toCenter() {
+      const _this = this
+      uni.getLocation({
+        type: 'gcj02',
+        success: function (res) {
+          _this.scale = 16
+          uni.createMapContext('mapRef', _this).moveToLocation({
+            longitude: res.longitude,
+            latitude: res.latitude,
+          })
+        },
+        fail: function (err) {
+          _this.$showToast('获取定位失败，请确保您开启了定位')
+        },
+      })
+    },
+
+    // 放大
+    handleScale(number) {
+      this.scale += number
+      if (this.scale > 18) {
+        this.scale = 18
+        uni.showToast({
+          title: '已经缩放到最大了',
+          duration: 2000,
+          icon: 'none',
+        })
+      }
+      if (this.scale < 5) {
+        this.scale = 5
+        uni.showToast({
+          title: '已经缩放到最小了',
+          duration: 2000,
+          icon: 'none',
+        })
+      }
     },
   },
 
   destroyed() {
-    uni.removeStorageSync(J_LOACTION);
+    uni.removeStorageSync(J_LOACTION)
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
-@import "../../style/mixin.less";
+@import '../../style/mixin.less';
 
 .preview-wrapper {
   position: fixed;
@@ -232,6 +291,92 @@ export default {
     border-radius: 40upx;
     color: #fff;
     margin-top: 20px;
+  }
+}
+
+.scale-container {
+  position: fixed;
+  top: 54%;
+  right: 40upx;
+  width: 84upx;
+  height: 148upx;
+  background-color: #fff;
+  z-index: 10000000;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 20upx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  overflow: hidden;
+
+  view {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    font-size: 50upx;
+    transition: all 350ms;
+    text-align: center;
+  }
+}
+
+.send {
+  position: fixed;
+  top: 40%;
+  right: 40upx;
+  width: 84upx;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+  height: 128upx;
+  background-color: #fff;
+  border-radius: 20upx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  text {
+    font-size: 24upx;
+  }
+
+  image {
+    width: 60upx;
+    height: 60upx;
+  }
+}
+
+.location {
+  position: fixed;
+  top: 80%;
+  right: 40upx;
+  border-radius: 20upx;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  width: 84upx;
+  height: 84upx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-wrapper {
+  position: fixed;
+  top: 40upx;
+  left: 50%;
+  width: 88%;
+  padding: 10upx 20upx;
+  transform: translateX(-50%);
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+  z-index: 10000;
+  border-radius: 20upx;
+
+  /deep/ .search-bar-container {
+    flex: 1;
+    margin-right: 15upx;
   }
 }
 </style>

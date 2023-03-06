@@ -27,7 +27,7 @@
         <view class="right" v-if="userInfo">
           <view class="name">{{ userInfo.nickName }}</view>
           <view class="vip-info">
-            <text class="id">团蜂ID {{ userInfo.userId }}</text>
+            <text class="id">巨蜂ID {{ userInfo.userId }}</text>
             <!-- <img
               class="hu-icon"
               src="../../static/images/user/huyuan.png"

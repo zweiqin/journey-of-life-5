@@ -200,7 +200,10 @@
 			"root": "user",
 			"pages": [
 				{
-					"path": "marketing-tools/red-envelope-distribution"
+					"path": "marketing-tools/red-envelope-distribution",
+					"style": {
+						"navigationBarTitleText": "红包发放"
+					}
 				},
 				{
 					"path": "info/detail",

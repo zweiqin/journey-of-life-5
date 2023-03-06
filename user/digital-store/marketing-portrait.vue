@@ -395,6 +395,7 @@ export default {
 
         .text {
           height: 20px;
+          line-height: inherit;
         }
       }
 
