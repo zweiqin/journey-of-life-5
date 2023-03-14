@@ -4,6 +4,7 @@
     :style="{
       height: height,
       borderColor: color,
+      background: background
     }"
   >
     <BeeIcon :src="require('./search.png')"></BeeIcon>
@@ -32,6 +33,9 @@ export default {
       type: String,
       default: '搜索',
     },
+    background: {
+      type: String
+    }
   },
 }
 </script>
@@ -64,6 +68,11 @@ export default {
     width: 120upx;
     height: 72upx;
     border-radius: 100px;
+    transition: all 350ms;
+
+    &:active{
+      opacity: 0.7;
+    }
   }
 }
 </style>

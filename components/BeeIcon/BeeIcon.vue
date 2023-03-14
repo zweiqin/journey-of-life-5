@@ -15,7 +15,6 @@
       :name="name"
       :color="color"
       :size="size"
-      v-bind="$attr"
     ></tui-icon>
   </view>
 </template>
@@ -59,6 +58,7 @@ export default {
 <style lang="less" scoped>
 .icon-container {
   flex-shrink: 0;
+  line-height: inherit;
 
   image {
     vertical-align: middle;

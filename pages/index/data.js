@@ -14,7 +14,8 @@ export const menusData = [
   },
   {
     name: '爆款中心',
-    icon: require('../../static/index/menus/hot.png')
+    icon: require('../../static/index/menus/hot.png'),
+    url: '/pages/index/hot/hot'
   },
   {
     name: '领劵中心',
@@ -29,7 +30,7 @@ export const menusData = [
     icon: require('../../static/index/menus/qian.png')
   },
   {
-    name: '更多',
-    icon: require('../../static/index/menus/more.png')
+    name: '数字商圈',
+    icon: require('../../static/index/menus/number.png')
   },
 ]

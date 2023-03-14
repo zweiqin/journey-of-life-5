@@ -13,10 +13,10 @@
       <BeeIcon :size="14" :src="item.icon"></BeeIcon>
     </view>
 
-    <SynthesizePopup
+    <!-- <SynthesizePopup
       :translatey="translatey"
       v-model="visible.synthesizePopupVisible"
-    ></SynthesizePopup>
+    ></SynthesizePopup> -->
   </view>
 </template>
 

@@ -6,8 +6,7 @@
 				"backgroundTextStyle": "dark",
 				"navigationBarBackgroundColor": "#fff",
 				"navigationBarTextStyle": "black",
-				"navigationBarTitleText": "商城",
-				"onReachBottomDistance": 400
+				"navigationBarTitleText": "商城"
 			}
 		},
 		{
@@ -141,8 +140,13 @@
 		{
 			"path": "pages/index/shop/shop",
 			"style": {
-				"navigationBarTitleText": "巨蜂商城",
-				"onReachBottomDistance": 100
+				"navigationBarTitleText": "巨蜂商城"
+			}
+		},
+		{
+			"path": "pages/index/hot/hot",
+			"style": {
+				"navigationBarTitleText": "爆款中心"
 			}
 		}
 	],
@@ -522,6 +526,18 @@
 				},
 				{
 					"path": "ranking-list"
+				}
+			]
+		},
+		// 2.0
+		{
+			"root": "pages/store",
+			"pages": [
+				{
+					"path": "detail/detail",
+					"style": {
+						"navigationBarTitleText": "门店详情"
+					}
 				}
 			]
 		}
