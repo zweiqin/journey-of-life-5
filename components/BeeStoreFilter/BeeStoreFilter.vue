@@ -1,7 +1,7 @@
 <template>
   <view class="bee-store-filter-container">
     <view class="synthesize item">
-      <view class="title">综合排序</view>
+      <view class="title" style="color: #fa5151">综合排序</view>
       <BeeIcon
         :src="require('../GoodsFilter/icons/red-arrow.png')"
         :size="14"

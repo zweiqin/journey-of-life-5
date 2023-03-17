@@ -1,7 +1,8 @@
 export const menusData = [
   {
     name: '美食饮品',
-    icon: require('../../static/brand/menus/meishi.png')
+    icon: require('../../static/brand/menus/meishi.png'),
+    url: '/pages/store/fine-food/fine-food'
   },
   {
     name: '休闲娱乐',

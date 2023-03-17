@@ -7,7 +7,7 @@
         <PhotoSearch></PhotoSearch>
       </view>
       <image class="banner-img" src="../../static/brand/banner.png" mode="" />
-      <view class="menus-container">
+      <view class="menus-wrapper">
         <BeeMenus :data="menusData"></BeeMenus>
       </view>
       <view class="banner-wrapper">
@@ -47,12 +47,12 @@ export default {
         totalPages: 'totalPages',
         size: 'size',
       },
-      dataFn(data){
+      dataFn(data) {
         const ignoreBrandList = ['佛山市顺德区修江缘美食餐饮店', '测试门店呀']
         return data.filter(item => {
           return !ignoreBrandList.includes(item.name)
         })
-      }
+      },
     }),
   ],
   onLoad() {
@@ -88,7 +88,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 44upx 22upx;
+      padding: 44upx 22upx 10upx;
       box-sizing: border-box;
 
       /deep/ .search-bar-container {
@@ -102,9 +102,13 @@ export default {
       height: 244upx;
     }
 
-    .menus-container {
-      padding: 20upx 22upx;
+    .menus-wrapper {
+      padding: 0 22upx 20upx;
       box-sizing: border-box;
+
+      /deep/ .menus-container {
+        margin-top: 0;
+      }
     }
 
     .banner-wrapper {
@@ -118,11 +122,13 @@ export default {
       }
     }
   }
-
-  .brand-list-wrapper {
-    padding: 0 20upx;
-    box-sizing: border-box;
-    padding-bottom: 140upx;
+  .brand {
+    margin-top: 20upx;
+    .brand-list-wrapper {
+      padding: 0 20upx;
+      box-sizing: border-box;
+      padding-bottom: 140upx;
+    }
   }
 }
 </style>

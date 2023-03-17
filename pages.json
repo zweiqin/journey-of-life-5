@@ -538,6 +538,18 @@
 					"style": {
 						"navigationBarTitleText": "门店详情"
 					}
+				},
+				{
+					"path": "fine-food/fine-food",
+					"style": {
+						"navigationBarTitleText": "美食饮品"
+					}
+				},
+				{
+					"path": "fine-food/food-nearby/food-nearby",
+					"style": {
+						"navigationBarTitleText": "附近美食"
+					}
 				}
 			]
 		}

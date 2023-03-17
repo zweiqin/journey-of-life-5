@@ -54,7 +54,6 @@
         class="heart-icon"
         :src="require('./images/heart.png')"
       ></BeeIcon>
-      <BeeIcon :size="40" :src="require('./images/ear.png')"></BeeIcon>
     </view>
   </view>
 </template>
