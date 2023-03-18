@@ -13,8 +13,10 @@
     <view class="avatar-container">
       <img
         :src="
-          'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' +
-          userInfo.avatarUrl
+          userInfo.avatarUrl.includes('http')
+            ? userInfo.avatarUrl
+            : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' +
+              userInfo.avatarUrl
         "
         alt=""
         class="avatar"
@@ -211,7 +213,20 @@ export default {
 
     // 点击更换头像
     handleChangeAvatar() {
-      this.$refs.jUploadAvatarRef.$el.style.left = '0'
+      // this.$refs.jUploadAvatarRef.$el.style.left = '0'
+
+      const _this = this
+      uni.chooseImage({
+        count: 1,
+        success: res => {
+          uni.navigateTo({
+            url: '/user/info/cropper?imgUrl=' + res.tempFilePaths[0],
+          })
+        },
+        fail: () => {
+          _this.ttoast('图片上传失败')
+        },
+      })
     },
 
     // 点击关闭

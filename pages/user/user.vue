@@ -18,9 +18,10 @@
           @click="toViewMineInfo"
           class="avatar"
           :src="
-            userInfo
-              ? 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + userInfo.avatarUrl
-              : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/4x1yzf4dw5q4y8q3o16m.webp'
+            userInfo.avatarUrl.includes('http')
+              ? userInfo.avatarUrl
+              : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' +
+                userInfo.avatarUrl
           "
           alt=""
         />
@@ -54,8 +55,8 @@
               userInfo
                 ? userInfo.userLevelDesc
                   ? userInfo.userLevelDesc
-                  : "会员"
-                : "游客"
+                  : '会员'
+                : '游客'
             }}
           </view>
         </view>
@@ -81,7 +82,8 @@
 
         <view class="item">
           <view class="title">
-            {{ transformBigNumber(userInfo.voucherNumber || 0) }}<view class="bl-text">元</view>
+            {{ transformBigNumber(userInfo.voucherNumber || 0)
+            }}<view class="bl-text">元</view>
           </view>
           <view class="value"> 代金劵 </view>
         </view>
@@ -187,7 +189,7 @@
 </template>
 
 <script>
-import UserPanel from "./components/user-panel.vue";
+import UserPanel from './components/user-panel.vue'
 import {
   tools,
   one,
@@ -197,19 +199,14 @@ import {
   digitalStore,
   marketingTools,
   otherServe,
-} from "./config";
-import { delayedLoginStatus, getUserId, transformBigNumber } from "../../utils";
-import {
-  J_USER_INFO,
-  J_LOACTION,
-  J_REFRSH,
-  BIND_USER_ID,
-} from "../../constant";
+} from './config'
+import { delayedLoginStatus, getUserId, transformBigNumber } from '../../utils'
+import { J_USER_INFO, J_LOACTION, J_REFRSH, BIND_USER_ID } from '../../constant'
 import {
   refrshUserInfoApi,
   getExtensionCodeApi,
   bindLastUserApi,
-} from "../../api/user";
+} from '../../api/user'
 
 export default {
   components: {
@@ -228,33 +225,33 @@ export default {
       collectiontype: 1,
       currentTab: 0,
       userInfo: null,
-      extensionCodeUrl: "",
-    };
+      extensionCodeUrl: '',
+    }
   },
 
   onLoad() {
-    delayedLoginStatus();
+    delayedLoginStatus()
   },
 
   onShow() {
-    const userInfo = uni.getStorageSync(J_USER_INFO);
+    const userInfo = uni.getStorageSync(J_USER_INFO)
     if (userInfo) {
-      this.userInfo = userInfo;
+      this.userInfo = userInfo
     } else {
-      this.userInfo = "";
+      this.userInfo = ''
     }
 
     if (getUserId()) {
       refrshUserInfoApi({
         userId: getUserId(),
-      }).then((res) => {
-        this.userInfo = res.data;
-        uni.setStorageSync(J_USER_INFO, res.data);
-      });
+      }).then(res => {
+        this.userInfo = res.data
+        uni.setStorageSync(J_USER_INFO, res.data)
+      })
     }
 
-    uni.removeStorageSync(J_LOACTION);
-    uni.removeStorageSync(J_REFRSH);
+    uni.removeStorageSync(J_LOACTION)
+    uni.removeStorageSync(J_REFRSH)
   },
 
   methods: {
@@ -263,76 +260,76 @@ export default {
      */
     toViewMineInfo() {
       uni.navigateTo({
-        url: "/user/info/detail",
-      });
+        url: '/user/info/detail',
+      })
     },
     choseCollection() {
-      let collectiontype = this.collectiontype;
+      let collectiontype = this.collectiontype
       if (collectiontype == 1) {
-        this.collectiontype = 2;
+        this.collectiontype = 2
       } else {
-        this.collectiontype = 1;
+        this.collectiontype = 1
       }
     },
 
     changeTab(tab) {
-      this.currentTab = tab;
+      this.currentTab = tab
     },
     bindtapsubscription() {
       uni.navigateTo({
-        url: "/user/subscription/subscription",
-      });
+        url: '/user/subscription/subscription',
+      })
     },
 
     handleToViewHistory(page) {
       uni.navigateTo({
-        url: "/user/sever/view-history?page=" + page,
-      });
+        url: '/user/sever/view-history?page=' + page,
+      })
     },
 
     // 点击了icon
     handleClickItem(item) {
-      if (item.type && item.type === "extension") {
-        this.getExtensionCode();
+      if (item.type && item.type === 'extension') {
+        this.getExtensionCode()
       }
 
-      if (item.label === "进销存") {
-        location.href = "weixin://dl/business/?t=fT0Ivve8Fli";
+      if (item.label === '进销存') {
+        location.href = 'weixin://dl/business/?t=fT0Ivve8Fli'
       }
     },
 
     // 获取推广码
     getExtensionCode() {
       uni.showLoading({
-        title: "加载中",
-      });
+        title: '加载中',
+      })
       getExtensionCodeApi({
         url: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/login/login?userId=${getUserId()}&type=bind`,
       }).then(({ data }) => {
-        this.extensionCodeUrl = data;
-        uni.hideLoading();
-      });
+        this.extensionCodeUrl = data
+        uni.hideLoading()
+      })
     },
 
-    transformBigNumber
+    transformBigNumber,
   },
   mounted() {
     // checkWhoami();
   },
 
   onLoad() {
-    const bindUserId = uni.getStorageSync(BIND_USER_ID);
+    const bindUserId = uni.getStorageSync(BIND_USER_ID)
     if (bindUserId && bindUserId !== getUserId()) {
       bindLastUserApi({
         userId: [getUserId()],
         salesmanId: bindUserId,
       }).then(() => {
-        this.$showToast("绑定成功");
-        uni.removeStorageSync(BIND_USER_ID);
-      });
+        this.$showToast('绑定成功')
+        uni.removeStorageSync(BIND_USER_ID)
+      })
     }
   },
-};
+}
 </script>
 
 <style lang="less" scoped>

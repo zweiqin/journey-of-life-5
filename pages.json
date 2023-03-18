@@ -220,6 +220,12 @@
 					}
 				},
 				{
+					"path": "info/cropper",
+					"style": {
+						"navigationBarTitleText": "更换头像"
+					}
+				},
+				{
 					"path": "sever/shop-car",
 					"style": {
 						"navigationBarTitleText": "",
