@@ -46,10 +46,7 @@
       <tui-icon name="location" :size="25"></tui-icon>
     </view>
 
-    <view class="search-wrapper">
-      <SearchBar></SearchBar>
-      <PhotoSearch></PhotoSearch>
-    </view>
+    <Controls @receive="handleReceive" :marks="allMarks"></Controls>
   </view>
 </template>
 
@@ -57,11 +54,16 @@
 import { getRedEnvelopeListApi, receiveRedEnvelopeApi } from '../../api/user'
 import { delayedLoginStatus, getUserId } from '../../utils'
 import { J_LOACTION } from '../../constant'
+import Controls from './cpns/Controls.vue'
 
 export default {
   onLoad() {
     // this.getRedEnvelopeList();
     // delayedLoginStatus();
+  },
+
+  components: {
+    Controls
   },
 
   onReady() {
@@ -91,6 +93,7 @@ export default {
     getRedEnvelopeList() {
       getRedEnvelopeListApi().then(res => {
         this.allMarks = res.data
+        console.log(this.allMarks);
         const made = []
         // #ifdef H5
         for (const redPack of res.data) {
@@ -296,7 +299,7 @@ export default {
 
 .scale-container {
   position: fixed;
-  top: 54%;
+  top: 52%;
   right: 40upx;
   width: 84upx;
   height: 148upx;
@@ -359,24 +362,4 @@ export default {
   align-items: center;
 }
 
-.search-wrapper {
-  position: fixed;
-  top: 40upx;
-  left: 50%;
-  width: 88%;
-  padding: 10upx 20upx;
-  transform: translateX(-50%);
-  background-color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
-  z-index: 10000;
-  border-radius: 20upx;
-
-  /deep/ .search-bar-container {
-    flex: 1;
-    margin-right: 15upx;
-  }
-}
 </style>
