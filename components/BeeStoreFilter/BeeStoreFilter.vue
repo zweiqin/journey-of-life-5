@@ -9,10 +9,10 @@
     </view>
 
     <view class="right">
-      <view class="menus item">
+      <!-- <view class="menus item">
         <view class="title">品类</view>
         <BeeIcon :src="require('./image/code.png')" :size="14"></BeeIcon>
-      </view>
+      </view> -->
 
       <view class="synthesize item">
         <view class="title">筛选</view>

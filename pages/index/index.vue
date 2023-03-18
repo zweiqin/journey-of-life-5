@@ -23,13 +23,24 @@
     <view class="brand">
       <BeeStoreFilter></BeeStoreFilter>
       <view class="brand-list-wrapper">
-        <BeeBrandPane
+        <BeeBrandHome
           v-for="item in $data._list"
           :key="item.id"
           :brand-info="item"
-        ></BeeBrandPane>
+        ></BeeBrandHome>
         <LoadMore :status="$data._status"></LoadMore>
       </view>
+    </view>
+
+    <view
+      @click="handleBackTop"
+      :style="{ right: $data._scrollTop > 300 ? '20rpx' : '-200rpx' }"
+      class="to-top"
+    >
+      <BeeIcon
+        :size="80"
+        :src="require('../../static/index/top-icon.png')"
+      ></BeeIcon>
     </view>
   </view>
 </template>
@@ -66,6 +77,15 @@ export default {
   },
   onLoad() {
     this._loadData()
+  },
+
+  methods: {
+    handleBackTop() {
+      uni.pageScrollTo({
+        scrollTop: 0,
+        duration: 300,
+      })
+    },
   },
 }
 </script>
@@ -138,6 +158,13 @@ export default {
     padding: 0 20upx;
     box-sizing: border-box;
     padding-bottom: 140upx;
+  }
+
+  .to-top {
+    position: fixed;
+    top: 50%;
+    right: 20upx;
+    transition: right 350ms;
   }
 }
 </style>
