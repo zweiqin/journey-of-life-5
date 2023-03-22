@@ -148,6 +148,12 @@
 			"style": {
 				"navigationBarTitleText": "爆款中心"
 			}
+		},
+		{
+			"path": "pages/index/market/market",
+			"style": {
+				"navigationBarTitleText": "数字商圈"
+			}
 		}
 	],
 	"tabBar": {

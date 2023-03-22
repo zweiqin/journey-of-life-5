@@ -6,7 +6,7 @@
         :list="
           goodsDetail.info.gallery.length
             ? goodsDetail.info.gallery
-            : goodsDetail.info.picUrl
+            : [goodsDetail.info.picUrl]
         "
         :height="390"
         :top="0"

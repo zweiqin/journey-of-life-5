@@ -4,7 +4,7 @@
     @click="go('/pages/store/detail/detail?brandId=' + brandInfo.id)"
   >
     <view class="left">
-      <BeeAvatar :src="brandInfo.picUrl" radius="10upx"></BeeAvatar>
+      <BeeAvatar :src="brandInfo.picUrl.includes('http') ? brandInfo.picUrl : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + brandInfo.picUrl" radius="10upx"></BeeAvatar>
       <view class="tag"> 惊喜价 </view>
     </view>
     <view class="middle">

@@ -16,7 +16,7 @@
     </swiper>
 
     <view class="brand-info">
-      <BeeAvatar :src="brandInfo.picUrl" :size="80" radius="20rpx"></BeeAvatar>
+      <BeeAvatar :src="brandInfo.picUrl.includes('http') ? brandInfo.picUrl : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + brandInfo.picUrl" :size="80" radius="20rpx"></BeeAvatar>
       <view class="brand-info-detail">
         <view class="info-1">
           <view class="brand-name">{{ brandInfo.name }}</view>

@@ -33,5 +33,6 @@ export const menusData = [
   {
     name: '数字商圈',
     icon: require('../../static/index/menus/number.png'),
+		url:'/pages/index/market/market',
   },
 ]
