@@ -1,4 +1,4 @@
-export { GyRequest as request, RuanRequest, LTRequest } from "./DWHRequest";
+export { GyRequest as request, RuanRequest, LTRequest, HXRequest } from "./DWHRequest";
 
 export {
   fomartNumber,

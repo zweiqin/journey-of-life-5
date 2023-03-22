@@ -1,4 +1,4 @@
-import { BASE_URL, RUAN_URL, LANG_FEE_URL, XZL } from '../config'
+import { BASE_URL, RUAN_URL, LANG_FEE_URL, XZL, HUANG_LOCATION_URL } from '../config'
 import { J_USER_TOKEN } from '../constant'
 
 const request = base_url => {
@@ -89,3 +89,4 @@ const requestLang = base_url => {
 export const GyRequest = request(BASE_URL)
 export const RuanRequest = request(RUAN_URL)
 export const LTRequest = requestLang(LANG_FEE_URL)
+export const HXRequest = request(HUANG_LOCATION_URL)

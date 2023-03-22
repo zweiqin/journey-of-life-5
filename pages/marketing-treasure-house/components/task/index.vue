@@ -1,12 +1,19 @@
 <template>
-  <view
+  <!-- <view
+    v-if="data"
     class="task-container"
-    @click="go('/marketing-treasure-house/daren-square/task-detail')"
+    @click="go('/marketing-treasure-house/daren-square/task-detail?id=' + data.id)"
+  > -->
+  <view
+    v-if="data"
+    class="task-container"
   >
     <view class="info">
       <view class="left">
-        <view class="name">安缇可丽美容（佛山市云剪 20人）</view>
-        <view class="task-c">12元；佣金5%</view>
+        <view class="name">{{ data.name }}</view>
+        <view class="task-c"
+          >{{ data.unitPrice }}元；佣金{{ data.possessGold }}%</view
+        >
         <view class="tags">
           <image
             class="tag1"
@@ -20,7 +27,10 @@
       <view style="position: relative">
         <image
           class="task-image"
-          src="https://img0.baidu.com/it/u=561734853,2461096286&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500"
+          :src="
+            'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' +
+            data.avatar
+          "
           mode=""
         />
         <view class="mask" v-if="full">
@@ -31,7 +41,7 @@
 
     <view class="requirement">
       <view class="requirement-item">
-        要求：<view class="requirement-item-tag">广东省</view>
+        要求：<view class="requirement-item-tag">{{ data.regionName }}</view>
       </view>
 
       <view class="join">
@@ -41,7 +51,9 @@
           alt=""
         />
         100+
-        <button class="uni-btn" :style="{background: full ? '#4968F6' : ''}">{{ full ? '已爆满' : '去报名' }}</button>
+        <button class="uni-btn" :style="{ background: full ? '#4968F6' : '' }">
+          {{ full ? '已爆满' : '去报名' }}
+        </button>
       </view>
     </view>
   </view>
@@ -54,8 +66,13 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    data: {
+      type: Object,
+      required: true,
+    },
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -117,6 +134,7 @@ export default {
       height: 194upx;
       object-fit: cover;
       border-radius: 20upx;
+      background-color: #e6e6e6;
     }
 
     .name {
@@ -124,7 +142,7 @@ export default {
     }
   }
 
-  .mask{
+  .mask {
     position: absolute;
     width: 194upx;
     height: 194upx;
@@ -133,7 +151,7 @@ export default {
     left: 0;
     border-radius: 20upx;
 
-    image{
+    image {
       margin-top: 37upx;
       margin-left: 37upx;
       width: 120upx;

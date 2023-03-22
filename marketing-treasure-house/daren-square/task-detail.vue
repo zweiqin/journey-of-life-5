@@ -96,9 +96,10 @@
 </template>
 
 <script>
-import SourceMaterial from "./components/source-material";
-import Datebase from "./components/datebase";
-import Rule from "./components/rules";
+import SourceMaterial from './components/source-material'
+import Datebase from './components/datebase'
+import Rule from './components/rules'
+import { getTaskDetailApi } from '../../api/square'
 
 export default {
   components: {
@@ -106,7 +107,28 @@ export default {
     Datebase,
     Rule,
   },
-};
+
+  data() {
+    return {
+      currentId: null,
+    }
+  },
+
+  onLoad(options) {
+    this.currentId = options.id
+    this.getDetail()
+  },
+
+  methods: {
+    async getDetail() {
+      const { data } = await getTaskDetailApi({
+        id: this.currentId
+      })
+
+      console.log(data);
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>
@@ -232,7 +254,7 @@ export default {
     color: #efefef;
   }
 
-  .j-icon{
+  .j-icon {
     margin-bottom: 10upx;
   }
 

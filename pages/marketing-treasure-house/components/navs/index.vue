@@ -26,31 +26,31 @@ export default {
     return {
       navConfig: [
         {
-          imageUrl: require("../../../../static/images/square/icon1.png"),
-          icon: require("../../../../static/images/square/baby.png"),
-          url: "/marketing-treasure-house/marketing-house",
-          desc: ["上千实战营销案例", "快速执行落地"],
-          width: "106",
+          imageUrl: require('../../../../static/images/square/icon1.png'),
+          icon: require('../../../../static/images/square/baby.png'),
+          url: '/marketing-treasure-house/marketing-house',
+          desc: ['上千实战营销案例', '快速执行落地'],
+          width: '106',
         },
 
         {
-          imageUrl: require("../../../../static/images/square/icon2.png"),
-          icon: require("../../../../static/images/square/squire-icon.png"),
-          url: "/marketing-treasure-house/daren-square/daren-center",
-          desc: ["达人入驻", "网红达人", "营销策划师"],
-          width: "106",
+          imageUrl: require('../../../../static/images/square/icon2.png'),
+          icon: require('../../../../static/images/square/squire-icon.png'),
+          desc: ['达人入驻', '网红达人', '营销策划师'],
+          url: '/marketing-treasure-house/talent-list/talent-list',
+          width: '106',
         },
         {
-          imageUrl: require("../../../../static/images/square/icon4.png"),
-          icon: require("../../../../static/images/square/projects.png"),
-          url: "",
-          desc: ["巨蜂城市", "APARKA创意园", "创业俱乐部"],
-          width: "156",
+          imageUrl: require('../../../../static/images/square/icon4.png'),
+          icon: require('../../../../static/images/square/projects.png'),
+          url: '/marketing-treasure-house/daren-square/daren-center',
+          desc: ['巨蜂城市', 'APARKA创意园', '创业俱乐部'],
+          width: '156',
         },
       ],
-    };
+    }
   },
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -76,7 +76,7 @@ uni-image {
 
     &::after {
       position: absolute;
-      content: "";
+      content: '';
       width: 100%;
       height: 4px;
       bottom: -24upx;

@@ -33,19 +33,28 @@
       style="animation-duration: 300ms"
       class="task-wrapper animate__animated animate__fadeInUp"
     >
-      <Task full></Task>
-      <Task></Task>
+      <!-- <Task full></Task> -->
+      <Task v-for="item in list" :key="item.id" :data="item"></Task>
     </view>
+
+    <view v-if="!list.length" class="no-data"> 暂无任务~ </view>
   </view>
 </template>
 
 <script>
-import Task from "../task";
+import Task from '../task'
 export default {
   components: {
     Task,
   },
-};
+
+  props: {
+    list: {
+      type: Array,
+      required: true,
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>
@@ -65,6 +74,11 @@ export default {
       width: 28upx;
       height: 28upx;
     }
+  }
+
+  .no-data {
+    text-align: center;
+    line-height: 200px;
   }
 }
 </style>

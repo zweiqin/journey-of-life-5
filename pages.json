@@ -518,6 +518,12 @@
 					"style": {
 						"navigationBarTitleText": "任务详情"
 					}
+				},
+				{
+					"path": "talent-list/talent-list",
+					"style": {
+						"navigationBarTitleText": "巨蜂认证营销策划师"
+					}
 				}
 			]
 		},
@@ -555,6 +561,17 @@
 					"path": "fine-food/food-nearby/food-nearby",
 					"style": {
 						"navigationBarTitleText": "附近美食"
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/index",
+			"pages": [
+				{
+					"path": "convenient-services/convenient-services",
+					"style": {
+						"navigationBarTitleText": "便民服务"
 					}
 				}
 			]
