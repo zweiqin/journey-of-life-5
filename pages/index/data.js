@@ -21,10 +21,12 @@ export const menusData = [
   {
     name: '领劵中心',
     icon: require('../../static/index/menus/counp.png'),
+		url: '/pages/index/coupons/coupons'
   },
   {
     name: '赚钱中心',
     icon: require('../../static/index/menus/wallet.png'),
+		url:'/pages/index/earn-money/earn-money'
   },
   {
     name: '今日签到',

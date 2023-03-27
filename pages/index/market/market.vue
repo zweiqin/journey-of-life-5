@@ -90,7 +90,7 @@ export default {
 
 	.top {
 		width: 100%;
-		height: 248upx;
+		// height: 248upx;
 		background: #FFFFFF;
 		border-radius: 0upx 0upx 40upx 40upx;
 
@@ -113,7 +113,7 @@ export default {
 			justify-content: space-between;
 			align-items: center;
 			padding: 0 44upx;
-
+			padding-bottom: 30upx;
 			.bar {
 				position: relative;
 				width: 120upx;

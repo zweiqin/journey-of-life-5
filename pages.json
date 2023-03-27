@@ -154,6 +154,18 @@
 			"style": {
 				"navigationBarTitleText": "数字商圈"
 			}
+		},
+		{
+			"path": "pages/index/earn-money/earn-money",
+			"style": {
+				"navigationBarTitleText": "赚钱中心"
+			}
+		},
+		{
+			"path": "pages/index/coupons/coupons",
+			"style": {
+				"navigationBarTitleText": "领券中心"
+			}
 		}
 	],
 	"tabBar": {
