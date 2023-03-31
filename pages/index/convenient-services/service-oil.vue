@@ -9,14 +9,10 @@
 				</view>
 			</BeeAddress>
 		</view>
-		<SearchBar></SearchBar>
-		<view class="banner-wrapper">
-			<image src="../../../static/index/ban1.png" mode="" />
-		</view>
 		<view class="mid">
 			<view class="bar-list">
 				<view class="bar" v-for="test in tests" :key="test.id">
-					<image :src="test.icon" mode="" />
+					<image :src="test.icon" mode="" @click="processById(test.id)" />
 					<view class="text">{{ test.name }}</view>
 				</view>
 			</view>
@@ -25,30 +21,127 @@
 					<image :src="item.icon" mode="" />
 				</view>
 			</view> -->
+			<view v-if="showyouka" class="text">油卡编号: {{ youkabianhao }}</view>
+			<view v-if="showyouka" class="text">油卡余额: {{ youkayue }}</view>
+			
+			<view class="bar" v-for="test in czlog" :key="test.id">
+				<view class="text">订单号: {{ test.orderno }}</view>
+				<view class="text">金额: {{ test.amount }}</view>
+				<view class="text">状态: {{ test.status }}</view>
+			</view>
 		</view>
+		
 	</view>
 </template>
 
 <script>
-import { items, coupons ,tests } from './data'
+import { items, coupons ,tests ,tests1} from './data'
+import { RuanRequest,getUserId } from "../../../utils"
+import { payOrderGoodsApi } from "../../../api/goods"
 export default {
 	name: "Phone-bill",
 	props: {
-
 	},
 	data() {
 		return {
 			items,
 			coupons,
 			tests,
+			tests1,
+			showyouka: false,
+			youkabianhao: "",
+			youkayue: 0,
+			czlog: [],
 		}
 	},
 	methods: {
 		handleBack() {
 			uni.navigateTo({ url: '/pages/index/convenient-services/convenient-services' })
+		},
+		processById(id) {
+			if (id == 1) {
+				RuanRequest("/tuanyou/createyouka", null, "post").then(({ data }) => {
+					console.log(data);
+					RuanRequest("/tuanyou/queryYouKaAmount", null, "post").then(({ data }) => {
+						console.log(data);
+						if(data.youKa != null){
+							this.showyouka = true;
+							this.youkabianhao = data.youKa;
+							this.youkayue = data.accountBalance;
+							this.tests = this.tests1;
+						}
+					});
+				});
+			} else if (id == 2) {
+				const reqData = {
+					"kahao": this.youkabianhao,
+					"amount": 0.1,
+				};
+				RuanRequest("/tuanyou/tygetorderinfo", reqData , "post").then(({ data }) => {
+					console.log(data);
+					payOrderGoodsApi({
+						orderNo: data.orderno,
+						userId: getUserId(),
+						payType: data.payType
+					}).then((res) => {
+						console.log(res);
+						const payData = JSON.parse(res.h5PayUrl);
+						const form = document.createElement("form");
+						form.setAttribute("action", payData.url);
+						form.setAttribute("method", "POST");
+						const data = JSON.parse(payData.data);
+						let input;
+						for (const key in data) {
+						  input = document.createElement("input");
+						  input.name = key;
+						  input.value = data[key];
+						  form.appendChild(input);
+						}
+
+						document.body.appendChild(form);
+						form.submit();
+						document.body.removeChild(form);
+					});
+				});
+			} else if (id == 3) {
+				RuanRequest("/tuanyou/getjumpurl", null, "post").then(({ data }) => {
+					console.log(data);
+					uni.navigateToMiniProgram({
+						appId: 'wx1f1ea04b716771be',
+						path: data,
+						// extraData: {
+						//   'data1': 'test'
+						// },
+						success(res) {
+							console.log(res);
+						},
+						fail(res) {
+							console.log(res);
+						}
+					})
+				});
+			}
 		}
 	},
-	created() { }
+	created() { 
+		RuanRequest("/tuanyou/queryYouKaAmount", null, "post").then(({ data }) => {
+			console.log(data);
+			if(data.youKa != null){
+				this.showyouka = true;
+				this.youkabianhao = data.youKa;
+				this.youkayue = data.accountBalance;
+				this.tests = this.tests1;
+			}
+		});
+		const reqData = {
+			"page": 1,
+			"limit": 50,
+		};
+		RuanRequest("/tuanyou/userczlog", reqData, "post").then(({ data }) => {
+			console.log(data);
+			this.czlog = data.items;
+		});
+	}
 }
 </script>
 

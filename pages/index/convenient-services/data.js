@@ -63,3 +63,16 @@ export const tests = [
 		icon: require('../../../static/index/item3.png'),
 	},
 ]
+
+export const tests1 = [
+	{
+		name: '充值',
+		id: 2,
+		icon: require('../../../static/index/item2.png'),
+	},
+	{
+		name: '去加油',
+		id: 3,
+		icon: require('../../../static/index/item3.png'),
+	},
+]
