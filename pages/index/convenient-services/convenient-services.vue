@@ -32,14 +32,14 @@
 				</view>
 			</view>
 		</view>
-		<view class="text-list">
+		<!-- <view class="text-list">
 			<view class="left">精选</view>
 			<view class="right">换一批</view>
 		</view>
 		<GasStation></GasStation>
 		<GasStation></GasStation>
 		<GasStation></GasStation>
-		<GasStation></GasStation>
+		<GasStation></GasStation> -->
 	</view>
 </template>
 
