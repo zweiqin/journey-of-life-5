@@ -24,6 +24,7 @@
 					<image :src="item.icon" mode="" @click="jump(item.id)" />
 					<view class="text">{{ item.name }}</view>
 				</view>
+
 			</view>
 			<view class="coupon-list">
 				<view class="coupon" v-for="item in coupons" :key="item.id">
@@ -44,8 +45,6 @@
 
 <script>
 import { items, coupons } from './data'
-import md5 from 'js-md5'
-import { RuanRequest } from "../../../utils";
 export default {
 	data() {
 		return {
