@@ -50,7 +50,7 @@ export const tests = [
 		name: '开卡',
 		id: 1,
 		icon: require('../../../static/index/item1.png'),
-		url: '/pages/index/convenient-services/phone-bill'
+
 	},
 	{
 		name: '充值',
