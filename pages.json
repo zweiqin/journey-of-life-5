@@ -166,6 +166,12 @@
 			"style": {
 				"navigationBarTitleText": "领券中心"
 			}
+		},
+		{
+			"path": "pages/choose-address/choose-address",
+			"style": {
+				"navigationBarTitleText": "选择定位"
+			}
 		}
 	],
 	"tabBar": {
@@ -442,56 +448,6 @@
 					"path": "otherServe/brand-manage/index",
 					"style": {
 						"navigationBarTitleText": "门店管理"
-					}
-				}
-			]
-		},
-		{
-			"root": "store",
-			"pages": [
-				{
-					"path": "store-detail"
-				},
-				{
-					"path": "activity-list"
-				},
-				{
-					"path": "explosives-list"
-				},
-				{
-					"path": "appoint-view",
-					"style": {
-						"navigationBarTitleText": "预约"
-					}
-				},
-				{
-					"path": "lottery-draw",
-					"style": {
-						"navigationBarTitleText": "抽奖"
-					}
-				},
-				{
-					"path": "goods-detail",
-					"style": {
-						"navigationBarTitleText": "商品详情"
-					}
-				},
-				{
-					"path": "brand-pay",
-					"style": {
-						"navigationBarTitleText": "商品订单详情"
-					}
-				},
-				{
-					"path": "apponit-order",
-					"style": {
-						"navigationBarTitleText": "商品订单详情"
-					}
-				},
-				{
-					"path": "store-intro",
-					"style": {
-						"navigationBarTitleText": "门店详情"
 					}
 				}
 			]

@@ -1,6 +1,10 @@
 <script>
+import PageAnimation from './components/BeePageAnimation'
 export default {
-  onLaunach: function () {},
+  mixins: [PageAnimation],
+  onLaunach: function () {
+
+  },
   onShow: function () {
     // 判断浏览器环境
     var ua = navigator.userAgent.toLowerCase();
@@ -9,17 +13,13 @@ export default {
       uni.setStorageSync("appType", 2);
       http.mpAuthLogin();
     }
-    // const state = util.getUrlKey("state");
-    // const code = util.getUrlKey("code");
-    // if ((state == "needCode" || state == "unNeedCode") && code) {
-    //   let path = window.location.href;
-    //   if (path.indexOf("code=") > 0 && path.indexOf("&state=unNeedCode") > -1) {
-    //     http.mpLogin(null, code);
-    //     path = path.substring(0, path.indexOf("code=") - 1);
-    //     history.replaceState({}, "", path);
-    //   }
-    //   http.getCartCount();
-    // }
+
+    // 获取当前定位
+    if (!this.$store.state.location.currentLocation) {
+      // #ifdef H5
+      this.$store.dispatch('location/getCurrentLocation')
+      // #endif
+    }
   },
   globalData: {},
   methods: {},

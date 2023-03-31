@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import Goods from "../../store/components/goods-pane.vue";
+import Goods from "../../pages/store/goods-pane.vue";
 import { J_PAY_GOODS, J_SELECT_ADDRESS } from "../../constant";
 import { getAddressListApi } from "../../api/address";
 import { getUserId } from "../../utils";

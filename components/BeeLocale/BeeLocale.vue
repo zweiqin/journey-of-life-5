@@ -1,12 +1,16 @@
 <template>
-  <view class="bee-locale-container">
-    <BeeIcon :src="require('./locale.png')" :size="20"></BeeIcon>
-    <view class="location-text">龙江镇</view>
+  <view class="bee-locale-container" @click="go('/pages/choose-address/choose-address')">
+    <slot>
+      <BeeIcon :src="require('./locale.png')" :size="20"></BeeIcon>
+      <view class="location-text">{{ $store.getters.currentLocation }}</view>
+    </slot>
   </view>
 </template>
 
 <script>
-export default {}
+export default {
+
+}
 </script>
 
 <style lang="less" scoped>
@@ -14,7 +18,7 @@ export default {}
   display: flex;
   align-items: center;
   margin-right: 10upx;
-  
+
   .location-text {
     margin-left: 4upx;
   }

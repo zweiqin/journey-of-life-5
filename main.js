@@ -4,6 +4,7 @@ import * as echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 // import 'animate.css'
+import store from './store'
 
 Vue.mixin({
   data() {
@@ -81,5 +82,6 @@ App.mpType = 'app'
 
 const app = new Vue({
   ...App,
+  store
 })
 app.$mount()

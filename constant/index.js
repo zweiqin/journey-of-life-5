@@ -51,3 +51,6 @@ export const PAY_TYPE = {
     success: '升级成功'
   }
 };
+
+
+export const CURRENT_LOCATION = "CURRENT_LOCATION"

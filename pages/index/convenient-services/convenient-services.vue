@@ -3,12 +3,12 @@
 		<!-- 顶部位置 -->
 		<view class="header">
 			<tui-icon name="arrowleft" color="#000" @click="handleBack"></tui-icon>
-			<BeeAddress>
+			<BeeLocale style="flex: 1">
 				<view class="address-wrapper">
-					<view class="current-addresss">位置：广东省佛山市</view>
+					<view class="current-addresss">位置：{{ $store.getters.currentLocation }}</view>
 					<BeeIcon :src="require('../../../static/index/bianmin/location.png')" :size="24"></BeeIcon>
 				</view>
-			</BeeAddress>
+			</BeeLocale>
 		</view>
 
 		<!-- 搜索框 -->
@@ -21,7 +21,7 @@
 		<view class="mid">
 			<view class="bar-list">
 				<view class="bar" v-for="item in items" :key="item.id">
-					<image :src="item.icon" mode="" @click="jump(item.id)"/>
+					<image :src="item.icon" mode="" @click="jump(item.id)" />
 					<view class="text">{{ item.name }}</view>
 				</view>
 			</view>
@@ -59,21 +59,21 @@ export default {
 				url: '/pages/index/index',
 			})
 		},
-		jump(id){
-			if(id == 3){
+		jump(id) {
+			if (id == 3) {
 				const app_key = "264225480815872";
 				const timestamp = Date.now();
 				RuanRequest("/tuanyou/gettoken", null, "post").then(({ data }) => {
 					const app_secret = "25c72804618743707a00d93e486271f6";
 					const paramObj = {
 						'app_key': app_key,
-						'token' : data,
+						'token': data,
 						'timestamp': timestamp,
 					};
-					const paramObjKeys = Object.keys(paramObj) ;
+					const paramObjKeys = Object.keys(paramObj);
 					const paramObjKeysSort = paramObjKeys.sort();
 					var strs = "" + app_secret;
-					for(var i = 0; i< paramObjKeysSort.length; i++){
+					for (var i = 0; i < paramObjKeysSort.length; i++) {
 						strs = strs + paramObjKeysSort[i] + paramObj[key];
 					}
 					strs = strs + app_secret;
@@ -84,17 +84,17 @@ export default {
 					path = path + "&timestamp=" + timestamp;
 					path = path + "&sign=" + sign;
 					uni.navigateToMiniProgram({
-					  appId: 'wx1f1ea04b716771be',
-					  path: path,
-					  // extraData: {
-					  //   'data1': 'test'
-					  // },
-					  success(res) {
-					    console.log(res);
-					  },
-					  fail(res) {
-					    console.log(res);
-					  }
+						appId: 'wx1f1ea04b716771be',
+						path: path,
+						// extraData: {
+						//   'data1': 'test'
+						// },
+						success(res) {
+							console.log(res);
+						},
+						fail(res) {
+							console.log(res);
+						}
 					})
 				});;
 			}
@@ -111,14 +111,12 @@ export default {
 	box-sizing: border-box;
 	background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 10%);
 
+
+
 	.header {
 		width: 100%;
 		display: flex;
 		align-items: center;
-
-		/deep/ .bee-address-container {
-			flex: 1;
-		}
 
 		.address-wrapper {
 			flex: 1;

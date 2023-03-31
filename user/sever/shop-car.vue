@@ -132,7 +132,7 @@
 
 <script>
 import RecommendGoods from '../../components/recommend-goods'
-import Goods from '../../store/components/goods-pane.vue'
+import Goods from '../..//pages/store/goods-pane'
 import {
   getShopCarListApi,
   changeShopCarStatusApi,

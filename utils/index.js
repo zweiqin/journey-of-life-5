@@ -15,3 +15,4 @@ export {
 } from "./DWHutils";
 export { formatTime, debounce } from "./util";
 export { nums } from './filter'
+export { getAdressDetailByLngLat, navigationAddress, getLngLatByAddress } from './location'
