@@ -120,7 +120,7 @@ export default {
 					// 	}
 					// })
 					uni.navigateTo({
-					 		url: '/pages/index/convenient-services/tuanyouh5?url=' + data,
+					 	url: '/pages/index/convenient-services/tuanyouh5?url=' + data,
 					})
 				});
 			}
