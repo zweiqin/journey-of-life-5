@@ -184,6 +184,12 @@
 			"style": {
 				"navigationBarTitleText": "加油"
 			}
+		},
+		{
+			"path": "pages/index/convenient-services/tuanyouh5",
+			"style": {
+				"navigationBarTitleText": "加油"
+			}
 		}
 	],
 	"tabBar": {

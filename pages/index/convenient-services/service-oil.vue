@@ -106,18 +106,21 @@ export default {
 			} else if (id == 3) {
 				RuanRequest("/tuanyou/getjumpurl", null, "post").then(({ data }) => {
 					console.log(data);
-					uni.navigateToMiniProgram({
-						appId: 'wx1f1ea04b716771be',
-						path: data,
-						// extraData: {
-						//   'data1': 'test'
-						// },
-						success(res) {
-							console.log(res);
-						},
-						fail(res) {
-							console.log(res);
-						}
+					// uni.navigateToMiniProgram({
+					// 	appId: 'wx1f1ea04b716771be',
+					// 	path: data,
+					// 	// extraData: {
+					// 	//   'data1': 'test'
+					// 	// },
+					// 	success(res) {
+					// 		console.log(res);
+					// 	},
+					// 	fail(res) {
+					// 		console.log(res);
+					// 	}
+					// })
+					uni.navigateTo({
+					 		url: '/pages/index/convenient-services/tuanyouh5?url=' + data,
 					})
 				});
 			}
