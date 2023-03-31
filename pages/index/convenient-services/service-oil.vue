@@ -1,6 +1,5 @@
 <template>
-	<view class="convenient-services-container">
-		<!-- 顶部位置 -->
+	<view class="phone-bill">
 		<view class="header">
 			<tui-icon name="arrowleft" color="#000" @click="handleBack"></tui-icon>
 			<BeeAddress>
@@ -10,59 +9,51 @@
 				</view>
 			</BeeAddress>
 		</view>
-
-		<!-- 搜索框 -->
 		<SearchBar></SearchBar>
-
-		<!-- 中间轮播图 -->
 		<view class="banner-wrapper">
 			<image src="../../../static/index/ban1.png" mode="" />
 		</view>
 		<view class="mid">
 			<view class="bar-list">
-				<view class="bar" v-for="item in items" :key="item.id" @click="go(item.url)">
-					<image :src="item.icon" mode="" />
-					<view class="text">{{ item.name }}</view>
+				<view class="bar" v-for="test in tests" :key="test.id">
+					<image :src="test.icon" mode="" />
+					<view class="text">{{ test.name }}</view>
 				</view>
 			</view>
-			<view class="coupon-list">
+			<!-- <view class="coupon-list">
 				<view class="coupon" v-for="item in coupons" :key="item.id">
 					<image :src="item.icon" mode="" />
 				</view>
-			</view>
+			</view> -->
 		</view>
-		<view class="text-list">
-			<view class="left">精选</view>
-			<view class="right">换一批</view>
-		</view>
-		<GasStation></GasStation>
-		<GasStation></GasStation>
-		<GasStation></GasStation>
-		<GasStation></GasStation>
 	</view>
 </template>
 
 <script>
-import { items, coupons } from './data'
+import { items, coupons ,tests } from './data'
 export default {
+	name: "Phone-bill",
+	props: {
+
+	},
 	data() {
 		return {
 			items,
-			coupons
+			coupons,
+			tests,
 		}
 	},
 	methods: {
 		handleBack() {
-			uni.switchTab({
-				url: '/pages/index/index',
-			})
-		},
-	}
+			uni.navigateTo({ url: '/pages/index/convenient-services/convenient-services' })
+		}
+	},
+	created() { }
 }
 </script>
 
 <style lang="less" scoped>
-.convenient-services-container {
+.phone-bill {
 	width: 100%;
 	min-height: 100vh;
 	padding: 20upx;
@@ -141,31 +132,6 @@ export default {
 					height: 192upx;
 				}
 			}
-		}
-	}
-
-	.text-list {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 28upx 20upx 30upx 20upx;
-
-		.left {
-			font-size: 32upx;
-			font-weight: 500;
-			color: #000000;
-		}
-
-		.right {
-			width: 90upx;
-			height: 34upx;
-			border-radius: 10upx;
-			border: 2upx solid #D8D8D8;
-			font-size: 24upx;
-			color: #999999;
-			display: flex;
-			align-items: center;
-			justify-content: center;
 		}
 	}
 }

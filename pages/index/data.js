@@ -31,6 +31,7 @@ export const menusData = [
   {
     name: '今日签到',
     icon: require('../../static/index/menus/qian.png'),
+		url:'/pages/index/sign/sign'
   },
   {
     name: '数字商圈',

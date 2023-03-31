@@ -166,6 +166,24 @@
 			"style": {
 				"navigationBarTitleText": "领券中心"
 			}
+		},
+		{
+			"path": "pages/index/sign/sign",
+			"style": {
+				"navigationBarTitleText": "今日签到"
+			}
+		},
+		{
+			"path": "pages/index/sign/points-mall",
+			"style": {
+				"navigationBarTitleText": "积分商城"
+			}
+		},
+		{
+			"path": "pages/index/convenient-services/service-oil",
+			"style": {
+				"navigationBarTitleText": "加油"
+			}
 		}
 	],
 	"tabBar": {
