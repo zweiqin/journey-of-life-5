@@ -82,36 +82,9 @@ export default {
 					});
 				});
 			} else if (id == 2) {
-				const reqData = {
-					"kahao": this.youkabianhao,
-					"amount": 0.1,
-				};
-				RuanRequest("/tuanyou/tygetorderinfo", reqData, "post").then(({ data }) => {
-					console.log(data);
-					payOrderGoodsApi({
-						orderNo: data.orderno,
-						userId: getUserId(),
-						payType: data.payType
-					}).then((res) => {
-						console.log(res);
-						const payData = JSON.parse(res.h5PayUrl);
-						const form = document.createElement("form");
-						form.setAttribute("action", payData.url);
-						form.setAttribute("method", "POST");
-						const data = JSON.parse(payData.data);
-						let input;
-						for (const key in data) {
-							input = document.createElement("input");
-							input.name = key;
-							input.value = data[key];
-							form.appendChild(input);
-						}
-
-						document.body.appendChild(form);
-						form.submit();
-						document.body.removeChild(form);
-					});
-				});
+				uni.navigateTo({
+				 	url: '/pages/index/convenient-services/recharge?kahao=' + this.youkabianhao,
+				})
 			} else if (id == 3) {
 				RuanRequest("/tuanyou/getjumpurl", null, "post").then(({ data }) => {
 					console.log(data);

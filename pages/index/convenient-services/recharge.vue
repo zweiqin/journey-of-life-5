@@ -30,13 +30,16 @@ export default {
 	data() {
 		return {
 			prices,
-
+			youkabianhao: "",
 		};
 	},
 	components: {
 
 	},
-
+	onLoad(val) {
+		console.log(val)
+		this.youkabianhao = val.kahao;
+	},
 	onShow() {
 
 	},
@@ -48,12 +51,12 @@ export default {
 		handleToAmount(item) {
 			console.log(item);
 			uni.navigateTo({
-				url: `/pages/index/convenient-services/amount?price=${item}`
+				url: `/pages/index/convenient-services/amount?price=${item}&kahao=` + this.youkabianhao
 			})
 		},
 		handleToCustomize() {
 			uni.navigateTo({
-				url: `/pages/index/convenient-services/amount`
+				url: `/pages/index/convenient-services/amount?kahao=` + this.youkabianhao
 			})
 		}
 
