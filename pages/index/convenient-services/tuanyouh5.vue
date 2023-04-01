@@ -13,36 +13,36 @@
 // import { RuanRequest,getUserId } from "../../../utils"
 // import { payOrderGoodsApi } from "../../../api/goods"
 export default {
-		data() {
-			return {
-				url: ''
-			}
-		},
-		onLoad(val) {
-			console.log(val);
-			this.url=val.url + "&token=" + val.token + "&timestamp=" + val.timestamp
-			+ "&sign=" + val.sign;
-			// 设置当前的title 如果外链中有的话将被覆盖
-			if(this.isNotEmpty(val.title)){
-				this.setTitle(val.title);
-			}
-		},
-		methods: {
-			isNotEmpty(obj) {
-				if (typeof obj == undefined || obj == null || obj == "" || obj == "undefined" || obj.length == 0) {
-					return false;
-				} else {
-					return true;
-				}
-			},
-			// 设置title
-			setTitle(title) {
-				uni.setNavigationBarTitle({
-					title: title
-				})
-			},
+	data() {
+		return {
+			url: ''
 		}
+	},
+	onLoad(val) {
+		console.log(val);
+		this.url = val.url + "&token=" + val.token + "&timestamp=" + val.timestamp
+			+ "&sign=" + val.sign;
+		// 设置当前的title 如果外链中有的话将被覆盖
+		if (this.isNotEmpty(val.title)) {
+			this.setTitle(val.title);
+		}
+	},
+	methods: {
+		isNotEmpty(obj) {
+			if (typeof obj == undefined || obj == null || obj == "" || obj == "undefined" || obj.length == 0) {
+				return false;
+			} else {
+				return true;
+			}
+		},
+		// 设置title
+		setTitle(title) {
+			uni.setNavigationBarTitle({
+				title: title
+			})
+		},
 	}
+}
 </script>
 
 <style lang="less" scoped>
