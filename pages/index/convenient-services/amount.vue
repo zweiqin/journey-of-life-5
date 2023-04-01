@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { RuanRequest, getUserId } from "../../../utils"
+import { payOrderGoodsApi } from "../../../api/goods"
 export default {
 	name: "Amount",
 	props: {
@@ -25,6 +27,7 @@ export default {
 		return {
 			payPrice: null,
 			errMsg: "",
+			youkabianhao: "",
 		}
 	},
 	methods: {
@@ -39,6 +42,40 @@ export default {
 				this.$showToast("请输入充值金额");
 				return;
 			}
+			if(this.youkabianhao == null || this.youkabianhao == "" || this.youkabianhao == undefined){
+				this.$showToast("参数错误");
+				return;
+			}
+			const reqData = {
+				"kahao": this.youkabianhao,
+				"amount": this.payPrice,
+			};
+			RuanRequest("/tuanyou/tygetorderinfo", reqData, "post").then(({ data }) => {
+				console.log(data);
+				payOrderGoodsApi({
+					orderNo: data.orderno,
+					userId: getUserId(),
+					payType: data.payType
+				}).then((res) => {
+					console.log(res);
+					const payData = JSON.parse(res.h5PayUrl);
+					const form = document.createElement("form");
+					form.setAttribute("action", payData.url);
+					form.setAttribute("method", "POST");
+					const data = JSON.parse(payData.data);
+					let input;
+					for (const key in data) {
+						input = document.createElement("input");
+						input.name = key;
+						input.value = data[key];
+						form.appendChild(input);
+					}
+			
+					document.body.appendChild(form);
+					form.submit();
+					document.body.removeChild(form);
+				});
+			});
 		}
 	},
 	created() { },
@@ -64,6 +101,8 @@ export default {
 	},
 
 	onLoad(options) {
+		console.log(options);
+		this.youkabianhao = options.kahao;
 		const { price } = options;
 		if (price != -1) {
 			this.payPrice = price * 1;
