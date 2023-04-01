@@ -20,17 +20,17 @@
 		</view>
 		<view class="mid">
 			<view class="bar-list">
-				<view class="bar" v-for="item in items" :key="item.id">
-					<image :src="item.icon" mode="" @click="jump(item.id)" />
+				<view class="bar" v-for="item in items" :key="item.id" @click="go(item.url)">
+					<image :src="item.icon" mode="" />
 					<view class="text">{{ item.name }}</view>
 				</view>
 
 			</view>
-			<view class="coupon-list">
+			<!-- <view class="coupon-list">
 				<view class="coupon" v-for="item in coupons" :key="item.id">
 					<image :src="item.icon" mode="" />
 				</view>
-			</view>
+			</view> -->
 		</view>
 		<view class="text-list">
 			<view class="left">精选</view>
@@ -58,46 +58,7 @@ export default {
 				url: '/pages/index/index',
 			})
 		},
-		jump(id) {
-			if (id == 3) {
-				const app_key = "264225480815872";
-				const timestamp = Date.now();
-				RuanRequest("/tuanyou/gettoken", null, "post").then(({ data }) => {
-					const app_secret = "25c72804618743707a00d93e486271f6";
-					const paramObj = {
-						'app_key': app_key,
-						'token': data,
-						'timestamp': timestamp,
-					};
-					const paramObjKeys = Object.keys(paramObj);
-					const paramObjKeysSort = paramObjKeys.sort();
-					var strs = "" + app_secret;
-					for (var i = 0; i < paramObjKeysSort.length; i++) {
-						strs = strs + paramObjKeysSort[i] + paramObj[key];
-					}
-					strs = strs + app_secret;
-					const sign = md5(strs);
-					var path = "https://test05-motorcade-wap.newlink.com/?";
-					path = path + "app_key=" + app_key;
-					path = path + "&token=" + data;
-					path = path + "&timestamp=" + timestamp;
-					path = path + "&sign=" + sign;
-					uni.navigateToMiniProgram({
-						appId: 'wx1f1ea04b716771be',
-						path: path,
-						// extraData: {
-						//   'data1': 'test'
-						// },
-						success(res) {
-							console.log(res);
-						},
-						fail(res) {
-							console.log(res);
-						}
-					})
-				});;
-			}
-		}
+
 	},
 }
 </script>

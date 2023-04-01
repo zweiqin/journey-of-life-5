@@ -1,6 +1,6 @@
 <template>
-	<view class="phone-bill">
-		<view class="header">
+	<view class="service-oil">
+		<!-- <view class="header">
 			<tui-icon name="arrowleft" color="#000" @click="handleBack"></tui-icon>
 			<BeeAddress>
 				<view class="address-wrapper">
@@ -8,35 +8,44 @@
 					<BeeIcon :src="require('../../../static/index/bianmin/location.png')" :size="24"></BeeIcon>
 				</view>
 			</BeeAddress>
+		</view> -->
+		<view class="top">
+				<image src="../../../static/index/convenient-services/return.png" mode="" @click="back" />
+				<text>加油</text>
+			</view>
+		<view class="bar-list">
+			<view class="bar" v-for="test in tests" :key="test.id">
+				<image :src="test.icon" mode="" @click="processById(test.id)" />
+				<view class="text">{{ test.name }}</view>
+			</view>
 		</view>
 		<view class="mid">
-			<view class="bar-list">
-				<view class="bar" v-for="test in tests" :key="test.id">
-					<image :src="test.icon" mode="" @click="processById(test.id)" />
-					<view class="text">{{ test.name }}</view>
+
+			<view class="card">
+				<image src="../../../static/index/convenient-services/card.png" mode="" />
+				<view v-if="showyouka" class="number">油卡编号: <text>{{ youkabianhao }}</text></view>
+				<view v-if="showyouka" class="surplus">油卡余额: <text>{{ youkayue }}</text></view>
+			</view>
+
+			<view class="order-form" v-for="test in czlog" :key="test.id">
+				<view class="order-number">订单号: <text>{{ test.orderno }}</text></view>
+				<view class="money">金额: <text>{{ test.amount }}</text></view>
+				<view class="status">状态: <text>{{ test.status }}</text></view>
+				<view class="list">
+					<view class="left"></view>
+					<view class="heng"></view>
+					<view class="right"></view>
 				</view>
 			</view>
-			<!-- <view class="coupon-list">
-				<view class="coupon" v-for="item in coupons" :key="item.id">
-					<image :src="item.icon" mode="" />
-				</view>
-			</view> -->
-			<view v-if="showyouka" class="text">油卡编号: {{ youkabianhao }}</view>
-			<view v-if="showyouka" class="text">油卡余额: {{ youkayue }}</view>
-			
-			<view class="bar" v-for="test in czlog" :key="test.id">
-				<view class="text">订单号: {{ test.orderno }}</view>
-				<view class="text">金额: {{ test.amount }}</view>
-				<view class="text">状态: {{ test.status }}</view>
-			</view>
+
 		</view>
-		
+
 	</view>
 </template>
 
 <script>
-import { items, coupons ,tests ,tests1} from './data'
-import { RuanRequest,getUserId } from "../../../utils"
+import { items, coupons, tests, tests1 } from './data'
+import { RuanRequest, getUserId } from "../../../utils"
 import { payOrderGoodsApi } from "../../../api/goods"
 export default {
 	name: "Phone-bill",
@@ -55,7 +64,7 @@ export default {
 		}
 	},
 	methods: {
-		handleBack() {
+		back() {
 			uni.navigateTo({ url: '/pages/index/convenient-services/convenient-services' })
 		},
 		processById(id) {
@@ -64,7 +73,7 @@ export default {
 					console.log(data);
 					RuanRequest("/tuanyou/queryYouKaAmount", null, "post").then(({ data }) => {
 						console.log(data);
-						if(data.youKa != null){
+						if (data.youKa != null) {
 							this.showyouka = true;
 							this.youkabianhao = data.youKa;
 							this.youkayue = data.accountBalance;
@@ -77,7 +86,7 @@ export default {
 					"kahao": this.youkabianhao,
 					"amount": 0.1,
 				};
-				RuanRequest("/tuanyou/tygetorderinfo", reqData , "post").then(({ data }) => {
+				RuanRequest("/tuanyou/tygetorderinfo", reqData, "post").then(({ data }) => {
 					console.log(data);
 					payOrderGoodsApi({
 						orderNo: data.orderno,
@@ -92,10 +101,10 @@ export default {
 						const data = JSON.parse(payData.data);
 						let input;
 						for (const key in data) {
-						  input = document.createElement("input");
-						  input.name = key;
-						  input.value = data[key];
-						  form.appendChild(input);
+							input = document.createElement("input");
+							input.name = key;
+							input.value = data[key];
+							form.appendChild(input);
 						}
 
 						document.body.appendChild(form);
@@ -120,16 +129,16 @@ export default {
 					// 	}
 					// })
 					uni.navigateTo({
-					 		url: '/pages/index/convenient-services/tuanyouh5?url=' + data,
+						url: '/pages/index/convenient-services/tuanyouh5?url=' + data,
 					})
 				});
 			}
 		}
 	},
-	created() { 
+	created() {
 		RuanRequest("/tuanyou/queryYouKaAmount", null, "post").then(({ data }) => {
 			console.log(data);
-			if(data.youKa != null){
+			if (data.youKa != null) {
 				this.showyouka = true;
 				this.youkabianhao = data.youKa;
 				this.youkayue = data.accountBalance;
@@ -149,10 +158,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.phone-bill {
+.service-oil {
 	width: 100%;
 	min-height: 100vh;
-	padding: 20upx;
+	padding: 0 30upx;
 	box-sizing: border-box;
 	background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 10%);
 
@@ -178,6 +187,26 @@ export default {
 		}
 	}
 
+	.top {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding-top: 36upx;
+
+		image {
+			width: 56upx;
+			height: 56upx;
+			position: absolute;
+			left: 30upx;
+		}
+
+		text {
+			color: rgba(0, 0, 0, 0.85);
+			font-size: 36upx;
+			font-weight: 500;
+		}
+	}
 	.banner-wrapper {
 		padding: 28upx 0;
 
@@ -188,47 +217,151 @@ export default {
 		}
 	}
 
-	.mid {
-		padding: 0upx 22upx;
-		border-radius: 20upx 20upx 0upx 0upx;
-		background: linear-gradient(180deg, #FFFFFF 0%, #FDFAFA 122%);
+	.bar-list {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 44upx 80upx 68upx 80upx;
 
-		.bar-list {
+		.bar {
+			width: 112upx;
 			display: flex;
-			justify-content: space-between;
+			flex-direction: column;
 			align-items: center;
-			padding: 44upx 0 68upx 0;
 
-			.bar {
-				width: 112upx;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-
-				image {
-					width: 80upx;
-					height: 80upx;
-				}
-
-				.text {
-					font-size: 28upx;
-					color: #000000;
-				}
+			image {
+				width: 64upx;
+				height: 64upx;
 			}
-		}
 
-		.coupon-list {
-			display: flex;
-			justify-content: space-between;
-			padding-bottom: 30upx;
-
-			.coupon {
-				image {
-					width: 152upx;
-					height: 192upx;
-				}
+			.text {
+				font-size: 28upx;
+				color: #000000;
 			}
 		}
 	}
-}
-</style>
+
+	.mid {
+
+		// padding: 0upx 22upx;
+		// border-radius: 20upx 20upx 0upx 0upx;
+		// background: linear-gradient(180deg, #FFFFFF 0%, #FDFAFA 122%);
+		.card {
+			background: #FFFFFF;
+			border-radius: 10upx;
+			padding: 108upx 0upx 40upx 30upx;
+			position: relative;
+			margin-bottom: 26upx;
+
+			image {
+				width: 302upx;
+				height: 100upx;
+				position: absolute;
+				top: 0upx;
+				left: 0upx;
+			}
+
+			.number {
+				padding-bottom: 10upx;
+				font-size: 28upx;
+				font-weight: 500;
+				color: #000000;
+
+				text {
+					padding-left: 10upx;
+					color: #3D3D3D;
+				}
+			}
+
+			.surplus {
+				font-size: 28upx;
+				font-weight: 500;
+				color: #000000;
+
+				text {
+					padding-left: 10upx;
+					color: #FF0000;
+				}
+			}
+		}
+
+		.order-form {
+			margin-bottom: 26upx;
+			background: #FFFFFF;
+			border-radius: 10upx;
+			padding: 40upx 30upx 26upx 30upx;
+			box-sizing: border-box;
+			position: relative;
+
+			.order-number {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				color: #000000;
+
+				text {}
+			}
+
+			.money {
+				padding-top: 80upx;
+				padding-bottom: 28upx;
+				color: #000000;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+
+				text {
+					color: #FF0000;
+				}
+			}
+
+			.status {
+				color: #000000;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+
+				text {
+					color: #3662EC;
+				}
+			}
+
+			.list {
+				display: flex;
+				align-items: center;
+				position: absolute;
+				top: 120upx;
+				left: 0;
+				width: 100%;
+
+				.left {
+					width: 46upx;
+					height: 46upx;
+					border-radius: 40upx;
+					background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 10%);
+					position: absolute;
+					left: -26upx;
+				}
+
+				.heng {
+					width: 100%;
+					height: 0upx;
+					border: 1upx dashed #D8D8D8;
+				}
+
+				.right{
+					width: 46upx;
+					height: 46upx;
+					border-radius: 40upx;
+					background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 10%);
+					position: absolute;
+					right: -26upx;
+				}
+
+			}
+		}
+
+
+
+	}
+}</style>

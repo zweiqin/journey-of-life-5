@@ -6,7 +6,7 @@
         <SearchBar background="#fff"></SearchBar>
         <PhotoSearch></PhotoSearch>
       </view>
-      <image class="banner-img" src="../../static/brand/banner.png" mode="" />
+      <!-- <image class="banner-img" src="../../static/brand/banner.png" mode="" /> -->
       <view class="menus-wrapper">
         <BeeMenus :data="menusData"></BeeMenus>
       </view>

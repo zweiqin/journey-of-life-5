@@ -31,11 +31,11 @@
         热搜：<text>汉堡</text> <text>薯条</text> <text>奶茶</text>
         <text>鸡翅</text> <text>鸡翅</text>
       </view>
-      <image
+      <!-- <image
         class="banner-img"
         src="../../../static/brand/banner.png"
         mode=""
-      />
+      /> -->
       <view class="menus-wrapper">
         <BeeMenus :data="menusData"></BeeMenus>
       </view>
