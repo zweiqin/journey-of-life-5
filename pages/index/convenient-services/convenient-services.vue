@@ -20,8 +20,8 @@
 		</view>
 		<view class="mid">
 			<view class="bar-list">
-				<view class="bar" v-for="item in items" :key="item.id" @click="go(item.url)">
-					<image :src="item.icon" mode="" />
+				<view class="bar" v-for="item in items" :key="item.id">
+					<image :src="item.icon" mode="" @click="go(item.url)" />
 					<view class="text">{{ item.name }}</view>
 				</view>
 
@@ -32,14 +32,14 @@
 				</view>
 			</view> -->
 		</view>
-		<view class="text-list">
+		<!-- <view class="text-list">
 			<view class="left">精选</view>
 			<view class="right">换一批</view>
 		</view>
 		<GasStation></GasStation>
 		<GasStation></GasStation>
 		<GasStation></GasStation>
-		<GasStation></GasStation>
+		<GasStation></GasStation> -->
 	</view>
 </template>
 
@@ -57,8 +57,7 @@ export default {
 			uni.switchTab({
 				url: '/pages/index/index',
 			})
-		},
-
+		}
 	},
 }
 </script>

@@ -129,7 +129,7 @@ export default {
 					// 	}
 					// })
 					uni.navigateTo({
-						url: '/pages/index/convenient-services/tuanyouh5?url=' + data,
+					 	url: '/pages/index/convenient-services/tuanyouh5?url=' + data,
 					})
 				});
 			}
@@ -138,20 +138,23 @@ export default {
 	created() {
 		RuanRequest("/tuanyou/queryYouKaAmount", null, "post").then(({ data }) => {
 			console.log(data);
-			if (data.youKa != null) {
+			if(data.youKa != null) {
 				this.showyouka = true;
 				this.youkabianhao = data.youKa;
 				this.youkayue = data.accountBalance;
 				this.tests = this.tests1;
+				
+				const reqData = {
+					"page": 1,
+					"limit": 50,
+				};
+				RuanRequest("/tuanyou/userczlog", reqData, "post").then(({ data }) => {
+					console.log(data);
+					if(data.items != null){
+						this.czlog = data.items;
+					}
+				});
 			}
-		});
-		const reqData = {
-			"page": 1,
-			"limit": 50,
-		};
-		RuanRequest("/tuanyou/userczlog", reqData, "post").then(({ data }) => {
-			console.log(data);
-			this.czlog = data.items;
 		});
 	}
 }
