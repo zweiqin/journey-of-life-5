@@ -135,6 +135,10 @@ export default {
 				this.youkayue = data.accountBalance;
 				this.tests = this.tests1;
 				
+				const reqData = {
+					"page": 1,
+					"limit": 50,
+				};
 				RuanRequest("/tuanyou/userczlog", reqData, "post").then(({ data }) => {
 					console.log(data);
 					if(data.items != null){
@@ -143,10 +147,6 @@ export default {
 				});
 			}
 		});
-		const reqData = {
-			"page": 1,
-			"limit": 50,
-		};
 	}
 }
 </script>
