@@ -30,7 +30,7 @@
 			<view class="order-form" v-for="test in czlog" :key="test.id">
 				<view class="order-number">订单号: <text>{{ test.orderno }}</text></view>
 				<view class="money">金额: <text>{{ test.amount }}</text></view>
-				<view class="status">状态: <text>{{ test.status }}</text></view>
+				<view class="status">状态: <text>{{ test.status ? '失败' :'成功' }}</text></view>
 				<view class="list">
 					<view class="left"></view>
 					<view class="heng"></view>
