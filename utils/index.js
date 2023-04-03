@@ -11,7 +11,7 @@ export {
   getAddressLongitudeAndLatitude,
   delayedLoginStatus,
   domToImage,
-  transformBigNumber
+  transformNumber
 } from "./DWHutils";
 export { formatTime, debounce } from "./util";
 export { nums } from './filter'

@@ -127,11 +127,11 @@
       </uni-popup-dialog>
     </uni-popup>
 
-    <JUploadAvatar
+    <!-- <JUploadAvatar
       @close="handleCloseUpload"
       ref="jUploadAvatarRef"
       @success="handleUpDateAvatar"
-    ></JUploadAvatar>
+    ></JUploadAvatar> -->
   </view>
 </template>
 
