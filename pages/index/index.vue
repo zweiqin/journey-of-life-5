@@ -28,7 +28,24 @@
 		</view>
 		<view class="goods-list">
 			<view class="pane">
-				<GoodsFilter :scrollTop="scrollTop"></GoodsFilter>
+				<!-- <GoodsFilter :scrollTop="scrollTop"></GoodsFilter> -->
+
+				<view class="menus-wrapper">
+					<view @click="handleChooseMenu(item)" class="item" :class="{ active: currentFilterMenuId === item.id }"
+						v-for="item in menus" :key="item.id">
+						<BeeIcon :size="40" :src="item.icon"></BeeIcon>
+						<text>{{ item.name }}</text>
+					</view>
+				</view>
+
+				<scroll-view scroll-x="true">
+					<view class="sub-menus">
+						<view @click="handleChangeSubMenu(item)" class="item" :class="{ active: query.categoryId === item.id }"
+							v-for="item in submenus" :key="item.id">
+							{{ item.name }}
+						</view>
+					</view>
+				</scroll-view>
 
 				<view class="goods-wrapper">
 					<NewGoods v-for="item in goodsList" :key="item.id" :data="item"></NewGoods>
@@ -48,6 +65,8 @@ import { menusData } from './data'
 import Menus from './cpns/Menus'
 import Synthesize from './cpns/Synthesize.vue'
 import { getGoodsById } from '../../api/home'
+import { getTypeDetailList } from '../../api/home'
+
 
 export default {
 	components: { Menus, Synthesize },
@@ -59,17 +78,49 @@ export default {
 				page: 1,
 				size: 20,
 				isNew: true,
-				order: 'desc',
-				sort: 'add_time',
+				order: 'asc',
+				categoryId: 100101312,
+				sort: 'retail_price',
 			},
 			goodsList: [],
 			totalPages: 2,
-			status: 'none'
+			status: 'none',
+			currentFilterMenuId: 1001002,
+			menus: Object.freeze([
+				{
+					name: '巨蜂特惠',
+					icon: require('../../static/index/shop/tehui.png'),
+					id: 1001002,
+				},
+				{
+					name: '日用百货',
+					icon: require('../../static/index/shop/baihuo.png'),
+					id: 1001009,
+				},
+				{
+					name: '家具用品',
+					icon: require('../../static/index/shop/jiaju.png'),
+					id: 1001011,
+				},
+				{
+					name: '箱包首饰',
+					icon: require('../../static/index/shop/xiangbao.png'),
+					id: 1001013,
+				},
+				{
+					name: '家电',
+					icon: require('../../static/index/shop//el.png'),
+					id: 100101466,
+				},
+			]),
+			currentMenu: null,
+			submenus: []
 		}
 	},
 	onLoad() { },
 	mounted() {
-		this.getGoodsList()
+		this.getSubMenus()
+
 	},
 	methods: {
 		getGoodsList(isLoadMore) {
@@ -88,6 +139,26 @@ export default {
 			})
 			uni.hideLoading()
 		},
+
+		handleChooseMenu(item) {
+			this.currentFilterMenuId = item.id
+			this.goodsList = []
+			this.getSubMenus()
+		},
+
+		async getSubMenus() {
+			const { data } = await getTypeDetailList({ id: this.currentFilterMenuId })
+			this.submenus = data.currentSubCategory
+			this.query.categoryId = data.currentSubCategory[0].id
+			this.query.page = 1
+			this.getGoodsList()
+		},
+
+		handleChangeSubMenu(itme){
+			this.query.categoryId = itme.id
+			this.getGoodsList()
+
+		}
 	},
 	onPageScroll(e) {
 		this.scrollTop = e.scrollTop
@@ -198,5 +269,58 @@ export default {
 			}
 		}
 	}
+
+
+	.menus-wrapper {
+		white-space: nowrap;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		// overflow: scroll;
+		// padding: 20upx 20upx 10upx 20upx;
+
+		.item {
+			width: 120upx;
+			height: 160upx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			font-size: 24upx;
+			padding: 16upx 12upx;
+			box-sizing: border-box;
+			margin-right: 12upx;
+			border-radius: 10upx;
+			flex-shrink: 0;
+			transition: all 350ms;
+			background-color: #fff;
+
+			&.active {
+				box-shadow: 0px 2px 5px 0px rgba(175, 175, 175, 0.6);
+			}
+		}
+	}
+
+	.sub-menus {
+		display: flex;
+		align-items: center;
+		margin-top: 24upx;
+
+		.item {
+			white-space: nowrap;
+			padding: 0 16upx;
+			border: 1upx solid #777;
+			border-radius: 10upx;
+			color: #777;
+			margin-right: 34upx;
+			font-size: 24upx;
+
+			&.active {
+				border-color: #fa5151;
+				color: #fa5151;
+			}
+		}
+	}
+
 }
 </style>
