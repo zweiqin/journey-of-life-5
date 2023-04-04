@@ -7,10 +7,7 @@
       <BeeShare>
         <view class="share-wrapper">
           <text>分享</text>
-          <BeeIcon
-            :src="require('../../../static/brand/detail/share.png')"
-            :size="24"
-          ></BeeIcon>
+          <BeeIcon :src="require('../../../static/brand/detail/share.png')" :size="24"></BeeIcon>
         </view>
       </BeeShare>
     </view>
@@ -20,38 +17,29 @@
 
     <view class="main-area brand-pane">
       <view class="brand-detail-menus">
-        <view
-          class="item"
-          :class="{ active: currentMenu === item.value }"
-          v-for="item in menusData"
-          :key="item.value"
-          >{{ item.name }}</view
-        >
+        <view class="item" :class="{ active: currentMenu === item.value }" v-for="item in menusData" :key="item.value">{{
+          item.name }}</view>
       </view>
 
       <view class="goods-list">
-        <BrandGoods
-          v-for="goods in $data._list"
-          :key="goods.id"
-          :goodsData="goods"
-        ></BrandGoods>
+        <BrandGoods v-for="goods in $data._list" :key="goods.id" :goodsData="goods"></BrandGoods>
         <!-- <LoadMore :status="$data._status"></LoadMore> -->
       </view>
 
       <view class="order-in-store">
         <view class="title"> 到店点餐 </view>
         <view class="goods-list">
-          <BrandGoods
-            v-for="goods in $data._list.slice(0, 2)"
-            :key="goods.id"
-            :goodsData="goods"
-          ></BrandGoods>
+          <BrandGoods v-for="goods in $data._list.slice(0, 2)" :key="goods.id" :goodsData="goods"></BrandGoods>
         </view>
       </view>
     </view>
 
     <AppraisePane></AppraisePane>
     <RecommendList></RecommendList>
+
+    <view class="shop-car-fixed">
+      <BeeIcon :src="require('../../../static/brand/detail/shop-car.png')" :size="40"></BeeIcon>
+    </view>
   </view>
 </template>
 
@@ -106,6 +94,7 @@ export default {
   width: 100vw;
   min-height: 100vh;
   background-color: #f6f6f6;
+
   .bg {
     width: 100%;
     height: 480upx;
@@ -168,6 +157,15 @@ export default {
       color: #000;
       font-weight: 500;
     }
+  }
+
+  .shop-car-fixed {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 40upx;
+    box-shadow: 0px 4px 10px 0px #D8D8D8;
+    border-radius: 50%;
   }
 }
 </style>

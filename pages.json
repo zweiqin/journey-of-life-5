@@ -560,6 +560,12 @@
           "style": {
             "navigationBarTitleText": "附近美食"
           }
+        },
+        {
+          "path": "goods-detail/goods-detail",
+          "style": {
+            "navigationBarTitleText": "商品详情"
+          }
         }
       ]
     },

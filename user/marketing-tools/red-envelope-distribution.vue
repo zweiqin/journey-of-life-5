@@ -220,7 +220,7 @@ export default {
             filePath: chooseImageRes.tempFiles[0].path,
             name: "file",
             success: (uploadFileRes) => {
-              _this.redForm.imageUrl = JSON.parse(uploadFileRes.data).data.url;
+              _this.redForm.imageUrl = _this.getBeeUrl(JSON.parse(uploadFileRes.data).data.url) ;
               this.$refs.previewWrapperRef.$el.style.transform = "scale(1)";
             },
           });

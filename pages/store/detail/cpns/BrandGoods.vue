@@ -1,12 +1,8 @@
 <template>
-  <view class="brand-goods-container" @click="go('/pages/prod/prod?goodsId=' + goodsData.id)" v-if="goodsData">
-    <tui-lazyload-img
-      class="goods-img"
-      mode="scaleToFill"
-      width="340rpx"
-      height="176rpx"
-      :src="goodsData.picUrl"
-    ></tui-lazyload-img>
+  <view class="brand-goods-container" @click="go('/pages/store/goods-detail/goods-detail?goodsId=' + goodsData.id)"
+    v-if="goodsData">
+    <tui-lazyload-img class="goods-img" mode="scaleToFill" width="340rpx" height="176rpx"
+      :src="goodsData.picUrl"></tui-lazyload-img>
 
     <view class="brand-goods-name">
       {{ goodsData.name }}
@@ -14,18 +10,17 @@
 
     <view class="time">
       <view class="wrapper">
-        <view class="surplus-time">剩余 01:28:21</view>
         <view class="price-wrapper">
           <text class="price-text">￥{{ goodsData.counterPrice }}</text>
           <text class="price-tag">4折</text>
         </view>
       </view>
-      <button class="bee-btn">秒杀</button>
+
+      <BeeIcon :size="22" :src="require('../../../../static/brand/detail/add-icon.png')"></BeeIcon>
     </view>
 
     <view class="text_3">
       <text>促销价共省71.2元</text>
-      <text>剩{{ getRandom(1, 10) }}份</text>
     </view>
   </view>
 </template>

@@ -16,7 +16,7 @@
 
 			<Synthesize></Synthesize> -->
 
-			<view class="banner-wrapper">
+			<view class="banner-wrapper" @click="go('/user/sever/userUp')">
 				<image src="../../static/index/banner2.png" mode="" />
 			</view>
 
@@ -85,17 +85,17 @@ export default {
 			goodsList: [],
 			totalPages: 2,
 			status: 'none',
-			currentFilterMenuId: 1001002,
+			currentFilterMenuId: 1001009,
 			menus: Object.freeze([
-				{
-					name: '巨蜂特惠',
-					icon: require('../../static/index/shop/tehui.png'),
-					id: 1001002,
-				},
 				{
 					name: '日用百货',
 					icon: require('../../static/index/shop/baihuo.png'),
 					id: 1001009,
+				},
+				{
+					name: '巨蜂特惠',
+					icon: require('../../static/index/shop/tehui.png'),
+					id: 1001002,
 				},
 				{
 					name: '家具用品',
@@ -149,12 +149,12 @@ export default {
 		async getSubMenus() {
 			const { data } = await getTypeDetailList({ id: this.currentFilterMenuId })
 			this.submenus = data.currentSubCategory
-			this.query.categoryId = data.currentSubCategory[0].id
+			this.query.categoryId = this.currentFilterMenuId === 1001009 ? data.currentSubCategory[2].id : data.currentSubCategory[0].id
 			this.query.page = 1
 			this.getGoodsList()
 		},
 
-		handleChangeSubMenu(itme){
+		handleChangeSubMenu(itme) {
 			this.query.categoryId = itme.id
 			this.getGoodsList()
 
