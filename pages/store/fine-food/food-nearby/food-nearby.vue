@@ -32,7 +32,7 @@
           v-for="item in menus"
           :key="item.id"
         >
-          <BeeIcon :size="40" :src="item.icon"></BeeIcon>
+          <!-- <BeeIcon :size="40" :src="item.icon"></BeeIcon> -->
           <text>{{ item.name }}</text>
         </view>
       </view>
@@ -154,37 +154,62 @@ export default {
       padding: 20upx 20upx 0 20upx;
 
       .item {
+				height: 48upx;
         position: relative;
-        width: 120upx;
-        height: 160upx;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
+        // width: 120upx;
+        // height: 160upx;
+        // display: flex;
+        // align-items: center;
+        // justify-content: center;
+        // flex-direction: column;
         font-size: 24upx;
-        padding: 16upx 12upx;
+        // padding: 16upx 12upx;
         box-sizing: border-box;
-        margin-right: 12upx;
+        margin-right: 48upx;
         border-radius: 10upx;
         flex-shrink: 0;
-        background-color: #fff;
+        // background-color: #fff;
 
-        &.active {
-          border: 1upx solid #fa5151;
+        // &.active {
+        //   border: 1upx solid #fa5151;
 
-          &::after {
-            content: '';
-            bottom: 0;
-            right: 0;
-            width: 28upx;
-            height: 22upx;
-            position: absolute;
-            display: block;
-            background: url('../../../../static/brand/find-food/food-nearby/menus/active.png')
-              no-repeat;
-            background-size: cover;
-          }
-        }
+        //   &::after {
+        //     content: '';
+        //     bottom: 0;
+        //     right: 0;
+        //     width: 28upx;
+        //     height: 22upx;
+        //     position: absolute;
+        //     display: block;
+        //     background: url('../../../../static/brand/find-food/food-nearby/menus/active.png')
+        //       no-repeat;
+        //     background-size: cover;
+        //   }
+        // }
+
+				&::after {
+					content: '';
+					position: absolute;
+					left: 50%;
+					transform: translateX(-50%);
+					bottom: 0;
+					width: 0;
+					height: 4upx;
+					border-radius: 10upx;
+					background-color: #FB5D5D;
+					transition: all 350ms ease-in;
+				}
+
+				&.active {
+					font-size: 28upx;
+					font-weight: 500;
+
+					&::after {
+						width: 48upx;
+					}
+				}
+
+
       }
     }
   }

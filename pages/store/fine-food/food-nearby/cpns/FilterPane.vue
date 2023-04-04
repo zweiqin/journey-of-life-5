@@ -13,7 +13,7 @@
       </view>
     </view>
 
-    <scroll-view scroll-x="true">
+    <!-- <scroll-view scroll-x="true">
       <view class="tags">
         <view class="tag">附近1km</view>
         <view class="tag">超值半价</view>
@@ -21,7 +21,7 @@
         <view class="tag">早餐</view>
         <view class="tag">晚餐</view>
       </view>
-    </scroll-view>
+    </scroll-view> -->
   </view>
 </template>
 

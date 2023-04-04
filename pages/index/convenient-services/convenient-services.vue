@@ -26,11 +26,11 @@
 				</view>
 
 			</view>
-			<view class="coupon-list">
+			<!-- <view class="coupon-list">
 				<view class="coupon" v-for="item in coupons" :key="item.id">
 					<image :src="item.icon" mode="" />
 				</view>
-			</view>
+			</view> -->
 		</view>
 		<!-- <view class="text-list">
 			<view class="left">精选</view>

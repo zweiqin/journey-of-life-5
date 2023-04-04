@@ -6,7 +6,7 @@
         <SearchBar background="#fff"></SearchBar>
         <PhotoSearch></PhotoSearch>
       </view>
-      <image class="banner-img" src="../../static/brand/banner.png" mode="" />
+      <!-- <image class="banner-img" src="../../static/brand/banner.png" mode="" /> -->
       <view class="menus-wrapper">
         <BeeMenus :data="menusData"></BeeMenus>
       </view>
@@ -74,15 +74,16 @@ export default {
 
   .top-container {
     width: 100%;
-    min-height: 826upx;
+		background: #f6f6f6;
+    // min-height: 826upx;
 
-    background: linear-gradient(
-      0deg,
-      rgba(246, 246, 246, 0.87) -3%,
-      rgba(246, 246, 246, 0.87) 8%,
-      rgba(246, 246, 246, 0.87) 14%,
-      rgba(253, 164, 164, 0.87) 59%
-    );
+    // background: linear-gradient(
+    //   0deg,
+    //   rgba(246, 246, 246, 0.87) -3%,
+    //   rgba(246, 246, 246, 0.87) 8%,
+    //   rgba(246, 246, 246, 0.87) 14%,
+    //   rgba(253, 164, 164, 0.87) 59%
+    // );
 
     .search-header {
       display: flex;
