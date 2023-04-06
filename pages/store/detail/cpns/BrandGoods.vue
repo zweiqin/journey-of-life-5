@@ -1,5 +1,5 @@
 <template>
-  <view class="brand-goods-container" @click="go('/pages/store/goods-detail/goods-detail?goodsId=' + goodsData.id)"
+  <view class="brand-goods-container" @click="go('/pages/prod/prod?goodsId=' + goodsData.id)"
     v-if="goodsData">
     <tui-lazyload-img class="goods-img" mode="scaleToFill" width="340rpx" height="176rpx"
       :src="goodsData.picUrl"></tui-lazyload-img>
