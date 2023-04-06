@@ -10,7 +10,7 @@
       <view class="menus-wrapper">
         <BeeMenus :data="menusData"></BeeMenus>
       </view>
-      <view class="banner-wrapper">
+      <view class="banner-wrapper" @click="go('/user/sever/userUp')">
         <image src="../../static/index/banner2.png" mode="" />
       </view>
     </view>
@@ -18,11 +18,7 @@
     <view class="brand">
       <BeeStoreFilter></BeeStoreFilter>
       <view class="brand-list-wrapper">
-        <BeeBrandPane
-          v-for="item in $data._list"
-          :key="item.id"
-          :brand-info="item"
-        ></BeeBrandPane>
+        <BeeBrandPane v-for="item in $data._list" :key="item.id" :brand-info="item"></BeeBrandPane>
         <LoadMore :status="$data._status"></LoadMore>
       </view>
     </view>
@@ -74,7 +70,7 @@ export default {
 
   .top-container {
     width: 100%;
-		background: #f6f6f6;
+    background: #f6f6f6;
     // min-height: 826upx;
 
     // background: linear-gradient(
@@ -116,6 +112,7 @@ export default {
       margin-top: 20upx;
       padding: 0 20upx;
       box-sizing: border-box;
+
       image {
         width: 100%;
         height: 200upx;
@@ -123,8 +120,10 @@ export default {
       }
     }
   }
+
   .brand {
     margin-top: 20upx;
+
     .brand-list-wrapper {
       padding: 0 20upx;
       box-sizing: border-box;
