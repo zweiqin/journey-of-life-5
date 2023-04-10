@@ -1,4 +1,4 @@
-@import url('./node_modules/animate.css/animate.min.css');
+@import url("./node_modules/animate.css/animate.min.css");
 
 /**app.wxss**/
 .container {
@@ -10,7 +10,7 @@
 }
 
 ::-webkit-scrollbar {
-  width: 0 !important
+  width: 0 !important;
 }
 
 .uni-btn {
@@ -35,7 +35,6 @@ page {
   color: #eb2444;
   padding-bottom: 10rpx;
   padding-left: 10rpx;
-
 }
 
 li {
@@ -132,7 +131,6 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
   -webkit-transform: translate(-50%, -50%) scale(1);
 }
 
-
 /* 底部按钮兼容 iPhone X以上 */
 @media screen and (width: 375px) and (height: 812px) {
   .container {
@@ -149,7 +147,6 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
 .uni-swiper-dot-active {
   background-color: #eb2444;
 }
-
 
 .flex-center {
   display: flex;
@@ -174,6 +171,19 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
   font-size: 24upx;
 }
 
+.font-16 {
+  font-size: 32upx;
+}
+
+/* 字重 */
+.f-w-500 {
+  font-weight: 500;
+}
+
+.f-w-b {
+  font-weight: bold;
+}
+
 /* 文字颜色 */
 
 .f-c-9 {
@@ -187,7 +197,7 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
 /* 圆角 */
 
 .r-5 {
-  border-radius: 10upx;
+  border-radius: 10upx !important;
 }
 
 .r-10 {
@@ -197,7 +207,7 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
 /* 背景 */
 
 .b-c {
-  background-color: #EFEFEF;
+  background-color: #efefef;
 }
 
 .call-phone {
@@ -236,14 +246,40 @@ text {
   padding: 0;
 }
 
-
 .bee-btn::after {
   border: none;
 }
-
 
 .hiden-text {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.p-color {
+  color: #fa5151;
+}
+
+.f-s-b {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.f-f-s {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.f-f-e {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.f-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

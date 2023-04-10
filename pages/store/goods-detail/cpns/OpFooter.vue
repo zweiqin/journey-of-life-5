@@ -8,7 +8,7 @@
     </view>
     <view class="btn-wrapper">
       <button class="bee-btn add-order">加入订单</button>
-      <button class="bee-btn pay">立即购买</button>
+      <button class="bee-btn pay" @click="go('/pages/store/order-detail/order-detail')">立即购买</button>
     </view>
   </view>
 </template>

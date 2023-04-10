@@ -1,4 +1,4 @@
-.flex(@align: center, @justify: space-between, @direction: row) {
+.flex(@justify: space-between, @align: center, @direction: row) {
   display: flex;
   align-items: @align;
   justify-content: @justify;
@@ -22,4 +22,9 @@
 
 .margin(@top, @bottom) {
   margin: @top 0 @bottom 0;
+}
+
+.pdd(@pd) {
+  padding: @pd;
+  box-sizing: border-box;
 }
