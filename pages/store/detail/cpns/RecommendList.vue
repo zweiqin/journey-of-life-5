@@ -21,19 +21,19 @@
 
 <script>
 import loadData from '../../../../mixin/loadData'
-import { getSroreListApi } from '../../../../api/store'
+import { getHomeBrandListApi } from '../../../../api/brand'
 
 export default {
   mixins: [
     loadData({
-      api: getSroreListApi,
+      api: getHomeBrandListApi,
       mapKey: {
         list: 'brandList',
         totalPages: 'totalPages',
         size: 'size',
       },
       dataFn(data) {
-        const ignoreBrandList = ['佛山市顺德区修江缘美食餐饮店', '测试门店呀']
+        const ignoreBrandList = ['佛山市顺德区修江缘美食餐饮店', '测试门店呀', '巨蜂自营']
         return data.filter(item => {
           return !ignoreBrandList.includes(item.name)
         })
@@ -41,6 +41,7 @@ export default {
     }),
   ],
   mounted() {
+    this.$data._query = {...this.$data._query, ...this.$store.getters.lonAndLat}
     this._loadData()
   },
 }

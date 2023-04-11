@@ -1,5 +1,5 @@
 <template>
-  <view class="brand-detail-container">
+  <view class="brand-detail-container" v-if="brandDetail">
     <view class="bg">
       <BeeBack>
         <BeeIcon name="arrowleft" :size="24" color="#fff"></BeeIcon>
@@ -17,21 +17,59 @@
 
     <view class="main-area brand-pane">
       <view class="brand-detail-menus">
-        <view class="item" :class="{ active: currentMenu === item.value }" v-for="item in menusData" :key="item.value">{{
-          item.name }}</view>
+        <view class="item" @click="handleChangeNavs(item.value)" :class="{ active: currentMenu === item.value }"
+          v-for="item in menusData" :key="item.value">{{
+            item.name }}</view>
       </view>
 
-      <view class="goods-list">
-        <BrandGoods v-for="goods in $data._list" :key="goods.id" :goodsData="goods"></BrandGoods>
+      <view class="goods-list" style="width: 100%">
+        <view class="goods" style="width: 100%" v-show="currentMenu === 0">
+          <view v-if="brandDetail.goodsVoList && brandDetail.goodsVoList.length" class="f-s-b" style="flex-wrap: wrap;">
+            <BrandGoods v-for="goods in brandDetail.goodsVoList" :key="goods.id" :goodsData="goods"></BrandGoods>
+          </view>
+
+          <view v-else class="no-data f-center">
+            暂无数据
+          </view>
+        </view>
         <!-- <LoadMore :status="$data._status"></LoadMore> -->
+
+
       </view>
 
-      <view class="order-in-store">
+      <view v-show="currentMenu === 1" class="no-data f-center">
+        暂无团购
+      </view>
+
+      <!-- <view class="no-data f-center">
+        暂无优惠劵
+      </view> -->
+
+      <CouponList :couponData="couponList" v-show="currentMenu === 2"></CouponList>
+
+      <view v-show="currentMenu === 3" class="no-data f-center">
+        <view>
+          暂无预约<text class="p-color" style="font-size: 36upx;">去预约</text>
+
+        </view>
+        <BeeAvatar radius="0upx" :width="179" :height="156" :src="require('../../../static/brand/detail/apponit.png')">
+        </BeeAvatar>
+      </view>
+
+      <view v-show="currentMenu === 4" class="no-data f-center">
+        暂无优会员
+      </view>
+
+      <view v-show="currentMenu === 5" class="no-data f-center">
+        暂无抽奖
+      </view>
+
+      <!-- <view class="order-in-store">
         <view class="title"> 到店点餐 </view>
         <view class="goods-list">
-          <BrandGoods v-for="goods in $data._list.slice(0, 2)" :key="goods.id" :goodsData="goods"></BrandGoods>
+          <BrandGoods v-for="goods in brandDetail.goodsVoList" :key="goods.id" :goodsData="goods"></BrandGoods>
         </view>
-      </view>
+      </view> -->
     </view>
 
     <AppraisePane></AppraisePane>
@@ -47,18 +85,20 @@
 import BrandGoods from './cpns/BrandGoods.vue'
 import BrandInfo from './cpns/BrandInfo'
 import { menusData } from './data'
-import { getStoreDetailApi } from '../../../api/store'
+import { getBrandDetailApi, getBrandCouponApi } from '../../../api/brand'
 import { goodsListApi } from '../../../api/goods'
 import loadData from '../../../mixin/loadData'
 import AppraisePane from './cpns/AppraisePane.vue'
 import RecommendList from './cpns/RecommendList.vue'
+import CouponList from './cpns/CouponList.vue'
 
 export default {
   components: {
     BrandInfo,
     BrandGoods,
     AppraisePane,
-    RecommendList
+    RecommendList,
+    CouponList
   },
 
   mixins: [loadData({ api: goodsListApi })],
@@ -69,6 +109,7 @@ export default {
       currentMenu: 0,
       brandId: null,
       brandDetail: {},
+      couponList: []
     }
   },
 
@@ -76,15 +117,34 @@ export default {
     this.brandId = options.brandId
     this.getBrandDetail()
     this.$data._query.brandId = this.brandId
-    this._loadData()
+    // this._loadData()
   },
 
   methods: {
     async getBrandDetail() {
-      const { data } = await getStoreDetailApi(this.brandId)
-      this.brandDetail = data.brand
+      const { data } = await getBrandDetailApi({ id: this.brandId, ...this.$store.getters.lonAndLat })
+      this.brandDetail = data
       console.log(this.brandDetail)
     },
+
+    // 切换 nav
+    handleChangeNavs(value) {
+      this.currentMenu = value
+      switch (value) {
+        case 2:
+          if (!this.couponList.length) {
+            this.getBrandCoupon()
+          }
+          break
+      }
+    },
+
+    // 获取优惠劵
+    async getBrandCoupon() {
+      const { data } = await getBrandCouponApi({ brandId: this.brandId })
+      this.couponList = data
+      console.log(data);
+    }
   },
 }
 </script>
@@ -167,5 +227,12 @@ export default {
     box-shadow: 0px 4px 10px 0px #D8D8D8;
     border-radius: 50%;
   }
+}
+
+.no-data, /deep/ .c-no-data {
+  min-height: 200upx;
+  color: #ccc;
+  padding: 20upx 0;
+  flex-direction: column;
 }
 </style>

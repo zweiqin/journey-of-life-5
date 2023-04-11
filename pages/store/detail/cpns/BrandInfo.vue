@@ -2,84 +2,53 @@
   <view class="brand-info-container" v-if="brandDetail">
     <view class="brand-name">{{ brandDetail.name }}</view>
     <view class="rate">
-      <BeeIcon
-        :src="require('../../../../components/BeeBrandPane/images/star.png')"
-        :size="12"
-      ></BeeIcon>
-      <text>4.9</text>
-      <text>月售789</text>
-      <text>人均70</text>
+      <BeeIcon :src="require('../../../../components/BeeBrandPane/images/star.png')" :size="12"></BeeIcon>
+      <text>{{ brandDetail.starTotal || 0 }}</text>
+      <text>月售{{ brandDetail.salesVolume }}</text>
+      <text>人均{{ brandDetail.perCapita }}</text>
     </view>
-    <view class="open-time"> 营业时间：21:00-次日5:00 </view>
+    <view class="open-time"> 营业时间：{{ brandDetail.startTime }}-{{ brandDetail.endTime }} </view>
     <scroll-view scroll-x="true">
       <view class="goods-list">
-        <tui-lazyload-img
-          class="goods-img"
-          mode="scaleToFill"
-          width="250rpx"
-          height="210rpx"
-          radius="20rpx 0 0 20rpx"
-          src="https://img0.baidu.com/it/u=3921347565,3035353655&fm=253&fmt=auto&app=138&f=JPEG?w=654&h=500"
-        ></tui-lazyload-img>
-        <tui-lazyload-img
-          class="goods-img"
-          mode="scaleToFill"
-          width="250rpx"
-          height="210rpx"
-          src="https://img0.baidu.com/it/u=221342467,1244905005&fm=253&fmt=auto&app=138&f=JPEG?w=752&h=500"
-        ></tui-lazyload-img>
-        <tui-lazyload-img
-          class="goods-img"
-          mode="scaleToFill"
-          width="250rpx"
-          height="210rpx"
-          radius=" 0 20rpx 20rpx 0 "
-          src="https://img1.baidu.com/it/u=3046089692,1632656795&fm=253&fmt=auto&app=138&f=JPEG?w=665&h=500"
-        ></tui-lazyload-img>
+        <tui-lazyload-img class="goods-img" mode="scaleToFill" width="250rpx" height="210rpx" radius="20rpx 0 0 20rpx"
+          src="https://img0.baidu.com/it/u=3921347565,3035353655&fm=253&fmt=auto&app=138&f=JPEG?w=654&h=500"></tui-lazyload-img>
+        <tui-lazyload-img class="goods-img" mode="scaleToFill" width="250rpx" height="210rpx"
+          src="https://img0.baidu.com/it/u=221342467,1244905005&fm=253&fmt=auto&app=138&f=JPEG?w=752&h=500"></tui-lazyload-img>
+        <tui-lazyload-img class="goods-img" mode="scaleToFill" width="250rpx" height="210rpx" radius=" 0 20rpx 20rpx 0 "
+          src="https://img1.baidu.com/it/u=3046089692,1632656795&fm=253&fmt=auto&app=138&f=JPEG?w=665&h=500"></tui-lazyload-img>
       </view>
     </scroll-view>
     <view class="brand-status">
-      店铺状态：<text class="status">营业中</text>
+      店铺状态：<text class="status">{{ brandDetail.status ? '打烊啦~' : '营业中' }}</text>
     </view>
     <view class="tags">
-      <view class="tag">有空调</view>
-      <view class="tag">空调开放</view>
-      <view class="tag">可电话预约</view>
+      <view class="tag" v-for="item in  brandDetail.businessSlogan.split(',')" :key="item">{{ item }}</view>
     </view>
 
     <view class="address-info">
       <view class="address-detail-info">
         <view class="address-text">{{ brandDetail.address }}</view>
-        <view style="color: #777" class="address-text"
-          >距你14.8公里，驾车35分钟</view
-        >
+        <view style="color: #777" class="address-text">距你{{ brandDetail.distance ? (brandDetail.distance /
+          1000).toFixed(2) : 0
+        }}公里，驾车{{ brandDetail.driveTime }}分钟</view>
       </view>
       <view class="op-menus">
         <BeeMakePhone :phone="brandDetail.phone">
           <view class="item">
-            <BeeIcon
-              :size="26"
-              :src="require('../../../../static/brand/detail/phone.png')"
-            ></BeeIcon>
+            <BeeIcon :size="26" :src="require('../../../../static/brand/detail/phone.png')"></BeeIcon>
             <text>电话</text>
           </view>
         </BeeMakePhone>
 
         <BeeNavigation>
           <view class="item">
-            <BeeIcon
-              :size="26"
-              :src="require('../../../../static/brand/detail/location.png')"
-            ></BeeIcon>
+            <BeeIcon :size="26" :src="require('../../../../static/brand/detail/location.png')"></BeeIcon>
             <text>到这去</text>
           </view>
         </BeeNavigation>
 
         <view class="item">
-          <BeeIcon
-            :size="26"
-            :src="require('../../../../static/brand/detail/collection.png')"
-          ></BeeIcon>
+          <BeeIcon :size="26" :src="require('../../../../static/brand/detail/collection.png')"></BeeIcon>
           <text>收藏</text>
         </view>
       </view>
@@ -154,6 +123,7 @@ export default {
 
   .brand-status {
     font-size: 24upx;
+
     .status {
       color: #fa5151;
       font-size: 24upx;

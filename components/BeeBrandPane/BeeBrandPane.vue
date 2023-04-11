@@ -1,10 +1,9 @@
 <template>
-  <view
-    class="bee-brand-pane-container"
-    @click="go('/pages/store/detail/detail?brandId=' + brandInfo.id)"
-  >
+  <view class="bee-brand-pane-container" @click="go('/pages/store/detail/detail?brandId=' + brandInfo.id)">
     <view class="left">
-      <BeeAvatar :src="brandInfo.picUrl.includes('http') ? brandInfo.picUrl : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + brandInfo.picUrl" radius="10upx"></BeeAvatar>
+      <BeeAvatar
+        :src="brandInfo.picUrl.includes('https') ? brandInfo.picUrl : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + brandInfo.picUrl"
+        radius="10upx"></BeeAvatar>
       <view class="tag"> 惊喜价 </view>
     </view>
     <view class="middle">
@@ -12,7 +11,7 @@
       <view class="rate">
         <BeeIcon :size="12" :src="require('./images/star.png')"></BeeIcon>
         <text class="rate-text">4.5分</text>
-        <text class="sub-text">美酒</text>
+        <text class="sub-text">{{ brandInfo.brandLabel | formatTag }}</text>
         <text class="rate-text">￥50/人</text>
         <text>月售462</text>
       </view>
@@ -20,27 +19,21 @@
         <view class="location-wrapper">
           <BeeIcon :src="require('./images/location.png')" :size="14"></BeeIcon>
           <view class="detail">
-            <text class="dis-container"> 3.5/km </text>
+            <text class="dis-container"> {{ (brandInfo.distance) / 1000 || 0 }}/km </text>
             <BeeIcon :src="require('./images/to.png')" :size="14"></BeeIcon>
           </view>
         </view>
       </BeeNavigation>
       <view class="elva">
         <BeeAvatar :size="15"></BeeAvatar>
-        <view class="elva-text hidden"
-          >Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorum
+        <view class="elva-text hidden">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorum
           facere ex fuga exercitationem, magni officia quo nostrum, pariatur
           minus corporis laborum! Molestias quo dicta ad quis harum veniam, et
-          ratione!</view
-        >
+          ratione!</view>
       </view>
 
       <view class="welfare-wrapper">
-        <view
-          class="welfare-item"
-          v-for="(item, index) in templateData"
-          :key="index"
-        >
+        <view class="welfare-item" v-for="(item, index) in templateData" :key="index">
           <view class="tag">{{ item.type }}</view>
           <text class="price-text">{{ item.price }}元</text>
           <view class="tag2">{{ item.discount }}折</view>
@@ -49,11 +42,7 @@
       </view>
     </view>
     <view class="right">
-      <BeeIcon
-        :size="25"
-        class="heart-icon"
-        :src="require('./images/heart.png')"
-      ></BeeIcon>
+      <BeeIcon :size="25" class="heart-icon" :src="require('./images/heart.png')"></BeeIcon>
     </view>
   </view>
 </template>
@@ -72,6 +61,17 @@ export default {
       templateData: Object.freeze(templateData),
     }
   },
+
+  filters: {
+    formatTag(value) {
+      return {
+        0: '美酒',
+        1: "美食",
+        2: "娱乐",
+        3: "好玩"
+      }[value] || ""
+    }
+  }
 }
 </script>
 
@@ -173,6 +173,7 @@ export default {
 
     .welfare-wrapper {
       margin-top: 20upx;
+
       .welfare-item {
         display: flex;
         align-items: center;

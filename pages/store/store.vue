@@ -28,23 +28,24 @@
 <script>
 import loadData from '../../mixin/loadData'
 import { menusData } from './data'
-import { getSroreListApi } from '../../api/store'
+import { getHomeBrandListApi } from '../../api/brand'
 export default {
   data() {
     return {
       menusData: Object.freeze(menusData),
+      loopTimer: null
     }
   },
   mixins: [
     loadData({
-      api: getSroreListApi,
+      api: getHomeBrandListApi,
       mapKey: {
         list: 'brandList',
         totalPages: 'totalPages',
         size: 'size',
       },
       dataFn(data) {
-        const ignoreBrandList = ['佛山市顺德区修江缘美食餐饮店', '测试门店呀']
+        const ignoreBrandList = ['佛山市顺德区修江缘美食餐饮店', '测试门店呀', '巨蜂自营']
         return data.filter(item => {
           return !ignoreBrandList.includes(item.name)
         })
@@ -52,7 +53,38 @@ export default {
     }),
   ],
   onLoad() {
-    this._loadData()
+    this.getBrandList()
+  },
+  methods: {
+    getBrandList() {
+      const _this = this
+      const queryLocation = { longitude: '', latitude: '' }
+      let num = 0
+
+      uni.getLocation({
+        type: 'wgs84',
+        altitude: false,
+        success: (result) => {
+          _this.$store.commit('location/CHANGE_CURRENT_LONGITUDE_AND_LATITUDE', result)
+          queryLocation.longitude = result.longitude
+          queryLocation.latitude = result.latitude
+        }
+      });
+
+      this.loopTimer = setInterval(() => {
+        num++
+        if (queryLocation.longitude || num === 3) {
+          clearInterval(_this.loopTimer)
+          _this.loopTimer = null
+          _this.$data._query = { ..._this.$data._query, ...queryLocation }
+          _this._loadData()
+          return
+        }
+
+      }, 500)
+
+
+    }
   },
   onPullDownRefresh() {
     this.$data.page = 1

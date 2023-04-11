@@ -1,4 +1,10 @@
-export { GyRequest as request, RuanRequest, LTRequest, HXRequest } from "./DWHRequest";
+export {
+  GyRequest as request,
+  RuanRequest,
+  LTRequest,
+  HXRequest,
+} from "./DWHRequest";
+export { request2 } from "./request";
 
 export {
   fomartNumber,
@@ -11,8 +17,12 @@ export {
   getAddressLongitudeAndLatitude,
   delayedLoginStatus,
   domToImage,
-  transformNumber
+  transformNumber,
 } from "./DWHutils";
 export { formatTime, debounce } from "./util";
-export { nums } from './filter'
-export { getAdressDetailByLngLat, navigationAddress, getLngLatByAddress } from './location'
+export { nums } from "./filter";
+export {
+  getAdressDetailByLngLat,
+  navigationAddress,
+  getLngLatByAddress,
+} from "./location";

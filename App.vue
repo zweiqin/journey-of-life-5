@@ -14,12 +14,12 @@ export default {
       http.mpAuthLogin();
     }
 
+    // #ifdef H5
     // 获取当前定位
     if (!this.$store.state.location.currentLocation) {
-      // #ifdef H5
       this.$store.dispatch('location/getCurrentLocation')
-      // #endif
     }
+    // #endif
   },
   globalData: {},
   methods: {},
