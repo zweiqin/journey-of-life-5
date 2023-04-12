@@ -191,6 +191,18 @@
         "navigationBarTitleText": "加油"
       }
     },
+		{
+			"path": "pages/index/convenient-services/recharge",
+			"style": {
+				"navigationBarTitleText": "充值"
+			}
+		},
+		{
+			"path": "pages/index/convenient-services/amount",
+			"style": {
+				"navigationBarTitleText": "充值"
+			}
+		},
     {
       "path": "pages/index/convenient-services/tuanyouh5",
       "style": {
