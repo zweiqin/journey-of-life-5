@@ -4,10 +4,10 @@
     <view class="main">
       <view class="title-wrapper">
         <h4>商品所属门店评价(1264)条</h4>
-        <view class="more">
+        <!-- <view class="more">
           <text class="more-btn"> 查看全部 </text>
           <BeeIcon name="arrowright"></BeeIcon>
-        </view>
+        </view> -->
       </view>
 
       <view class="values">

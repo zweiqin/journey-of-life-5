@@ -1,18 +1,11 @@
 <template>
   <view class="j-specification">
     <view class="mask" @click="$emit('input', false)" :style="maskStyle"></view>
-    <view
-      class="main"
-      :style="{
-        bottom: value ? bottom + 'upx' : -2000 + 'upx',
-      }"
-    >
+    <view class="main" :style="{
+      bottom: value ? bottom + 'upx' : -2000 + 'upx',
+    }">
       <view class="goods-info" v-if="product">
-        <image
-          class="image"
-          :src="(product && product.url) || data.info.picUrl"
-          mode=""
-        />
+        <image class="image" :src="(product && product.url) || data.info.picUrl" mode="" />
         <view class="info">
           <view class="current-goods-price">￥{{ product.price }}</view>
           <view class="sp-text">{{ spStr }}</view>
@@ -22,16 +15,9 @@
       <view class="sps" v-for="item in data.specificationList" :key="item.name">
         <view class="sp-name">{{ item.name }}</view>
         <view class="sps-list">
-          <view
-            @click="handleChoose(item.name, tag)"
-            class="sp-tag"
-            :class="{
-              active: sps[item.name] == tag.value,
-            }"
-            v-for="tag in item.valueList"
-            :key="tag.id"
-            >{{ tag.value }}</view
-          >
+          <view @click="handleChoose(item.name, tag)" class="sp-tag" :class="{
+            active: sps[item.name] == tag.value,
+          }" v-for="tag in item.valueList" :key="tag.id">{{ tag.value }}</view>
         </view>
       </view>
 

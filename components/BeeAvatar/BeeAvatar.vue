@@ -1,13 +1,7 @@
 <template>
-  <tui-lazyload-img
-    class="image-wrapper"
-    @click="$emit('click')"
-    :width="width ? width * 2 + 'rpx' : size * 2 + 'rpx'"
-    :height="height ? height * 2 + 'rpx' : size * 2 + 'rpx'"
-    :src="src"
-    :radius="radius"
-    mode="scaleToFill"
-  ></tui-lazyload-img>
+  <tui-lazyload-img class="image-wrapper" @click="$emit('click')" :width="width ? width * 2 + 'rpx' : size * 2 + 'rpx'"
+    :height="height ? height * 2 + 'rpx' : size * 2 + 'rpx'" :src="src" :radius="radius"
+    :backgroundColor="backgroundColor" mode="scaleToFill"></tui-lazyload-img>
 </template>
 
 <script>
@@ -36,6 +30,10 @@ export default {
       type: String,
       default: '50%',
     },
+    backgroundColor: {
+      type: String,
+      default: '#fff'
+    }
   },
 }
 </script>

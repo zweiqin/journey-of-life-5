@@ -8,7 +8,7 @@
       </view>
       <!-- <image class="banner-img" src="../../static/brand/banner.png" mode="" /> -->
       <view class="menus-wrapper">
-        <BeeMenus :data="menusData"></BeeMenus>
+        <BeeMenus @click="handleTo" :data="menusData"></BeeMenus>
       </view>
       <view class="banner-wrapper" @click="go('/user/sever/userUp')">
         <image src="../../static/index/banner2.png" mode="" />
@@ -28,12 +28,12 @@
 <script>
 import loadData from '../../mixin/loadData'
 import { menusData } from './data'
-import { getHomeBrandListApi } from '../../api/brand'
+import { getHomeBrandListApi, getCategoryListApi } from '../../api/brand'
 export default {
   data() {
     return {
       menusData: Object.freeze(menusData),
-      loopTimer: null
+      loopTimer: null,
     }
   },
   mixins: [
@@ -54,6 +54,7 @@ export default {
   ],
   onLoad() {
     this.getBrandList()
+    this.getCategoryList()
   },
   methods: {
     getBrandList() {
@@ -81,9 +82,24 @@ export default {
           return
         }
 
-      }, 500)
+      }, 100)
 
 
+    },
+
+    // 获取首页分类数据
+    async getCategoryList() {
+      const { data } = await getCategoryListApi({})
+      this.menusData = data
+
+    },
+
+    handleTo(item) {
+      if (item.storeName === '美食饮品') {
+        this.go(`/pages/store/fine-food/fine-food?name=${item.storeName}&id=${item.id}`)
+      } else {
+        this.go(`/pages/store/fine-food/food-nearby/food-nearby?name=${item.storeName}&id=${item.id}`)
+      }
     }
   },
   onPullDownRefresh() {

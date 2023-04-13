@@ -1,12 +1,8 @@
 <template>
-  <swiper class="swiper">
+  <swiper :style="{ height: height }" class="swiper">
     <swiper-item v-for="(image, index) in list" :key="index">
-      <tui-lazyload-img
-        @click="$emit('click', image)"
-        width="100%"
-        height="370rpx"
-        :src="imageKey ? image[imageKey] : image"
-      ></tui-lazyload-img>
+      <tui-lazyload-img @click="$emit('click', image)" width="100%" :height="height"
+        :src="imageKey ? image[imageKey] : image"></tui-lazyload-img>
     </swiper-item>
   </swiper>
 </template>
@@ -31,7 +27,7 @@ export default {
 
     height: {
       type: String,
-      default: '',
+      default: '370rpx',
     },
   },
 }

@@ -7,5 +7,3 @@ export const XZL = 'http://192.168.0.102:8080/demo/wx'
 
 // 2.0
 export const HUANG_LOCATION_URL = 'http://pc-20230204bcta:8080/demo/wx'
-
-console.log(process);

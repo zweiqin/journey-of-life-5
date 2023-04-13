@@ -41,9 +41,9 @@
         </view>
       </view>
     </view>
-    <view class="right">
+    <!-- <view class="right">
       <BeeIcon :size="25" class="heart-icon" :src="require('./images/heart.png')"></BeeIcon>
-    </view>
+    </view> -->
   </view>
 </template>
 

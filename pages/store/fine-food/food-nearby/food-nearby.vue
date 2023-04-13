@@ -22,20 +22,9 @@
 			</view>
 
 			<view class="menus-wrapper">
-				<!-- <view
-          @click="handleChooseMenu(item)"
-          class="item"
-          :class="{ active: currentMenu === item.id }"
-          v-for="item in menus"
-          :key="item.id"
-        >
-          <BeeIcon :size="40" :src="item.icon"></BeeIcon>
-          <text>{{ item.name }}</text>
-        </view> -->
-
-				<view @click="handleChooseMenu(item)" class="item" :class="{ active: currentList === item.text }"
+				<view @click="handleChooseMenu(item)" class="item" :class="{ active: currentMenu === item.id }"
 					v-for="item in list" :key="item.text">
-					<text>{{ item.text }}</text>
+					<text>{{ item.storeName }}</text>
 				</view>
 			</view>
 
@@ -52,6 +41,7 @@
 <script>
 import loadData from '../../../../mixin/loadData'
 import { getSroreListApi } from '../../../../api/store'
+import { getSubMenuByPidApi, filterBrandByMenuIdApi } from '../../../../api/brand'
 import FilterPane from './cpns/FilterPane.vue'
 import { menus, navs } from './data'
 export default {
@@ -60,10 +50,10 @@ export default {
 	},
 	mixins: [
 		loadData({
-			api: getSroreListApi,
+			api: filterBrandByMenuIdApi,
 			mapKey: {
-				list: 'brandList',
-				totalPages: 'totalPages',
+				list: 'tfBrandList',
+				totalPages: 'total',
 				size: 'size',
 			},
 			dataFn(data) {
@@ -77,26 +67,28 @@ export default {
 	data() {
 		return {
 			currentMenu: 1001002,
-			currentList:'好店推荐',
 			menus: Object.freeze(menus),
 			navs,
-			list:[],
+			list: [],
+			title: '',
+			id: ''
 		}
 	},
 
 	onLoad(options) {
-		this._loadData()
-		this.getNavsList()
+		// this.getNavsList()
 		this.title = options.name
 		this.id = options.id
+		this.getMenus()
 
-		
+
 	},
 
 	methods: {
 		handleChooseMenu(item) {
 			this.currentMenu = item.id
-			this.currentList = item.text
+			this.$data._query.dressing = this.currentMenu
+			this._loadData()
 		},
 		//导航栏
 		async getNavsList() {
@@ -106,10 +98,21 @@ export default {
 			console.log('类id', nid);
 			this.nid = nid
 			const list = data[0].list
-			console.log('list',list);
+			console.log('list', list);
 			this.list = list
-			
-			
+		},
+
+		// 获取当前页面的分类
+		async getMenus() {
+			const { data } = await getSubMenuByPidApi({
+				dressing: this.id
+			})
+
+			this.list = data
+			this.currentMenu = data[0].id
+			this.$data._query.dressing = this.currentMenu
+			this.$data._query = {...this.$data._query, ...this.$store.getters.lonAndLat}
+			this._loadData()
 		}
 	},
 }

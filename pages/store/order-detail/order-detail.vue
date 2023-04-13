@@ -8,39 +8,46 @@
         </view>
       </BeeBack>
 
-      <BeeShare>
+      <!-- <BeeShare>
         <view class="share-container">
           <text>分享</text>
           <BeeIcon :size="20" :src="require('../../../static/brand/order-detail/share.png')"></BeeIcon>
         </view>
-      </BeeShare>
+      </BeeShare> -->
+    </view>
+
+
+    <view class="pane f-s-b" @click="go('/user/site/site-manage?appoint=true')">
+      <view class="address-text" v-if="startAddress.detailedAddress">{{ startAddress.detailedAddress }}</view>
+      <view class="address-text" v-else>请选择地址</view>
+      <tui-icon :size="24" name="gps"></tui-icon>
     </view>
 
     <view class="order-main-area pane">
-      <view class="goods-item" v-for="item in 3 " :key="item">
+      <view class="goods-item">
         <BeeAvatar :size="60" radius="10upx"
           src="https://img0.baidu.com/it/u=833683927,1099936825&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=1422"></BeeAvatar>
         <view class="good-detial">
-          <view class="name">Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro distinctio, ea unde
-            architecto, pariatur modi sint blanditiis enim laudantium similique sed eveniet aperiam. Fugit beatae delectus
-            cum quia tenetur veniam?</view>
-
+          <view class="name">{{ goodsDetail.goodsName }}</view>
+          <view class="font-12 f-c-77">已选：{{ goodsDetail.productInfo.product.specifications.join(',') }}</view>
           <view class="price-text">
             <view class="price-wrapper">
-              <text class="current-price">￥987</text>
-              <text class="old-price">￥987</text>
+              <text class="current-price">￥{{ goodsDetail.productInfo.product.price }}</text>
+              <!-- <text class="old-price">￥987</text> -->
             </view>
             <view class="op">
-              <BeeIcon :size="22" :src="require('../../../static/brand/order-detail/jian.png')"></BeeIcon>
-              <text class="number">1</text>
-              <BeeIcon :size="22" :src="require('../../../static/brand/order-detail/add.png')"></BeeIcon>
+              <BeeIcon @click="handleOpNumber(-1)" :size="22"
+                :src="require('../../../static/brand/order-detail/jian.png')"></BeeIcon>
+              <text class="number">{{ goodsDetail.productInfo.number }}</text>
+              <BeeIcon @click="handleOpNumber(+1)" :size="22"
+                :src="require('../../../static/brand/order-detail/add.png')"></BeeIcon>
             </view>
           </view>
         </view>
       </view>
     </view>
 
-    <view class="total pane">
+    <!-- <view class="total pane">
       <view class="item">
         <view class="title">菜品数</view>
         <view class="value">菜品数</view>
@@ -56,23 +63,181 @@
           ￥987
         </text>
       </view>
-    </view>
+    </view> -->
 
     <view class="footer-container f-s-b">
       <view class="finl-price">
         <text>
           实付
         </text>
-        <text class="p-color">￥ <text style="font-size: 48upx;" class="f-w-500">99</text></text>
+        <text class="p-color">￥ <text style="font-size: 48upx;" class="f-w-500">{{ orderCost.actualPrice }}</text></text>
       </view>
-      <button class="bee-btn r-5 f-w-500 f-center">提交订单</button>
+      <button class="bee-btn r-5 f-w-500 f-center" @click="handleToPay">提交订单</button>
     </view>
   </view>
 </template>
 
 <script>
-export default {
+import { payShopCarApi, updateShopCarCountApi } from '../../../api/cart';
+import { submitOrderApi, payOrderGoodsApi } from '../../../api/goods'
+import { firstAddCar } from '../../../api/goods';
+import { getAddressListApi } from '../../../api/address'
+import { J_SELECT_ADDRESS } from '../../../constant'
 
+export default {
+  data() {
+    return {
+      goodsDetail: {},
+      carId: null,
+      orderCost: {},
+      startAddress: {}
+    }
+  },
+  onLoad(options) {
+    try {
+      options.productInfo = JSON.parse(options.productInfo)
+    } catch (error) {
+
+    }
+    this.goodsDetail = options
+    this.addShopCar()
+  },
+  onShow() {
+    this.getAddressList();
+  },
+  methods: {
+    // 获取收货地址
+    async getAddressList() {
+
+      const address = uni.getStorageSync(J_SELECT_ADDRESS);
+      if (address) {
+        this.startAddress = address;
+        return;
+      }
+
+      const { data } = await getAddressListApi({
+        userId: this.userId
+      })
+
+      const _this = this;
+      data.forEach((address) => {
+        if (address.isDefault) {
+          _this.startAddress = address;
+        }
+      });
+      if (!this.startAddress) {
+        this.startAddress = data[0];
+      }
+
+      this.startAddress = data[0] || {}
+    },
+
+    // 立即添加购物车
+    async addShopCar() {
+      const { data } = await firstAddCar({
+        userId: this.userId,
+        goodsId: this.goodsDetail.goodsId,
+        productId: this.goodsDetail.productInfo.product.id,
+        number: this.goodsDetail.productInfo.number
+      })
+
+      this.carId = data
+      this.calcPrice()
+    },
+
+    // 修改数量
+    async handleOpNumber(number) {
+      if (number < 0 && this.goodsDetail.productInfo.number == 1) {
+        return
+      }
+      this.goodsDetail.productInfo.number += number
+      try {
+        await updateShopCarCountApi({
+          userId: this.userId,
+          goodsId: this.goodsDetail.goodsId,
+          productId: this.goodsDetail.productInfo.product.id,
+          number: this.goodsDetail.productInfo.number,
+          id: this.carId,
+        })
+        this.calcPrice()
+      } catch (error) {
+        this.ttoast({
+          title: "修改失败",
+          type: 'fail'
+        })
+        this.goodsDetail.productInfo.number += (-number)
+      }
+    },
+
+    // 计算价格
+    async calcPrice() {
+      uni.showLoading({
+        title: '加载中...',
+      });
+      const { data } = await payShopCarApi({
+        useVoucher: false,
+        brandId: this.goodsDetail.brandId,
+        userId: this.userId,
+        grouponRulesId: '',
+        couponId: 0,
+        cartId: this.carId,
+        number: this.goodsDetail.productInfo.number
+      })
+
+      uni.hideLoading();
+
+      this.orderCost = data
+    },
+
+
+
+    // 提交订单支付
+    handleToPay() {
+      if (!this.startAddress.id) {
+        this.ttoast({
+          type: 'fail',
+          title: '请选择地址'
+        })
+        return
+      }
+      const _this = this;
+      const submitData = {
+        userId: this.userId,
+        cartId: this.carId,
+        couponId: 0,
+        grouponRulesId: "",
+        grouponLinkId: "",
+        brandId: this.goodsDetail.brandId,
+        useVoucher: false,
+        addressId: this.startAddress.id
+      };
+      submitOrderApi(submitData).then(({ data }) => {
+        console.log(data);
+        payOrderGoodsApi({
+          orderNo: data.orderSn,
+          userId: _this.userId,
+          payType: 1,
+        }).then((res) => {
+          const payData = JSON.parse(res.h5PayUrl);
+          const form = document.createElement("form");
+          form.setAttribute("action", payData.url);
+          form.setAttribute("method", "POST");
+          const data = JSON.parse(payData.data);
+          let input;
+          for (const key in data) {
+            input = document.createElement("input");
+            input.name = key;
+            input.value = data[key];
+            form.appendChild(input);
+          }
+
+          document.body.appendChild(form);
+          form.submit();
+          document.body.removeChild(form);
+        });
+      });
+    },
+  },
 }
 </script>
 
@@ -140,7 +305,7 @@ export default {
         }
 
         .name {
-          width: 366upx;
+          width: 500upx;
           overflow: hidden;
           text-overflow: ellipsis;
           display: -webkit-box;
@@ -198,7 +363,7 @@ export default {
       transition: all 500ms;
 
 
-      &:active{
+      &:active {
         opacity: 0.1;
       }
     }

@@ -3,20 +3,16 @@
     <h3>更多本店推荐</h3>
     <scroll-view class="" scroll-x="true">
       <view class="goods-list">
-        <view class="goods-item" v-for="item in 6" :key="item">
-          <BeeAvatar :width="100" :height="85" radius="10upx"
-            src="https://img2.baidu.com/it/u=182168973,2287103886&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=800">
+        <view class="goods-item" v-for="item in data" :key="item.id">
+          <BeeAvatar :width="100" :height="85" radius="10upx" :src="item.picUrl">
           </BeeAvatar>
 
-          <view class="goods-name">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid laboriosam libero deleniti voluptates qui
-            voluptate. Voluptates consectetur doloribus, ullam esse ad harum autem veritatis ipsum repellendus consequatur
-            molestias, corrupti aperiam?
+          <view class="goods-name">{{ item.name }}
           </view>
 
           <view class="price-wrapper">
-            <text class="current-price">￥76</text>
-            <text class="old-price">￥987</text>
+            <text class="current-price">￥{{ item.retailPrice }}</text>
+            <!-- <text class="old-price">￥987</text> -->
           </view>
         </view>
       </view>
@@ -26,7 +22,12 @@
 
 <script>
 export default {
-
+  props: {
+    data: {
+      type: Array,
+      required: true
+    }
+  }
 }
 </script>
 

@@ -1,30 +1,27 @@
 <template>
-  <view class="recommend-city-container">
+  <view class="recommend-city-container" v-if="data.length">
     <h2 class="title">更多好吃好玩的地点推荐</h2>
 
     <view class="list-container">
-      <view class="item" v-for="item in 6" :key="item">
+      <view class="item" v-for="item in data" :key="item.id">
         <view class="title-wrapper">
-          <view class="brand-name">
+          <view class="brand-name" @click="go('/pages/store/detail/detail?brandId=' + item.id)">
             <BeeIcon :src="require('../../../../static/brand/goods-detial/brand-icon.png')" :size="14"></BeeIcon>
-            <text class="brand-name-text">美的鹭湖深林度假村</text>
+            <text class="brand-name-text">{{ item.name }}</text>
           </view>
-          <view class="dist">距你2.8km</view>
+          <view class="dist">距你{{ (item.distance / 1000).toFixed(2) }}km</view>
         </view>
 
-        <view class="brand-info">
-          <BeeAvatar :size="60" radius="10upx"
-            src="https://img0.baidu.com/it/u=3675430611,1506122173&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=749">
+        <view class="brand-info" v-if="item.goods">
+          <BeeAvatar :size="60" radius="10upx" :src="item.goods.picUrl">
           </BeeAvatar>
           <view class="brand-info-container">
-            <view class="goods-name hidden">
-              【大水车·海参盆菜】海参鲍汁佛跳墙
-            </view>
-            <view class="desc hidden">鲍鱼·清远鸡·金汤·海参·鱼翅·...</view>
+            <view class="goods-name hidden">{{ item.goods.name }}</view>
+            <!-- <view class="desc hidden">鲍鱼·清远鸡·金汤·海参·鱼翅·...</view> -->
             <view class="price-text">
-              <text class="current-price">￥123</text>
-              <text class="old-price">￥987</text>
-              <text class="sale-number">已售87</text>
+              <text class="current-price">￥{{ item.goods.counterPrice }}</text>
+              <!-- <text class="old-price">￥987</text> -->
+              <text class="sale-number" style=" margin-left: 30upx;">已售{{ item.goods.sales }}</text>
             </view>
           </view>
         </view>
@@ -35,7 +32,12 @@
 
 <script>
 export default {
-
+  props: {
+    data: {
+      type: Array,
+      required: true
+    }
+  }
 }
 </script>
 
@@ -134,7 +136,6 @@ export default {
 
             &.old-price {
               text-decoration: line-through;
-              margin-right: 30upx;
             }
           }
         }

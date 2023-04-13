@@ -40,6 +40,7 @@ export default {
       }
 
       const pages = getCurrentPages()
+      console.log(pages);
       const pagesLength = pages.length
       let backLevel = 1
       if (pages.length === 1) {
@@ -48,13 +49,13 @@ export default {
         })
         return
       } else {
-        let lastUrl = pages[pagesLength - 1].route
+        let lastUrl = pages[pagesLength - 1].route + this.getParams(pages[pagesLength - 1].options)
         for (
           let index = pages.length - 1;
           index > 0 && index < pages.length;
           index--
         ) {
-          if (pages[index].route === lastUrl) {
+          if (pages[index].route + this.getParams(pages[index].options) === lastUrl) {
             backLevel += 1
           } else {
             break
@@ -66,6 +67,10 @@ export default {
         })
       }
     },
+
+    getParams(options) {
+      return JSON.stringify(options)
+    }
   },
 }
 </script>

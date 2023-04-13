@@ -2,20 +2,24 @@
   <view class="op-footer-container">
     <view class="total-price">
       <text class="money-icon">￥</text>
-      <text class="total-orice">88</text>
-      <text class="orgin-price">￥87</text>
-      <view class="discount">8.8折</view>
+      <text class="total-orice">{{ totalPrice }}</text>
+      <!-- <text class="orgin-price">￥87</text>
+      <view class="discount">8.8折</view> -->
     </view>
     <view class="btn-wrapper">
       <button class="bee-btn add-order">加入订单</button>
-      <button class="bee-btn pay" @click="go('/pages/store/order-detail/order-detail')">立即购买</button>
+      <button class="bee-btn pay" @click="$emit('pay')">立即购买</button>
     </view>
   </view>
 </template>
 
 <script>
 export default {
-
+  props: {
+    totalPrice: {
+      type: [Number, String]
+    }
+  }
 }
 </script>
 
@@ -32,6 +36,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  z-index: 1000;
 
   .total-price {
     position: relative;

@@ -4,10 +4,10 @@ import { jsonp } from "vue-jsonp";
 
 // 导航去某地
 export const navigationAddress = (destination) => {
-  const locationData = destination.split(",");
+  // const locationData = destination.split(",");
   uni.openLocation({
-    latitude: locationData[1] * 1,
-    longitude: locationData[0] * 1,
+    latitude: destination.latitude,
+    longitude: destination.longitude,
     success: function () {
       console.log("success");
     },

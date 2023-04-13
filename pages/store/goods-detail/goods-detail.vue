@@ -1,10 +1,12 @@
 <template>
-  <view class="goods-detail-container">
+  <view class="goods-detail-container" v-if="goodsDetail">
 
     <!-- 图片区域 -->
     <view class="top-image-wrapper">
-      <image src="https://img2.baidu.com/it/u=631516092,1411937024&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800">
-      </image>
+      <!-- <image src="https://img2.baidu.com/it/u=631516092,1411937024&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800">
+      </image> -->
+
+      <BeeSwiper height="540rpx" :list="goodsDetail.info.gallery || '[]'"></BeeSwiper>
 
       <view class="header-tool">
         <BeeBack>
@@ -21,17 +23,19 @@
 
     <!-- 商品详情 -->
     <view class="goods-pane">
-      <view class="goods-name">红烧肉</view>
+      <view class="goods-name">{{ goodsDetail.info.name }}</view>
       <view class="price-wrapper">
         <text class="icon">￥</text>
-        <view class="current-price">88</view>
-        <view class="old-price">￥89</view>
-        <view class="tag">8.8折</view>
+        <view class="current-price">{{ goodsDetail.info.retailPrice }} <text v-if="goodsDetail.info.unit"> / {{
+          goodsDetail.info.unit
+        }}</text></view>
+        <!-- <view class="old-price">￥89</view>
+        <view class="tag">8.8折</view> -->
       </view>
 
       <view class="item">
         <view class="item-title">服务</view>
-        <view class="item-value"> 随时退·过期自动退·免预约 <text class="salse-number">已售16份</text></view>
+        <view class="item-value"> 随时退·过期自动退·免预约 <text class="salse-number">已售{{ goodsDetail.info.sales }}份</text></view>
       </view>
 
       <view class="item">
@@ -45,14 +49,17 @@
       <Evaluate></Evaluate>
 
       <!-- 推荐 -->
-      <RecommendPane></RecommendPane>
+      <RecommendPane :data="recommendGoods"></RecommendPane>
     </view>
 
     <!-- 更多地点推荐 -->
-    <RecommendCity></RecommendCity>
+    <RecommendCity :data="recommendBrandList"></RecommendCity>
 
     <!-- 底部操作栏 -->
-    <OpFooter></OpFooter>
+    <OpFooter @pay="handlePay" :total-price="goodsDetail.info.retailPrice"></OpFooter>
+
+    <JSpecification :data="goodsDetail" ref="specificationRef" :bottom="120" v-model="showSpecification"></JSpecification>
+
   </view>
 </template>
 
@@ -61,8 +68,96 @@ import Evaluate from './cpns/Evaluate.vue';
 import RecommendPane from './cpns/RecommendPane'
 import RecommendCity from './cpns/RecommendCity.vue';
 import OpFooter from './cpns/OpFooter.vue';
+import { getMoreGoodsApi, getMoreCityRecommendApi } from '../../../api/brand'
+import { getGoodsDetailApi } from '../../../api/goods'
+
 export default {
-  components: { Evaluate, RecommendPane, RecommendCity, OpFooter }
+  components: { Evaluate, RecommendPane, RecommendCity, OpFooter },
+  data() {
+    return {
+      goodsId: null,
+      goodsDetail: null,
+      recommendGoods: [],
+      recommendBrandList: [],
+      spData: [],
+      showSpecification: false
+
+    }
+  },
+  onLoad(options) {
+    this.goodsId = options.goodsId
+
+    this.getGoodsDetail()
+  },
+  methods: {
+    // 获取门店详情
+    async getGoodsDetail() {
+      const { data } = await getGoodsDetailApi(
+        this.goodsId,
+        this.userId
+      )
+
+      this.goodsDetail = data
+      this.spData = {
+        info: {
+          name: data.name,
+          unit: data.unit,
+          picUrl: data.picUrl,
+        },
+
+        productList: data.productList,
+        specificationList: data.specificationList
+      }
+      console.log(data);
+      this.getMoreGoods()
+      this.getMoreCityRecommend()
+    },
+
+
+    // 获取本店更多推荐
+    async getMoreGoods() {
+      const { data } = await getMoreGoodsApi({
+        brandId: this.goodsDetail.brand.id,
+        goodsId: this.goodsId
+      })
+
+      this.recommendGoods = data.slice(0, 10)
+      console.log(this.recommendGoods);
+    },
+
+    // 更多地点推荐
+    async getMoreCityRecommend() {
+      const { data } = await getMoreCityRecommendApi({
+        ...this.$store.getters.lonAndLat
+      })
+
+      this.recommendBrandList = data.filter(item => item.goods && item.id !== this.goodsDetail.brandId)
+      console.log(data);
+    },
+
+    // 点击支付
+    async handlePay() {
+      const goodsInfo = await this.getSpacification();
+      const { name, id, picUrl, unit, brandId } = this.goodsDetail.info
+      this.go(`/pages/store/order-detail/order-detail?goodsName=${name}&goodsId=${id}&url=${picUrl}&unit=${unit}&brandId=${brandId}&productInfo=${JSON.stringify(goodsInfo)}`)
+    },
+
+    // 获取商品规格参数
+    getSpacification() {
+      return new Promise((resolve, reject) => {
+        if (this.showSpecification) {
+          const goodsInfo = this.$refs.specificationRef.getVal();
+          if (goodsInfo.number > goodsInfo.product.number) {
+            this.$showToast("该货品库存为" + goodsInfo.product.number);
+            reject();
+          }
+          resolve(goodsInfo);
+        } else {
+          this.showSpecification = true;
+        }
+      });
+    },
+  },
 }
 </script>
 

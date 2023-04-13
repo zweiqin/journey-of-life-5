@@ -1,56 +1,56 @@
 export const menusData = [
 	{
 		id: 1,
-		name: '美食饮品',
-		icon: require('../../static/brand/menus/meishi.png'),
+		storeName: '美食饮品',
+		picUrl: require('../../static/brand/menus/meishi.png'),
 		url: '/pages/store/fine-food/fine-food'
 	},
 	{
 		id: 2,
-		name: '休闲娱乐',
-		icon: require('../../static/brand/menus/xiuxian.png'),
+		storeName: '休闲娱乐',
+		picUrl: require('../../static/brand/menus/xiuxian.png'),
 		url: '/pages/store/fine-food/food-nearby/food-nearby',
 		title: '休闲娱乐',
 	},
 	{
 		id: 3,
-		name: '美甲美睫',
-		icon: require('../../static/brand/menus/meijia.png'),
+		storeName: '美甲美睫',
+		picUrl: require('../../static/brand/menus/meijia.png'),
 		url: '/pages/store/fine-food/food-nearby/food-nearby',
 		title: '美甲美睫'
 	},
 	{
 		id: 4,
-		name: '运动健身',
-		icon: require('../../static/brand/menus/yundong.png'),
+		storeName: '运动健身',
+		picUrl: require('../../static/brand/menus/yundong.png'),
 		url: '/pages/store/fine-food/food-nearby/food-nearby',
 		title: '运动健身'
 	},
 	{
 		id: 5,
-		name: '美容美发',
-		icon: require('../../static/brand/menus/meirong.png'),
+		storeName: '美容美发',
+		picUrl: require('../../static/brand/menus/meirong.png'),
 		url: '/pages/store/fine-food/food-nearby/food-nearby',
 		title: '美容美发'
 	},
 	{
 		id: 6,
-		name: '周边旅游',
-		icon: require('../../static/brand/menus/zhoubian.png'),
+		storeName: '周边旅游',
+		picUrl: require('../../static/brand/menus/zhoubian.png'),
 		url: '/pages/store/fine-food/food-nearby/food-nearby',
 		title: '周边旅游'
 	},
 	{
 		id: 7,
-		name: '亲子乐园',
-		icon: require('../../static/brand/menus/qinzi.png'),
+		storeName: '亲子乐园',
+		picUrl: require('../../static/brand/menus/qinzi.png'),
 		url: '/pages/store/fine-food/food-nearby/food-nearby',
 		title: '亲子乐园',
 	},
 	{
 		id: 8,
-		name: '酒店民俗',
-		icon: require('../../static/brand/menus/jiudian.png'),
+		storeName: '酒店民俗',
+		picUrl: require('../../static/brand/menus/jiudian.png'),
 		url: '/pages/store/fine-food/food-nearby/food-nearby',
 		title: '酒店民俗',
 	},

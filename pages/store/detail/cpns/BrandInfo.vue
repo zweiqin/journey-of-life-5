@@ -21,7 +21,7 @@
     <view class="brand-status">
       店铺状态：<text class="status">{{ brandDetail.status ? '打烊啦~' : '营业中' }}</text>
     </view>
-    <view class="tags">
+    <view class="tags" v-if="brandDetail.businessSlogan">
       <view class="tag" v-for="item in  brandDetail.businessSlogan.split(',')" :key="item">{{ item }}</view>
     </view>
 
@@ -41,15 +41,15 @@
         </BeeMakePhone>
 
         <BeeNavigation>
-          <view class="item">
+          <view class="item" @click="$emit('navgation')">
             <BeeIcon :size="26" :src="require('../../../../static/brand/detail/location.png')"></BeeIcon>
             <text>到这去</text>
           </view>
         </BeeNavigation>
 
-        <view class="item">
+        <view class="item" @click="$emit('follow')">
           <BeeIcon :size="26" :src="require('../../../../static/brand/detail/collection.png')"></BeeIcon>
-          <text>收藏</text>
+          <text>{{ brandDetail.is ? '取消收藏' : '收藏' }}</text>
         </view>
       </view>
     </view>
@@ -168,6 +168,7 @@ export default {
       text {
         font-size: 24upx;
         margin-top: 4upx;
+        white-space: nowrap;
       }
     }
   }

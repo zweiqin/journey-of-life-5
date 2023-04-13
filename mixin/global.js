@@ -3,6 +3,11 @@ import { J_USER_ID, J_USER_INFO } from "../constant";
 export default {
   install(Vue) {
     Vue.mixin({
+      data() {
+        return {
+          userId: uni.getStorageSync(J_USER_ID),
+        };
+      },
       methods: {
         /**
          * title: 提示标题

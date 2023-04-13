@@ -1,9 +1,9 @@
 <template>
 	<view class="menus-container">
 		<view class="menu-bar-item" :style="{ width: 100 / column + '%' }" v-for="item in data" :key="item.name"
-			@click="go(item.url + `?name=${item.title}&id=${item.id}`)">
-			<BeeIcon :src="item.icon" :size="40"></BeeIcon>
-			<text>{{ item.name }}</text>
+			@click="$emit('click', item)">
+			<BeeIcon :src="item[picUrl] || 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1yjzs7kydjhax41329lf.png'" :size="40"></BeeIcon>
+			<text>{{ item[name] }}</text>
 		</view>
 	</view>
 </template>
@@ -20,6 +20,16 @@ export default {
 			type: Number,
 			default: 4,
 		},
+
+		name: {
+			type: String,
+			default: 'storeName'
+		},
+
+		picUrl: {
+			type: String,
+			default: 'picUrl'
+		}
 	},
 }
 </script>

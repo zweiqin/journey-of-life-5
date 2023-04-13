@@ -11,18 +11,12 @@
         <SearchBar background="#fff"></SearchBar>
         <view class="control">
           <view class="item">
-            <BeeIcon
-              :size="24"
-              :src="require('../../../static/brand/find-food/location.png')"
-            ></BeeIcon>
+            <BeeIcon :size="24" :src="require('../../../static/brand/find-food/location.png')"></BeeIcon>
             <text>位置</text>
           </view>
 
           <view class="item">
-            <BeeIcon
-              :size="24"
-              :src="require('../../../static/brand/find-food/dingdan.png')"
-            ></BeeIcon>
+            <BeeIcon :size="24" :src="require('../../../static/brand/find-food/dingdan.png')"></BeeIcon>
             <text>订单</text>
           </view>
         </view>
@@ -37,7 +31,7 @@
         mode=""
       /> -->
       <view class="menus-wrapper">
-        <BeeMenus :data="menusData"></BeeMenus>
+        <BeeMenus @click="handleTo" :data="menusData"></BeeMenus>
       </view>
 
       <view class="menus-wrapper">
@@ -58,11 +52,7 @@
       <view class="brand-list-wrapper">
         <BigNameSpecials></BigNameSpecials>
 
-        <BeeBrandPane
-          v-for="item in $data._list"
-          :key="item.id"
-          :brand-info="item"
-        ></BeeBrandPane>
+        <BeeBrandPane v-for="item in $data._list" :key="item.id" :brand-info="item"></BeeBrandPane>
         <LoadMore :status="$data._status"></LoadMore>
       </view>
     </view>
@@ -76,6 +66,8 @@ import { getSroreListApi } from '../../../api/store'
 import TimeLimitedSeckill from './cpns/TimeLimitedSeckill.vue'
 import BigNameSpecials from './cpns/BigNameSpecials.vue'
 import FilterPane from './cpns/FilterPane.vue'
+import { getNearbyFonndMenuApi } from '../../../api/brand'
+
 export default {
   components: {
     TimeLimitedSeckill,
@@ -104,13 +96,30 @@ export default {
       },
     }),
   ],
-  onLoad() {
+  onLoad(options) {
+
     this._loadData()
+    this.getMenus(options.id)
   },
   onPullDownRefresh() {
     this.$data.page = 1
     this._loadData()
     uni.stopPullDownRefresh()
+  },
+  methods: {
+    // 获取menus
+    async getMenus(id) {
+      const { data } = await getNearbyFonndMenuApi({
+        typeId: id
+      })
+
+      this.menusData = data
+    },
+
+    handleTo(item) {
+      this.go(`/pages/store/fine-food/food-nearby/food-nearby?name=${item.storeName}&id=${item.id}`)
+    }
+
   },
 }
 </script>
@@ -124,13 +133,11 @@ export default {
   .top-container {
     width: 100%;
     min-height: 826upx;
-    background: linear-gradient(
-      0deg,
-      rgba(246, 246, 246, 0.87) -3%,
-      rgba(246, 246, 246, 0.87) 8%,
-      rgba(246, 246, 246, 0.87) 14%,
-      rgba(253, 164, 164, 0.87) 59%
-    );
+    background: linear-gradient(0deg,
+        rgba(246, 246, 246, 0.87) -3%,
+        rgba(246, 246, 246, 0.87) 8%,
+        rgba(246, 246, 246, 0.87) 14%,
+        rgba(253, 164, 164, 0.87) 59%);
 
     .search-header {
       display: flex;

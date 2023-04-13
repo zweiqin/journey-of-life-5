@@ -557,6 +557,12 @@
           "style": {
             "navigationBarTitleText": "订单详情"
           }
+        },
+        {
+          "path": "apponit/apponit",
+          "style": {
+            "navigationBarTitleText": "预约"
+          }
         }
       ]
     },

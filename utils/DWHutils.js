@@ -271,3 +271,16 @@ export const transformNumber = (num) => {
   }
   return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+
+// 判断当前是否处于微信环境
+export const isInWx = () => {
+  // #ifdef H5
+  var ua = navigator.userAgent.toLowerCase()
+  return ua.match(/MicroMessenger/i) == 'micromessenger'
+  // #endif
+
+  // #ifdef APP
+  return false
+  // #endif
+}

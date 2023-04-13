@@ -1,22 +1,22 @@
 <template>
-  <view class="brand-goods-container" @click="go('/pages/store/goods-detail/goods-detail?goodsId=' + goodsData.id)"
-    v-if="goodsData">
-    <tui-lazyload-img class="goods-img" mode="scaleToFill" width="340rpx" height="176rpx"
-      :src="goodsData.picUrl"></tui-lazyload-img>
+  <view class="brand-goods-container" v-if="goodsData">
+    <tui-lazyload-img @click="go('/pages/store/goods-detail/goods-detail?goodsId=' + goodsData.id)" class=" goods-img"
+      mode="scaleToFill" width="340rpx" height="176rpx" :src="goodsData.picUrl"></tui-lazyload-img>
 
-    <view class="brand-goods-name">
+    <view class=" brand-goods-name">
       {{ goodsData.name }}
     </view>
 
     <view class="time">
-      <view class="wrapper">
+      <view class="wrapper" @click="go('/pages/store/goods-detail/goods-detail?goodsId=' + goodsData.id)">
         <view class="price-wrapper">
           <text class="price-text">￥{{ goodsData.counterPrice }}</text>
           <text class="price-tag">4折</text>
         </view>
       </view>
 
-      <BeeIcon :size="22" :src="require('../../../../static/brand/detail/add-icon.png')"></BeeIcon>
+      <BeeIcon @click="$emit('add-car', goodsData)" :size="22"
+        :src="require('../../../../static/brand/detail/add-icon.png')"></BeeIcon>
     </view>
 
     <view class="text_3">
@@ -59,7 +59,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 6upx 0;
+    margin: 13upx 0;
 
     .wrapper {
       .price-text {

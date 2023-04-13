@@ -163,18 +163,23 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
   font-size: 20upx;
 }
 
+.font-12 {
+  font-size: 24upx;
+}
 .font-14 {
   font-size: 28upx;
 }
-
-.font-12 {
-  font-size: 24upx;
+.font-15 {
+  font-size: 30upx;
 }
 
 .font-16 {
   font-size: 32upx;
 }
 
+.font-17 {
+  font-size: 34upx;
+}
 /* 字重 */
 .f-w-500 {
   font-weight: 500;
@@ -185,6 +190,9 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
 }
 
 /* 文字颜色 */
+.f-c-ff {
+  color: #fff;
+}
 
 .f-c-9 {
   color: #999999;
@@ -198,6 +206,9 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
   color: #777;
 }
 
+.f-c-00 {
+  color: #000;
+}
 /* 圆角 */
 
 .r-5 {

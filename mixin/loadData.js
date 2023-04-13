@@ -34,6 +34,7 @@ export default (options) => {
             res = await api(this.$data._query)
           }
 
+
           this.$data._totalPages = res.data[mapKey.totalPages];
           if (isLoadmore) {
             this.$data._list = [
@@ -58,7 +59,6 @@ export default (options) => {
     },
 
     onReachBottom() {
-      console.log(2);
       if (
         beforeReachBottomfn &&
         typeof beforeReachBottomfn === "function" &&
