@@ -519,6 +519,12 @@
           "style": {
             "navigationBarTitleText": "巨蜂认证营销策划师"
           }
+        },
+        {
+          "path": "detail/detail",
+          "style": {
+            "navigationBarTitleText": "达人详情"
+          }
         }
       ]
     },

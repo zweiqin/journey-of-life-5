@@ -9,3 +9,8 @@ export const getIndustryInformationListApi = (data) => {
 export const getIndustryInformationDetalApi = (acticleId) => {
   return RuanRequest("/richText/detail", { id: acticleId }, "get");
 };
+
+// 提交达人申请
+export const submitApplyApi = data => {
+  return RuanRequest('/dtsTalent/submitBox', data)
+}

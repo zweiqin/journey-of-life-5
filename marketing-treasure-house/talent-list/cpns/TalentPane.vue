@@ -1,5 +1,5 @@
 <template>
-  <view class="talent-pane-container" v-if="data">
+  <view class="talent-pane-container" v-if="data" @click="go('/marketing-treasure-house/detail/detail?info=' + JSON.stringify(data))">
     <BeeAvatar
       :size="56"
       :src="
@@ -79,6 +79,11 @@ text {
   display: flex;
   align-items: flex-start;
   margin-top: 20upx;
+  transition: all 350ms;
+
+  &:active{
+    background-color: #ebe9e9;
+  }
 
   /deep/ .tui-lazyload__box {
     border: 2upx solid #efefef;

@@ -6,18 +6,9 @@
         name="arrowleft"
         color="#000"
         :size="24"
-        class="back-icon"
       ></tui-icon>
       <view
         class="title"
-        @click="handleSwitchTab(0)"
-        :class="{ active: currentNavs === 0 }"
-        >抖音达人</view
-      >
-      <view
-        class="title"
-        @click="handleSwitchTab(1)"
-        :class="{ active: currentNavs === 1 }"
         >营销达人</view
       >
     </view>
@@ -55,7 +46,7 @@ export default {
   },
   data() {
     return {
-      currentNavs: 0,
+      currentNavs: 1,
 
       // 抖音达人
       talentQuery: {
@@ -177,11 +168,11 @@ text {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     height: 104upx;
     width: 100%;
     background-color: #fff;
-    padding: 0 182upx;
+    padding: 0 30upx;
     box-sizing: border-box;
 
     .back-icon {
@@ -193,7 +184,7 @@ text {
 
     .title {
       position: relative;
-      color: #888888;
+      color: #000000;
       font-size: 32upx;
 
       &::after {

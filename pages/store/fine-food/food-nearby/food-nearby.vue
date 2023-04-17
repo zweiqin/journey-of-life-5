@@ -35,6 +35,10 @@
 			<BeeBrandPane v-for="item in $data._list" :key="item.id" :brand-info="item"></BeeBrandPane>
 			<LoadMore :status="$data._status"></LoadMore>
 		</view>
+
+		<view class="no-data" v-if="!$data._list.length && $data._status !== 'loading'">
+			暂无商家~
+		</view>
 	</view>
 </template>
 
@@ -111,7 +115,7 @@ export default {
 			this.list = data
 			this.currentMenu = data[0].id
 			this.$data._query.dressing = this.currentMenu
-			this.$data._query = {...this.$data._query, ...this.$store.getters.lonAndLat}
+			this.$data._query = { ...this.$data._query, ...this.$store.getters.lonAndLat }
 			this._loadData()
 		}
 	},
@@ -241,6 +245,13 @@ export default {
 		padding: 0 20upx;
 		box-sizing: border-box;
 
+	}
+
+	.no-data{
+		text-align: center;
+		color: #747474;
+		height: 200upx;
+		line-height: 200upx;
 	}
 }
 </style>

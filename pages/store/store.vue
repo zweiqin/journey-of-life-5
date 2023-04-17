@@ -90,7 +90,7 @@ export default {
     // 获取首页分类数据
     async getCategoryList() {
       const { data } = await getCategoryListApi({})
-      this.menusData = data
+      this.menusData = data.slice(0, 8)
 
     },
 
