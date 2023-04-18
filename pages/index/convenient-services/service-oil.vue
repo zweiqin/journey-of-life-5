@@ -10,9 +10,9 @@
 			</BeeAddress>
 		</view> -->
 		<view class="top">
-				<image src="../../../static/index/convenient-services/return.png" mode="" @click="back" />
-				<text>加油</text>
-			</view>
+			<image src="../../../static/index/convenient-services/return.png" mode="" @click="back" />
+			<text>加油</text>
+		</view>
 		<view class="bar-list">
 			<view class="bar" v-for="test in tests" :key="test.id">
 				<image :src="test.icon" mode="" @click="processById(test.id)" />
@@ -23,14 +23,17 @@
 
 			<view class="card">
 				<image src="../../../static/index/convenient-services/card.png" mode="" />
-				<view v-if="showyouka" class="number">油卡编号: <text>{{ youkabianhao }}</text></view>
+				<view v-if="showyouka" class="number">油卡编号: <text>{{ youkabianhao }}</text>
+					<view class="copy" @tap="copyText(youkabianhao)">复制</view>
+				</view>
 				<view v-if="showyouka" class="surplus">油卡余额: <text>{{ youkayue }}</text></view>
 			</view>
 
 			<view class="order-form" v-for="test in czlog" :key="test.id">
 				<view class="order-number">订单号: <text>{{ test.orderno }}</text></view>
+				<view class="copy1" @tap="copyText(test.orderno)">复制</view>
 				<view class="money">金额: <text>{{ test.amount }}</text></view>
-				<view class="status">状态: <text>{{ test.status ? '失败' :'成功' }}</text></view>
+				<view class="status">状态: <text>{{ test.status ? '失败' : '成功' }}</text></view>
 				<view class="list">
 					<view class="left"></view>
 					<view class="heng"></view>
@@ -67,6 +70,14 @@ export default {
 		back() {
 			uni.navigateTo({ url: '/pages/index/convenient-services/convenient-services' })
 		},
+		copyText(value) {
+			uni.setClipboardData({
+				data: value,
+				success: function () {
+					console.log("success", value);
+				},
+			});
+		},
 		processById(id) {
 			if (id == 1) {
 				RuanRequest("/tuanyou/createyouka", null, "post").then(({ data }) => {
@@ -83,7 +94,7 @@ export default {
 				});
 			} else if (id == 2) {
 				uni.navigateTo({
-				 	url: '/pages/index/convenient-services/recharge?kahao=' + this.youkabianhao,
+					url: '/pages/index/convenient-services/recharge?kahao=' + this.youkabianhao,
 				})
 			} else if (id == 3) {
 				RuanRequest("/tuanyou/getjumpurl", null, "post").then(({ data }) => {
@@ -102,7 +113,7 @@ export default {
 					// 	}
 					// })
 					uni.navigateTo({
-					 	url: '/pages/index/convenient-services/tuanyouh5?url=' + data,
+						url: '/pages/index/convenient-services/tuanyouh5?url=' + data,
 					})
 				});
 			}
@@ -111,19 +122,19 @@ export default {
 	created() {
 		RuanRequest("/tuanyou/queryYouKaAmount", null, "post").then(({ data }) => {
 			console.log(data);
-			if(data.youKa != null) {
+			if (data.youKa != null) {
 				this.showyouka = true;
 				this.youkabianhao = data.youKa;
 				this.youkayue = data.accountBalance;
 				this.tests = this.tests1;
-				
+
 				const reqData = {
 					"page": 1,
 					"limit": 50,
 				};
 				RuanRequest("/tuanyou/userczlog", reqData, "post").then(({ data }) => {
 					console.log(data);
-					if(data.items != null){
+					if (data.items != null) {
 						this.czlog = data.items;
 					}
 				});
@@ -183,6 +194,7 @@ export default {
 			font-weight: 500;
 		}
 	}
+
 	.banner-wrapper {
 		padding: 28upx 0;
 
@@ -242,10 +254,17 @@ export default {
 				font-size: 28upx;
 				font-weight: 500;
 				color: #000000;
+				display: flex;
+				align-items: center;
 
 				text {
 					padding-left: 10upx;
 					color: #3D3D3D;
+				}
+
+				.copy {
+					position: absolute;
+					right: 30upx;
 				}
 			}
 
@@ -277,6 +296,10 @@ export default {
 
 				text {}
 			}
+			.copy1{
+				color: #000000;
+				text-align: right;
+			}
 
 			.money {
 				padding-top: 80upx;
@@ -306,7 +329,7 @@ export default {
 				display: flex;
 				align-items: center;
 				position: absolute;
-				top: 120upx;
+				top: 150upx;
 				left: 0;
 				width: 100%;
 
@@ -325,7 +348,7 @@ export default {
 					border: 1upx dashed #D8D8D8;
 				}
 
-				.right{
+				.right {
 					width: 46upx;
 					height: 46upx;
 					border-radius: 40upx;
@@ -340,4 +363,5 @@ export default {
 
 
 	}
-}</style>
+}
+</style>
