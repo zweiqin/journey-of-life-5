@@ -21,7 +21,7 @@
 		<view class="mid">
 			<view class="bar-list">
 				<view class="bar" v-for="item in items" :key="item.id">
-					<image :src="item.icon" mode="" @click="go(item.url)" />
+					<image :src="item.icon" mode="" @click="handleTo(item)" />
 					<view class="text">{{ item.name }}</view>
 				</view>
 
@@ -40,11 +40,15 @@
 		<GasStation></GasStation>
 		<GasStation></GasStation>
 		<GasStation></GasStation> -->
+
+		<tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
+			@click="_handleClickTuiModel($event, 'login', '/pages/index/convenient-services/convenient-services')"></tui-modal>
 	</view>
 </template>
 
 <script>
 import { items, coupons } from './data'
+import showModel from '../../../mixin/showModel'
 export default {
 	data() {
 		return {
@@ -52,11 +56,19 @@ export default {
 			coupons
 		}
 	},
+	mixins: [showModel()],
 	methods: {
 		handleBack() {
 			uni.switchTab({
 				url: '/pages/index/index',
 			})
+		},
+		handleTo(item) {
+			if (!this.isLogin()) {
+				this.$data._isShowTuiModel = true
+			} else {
+				this.go(item.url)
+			}
 		}
 	},
 }
