@@ -4,11 +4,6 @@
 			<!-- #ifdef APP -->
 			<web-view :src="url"></web-view>
 			<!-- #endif -->
-			<!-- #ifdef H5 -->
-			<view class="fullcrseen">
-				<iframe :src="url" height="100%" width="100%" frameborder="0"></iframe>
-			</view>
-			<!-- #endif -->
 		</view>
 	</view>
 </template>
@@ -20,14 +15,19 @@ export default {
 		}
 	},
 	onLoad(val) {
-		this.url=val.url + "&token=" + val.token + "&timestamp=" + val.timestamp + "&sign=" + val.sign;
+		console.log(val);
+		this.url = val.url + "&token=" + val.token + "&timestamp=" + val.timestamp + "&sign=" + val.sign;
+
+		// #ifdef H5
+		location.href = this.url
+		// #endif
 	},
 	methods: {
 	}
 }
 </script>
 <style>
-	.fullcrseen {
-		height: 100vh;
-	}
+.fullcrseen {
+	height: 100vh;
+}
 </style>

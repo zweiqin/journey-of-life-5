@@ -1,63 +1,34 @@
 <template>
   <view class="j-city">
-    <view
-      class="value"
-      :style="{
-        color: text ? '' : '#999',
-      }"
-      @click="open"
-      >{{ text || "请选择地区" }}</view
-    >
+    <view class="value" :style="{
+      color: text ? '' : '#999',
+    }" @click="open">{{ text || "请选择地区" }}</view>
     <uni-popup @change="onPopupStatusChange" ref="popup" type="bottom">
       <view class="city-wrapper">
         <view class="header">
           <view class="citys">
-            <view
-              class="item"
-              @click="change('province')"
-              :class="{
-                active: current === 'province',
-              }"
-              >{{ areaInfo.province.text || "省份" }}</view
-            >
-            <view
-              class="item"
-              :class="{
-                active: current === 'city',
-              }"
-              @click="change('city')"
-              >{{ areaInfo.city.text || "城市" }}</view
-            >
-            <view
-              class="item"
-              @click="change('county')"
-              :class="{
-                active: current === 'county',
-              }"
-              >{{ areaInfo.county.text || "区县" }}</view
-            >
+            <view class="item" @click="change('province')" :class="{
+              active: current === 'province',
+            }">{{ areaInfo.province.text || "省份" }}</view>
+            <view class="item" :class="{
+              active: current === 'city',
+            }" @click="change('city')">{{ areaInfo.city.text || "城市" }}</view>
+            <view class="item" @click="change('county')" :class="{
+              active: current === 'county',
+            }">{{ areaInfo.county.text || "区县" }}</view>
           </view>
-          <button
-            class="confirm"
-            :style="{
-              color: areaInfo.county.text ? '#fa5151' : '#8b8b8b',
-            }"
-            @click="handleConfirmArea"
-          >
+          <button class="confirm" :style="{
+            color: areaInfo.county.text ? '#fa5151' : '#8b8b8b',
+          }" @click="handleConfirmArea">
             确定
           </button>
         </view>
 
         <view class="body">
           <ul>
-            <li
-              :class="{
-                active: item.id === areaInfo[current].id,
-              }"
-              v-for="item in data"
-              :key="item.id"
-              @click="chooseCity(item)"
-            >
+            <li :class="{
+              active: item.id === areaInfo[current].id,
+            }" v-for="item in data" :key="item.id" @click="chooseCity(item)">
               {{ item.name }}
             </li>
           </ul>
@@ -82,14 +53,17 @@ export default {
         province: {
           text: "",
           id: null,
+          code: ''
         },
         city: {
           text: "",
           id: null,
+          code: ''
         },
         county: {
           text: "",
           id: null,
+          code: ''
         },
       },
       areaString: "",
@@ -143,6 +117,7 @@ export default {
     chooseCity(cityInfo) {
       this.areaInfo[this.current]["text"] = cityInfo.name;
       this.areaInfo[this.current]["id"] = cityInfo.id;
+      this.areaInfo[this.current]["code"] = cityInfo.code;
 
       if (this.current !== "county") {
         this.getCity({
@@ -270,6 +245,7 @@ export default {
       ul {
         margin: 0;
         padding: 0;
+
         li {
           margin: 0;
           padding: 20upx 0;
