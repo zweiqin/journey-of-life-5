@@ -270,17 +270,45 @@ export const transformNumber = (num) => {
     num = num.toFixed(2);
   }
   return num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
+};
 
 // 判断当前是否处于微信环境
 export const isInWx = () => {
   // #ifdef H5
-  var ua = navigator.userAgent.toLowerCase()
-  return ua.match(/MicroMessenger/i) == 'micromessenger'
+  var ua = navigator.userAgent.toLowerCase();
+  return ua.match(/MicroMessenger/i) == "micromessenger";
   // #endif
 
   // #ifdef APP
-  return false
+  return false;
   // #endif
+};
+
+export const getUrlCode = () => {
+  var url = location.search;
+  var theRequest = new Object();
+  if (url.indexOf("?") != -1) {
+    var str = url.substr(1);
+    var strs = str.split("&");
+    for (var i = 0; i < strs.length; i++) {
+      theRequest[strs[i].split("=")[0]] = strs[i].split("=")[1];
+    }
+  }
+
+  console.log("code结果", theRequest);
+  return theRequest;
+};
+
+
+export const throttle = (fn, interval) => {
+  let lastTime = 0
+  const _throttle = function (...args) {
+    const nowTime = new Date().getTime()
+    const remainTime = interval - (nowTime - lastTime)
+    if (remainTime <= 0) {
+      fn.apply(this, args)
+      lastTime = nowTime
+    }
+  }
+  return _throttle
 }

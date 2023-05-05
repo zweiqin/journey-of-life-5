@@ -1,38 +1,15 @@
 <template>
   <view class="talent-list-container">
     <view class="header-titl-wrapper">
-      <tui-icon
-        @click="handleBack"
-        name="arrowleft"
-        color="#000"
-        :size="24"
-      ></tui-icon>
-      <view
-        class="title"
-        >营销达人</view
-      >
-    </view>
-
-    <view class="wrapper" v-show="currentNavs === 0">
-      <TalentPane
-        :data="item"
-        v-for="item in talentList"
-        :key="item.id"
-      ></TalentPane>
-      <LoadMore :status="talentStatus"></LoadMore>
-
-      <view class="no-data" v-if="!talentList.length"> 暂无达人~ </view>
+      <tui-icon @click="handleBack" name="arrowleft" color="#000" :size="24"></tui-icon>
+      <view class="title">营销达人</view>
     </view>
 
     <view class="wrapper" v-show="currentNavs === 1">
-      <TalentPane
-        :isTalent="false"
-        :data="item"
-        v-for="item in marketingPlannerList"
-        :key="item.id"
-      ></TalentPane>
+      <TalentPane :data="item" v-for="item in talentList" :key="item.id"></TalentPane>
       <LoadMore :status="talentStatus"></LoadMore>
-      <view class="no-data" v-if="!marketingPlannerList.length"> 暂无达人~ </view>
+
+      <view class="no-data" v-if="!talentList.length"> 暂无达人~ </view>
     </view>
   </view>
 </template>
@@ -120,7 +97,7 @@ export default {
 
   onLoad() {
     this.getTalentList()
-    this.getMarketingPlannerList()
+    // this.getMarketingPlannerList()
   },
 
   onReachBottom() {
@@ -227,7 +204,7 @@ text {
     }
   }
 
-  .no-data{
+  .no-data {
     text-align: center;
     line-height: 200px;
     color: #ccc;

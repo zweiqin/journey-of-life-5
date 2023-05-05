@@ -11,6 +11,11 @@ export const getIndustryInformationDetalApi = (acticleId) => {
 };
 
 // 提交达人申请
-export const submitApplyApi = data => {
-  return RuanRequest('/dtsTalent/submitBox', data)
-}
+export const submitApplyApi = (data) => {
+  return RuanRequest("/dtsTalent/submitBox", data);
+};
+
+// 查询达人详情
+export const queryTalentDetailApi = (data) => {
+  return RuanRequest("/talentDatail/datail", data, "get");
+};

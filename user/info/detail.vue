@@ -1,70 +1,42 @@
 <template>
   <view class="info-detail-container">
     <view class="op">
-      <img
-        src="../../static/images/store/chevron-states.png"
-        alt=""
-        @click="handleBack"
-        class="back"
-      />
+      <img src="../../static/images/store/chevron-states.png" alt="" @click="handleBack" class="back" />
       <view class="title">个人信息</view>
     </view>
 
     <view class="avatar-container">
-      <img
-        :src="
-          userInfo.avatarUrl.includes('http')
-            ? userInfo.avatarUrl
-            : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' +
-              userInfo.avatarUrl
-        "
-        alt=""
-        class="avatar"
-      />
-      <view class="change-btn font-14" @click="handleChangeAvatar"
-        >更换头像</view
-      >
+      <img :src="userInfo.avatarUrl.includes('http')
+          ? userInfo.avatarUrl
+          : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' +
+          userInfo.avatarUrl
+        " alt="" class="avatar" />
+      <view class="change-btn font-14" @click="handleChangeAvatar">更换头像</view>
     </view>
 
     <view class="detail-container">
       <view class="item" @click="showEditDialog">
         <view class="title font-14 f-c-3d">昵称</view>
         <view class="value font-14 f-c-3d">{{ userInfo.nickName }}</view>
-        <img
-          src="../../static/images/common/chevron-states.png"
-          class="icon"
-          alt=""
-        />
+        <img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
       </view>
 
       <view class="item">
         <view class="title font-14 f-c-3d">用户ID</view>
         <view class="value font-14 f-c-3d">{{ userInfo.userId }}</view>
-        <img
-          src="../../static/images/common/chevron-states.png"
-          class="icon"
-          alt=""
-        />
+        <img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
       </view>
 
       <view class="item">
         <view class="title font-14 f-c-3d">账号密码</view>
         <view class="value font-14 f-c-3d">**********</view>
-        <img
-          src="../../static/images/common/chevron-states.png"
-          class="icon"
-          alt=""
-        />
+        <img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
       </view>
 
-      <view class="item">
+      <view class="item" @click="hanldeBindPhone">
         <view class="title font-14 f-c-3d">手机号</view>
-        <view class="value font-14 f-c-3d">{{ userInfo.phone }}</view>
-        <img
-          src="../../static/images/common/chevron-states.png"
-          class="icon"
-          alt=""
-        />
+        <view class="value font-14 f-c-3d">{{ userInfo.phone || '未绑定' }}</view>
+        <img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
       </view>
 
       <view class="item">
@@ -99,24 +71,12 @@
     </view>
 
     <uni-popup ref="inputDialog" type="dialog">
-      <uni-popup-dialog
-        ref="inputClose"
-        mode="base"
-        type="info"
-        title="解绑微信"
-        @confirm="handleUnboundWXConfirm"
-        >确定解除与微信账号的绑定吗？</uni-popup-dialog
-      >
+      <uni-popup-dialog ref="inputClose" mode="base" type="info" title="解绑微信"
+        @confirm="handleUnboundWXConfirm">确定解除与微信账号的绑定吗？</uni-popup-dialog>
     </uni-popup>
 
     <uni-popup ref="editNicknameDialogRef" type="dialog">
-      <uni-popup-dialog
-        ref="inputClose"
-        mode="base"
-        type="info"
-        title="修改昵称"
-        @confirm="handleConfirmEditNickname"
-      >
+      <uni-popup-dialog ref="inputClose" mode="base" type="info" title="修改昵称" @confirm="handleConfirmEditNickname">
         <view class="edit-input">
           <view class="input-wrapper">
             <view class="title">（修改昵称）</view>
@@ -256,6 +216,7 @@ export default {
       updateUserInfoApi(originData).then(() => {
         refrshUserInfoApi({
           userId: getUserId(),
+          openId: ' '
         }).then(({ data }) => {
           uni.hideLoading()
           _this.handleCloseUpload()
@@ -265,6 +226,21 @@ export default {
         })
       })
     },
+
+    // 绑定手机号
+    hanldeBindPhone() {
+      const userInfo = uni.getStorageSync(J_USER_INFO)
+      if (userInfo.openId && !userInfo.phone) {
+        uni.navigateTo({
+          url: '/pages/login/bind-phone?openId=' + userInfo.openId
+        })
+      } else {
+        this.ttoast({
+          type: 'info',
+          title: '您已绑定'
+        })
+      }
+    }
   },
 }
 </script>
@@ -308,6 +284,7 @@ export default {
 
   .detail-container {
     padding: 8upx;
+
     .item {
       display: flex;
       align-items: center;
@@ -328,6 +305,7 @@ export default {
 
   .logout {
     margin-top: 280upx;
+
     .btn {
       color: #ff8f1f;
       border: none;

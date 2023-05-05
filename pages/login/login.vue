@@ -1,52 +1,27 @@
 <template>
   <view class="login-container">
-    <view class="register" @click="go('/pages/register/register?type=register')"
-      >注册</view
-    >
-    <image
-      class="logo"
-      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8lgf13vjcr9stft2tvt5.png"
-      mode=""
-    />
+    <view class="register" @click="go('/pages/register/register?type=register')">注册</view>
+    <image class="logo" src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8lgf13vjcr9stft2tvt5.png"
+      mode="" />
 
     <view class="form-content">
       <view class="item">
         <label for="mobile">手机号</label>
         <view class="input">
-          <input
-            id="mobile"
-            v-model="loginForm.username"
-            type="text"
-            placeholder="请输入手机号码"
-          />
+          <input id="mobile" v-model="loginForm.username" type="text" placeholder="请输入手机号码" />
         </view>
       </view>
 
       <view class="item">
         <label for="password">密码</label>
         <view class="input">
-          <input
-            v-model="loginForm.password"
-            id="password"
-            :type="isShowPwd ? 'text' : 'password'"
-            placeholder="请输入密码"
-          />
+          <input v-model="loginForm.password" id="password" :type="isShowPwd ? 'text' : 'password'" placeholder="请输入密码" />
         </view>
-        <image
-          class="hidden-passwod"
-          :src="
-            isShowPwd
-              ? 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1035vvc88rxf5768exul.png'
-              : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ivr6snx5152prfpssx3j.png'
-          "
-          mode=""
-          @click="isShowPwd = !isShowPwd"
-        />
-        <view
-          @click="go('/pages/register/register?type=forgetPwd')"
-          class="forget-password"
-          >（找回密码）</view
-        >
+        <image class="hidden-passwod" :src="isShowPwd
+            ? 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1035vvc88rxf5768exul.png'
+            : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ivr6snx5152prfpssx3j.png'
+          " mode="" @click="isShowPwd = !isShowPwd" />
+        <view @click="go('/pages/register/register?type=forgetPwd')" class="forget-password">（找回密码）</view>
       </view>
     </view>
 
@@ -54,22 +29,15 @@
     <view class="remember-password">免密码登录</view>
 
     <view class="footer">
-      <image
-        class="icon"
-        :class="{
+      <image class="icon" :class="{
           more: index === 3,
-        }"
-        v-for="(item, index) in moreLogins"
-        :key="item.icon"
-        :src="item.icon"
-        mode=""
-      />
+        }" v-for="(item, index) in moreLogins" :key="item.icon" :src="item.icon" mode="" @click="handleWXLogin" />
     </view>
   </view>
 </template>
 
 <script>
-import { userLoginApi } from "../../api/auth";
+import { userLoginApi, wxLoginApi } from "../../api/auth";
 import { moreLogins } from "./config";
 import {
   J_USER_INFO,
@@ -78,7 +46,7 @@ import {
   J_USER_ID,
   BIND_USER_ID,
 } from "../../constant";
-import { getUserId } from "../../utils";
+import { getUserId, getUrlCode } from "../../utils";
 export default {
   data() {
     return {
@@ -138,7 +106,7 @@ export default {
         this.$showToast("登录成功", "success");
         setTimeout(() => {
           if (this.type === "bind") {
-            uni.switchTab({
+            uni.redirectTo({
               url: "/pages/user/user?bind=" + this.bindUserId,
             });
           } else {
@@ -159,6 +127,67 @@ export default {
         }, 2000);
       });
     },
+
+    // 点击微信登录
+    async handleWXLogin() {
+      // #ifdef H5
+      const _this = this
+      const appid = 'wx603b04a561e4683e'
+      const local =
+        'https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/login/login'
+      const code = getUrlCode().code
+
+      // console.log('获取code', code)
+      // alert('获取code', code)
+
+      if (code == null || code === '') {
+        window.location.href =
+          'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
+          appid +
+          '&redirect_uri=' +
+          encodeURIComponent(local) +
+          '&response_type=code&scope=snsapi_userinfo#wechat_redirect'
+      } else {
+        const { data } = await wxLoginApi({
+          code
+        })
+
+        uni.setStorageSync(J_USER_ID, data.userInfo.userId);
+        uni.setStorageSync(J_USER_INFO, data.userInfo)
+        uni.setStorageSync(J_USER_TOKEN, data.token);
+        // ofxYi6eg9rdj8qZx3rwSecysgePo
+        if (!data.status) {
+          uni.navigateTo({
+            url: '/pages/login/bind-phone?openId=' + data.userInfo.openId
+          })
+        } else {
+
+          this.$showToast("登录成功", "success");
+          setTimeout(() => {
+            if (this.type === "bind") {
+              uni.switchTab({
+                url: "/pages/user/user?bind=" + this.bindUserId,
+              });
+            } else {
+              if (this.isTabbar) {
+                uni.switchTab({
+                  url: this.redirect || "/pages/index/index",
+                });
+              } else if (this.redirect) {
+                uni.redirectTo({
+                  url: this.redirect,
+                });
+              } else {
+                uni.switchTab({
+                  url: "/pages/index/index",
+                });
+              }
+            }
+          }, 2000);
+        }
+      }
+      // #endif
+    }
   },
 
   onLoad(options) {
@@ -177,15 +206,25 @@ export default {
           url: "/pages/user/user?bind=" + this.bindUserId,
         });
       }
-    }else if(this.type === 'forget'){
+    } else if (this.type === 'forget') {
       this.$showToast("密码重置成功", "success");
     }
+  },
+
+  onShow() {
+    // #ifdef H5
+    const code = getUrlCode().code
+    if (code) {
+      this.handleWXLogin()
+    }
+    // #endif
   },
 };
 </script>
 
 <style lang="less" scoped>
 @import "../../style/mixin.less";
+
 .login-container {
   .flex(center, center);
   flex-direction: column;
@@ -196,6 +235,7 @@ export default {
     text-align: right;
     font-size: 24upx;
   }
+
   .logo {
     width: 164upx;
     height: 150upx;
@@ -272,7 +312,7 @@ export default {
     margin-top: 200upx;
 
     .icon {
-      width: 40upx;
+      width: 50upx;
       height: 40upx;
       object-fit: cover;
 

@@ -65,15 +65,13 @@ export default {
         "introduce": ""
       },
 
-      loading: '',
-      currentAddress: {}
+      loading: ''
     }
   },
 
   methods: {
     handleChooseArea(areaInfo) {
       this.form.region = areaInfo.area
-      this.currentAddress = areaInfo
     },
 
     handleUploadAvatar(avatarInfo) {
@@ -130,7 +128,7 @@ export default {
       });
 
       try {
-        await submitApplyApi({ ...this.form, region: this.currentAddress.county.code })
+        await submitApplyApi(this.form)
         this.ttoast('申请成功')
         this.form = {
           "name": "",

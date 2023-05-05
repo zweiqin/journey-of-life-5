@@ -8,14 +8,12 @@
       <text>人均{{ brandDetail.perCapita }}</text>
     </view>
     <view class="open-time"> 营业时间：{{ brandDetail.startTime }}-{{ brandDetail.endTime }} </view>
-    <scroll-view scroll-x="true">
+    <scroll-view scroll-x="true" v-if="brandDetail.bgUrl">
       <view class="goods-list">
-        <tui-lazyload-img class="goods-img" mode="scaleToFill" width="250rpx" height="210rpx" radius="20rpx 0 0 20rpx"
-          src="https://img0.baidu.com/it/u=3921347565,3035353655&fm=253&fmt=auto&app=138&f=JPEG?w=654&h=500"></tui-lazyload-img>
-        <tui-lazyload-img class="goods-img" mode="scaleToFill" width="250rpx" height="210rpx"
-          src="https://img0.baidu.com/it/u=221342467,1244905005&fm=253&fmt=auto&app=138&f=JPEG?w=752&h=500"></tui-lazyload-img>
-        <tui-lazyload-img class="goods-img" mode="scaleToFill" width="250rpx" height="210rpx" radius=" 0 20rpx 20rpx 0 "
-          src="https://img1.baidu.com/it/u=3046089692,1632656795&fm=253&fmt=auto&app=138&f=JPEG?w=665&h=500"></tui-lazyload-img>
+        <tui-lazyload-img @click="handleViewImg(img)" v-for="(img, index) in  JSON.parse(brandDetail.bgUrl)" :key="index" class="goods-img"
+          mode="scaleToFill" width="250rpx" height="210rpx"
+          :radius="!index ? '20rpx 0 0 20rpx' : index === JSON.parse(brandDetail.bgUrl).length - 1 ? '0 20rpx 20rpx 0' : ''"
+          :src="getBeeUrl(img)"></tui-lazyload-img>
       </view>
     </scroll-view>
     <view class="brand-status">
@@ -63,7 +61,7 @@ export default {
       type: Object,
       required: true,
     },
-  },
+  }
 }
 </script>
 

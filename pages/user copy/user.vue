@@ -244,6 +244,7 @@ export default {
     if (getUserId()) {
       refrshUserInfoApi({
         userId: getUserId(),
+        openId: ' '
       }).then(res => {
         this.userInfo = res.data
         uni.setStorageSync(J_USER_INFO, res.data)

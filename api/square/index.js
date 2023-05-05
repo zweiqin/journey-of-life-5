@@ -2,7 +2,7 @@ import { RuanRequest, HXRequest } from '../../utils'
 
 // 获取达人列表
 export const getTalentListApi = data => {
-  return RuanRequest('/talent/list', data, 'get')
+  return RuanRequest('/dtsTalent/list', data, 'get')
 }
 
 // 获取营销策划师列表

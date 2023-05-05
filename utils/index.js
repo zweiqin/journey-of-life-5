@@ -18,7 +18,9 @@ export {
   delayedLoginStatus,
   domToImage,
   transformNumber,
-  isInWx
+  isInWx,
+  getUrlCode,
+  throttle,
 } from "./DWHutils";
 export { formatTime, debounce } from "./util";
 export { nums } from "./filter";

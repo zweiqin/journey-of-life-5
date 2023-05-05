@@ -1,30 +1,13 @@
 <template>
   <view class="map-container" v-if="showMap">
-    <map
-      id="mapRef"
-      :longitude="longitude"
-      :latitude="latitude"
-      :scale="scale"
-      show-compass
-      show-location
-      style="width: 100vw; height: 100vh"
-      :markers="markers"
-      @markertap="handleReceive"
-    ></map>
+    <map id="mapRef" :longitude="longitude" :latitude="latitude" :scale="scale" show-compass show-location
+      style="width: 100vw; height: 100vh" :markers="markers" @markertap="handleReceive"></map>
 
-    <view
-      class="preview-wrapper"
-      :style="{
+    <view class="preview-wrapper" :style="{
         transform: showRedPackage ? 'scale(1)' : 'scale(0)',
-      }"
-      ref="previewWrapperRef"
-    >
-      <JRedEnvelope
-        :desc="redForm.remark"
-        :src="redForm.imageUrl"
-        :name="redForm.brandName"
-        :avatar="redForm.picUrl"
-      ></JRedEnvelope>
+      }" ref="previewWrapperRef">
+      <JRedEnvelope :desc="redForm.remark" :src="redForm.imageUrl" :name="redForm.brandName" :avatar="redForm.picUrl">
+      </JRedEnvelope>
 
       <button class="receive-btn" @click="handleClose">确定</button>
     </view>
@@ -34,10 +17,7 @@
       <view @click="handleScale(-1)">-</view>
     </view>
 
-    <view
-      class="send"
-      @click="go('/user/marketing-tools/red-envelope-distribution')"
-    >
+    <view class="send" @click="handleToSendRedEnvelope">
       <image src="../../static/images/index/red.png" mode="" />
       <text>发红包</text>
     </view>
@@ -244,6 +224,15 @@ export default {
         })
       }
     },
+
+    // 去发红包
+    handleToSendRedEnvelope() {
+      const userId = getUserId()
+      if (!userId) {
+        return
+      }
+      this.go('/user/marketing-tools/red-envelope-distribution')
+    }
   },
 
   destroyed() {
@@ -361,5 +350,4 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 </style>

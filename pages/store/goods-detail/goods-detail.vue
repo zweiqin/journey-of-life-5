@@ -6,7 +6,7 @@
       <!-- <image src="https://img2.baidu.com/it/u=631516092,1411937024&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800">
       </image> -->
 
-      <BeeSwiper height="540rpx" :list="goodsDetail.info.gallery || '[]'"></BeeSwiper>
+      <BeeSwiper height="540rpx" :list="goodsDetail.info.gallery.map(item => getBeeUrl(item)) || '[]'"></BeeSwiper>
 
       <view class="header-tool">
         <BeeBack>

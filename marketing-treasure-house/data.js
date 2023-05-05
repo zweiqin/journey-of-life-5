@@ -22,41 +22,6 @@ export const filters = [
   },
 ]
 
-export const tempData = [
-  {
-    id: 0,
-    logo: '',
-    name: '首檬设计公司',
-    text1: '设计工作室',
-    text2: '从业31年',
-    text3: '￥500-1000/㎡',
-    images: [],
-    dis: '32.1',
-    taoImgs: [],
-  },
-  {
-    id: 1,
-    logo: '',
-    name: '佑泽设计',
-    text1: '个人设计师',
-    text2: '从业14年',
-    text3: '￥80-200/㎡',
-    images: [],
-    dis: '13.9',
-    taoImgs: [],
-  },
-  {
-    id: 3,
-    logo: '',
-    name: '前齐设计公司',
-    text1: '设计工作室',
-    text2: '从业8年',
-    text3: '￥60-150/㎡',
-    images: [],
-    dis: '13.9',
-    taoImgs: [],
-  },
-]
 
 export const allFilters = [
   {

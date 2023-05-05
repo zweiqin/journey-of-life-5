@@ -8,18 +8,12 @@
       <BrandInfo :data="detailInfo"></BrandInfo>
 
       <view class="main-nav">
-        <view
-          class="item"
-          v-for="item in navs"
-          :key="item.value"
-          @click="handleSwitchTab(item)"
-          :class="{ active: currentNav === item.value }"
-          >{{ item.label }}</view
-        >
+        <view class="item" v-for="item in navs" :key="item.value" @click="handleSwitchTab(item)"
+          :class="{ active: currentNav === item.value }">{{ item.label }}</view>
       </view>
 
-      <CasePresentation :data="detailInfo.taoImgs"></CasePresentation>
-      <ProductPresentation :data="[]"></ProductPresentation>
+      <CasePresentation :data="[]"></CasePresentation>
+      <ProductPresentation :data="{}"></ProductPresentation>
       <Evaluate></Evaluate>
       <OpFooter></OpFooter>
     </view>
@@ -34,6 +28,7 @@ import ProductPresentation from './cpns/ProductPresentation.vue'
 import OpFooter from './cpns/OpFooter.vue'
 import Evaluate from './cpns/Evaluate.vue'
 import { tempData } from '../data'
+import { queryTalentDetailApi } from '../../api/marketing-treasure-house'
 
 export default {
   components: {
@@ -67,19 +62,21 @@ export default {
   },
 
   onLoad(params) {
-    console.log(params);
-    uni.showLoading({
-      title: '加载中',
-    })
-    this.detailInfo = JSON.parse(params.info)
-    console.log(this.detailInfo)
-    uni.hideLoading()
+    this.getDetail(params.id)
   },
 
   methods: {
     handleSwitchTab(item) {
       this.currentNav = item.value
     },
+
+    async getDetail(id) {
+      const { data } = await queryTalentDetailApi({
+        expertId: id
+      })
+
+      this.detailInfo = data
+    }
   },
 }
 </script>
@@ -96,8 +93,7 @@ export default {
     width: 100%;
     height: 336upx;
     background-size: cover;
-    background: url(https://ns-strategy.cdn.bcebos.com/ns-strategy/upload/fc_big_pic/part-00624-707.jpg)
-      no-repeat;
+    background: url(https://ns-strategy.cdn.bcebos.com/ns-strategy/upload/fc_big_pic/part-00624-707.jpg) no-repeat;
 
     .op-container {
       position: absolute;
@@ -139,6 +135,7 @@ export default {
           color: #141000;
           font-size: 34upx;
           font-weight: bold;
+
           &::after {
             width: 40upx;
           }

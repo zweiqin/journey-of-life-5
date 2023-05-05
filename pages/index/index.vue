@@ -117,7 +117,14 @@ export default {
 			submenus: []
 		}
 	},
-	onLoad() { },
+	onLoad() {
+		// #ifdef H5
+		if (window.location.href.includes('?code')) {
+			window.location.href =
+				window.location.origin + window.location.pathname
+		}
+		// #endif
+	},
 	mounted() {
 		this.getSubMenus()
 

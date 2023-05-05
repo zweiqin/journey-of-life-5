@@ -1,11 +1,6 @@
 <template>
   <view class="cropper-container">
-    <tui-cropper
-      :isRound="true"
-      :imageUrl="cropperUrl"
-      @cropper="handleConfirm"
-      @ready="handleReady"
-    ></tui-cropper>
+    <tui-cropper :isRound="true" :imageUrl="cropperUrl" @cropper="handleConfirm" @ready="handleReady"></tui-cropper>
 
     <tui-toast ref="toast"></tui-toast>
   </view>
@@ -61,6 +56,7 @@ export default {
 
               refrshUserInfoApi({
                 userId: userInfo.userId,
+                openId: ' '
               }).then(({ data }) => {
                 uni.setStorageSync(J_USER_INFO, data)
                 this.userInfo = data

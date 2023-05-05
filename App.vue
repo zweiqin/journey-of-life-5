@@ -1,9 +1,7 @@
 <script>
-import PageAnimation from './components/BeePageAnimation'
 import { whoami } from './api/auth'
 import { J_USER_ID, J_USER_TOKEN, J_TOKEN_EXPIRE } from './constant'
 export default {
-	mixins: [PageAnimation],
 	onShow: function () {
 		// 判断浏览器环境
 		var ua = navigator.userAgent.toLowerCase();

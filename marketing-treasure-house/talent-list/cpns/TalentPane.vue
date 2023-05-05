@@ -1,5 +1,5 @@
 <template>
-  <view class="talent-pane-container" v-if="data" @click="go('/marketing-treasure-house/detail/detail?info=' + JSON.stringify(data))">
+  <view class="talent-pane-container" v-if="data" @click="go('/marketing-treasure-house/detail/detail?id=' + data.id)">
     <BeeAvatar
       :size="56"
       :src="
