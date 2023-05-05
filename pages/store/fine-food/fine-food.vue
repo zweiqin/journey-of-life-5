@@ -1,126 +1,128 @@
 <template>
-  <view class="brand-page-container">
-    <view class="top-container">
-      <view class="search-header">
-        <BeeBack>
-          <view class="header-title">
-            <BeeIcon :size="24" color="#fff" name="arrowleft"></BeeIcon>
-            <h1>美食</h1>
-          </view>
-        </BeeBack>
-        <SearchBar background="#fff"></SearchBar>
-        <view class="control">
-          <view class="item">
-            <BeeIcon :size="24" :src="require('../../../static/brand/find-food/location.png')"></BeeIcon>
-            <text>位置</text>
-          </view>
+	<view class="brand-page-container">
+		<view class="top-container">
+			<view class="search-header">
+				<BeeBack>
+					<view class="header-title">
+						<BeeIcon :size="24" color="#fff" name="arrowleft"></BeeIcon>
+						<h1>美食</h1>
+					</view>
+				</BeeBack>
+				<SearchBar background="#fff"></SearchBar>
+				<view class="control">
+					<view class="item">
+						<BeeIcon :size="24" :src="require('../../../static/brand/find-food/location.png')"></BeeIcon>
+						<text>位置</text>
+					</view>
 
-          <view class="item">
-            <BeeIcon :size="24" :src="require('../../../static/brand/find-food/dingdan.png')"></BeeIcon>
-            <text>订单</text>
-          </view>
-        </view>
-      </view>
-      <view class="hot-search">
-        热搜：<text>汉堡</text> <text>薯条</text> <text>奶茶</text>
-        <text>鸡翅</text> <text>鸡翅</text>
-      </view>
-      <!-- <image
-        class="banner-img"
-        src="../../../static/brand/banner.png"
-        mode=""
-      /> -->
-      <view class="menus-wrapper">
-        <BeeMenus @click="handleTo" :data="menusData"></BeeMenus>
-      </view>
+					<view class="item">
+						<BeeIcon :size="24" :src="require('../../../static/brand/find-food/dingdan.png')"></BeeIcon>
+						<text>订单</text>
+					</view>
+				</view>
+			</view>
+			<view class="hot-search">
+				热搜：<text>汉堡</text> <text>薯条</text> <text>奶茶</text>
+				<text>鸡翅</text> <text>鸡腿</text>
+			</view>
+			<!-- <image
+				class="banner-img"
+				src="../../../static/brand/banner.png"
+				mode=""
+				/> -->
+			<view class="menus-wrapper">
+				<BeeMenus :data="menusData" @click="handleTo"></BeeMenus>
+			</view>
 
-      <view class="menus-wrapper">
-        <TimeLimitedSeckill></TimeLimitedSeckill>
-      </view>
+			<view class="menus-wrapper">
+				<TimeLimitedSeckill></TimeLimitedSeckill>
+			</view>
 
-      <view class="menus-wrapper">
-        <view class="navs">
-          <view class="nav-item active">餐厅</view>
-          <view class="nav-item">优惠套餐</view>
-          <view class="nav-item">单人餐</view>
-        </view>
-      </view>
-    </view>
+			<view class="menus-wrapper">
+				<view class="navs">
+					<view class="nav-item active">餐厅</view>
+					<view class="nav-item">优惠套餐</view>
+					<view class="nav-item">单人餐</view>
+				</view>
+			</view>
+		</view>
 
-    <view class="brand">
-      <FilterPane></FilterPane>
-      <view class="brand-list-wrapper">
-        <BigNameSpecials></BigNameSpecials>
+		<view class="brand">
+			<FilterPane></FilterPane>
+			<view class="brand-list-wrapper">
+				<BigNameSpecials></BigNameSpecials>
 
-        <BeeBrandPane v-for="item in $data._list" :key="item.id" :brand-info="item"></BeeBrandPane>
-        <LoadMore :status="$data._status"></LoadMore>
-      </view>
-    </view>
-  </view>
+				<BeeBrandPane v-for="item in $data._list" :key="item.id" :brand-info="item"></BeeBrandPane>
+				<LoadMore :status="$data._status"></LoadMore>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
 import loadData from '../../../mixin/loadData'
 import { menusData } from './data'
 import { getSroreListApi } from '../../../api/store'
+import { filterBrandByMenuIdApi } from '../../../api/brand'
 import TimeLimitedSeckill from './cpns/TimeLimitedSeckill.vue'
 import BigNameSpecials from './cpns/BigNameSpecials.vue'
 import FilterPane from './cpns/FilterPane.vue'
 import { getNearbyFonndMenuApi } from '../../../api/brand'
 
 export default {
-  components: {
-    TimeLimitedSeckill,
-    BigNameSpecials,
-    FilterPane
-  },
-  data() {
-    return {
-      menusData: Object.freeze(menusData),
-      currentNavs: 0,
-    }
-  },
-  mixins: [
-    loadData({
-      api: getSroreListApi,
-      mapKey: {
-        list: 'brandList',
-        totalPages: 'totalPages',
-        size: 'size',
-      },
-      dataFn(data) {
-        const ignoreBrandList = ['佛山市顺德区修江缘美食餐饮店', '测试门店呀']
-        return data.filter(item => {
-          return !ignoreBrandList.includes(item.name)
-        })
-      },
-    }),
-  ],
-  onLoad(options) {
+	components: {
+		TimeLimitedSeckill,
+		BigNameSpecials,
+		FilterPane
+	},
+	mixins: [
+		loadData({
+			api: filterBrandByMenuIdApi,
+			mapKey: {
+				list: 'tfBrandList',
+				totalPages: 'total',
+				size: 'size'
+			},
+			dataFn(data) {
+				const ignoreBrandList = ['佛山市顺德区修江缘美食餐饮店', '测试门店呀']
+				return data.filter((item) => !ignoreBrandList.includes(item.name))
+			}
+		})
+	],
+	data() {
+		return {
+			menusData: Object.freeze(menusData),
+			currentNavs: 0,
+			id: ''
+		}
+	},
+	onLoad(options) {
+		this.id = options.id
+		this.$data._query.dressing = this.id
+		this.$data._query = { ...this.$data._query, ...this.$store.getters.lonAndLat }
+		this._loadData()
+		this.getMenus(options.id)
+	},
+	onPullDownRefresh() {
+		this.$data.page = 1
+		this._loadData()
+		uni.stopPullDownRefresh()
+	},
+	methods: {
+		// 获取menus
+		async getMenus(id) {
+			const { data } = await getNearbyFonndMenuApi({
+				typeId: id
+			})
 
-    this._loadData()
-    this.getMenus(options.id)
-  },
-  onPullDownRefresh() {
-    this.$data.page = 1
-    this._loadData()
-    uni.stopPullDownRefresh()
-  },
-  methods: {
-    // 获取menus
-    async getMenus(id) {
-      const { data } = await getNearbyFonndMenuApi({
-        typeId: id
-      })
+			this.menusData = data
+		},
 
-      this.menusData = data
-    },
+		handleTo(item) {
+			this.go(`/pages/store/fine-food/food-nearby/food-nearby?name=${item.storeName}&id=${item.id}`)
+		}
 
-    handleTo(item) {
-      this.go(`/pages/store/fine-food/food-nearby/food-nearby?name=${item.storeName}&id=${item.id}`)
-    }
-
-  },
+	}
 }
 </script>
 

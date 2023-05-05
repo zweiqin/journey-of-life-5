@@ -1,77 +1,80 @@
 <template>
-  <view class="bee-brand-pane-container" @click="go('/pages/store/detail/detail?brandId=' + brandInfo.id)">
-    <view class="left">
-      <BeeAvatar
-        :src="brandInfo.picUrl.includes('https') ? brandInfo.picUrl : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + brandInfo.picUrl"
-        radius="10upx"></BeeAvatar>
-      <view class="tag"> 惊喜价 </view>
-    </view>
-    <view class="middle">
-      <view class="brand-name hidden">{{ brandInfo.name }}</view>
-      <view class="rate">
-        <BeeIcon :size="12" :src="require('./images/star.png')"></BeeIcon>
-        <text class="rate-text">4.5分</text>
-        <text class="sub-text">{{ brandInfo.brandLabel | formatTag }}</text>
-        <text class="rate-text">￥50/人</text>
-        <text>月售462</text>
-      </view>
-      <BeeNavigation>
-        <view class="location-wrapper">
-          <BeeIcon :src="require('./images/location.png')" :size="14"></BeeIcon>
-          <view class="detail">
-            <text class="dis-container"> {{ (brandInfo.distance) / 1000 || 0 }}/km </text>
-            <BeeIcon :src="require('./images/to.png')" :size="14"></BeeIcon>
-          </view>
-        </view>
-      </BeeNavigation>
-      <view class="elva">
-        <BeeAvatar :size="15"></BeeAvatar>
-        <view class="elva-text hidden">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorum
-          facere ex fuga exercitationem, magni officia quo nostrum, pariatur
-          minus corporis laborum! Molestias quo dicta ad quis harum veniam, et
-          ratione!</view>
-      </view>
+	<view class="bee-brand-pane-container" @click="go('/pages/store/detail/detail?brandId=' + brandInfo.id)">
+		<view class="left">
+			<BeeAvatar
+				:src="brandInfo.picUrl.includes('https') ? brandInfo.picUrl : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + brandInfo.picUrl"
+				radius="10upx"
+			></BeeAvatar>
+			<!-- <view class="tag"> 惊喜价 </view> -->
+		</view>
+		<view class="middle">
+			<view class="brand-name hidden">{{ brandInfo.name }}</view>
+			<view class="rate">
+				<BeeIcon :size="12" :src="require('./images/star.png')"></BeeIcon>
+				<text class="rate-text">4.5分</text>
+				<text class="sub-text">{{ brandInfo.brandLabel | formatTag }}</text>
+				<text class="rate-text">￥50/人</text>
+				<text>月售462</text>
+			</view>
+			<BeeNavigation>
+				<view class="location-wrapper">
+					<BeeIcon :src="require('./images/location.png')" :size="14"></BeeIcon>
+					<view class="detail">
+						<text class="dis-container"> {{ brandInfo.distance / 1000 || 0 }}/km </text>
+						<BeeIcon :src="require('./images/to.png')" :size="14"></BeeIcon>
+					</view>
+				</view>
+			</BeeNavigation>
+			<view class="elva">
+				<BeeAvatar :size="15"></BeeAvatar>
+				<view class="elva-text hidden">
+					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorum
+					facere ex fuga exercitationem, magni officia quo nostrum, pariatur
+					minus corporis laborum! Molestias quo dicta ad quis harum veniam, et
+					ratione!
+				</view>
+			</view>
 
-      <view class="welfare-wrapper">
-        <view class="welfare-item" v-for="(item, index) in templateData" :key="index">
-          <view class="tag">{{ item.type }}</view>
-          <text class="price-text">{{ item.price }}元</text>
-          <view class="tag2">{{ item.discount }}折</view>
-          <text class="desc">{{ item.desc }}</text>
-        </view>
-      </view>
-    </view>
-    <!-- <view class="right">
-      <BeeIcon :size="25" class="heart-icon" :src="require('./images/heart.png')"></BeeIcon>
-    </view> -->
-  </view>
+			<!-- <view class="welfare-wrapper">
+				<view class="welfare-item" v-for="(item, index) in templateData" :key="index">
+				<view class="tag">{{ item.type }}</view>
+				<text class="price-text">{{ item.price }}元</text>
+				<view class="tag2">{{ item.discount }}折</view>
+				<text class="desc">{{ item.desc }}</text>
+				</view>
+				</view> -->
+		</view>
+		<!-- <view class="right">
+			<BeeIcon :size="25" class="heart-icon" :src="require('./images/heart.png')"></BeeIcon>
+			</view> -->
+	</view>
 </template>
 
 <script>
 import { templateData } from './data'
 export default {
-  props: {
-    brandInfo: {
-      type: Object,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      templateData: Object.freeze(templateData),
-    }
-  },
 
-  filters: {
-    formatTag(value) {
-      return {
-        0: '美酒',
-        1: "美食",
-        2: "娱乐",
-        3: "好玩"
-      }[value] || ""
-    }
-  }
+	filters: {
+		formatTag(value) {
+			return {
+				0: '美酒',
+				1: '美食',
+				2: '娱乐',
+				3: '好玩'
+			}[value] || ''
+		}
+	},
+	props: {
+		brandInfo: {
+			type: Object,
+			required: true
+		}
+	},
+	data() {
+		return {
+			templateData: Object.freeze(templateData)
+		}
+	}
 }
 </script>
 

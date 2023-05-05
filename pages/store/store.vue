@@ -1,28 +1,28 @@
 <template>
-  <view class="brand-page-container">
-    <view class="top-container">
-      <view class="search-header">
-        <BeeLocale></BeeLocale>
-        <SearchBar background="#fff"></SearchBar>
-        <PhotoSearch></PhotoSearch>
-      </view>
-      <!-- <image class="banner-img" src="../../static/brand/banner.png" mode="" /> -->
-      <view class="menus-wrapper">
-        <BeeMenus @click="handleTo" :data="menusData"></BeeMenus>
-      </view>
-      <view class="banner-wrapper" @click="go('/user/sever/userUp')">
-        <image src="../../static/index/banner2.png" mode="" />
-      </view>
-    </view>
+	<view class="brand-page-container">
+		<view class="top-container">
+			<view class="search-header">
+				<BeeLocale></BeeLocale>
+				<SearchBar background="#fff"></SearchBar>
+				<PhotoSearch></PhotoSearch>
+			</view>
+			<!-- <image class="banner-img" src="../../static/brand/banner.png" mode="" /> -->
+			<view class="menus-wrapper">
+				<BeeMenus :data="menusData" @click="handleTo"></BeeMenus>
+			</view>
+			<view class="banner-wrapper" @click="go('/user/sever/userUp')">
+				<image src="../../static/index/banner2.png" mode="" />
+			</view>
+		</view>
 
-    <view class="brand">
-      <BeeStoreFilter></BeeStoreFilter>
-      <view class="brand-list-wrapper">
-        <BeeBrandPane v-for="item in $data._list" :key="item.id" :brand-info="item"></BeeBrandPane>
-        <LoadMore :status="$data._status"></LoadMore>
-      </view>
-    </view>
-  </view>
+		<view class="brand">
+			<BeeStoreFilter></BeeStoreFilter>
+			<view class="brand-list-wrapper">
+				<BeeBrandPane v-for="item in $data._list" :key="item.id" :brand-info="item"></BeeBrandPane>
+				<LoadMore :status="$data._status"></LoadMore>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
@@ -30,83 +30,77 @@ import loadData from '../../mixin/loadData'
 import { menusData } from './data'
 import { getHomeBrandListApi, getCategoryListApi } from '../../api/brand'
 export default {
-  data() {
-    return {
-      menusData: Object.freeze(menusData),
-      loopTimer: null,
-    }
-  },
-  mixins: [
-    loadData({
-      api: getHomeBrandListApi,
-      mapKey: {
-        list: 'brandList',
-        totalPages: 'totalPages',
-        size: 'size',
-      },
-      dataFn(data) {
-        const ignoreBrandList = ['佛山市顺德区修江缘美食餐饮店', '测试门店呀', '巨蜂自营']
-        return data.filter(item => {
-          return !ignoreBrandList.includes(item.name)
-        })
-      },
-    }),
-  ],
-  onLoad() {
-    this.getBrandList()
-    this.getCategoryList()
-  },
-  methods: {
-    getBrandList() {
-      const _this = this
-      const queryLocation = { longitude: '', latitude: '' }
-      let num = 0
+	data() {
+		return {
+			menusData: Object.freeze(menusData),
+			loopTimer: null
+		}
+	},
+	mixins: [
+		loadData({
+			api: getHomeBrandListApi,
+			mapKey: {
+				list: 'brandList',
+				totalPages: 'totalPages',
+				size: 'size'
+			},
+			dataFn(data) {
+				const ignoreBrandList = ['佛山市顺德区修江缘美食餐饮店', '测试门店呀', '巨蜂自营']
+				return data.filter((item) => !ignoreBrandList.includes(item.name))
+			}
+		})
+	],
+	onLoad() {
+		this.getBrandList()
+		this.getCategoryList()
+	},
+	methods: {
+		getBrandList() {
+			const _this = this
+			const queryLocation = { longitude: '', latitude: '' }
+			let num = 0
 
-      uni.getLocation({
-        type: 'wgs84',
-        altitude: false,
-        success: (result) => {
-          _this.$store.commit('location/CHANGE_CURRENT_LONGITUDE_AND_LATITUDE', result)
-          queryLocation.longitude = result.longitude
-          queryLocation.latitude = result.latitude
-        }
-      });
+			uni.getLocation({
+				type: 'wgs84',
+				altitude: false,
+				success: (result) => {
+					_this.$store.commit('location/CHANGE_CURRENT_LONGITUDE_AND_LATITUDE', result)
+					queryLocation.longitude = result.longitude
+					queryLocation.latitude = result.latitude
+				}
+			})
 
-      this.loopTimer = setInterval(() => {
-        num++
-        if (queryLocation.longitude || num === 3) {
-          clearInterval(_this.loopTimer)
-          _this.loopTimer = null
-          _this.$data._query = { ..._this.$data._query, ...queryLocation }
-          _this._loadData()
-          return
-        }
+			this.loopTimer = setInterval(() => {
+				num++
+				if (queryLocation.longitude || num === 3) {
+					clearInterval(_this.loopTimer)
+					_this.loopTimer = null
+					_this.$data._query = { ..._this.$data._query, ...queryLocation }
+					_this._loadData()
+				}
+			}, 100)
+		},
 
-      }, 100)
+		// 获取首页分类数据
+		async getCategoryList() {
+			const { data } = await getCategoryListApi({})
+			this.menusData = data.slice(0, 8)
+		},
 
-
-    },
-
-    // 获取首页分类数据
-    async getCategoryList() {
-      const { data } = await getCategoryListApi({})
-      this.menusData = data.slice(0, 8)
-
-    },
-
-    handleTo(item) {
-      if (item.storeName === '美食饮品') {
-        this.go(`/pages/store/fine-food/fine-food?name=${item.storeName}&id=${item.id}`)
-      } else {
-        this.go(`/pages/store/fine-food/food-nearby/food-nearby?name=${item.storeName}&id=${item.id}`)
-      }
-    }
-  },
-  onPullDownRefresh() {
-    this.$data.page = 1
-    this._loadData()
-    uni.stopPullDownRefresh()
-  },
+		handleTo(item) {
+			console.log(item)
+			if (item.storeName === '美食饮品') {
+				this.go(`/pages/store/fine-food/fine-food?name=${item.storeName}&id=${item.id}`)
+			} else {
+				this.go(`/pages/store/fine-food/food-nearby/food-nearby?name=${item.storeName}&id=${item.id}`)
+			}
+		}
+	},
+	onPullDownRefresh() {
+		this.$data.page = 1
+		this._loadData()
+		uni.stopPullDownRefresh()
+	}
 }
 </script>
 
