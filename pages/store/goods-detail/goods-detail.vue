@@ -52,6 +52,15 @@
 			<!-- 评价 -->
 			<Evaluate></Evaluate>
 
+			<!-- 宝贝详情 -->
+			<view v-if="goodsDetail.info.detail" id="goods-detail" class="goods-detail">
+				<text>宝贝详情</text>
+			</view>
+
+			<UParse v-if="goodsDetail.info.detail" :content="goodsInfoDetail"></UParse>
+
+			<!-- 详情 -->
+
 			<!-- 推荐 -->
 			<RecommendPane :data="recommendGoods"></RecommendPane>
 		</view>
@@ -72,12 +81,14 @@ import Evaluate from './cpns/Evaluate.vue'
 import RecommendPane from './cpns/RecommendPane'
 import RecommendCity from './cpns/RecommendCity.vue'
 import OpFooter from './cpns/OpFooter.vue'
+import uParse from '../../../components/u-parse/u-parse.vue'
+import { marked } from 'marked'
 import { getMoreGoodsApi, getMoreCityRecommendApi } from '../../../api/brand'
 import { getGoodsDetailApi } from '../../../api/goods'
 
 export default {
 	name: 'GoodsDetail',
-	components: { Evaluate, RecommendPane, RecommendCity, OpFooter },
+	components: { Evaluate, RecommendPane, RecommendCity, OpFooter, UParse: uParse },
 	data() {
 		return {
 			goodsId: null,
@@ -94,6 +105,15 @@ export default {
 
 		this.getGoodsDetail()
 	},
+
+	computed: {
+		goodsInfoDetail() {
+			return this.goodsDetail.info.detail
+				? marked(this.goodsDetail.info.detail)
+				: ''
+		}
+	},
+
 	methods: {
 		// 获取门店详情
 		async getGoodsDetail() {
@@ -278,5 +298,46 @@ export default {
     }
   }
 
+}
+
+.goods-detail {
+	position: relative;
+	width: 100%;
+	height: 65upx;
+	background-color: #f1f2f6;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	text {
+		position: relative;
+		z-index: 2;
+		background-color: #f1f2f6;
+		padding: 0 4px;
+	}
+
+	&::after {
+		content: "";
+		position: absolute;
+		width: 400upx;
+		height: 1upx;
+		background-color: #d8d8d8;
+		top: 50%;
+		z-index: 1;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+
+.recommd-container {
+	.goods-detail {
+		text {
+			color: #e95d20;
+		}
+
+		&::after {
+			background-color: #e95d20;
+		}
+	}
 }
 </style>

@@ -11,16 +11,16 @@
 			<view class="brand-name hidden">{{ brandInfo.name }}</view>
 			<view class="rate">
 				<BeeIcon :size="12" :src="require('./images/star.png')"></BeeIcon>
-				<text class="rate-text">4.5分</text>
+				<text class="rate-text">{{ brandInfo.merchantRating || '5.0' }}分</text>
 				<text class="sub-text">{{ brandInfo.brandLabel | formatTag }}</text>
-				<text class="rate-text">￥50/人</text>
-				<text>月售462</text>
+				<text class="rate-text">￥{{ brandInfo.perCapita || '0' }}/人</text>
+				<text>月售 {{ brandInfo.salesVolume || '0' }}</text>
 			</view>
 			<BeeNavigation>
 				<view class="location-wrapper">
 					<BeeIcon :src="require('./images/location.png')" :size="14"></BeeIcon>
 					<view class="detail">
-						<text class="dis-container"> {{ brandInfo.distance / 1000 || 0 }}/km </text>
+						<text class="dis-container"> {{ Math.ceil(brandInfo.distance) || 0 }} m </text>
 						<BeeIcon :src="require('./images/to.png')" :size="14"></BeeIcon>
 					</view>
 				</view>
@@ -28,10 +28,7 @@
 			<view class="elva">
 				<BeeAvatar :size="15"></BeeAvatar>
 				<view class="elva-text hidden">
-					Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolorum
-					facere ex fuga exercitationem, magni officia quo nostrum, pariatur
-					minus corporis laborum! Molestias quo dicta ad quis harum veniam, et
-					ratione!
+					{{ brandInfo.desc || '--' }}
 				</view>
 			</view>
 
