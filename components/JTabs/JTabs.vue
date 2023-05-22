@@ -1,106 +1,102 @@
 <template>
-  <view class="j-tabs-container" ref="tabsContainerRef">
-    <scroll-view style="position: relative" scroll-x="true">
-      <view class="scroll-wrapper-container">
-        <view
-          class="item"
-          :class="{
-            'item-active': activeIndex === index,
-          }"
-          v-for="(item, index) in tabs"
-          :key="item.name"
-          @click="handleCurrentChange(index)"
-        >
-          {{ item.name }}
-        </view>
-      </view>
-    </scroll-view>
-    <!-- <view v-if="!noScrollBar" ref="scrollBarRef" class="scroll-bar"></view> -->
-  </view>
+	<view ref="tabsContainerRef" class="j-tabs-container">
+		<scroll-view style="position: relative" scroll-x="true">
+			<view class="scroll-wrapper-container">
+				<view
+					v-for="(item, index) in tabs"
+					:key="item.name"
+					class="item"
+					:class="{
+						'item-active': activeIndex === index
+					}"
+					@click="handleCurrentChange(index)"
+				>
+					{{ item.name }}
+				</view>
+			</view>
+		</scroll-view>
+		<!-- <view v-if="!noScrollBar" ref="scrollBarRef" class="scroll-bar"></view> -->
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    tabs: {
-      type: Array,
-      required: true,
-    },
+	props: {
+		tabs: {
+			type: Array,
+			required: true
+		},
 
-    activeIndex: {
-      type: Number,
-      default: 0,
-    },
+		activeIndex: {
+			type: Number,
+			default: 0
+		},
 
-    noScrollBar: {
-      type: Boolean,
-      default: false,
-    },
-  },
+		noScrollBar: {
+			type: Boolean,
+			default: false
+		}
+	},
 
-  watch: {
-    tabs: {
-      handler() {
-        this.$forceUpdate();
-      },
+	computed: {
+		styles() {
+			if (this.noScrollBar) {
+				return {
+					paddingBottom: '10upx',
+					borderBottom: '4upx solid transparent'
+				}
+			}
+		}
+	},
 
-      immediate: true,
-    },
-  },
+	watch: {
+		tabs: {
+			handler() {
+				this.$forceUpdate()
+			},
 
-  // watch: {
-  //   activeIndex() {
-  //     this.$nextTick(() => {
-  //       this.setScrollBar();
-  //     });
-  //   },
-  // },
+			immediate: true
+		}
+	},
 
-  mounted() {
-    // this.$nextTick(() => {
-    //   this.setScrollBar();
-    // });
-  },
+	// watch: {
+	//   activeIndex() {
+	//     this.$nextTick(() => {
+	//       this.setScrollBar();
+	//     });
+	//   },
+	// },
 
-  methods: {
-    setScrollBar() {
-      if (this.noScrollBar) {
-        return;
-      }
+	mounted() {
+		// this.$nextTick(() => {
+		//   this.setScrollBar();
+		// });
+	},
 
-      // scrollBarRef
-      const currentEl = document.querySelector(".item-active");
-      const baseLeft = document
-        .querySelector(".j-tabs-container")
-        .getBoundingClientRect().left;
+	methods: {
+		setScrollBar() {
+			if (this.noScrollBar) {
+				return
+			}
 
-      if (currentEl) {
-        const locale = currentEl.getBoundingClientRect();
-        this.$refs.scrollBarRef.$el.style.left = locale.left - baseLeft + "px";
-        this.$refs.scrollBarRef.$el.style.width = locale.width + "px";
-      }
+			// scrollBarRef
+			const currentEl = document.querySelector('.item-active')
+			const baseLeft = document
+				.querySelector('.j-tabs-container')
+				.getBoundingClientRect().left
 
-      setTimeout(() => {
-        console.log("你妈的", currentEl);
-      }, 500);
-    },
+			if (currentEl) {
+				const locale = currentEl.getBoundingClientRect()
+				this.$refs.scrollBarRef.$el.style.left = locale.left - baseLeft + 'px'
+				this.$refs.scrollBarRef.$el.style.width = locale.width + 'px'
+			}
+		},
 
-    handleCurrentChange(index) {
-      this.$emit("change", index);
-    },
-  },
-
-  computed: {
-    styles() {
-      if (this.noScrollBar) {
-        return {
-          paddingBottom: "10upx",
-          borderBottom: "4upx solid transparent",
-        };
-      }
-    },
-  },
-};
+		handleCurrentChange(index) {
+			this.$emit('change', index)
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>

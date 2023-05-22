@@ -30,7 +30,7 @@ import { getVoucherConfigApi, rechargePrePayApi } from "../../../api/user";
 import { payOrderGoodsApi } from "../../../api/goods";
 import { getUserId } from "../../../utils";
 import { payFn } from "../../../utils/pay";
-import { PAY_TYPE } from "../../../constant";
+import { J_PAY_TYPE } from "../../../constant";
 
 export default {
   onLoad(options) {
@@ -71,7 +71,7 @@ export default {
           userId: getUserId(),
           payType: 2,
         }).then((res) => {
-          payFn(res, PAY_TYPE.VOUCHER.value, data.payOrderID);
+          payFn(res, J_PAY_TYPE.VOUCHER.value, data.payOrderID);
         });
       });
 

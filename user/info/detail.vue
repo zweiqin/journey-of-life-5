@@ -1,384 +1,411 @@
 <template>
-  <view class="info-detail-container">
-    <view class="op">
-      <img src="../../static/images/store/chevron-states.png" alt="" @click="handleBack" class="back" />
-      <view class="title">个人信息</view>
-    </view>
+	<view class="info-detail-container">
+		<view class="op">
+			<img src="../../static/images/store/chevron-states.png" alt="" class="back" @click="handleBack" />
+			<view class="title">个人信息</view>
+		</view>
 
-    <view class="avatar-container">
-      <img :src="userInfo.avatarUrl.includes('http')
-          ? userInfo.avatarUrl
-          : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' +
-          userInfo.avatarUrl
-        " alt="" class="avatar" />
-      <view class="change-btn font-14" @click="handleChangeAvatar">更换头像</view>
-    </view>
+		<view class="avatar-container">
+			<img
+				:src="userInfo.avatarUrl.includes('http')
+					? userInfo.avatarUrl
+					: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' +
+						userInfo.avatarUrl
+				" alt="" class="avatar"
+			/>
+			<view class="change-btn font-14" @click="handleChangeAvatar">更换头像</view>
+		</view>
 
-    <view class="detail-container">
-      <view class="item" @click="showEditDialog">
-        <view class="title font-14 f-c-3d">昵称</view>
-        <view class="value font-14 f-c-3d">{{ userInfo.nickName }}</view>
-        <img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
-      </view>
+		<view class="detail-container">
+			<view class="item" @click="showEditDialog">
+				<view class="title font-14 f-c-3d">昵称</view>
+				<view class="value font-14 f-c-3d">{{ userInfo.nickName }}</view>
+				<img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
+			</view>
 
-      <view class="item">
-        <view class="title font-14 f-c-3d">用户ID</view>
-        <view class="value font-14 f-c-3d">{{ userInfo.userId }}</view>
-        <img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
-      </view>
+			<view class="item">
+				<view class="title font-14 f-c-3d">用户ID</view>
+				<view class="value font-14 f-c-3d">{{ userInfo.userId }}</view>
+				<img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
+			</view>
 
-      <view class="item">
-        <view class="title font-14 f-c-3d">账号密码</view>
-        <view class="value font-14 f-c-3d">**********</view>
-        <img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
-      </view>
+			<view class="item">
+				<view class="title font-14 f-c-3d">账号密码</view>
+				<view class="value font-14 f-c-3d">**********</view>
+				<img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
+			</view>
 
-      <view class="item" @click="hanldeBindPhone">
-        <view class="title font-14 f-c-3d">手机号</view>
-        <view class="value font-14 f-c-3d">{{ userInfo.phone || '未绑定' }}</view>
-        <img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
-      </view>
+			<view class="item" @click="hanldeBindPhone">
+				<view class="title font-14 f-c-3d">手机号</view>
+				<view class="value font-14 f-c-3d">{{ userInfo.phone || '未绑定' }}</view>
+				<img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
+			</view>
 
-      <view class="item">
-        <view class="title font-14 f-c-3d">微信账号</view>
-        <!-- <view class="unbound font-14 f-c-9" @click="handleUnboundWX">解绑</view> -->
-        <view class="unbound font-14 f-c-9">未绑定</view>
-      </view>
+			<view class="item">
+				<view class="title font-14 f-c-3d">微信账号</view>
+				<!-- <view class="unbound font-14 f-c-9" @click="handleUnboundWX">解绑</view> -->
+				<view class="unbound font-14 f-c-9">未绑定</view>
+			</view>
 
-      <!-- <view class="item">
-        <view class="title font-14 f-c-3d">解绑账号</view>
-        <img
-          src="../../static/images/common/chevron-states.png"
-          class="icon"
-          alt=""
-        />
-      </view> -->
-    </view>
+			<!-- <view class="item">
+				<view class="title font-14 f-c-3d">解绑账号</view>
+				<img
+				src="../../static/images/common/chevron-states.png"
+				class="icon"
+				alt=""
+				/>
+				</view> -->
+		</view>
 
-    <view class="logout">
-      <button class="font-12 btn" @click="handleClickLogout">
-        退出当前帐号
-      </button>
-    </view>
+		<view class="logout">
+			<button class="font-12 btn" @click="handleClickLogout">
+				退出当前帐号
+			</button>
+		</view>
 
-    <view class="picker" v-show="showLogout">
-      <view class="mask" @click="showLogout = false"></view>
-      <view class="items font-14 f-c-14">
-        <!-- <view class="item">更换账号</view> -->
-        <view class="item" @click="handleLagout">确定退出</view>
-        <view class="item">取消</view>
-      </view>
-    </view>
+		<view v-show="showLogout" class="picker">
+			<view class="mask" @click="showLogout = false"></view>
+			<view class="items font-14 f-c-14">
+				<!-- <view class="item">更换账号</view> -->
+				<view class="item" @click="handleLagout">确定退出</view>
+				<view class="item">取消</view>
+			</view>
+		</view>
 
-    <uni-popup ref="inputDialog" type="dialog">
-      <uni-popup-dialog ref="inputClose" mode="base" type="info" title="解绑微信"
-        @confirm="handleUnboundWXConfirm">确定解除与微信账号的绑定吗？</uni-popup-dialog>
-    </uni-popup>
+		<uni-popup ref="inputDialog" type="dialog">
+			<uni-popup-dialog ref="inputClose" mode="base" type="info" title="解绑微信" @confirm="handleUnboundWXConfirm">
+				确定解除与微信账号的绑定吗？
+			</uni-popup-dialog>
+		</uni-popup>
 
-    <uni-popup ref="editNicknameDialogRef" type="dialog">
-      <uni-popup-dialog ref="inputClose" mode="base" type="info" title="修改昵称" @confirm="handleConfirmEditNickname">
-        <view class="edit-input">
-          <view class="input-wrapper">
-            <view class="title">（修改昵称）</view>
-            <input v-model="nickname" type="text" />
-          </view>
-          <view class="error">请输入昵称</view>
-        </view>
-      </uni-popup-dialog>
-    </uni-popup>
+		<uni-popup ref="editNicknameDialogRef" type="dialog">
+			<uni-popup-dialog ref="inputClose" mode="base" type="info" title="修改昵称" @confirm="handleConfirmEditNickname">
+				<view class="edit-input">
+					<view class="input-wrapper">
+						<view class="title">（修改昵称）</view>
+						<input v-model="nickname" type="text" />
+					</view>
+					<view class="error">请输入昵称</view>
+				</view>
+			</uni-popup-dialog>
+		</uni-popup>
 
-    <!-- <JUploadAvatar
-      @close="handleCloseUpload"
-      ref="jUploadAvatarRef"
-      @success="handleUpDateAvatar"
-    ></JUploadAvatar> -->
-  </view>
+		<!-- <JUploadAvatar
+			@close="handleCloseUpload"
+			ref="jUploadAvatarRef"
+			@success="handleUpDateAvatar"
+			></JUploadAvatar> -->
+	</view>
 </template>
 
 <script>
-import { layoutApi } from '../../api/auth'
 import { updateUserInfoApi, refrshUserInfoApi } from '../../api/user'
 import { getUserId } from '../../utils'
 import { J_USER_INFO } from '../../constant'
 
 export default {
-  data() {
-    return {
-      showLogout: false,
-      nickname: '',
-      userInfo: {},
-    }
-  },
+	name: 'Detail',
+	data() {
+		return {
+			showLogout: false,
+			nickname: '',
+			userInfo: {}
+		}
+	},
 
-  mounted() {
-    this.userInfo = uni.getStorageSync(J_USER_INFO)
-    this.nickName = this.userInfo.nickName
-  },
-  methods: {
-    handleClickLogout() {
-      this.showLogout = true
-    },
+	mounted() {
+		this.userInfo = uni.getStorageSync(J_USER_INFO)
+		this.nickName = this.userInfo.nickName
+	},
+	methods: {
+		handleClickLogout() {
+			this.showLogout = true
+		},
 
-    handleBack() {
-      uni.switchTab({
-        url: '/pages/user/user',
-      })
-    },
+		handleBack() {
+			uni.switchTab({
+				url: '/pages/user/user'
+			})
+		},
 
-    /**
-     * @description 点击解绑微信
-     */
-    handleUnboundWX() {
-      this.$refs.inputDialog.open()
-    },
+		/**
+		 * @description 点击解绑微信
+		 */
 
-    /**
-     * @description 点击修改昵称
-     */
-    showEditDialog() {
-      this.$refs.editNicknameDialogRef.open()
-    },
+		handleUnboundWX() {
+			this.$refs.inputDialog.open()
+		},
 
-    /**
-     * @description 确认解绑微信号
-     */
-    handleUnboundWXConfirm() {
-      console.log('解绑')
-    },
+		/**
+		 * @description 点击修改昵称
+		 */
 
-    /**
-     * @description 点击确定修改昵称
-     */
-    handleConfirmEditNickname() {
-      this.updateUserInfo('nickname', this.nickname)
-    },
+		showEditDialog() {
+			this.$refs.editNicknameDialogRef.open()
+		},
 
-    /**
-     * 点击退出
-     */
-    async handleLagout() {
-      // await layoutApi(getUserId());
-      uni.clearStorageSync()
-      uni.showToast({
-        title: '退出成功',
-        duration: 2000,
-      })
+		/**
+		 * @description 确认解绑微信号
+		 */
 
-      setTimeout(() => {
-        uni.redirectTo({
-          url: '/pages/login/login',
-        })
-      }, 2000)
-    },
+		handleUnboundWXConfirm() {
+			console.log('解绑')
+		},
 
-    // 点击更换头像
-    handleChangeAvatar() {
-      // this.$refs.jUploadAvatarRef.$el.style.left = '0'
+		/**
+		 * @description 点击确定修改昵称
+		 */
 
-      const _this = this
-      uni.chooseImage({
-        count: 1,
-        success: res => {
-          uni.navigateTo({
-            url: '/user/info/cropper?imgUrl=' + res.tempFilePaths[0],
-          })
-        },
-        fail: () => {
-          _this.ttoast('图片上传失败')
-        },
-      })
-    },
+		handleConfirmEditNickname() {
+			this.updateUserInfo('nickname', this.nickname)
+		},
 
-    // 点击关闭
-    handleCloseUpload() {
-      this.$refs.jUploadAvatarRef.$el.style.left = '-100%'
-    },
+		/**
+		 * 点击退出
+		 */
 
-    // 更换头像
-    handleUpDateAvatar(res) {
-      const url = JSON.parse(res.data).data.url
-      this.updateUserInfo('avatar', url)
-    },
+		handleLagout() {
+			// uni.clearStorageSync()
+			uni.removeStorage({ key: 'J_USER_INFO' })
+			uni.removeStorage({ key: 'J_USER_TOKEN' })
+			uni.removeStorage({ key: 'J_TOKEN_EXPIRE' })
+			uni.removeStorage({ key: 'J_USER_ID' })
+			uni.removeStorage({ key: 'J_BRAND_ID' })
+			uni.removeStorage({ key: 'J_ARTICLE_SEARCH_HISTORY' })
+			uni.removeStorage({ key: 'J_GOODS_SEARCH_HISTORY' })
+			uni.removeStorage({ key: 'J_STORE_SEARCH_HISTORY' })
+			uni.removeStorage({ key: 'J_ONE_PAY_GOODS' })
+			uni.removeStorage({ key: 'J_SELECT_ADDRESS' })
+			uni.removeStorage({ key: 'J_TWO_PAY_GOODS' })
+			uni.removeStorage({ key: 'J_APPONIT_GOODS' })
+			uni.removeStorage({ key: 'J_LOACTION' })
+			uni.removeStorage({ key: 'J_NEW_BIND_TYPE' })
+			uni.removeStorage({ key: 'J_NEW_BIND_CODE' })
+			uni.removeStorage({ key: 'J_NEW_BIND_ID' })
+			uni.removeStorage({ key: 'J_SELECT_WORDS' })
+			uni.removeStorage({ key: 'J_PAY_ORDER' })
+			uni.removeStorage({ key: 'J_PAY_TYPE' })
+			uni.removeStorage({ key: 'J_CURRENT_LOCATION' })
+			uni.showToast({
+				title: '退出成功',
+				duration: 2000
+			})
 
-    // 更新用户信息
-    updateUserInfo(key, value) {
-      uni.showLoading()
-      const _this = this
-      const originData = {
-        nickname: this.userInfo.nickName,
-        avatar: this.userInfo.avatarUrl,
-        password: this.userInfo.password,
-        id: getUserId(),
-      }
+			setTimeout(() => {
+				uni.redirectTo({
+					url: '/pages/login/login'
+				})
+			}, 2000)
+		},
 
-      originData[key] = value
+		// 点击更换头像
+		handleChangeAvatar() {
+			// this.$refs.jUploadAvatarRef.$el.style.left = '0'
 
-      updateUserInfoApi(originData).then(() => {
-        refrshUserInfoApi({
-          userId: getUserId(),
-          openId: ' '
-        }).then(({ data }) => {
-          uni.hideLoading()
-          _this.handleCloseUpload()
-          _this.$showToast('修改成功', 'success')
-          uni.setStorageSync(J_USER_INFO, data)
-          _this.userInfo = uni.getStorageSync(J_USER_INFO)
-        })
-      })
-    },
+			const _this = this
+			uni.chooseImage({
+				count: 1,
+				success: (res) => {
+					uni.navigateTo({
+						url: '/user/info/cropper?imgUrl=' + res.tempFilePaths[0]
+					})
+				},
+				fail: () => {
+					_this.ttoast('图片上传失败')
+				}
+			})
+		},
 
-    // 绑定手机号
-    hanldeBindPhone() {
-      const userInfo = uni.getStorageSync(J_USER_INFO)
-      if (userInfo.openId && !userInfo.phone) {
-        uni.navigateTo({
-          url: '/pages/login/bind-phone?openId=' + userInfo.openId
-        })
-      } else {
-        this.ttoast({
-          type: 'info',
-          title: '您已绑定'
-        })
-      }
-    }
-  },
+		// 点击关闭
+		handleCloseUpload() {
+			this.$refs.jUploadAvatarRef.$el.style.left = '-100%'
+		},
+
+		// 更换头像
+		handleUpDateAvatar(res) {
+			const url = JSON.parse(res.data).data.url
+			this.updateUserInfo('avatar', url)
+		},
+
+		// 更新用户信息
+		updateUserInfo(key, value) {
+			uni.showLoading()
+			const _this = this
+			const originData = {
+				nickname: this.userInfo.nickName,
+				avatar: this.userInfo.avatarUrl,
+				password: this.userInfo.password,
+				id: getUserId()
+			}
+
+			originData[key] = value
+
+			updateUserInfoApi(originData).then(() => {
+				refrshUserInfoApi({
+					userId: getUserId(),
+					openId: ' '
+				}).then(({ data }) => {
+					uni.hideLoading()
+					_this.handleCloseUpload()
+					_this.$showToast('修改成功', 'success')
+					uni.setStorageSync(J_USER_INFO, data)
+					_this.userInfo = uni.getStorageSync(J_USER_INFO)
+				})
+			})
+		},
+
+		// 绑定手机号
+		hanldeBindPhone() {
+			const userInfo = uni.getStorageSync(J_USER_INFO)
+			if (userInfo.openId && !userInfo.phone) {
+				uni.navigateTo({
+					url: '/pages/login/bind-phone?openId=' + userInfo.openId
+				})
+			} else {
+				this.ttoast({
+					type: 'info',
+					title: '您已绑定'
+				})
+			}
+		}
+	}
 }
 </script>
 
 <style lang="less" scoped>
 .info-detail-container {
-  padding: 72upx 32upx;
-  box-sizing: border-box;
-  overflow: hidden;
+	padding: 72upx 32upx;
+	box-sizing: border-box;
+	overflow: hidden;
 
-  .op {
-    display: flex;
-    align-items: center;
-    font-size: 32upx;
-    color: #000;
+	.op {
+		display: flex;
+		align-items: center;
+		font-size: 32upx;
+		color: #000;
 
-    .back {
-      width: 48upx;
-      margin-right: 32upx;
-    }
-  }
+		.back {
+			width: 48upx;
+			margin-right: 32upx;
+		}
+	}
 
-  .avatar-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin: 30upx 0 60upx 0;
+	.avatar-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		margin: 30upx 0 60upx 0;
 
-    .avatar {
-      width: 188upx;
-      height: 188upx;
-      border-radius: 50%;
-      margin-bottom: 18upx;
-    }
+		.avatar {
+			width: 188upx;
+			height: 188upx;
+			border-radius: 50%;
+			margin-bottom: 18upx;
+		}
 
-    .change-btn {
-      color: #ff8f1f;
-    }
-  }
+		.change-btn {
+			color: #ff8f1f;
+		}
+	}
 
-  .detail-container {
-    padding: 8upx;
+	.detail-container {
+		padding: 8upx;
 
-    .item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 40upx 0 6upx 0;
-      border-bottom: 1upx solid #d8d8d8;
+		.item {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 40upx 0 6upx 0;
+			border-bottom: 1upx solid #d8d8d8;
 
-      .title {
-        flex: 2;
-        font-weight: bold;
-      }
+			.title {
+				flex: 2;
+				font-weight: bold;
+			}
 
-      .value {
-        flex: 4;
-      }
-    }
-  }
+			.value {
+				flex: 4;
+			}
+		}
+	}
 
-  .logout {
-    margin-top: 280upx;
+	.logout {
+		margin-top: 280upx;
 
-    .btn {
-      color: #ff8f1f;
-      border: none;
-      background: transparent;
+		.btn {
+			color: #ff8f1f;
+			border: none;
+			background: transparent;
 
-      &::after {
-        border: none;
-      }
-    }
-  }
+			&::after {
+				border: none;
+			}
+		}
+	}
 
-  .picker {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
+	.picker {
+		position: fixed;
+		width: 100vw;
+		height: 100vh;
+		top: 0;
+		left: 0;
 
-    .mask {
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(216, 216, 216, 0.5);
-    }
+		.mask {
+			width: 100vw;
+			height: 100vh;
+			background-color: rgba(216, 216, 216, 0.5);
+		}
 
-    .items {
-      width: 100%;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      background-color: #fff;
+		.items {
+			width: 100%;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			background-color: #fff;
 
-      .item {
-        text-align: center;
-        padding: 32upx 0;
-        overflow: hidden;
-        border-bottom: 1upx solid #d8d8d8;
-        color: #ff8f1f;
+			.item {
+				text-align: center;
+				padding: 32upx 0;
+				overflow: hidden;
+				border-bottom: 1upx solid #d8d8d8;
+				color: #ff8f1f;
 
-        &:last-child {
-          border: none;
-          color: #999;
-        }
-      }
-    }
-  }
+				&:last-child {
+					border: none;
+					color: #999;
+				}
+			}
+		}
+	}
 
-  .edit-input {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-direction: column;
-    width: 100%;
-    color: #3d3d3d;
-    font-size: 28upx;
-    margin: 14upx 0;
-    border-bottom: 1upx solid #d8d8d8;
+	.edit-input {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		flex-direction: column;
+		width: 100%;
+		color: #3d3d3d;
+		font-size: 28upx;
+		margin: 14upx 0;
+		border-bottom: 1upx solid #d8d8d8;
 
-    .input-wrapper {
-      display: flex;
-      align-items: center;
-    }
+		.input-wrapper {
+			display: flex;
+			align-items: center;
+		}
 
-    .title {
-      white-space: nowrap;
-    }
+		.title {
+			white-space: nowrap;
+		}
 
-    .error {
-      height: 0;
-      overflow: hidden;
-      margin-left: 10px;
-      color: #f40;
-      transition: all 350ms linear;
-    }
-  }
+		.error {
+			height: 0;
+			overflow: hidden;
+			margin-left: 10px;
+			color: #f40;
+			transition: all 350ms linear;
+		}
+	}
 }
 </style>

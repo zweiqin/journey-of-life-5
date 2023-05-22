@@ -232,8 +232,8 @@ uni-radio .uni-radio-input.uni-radio-input-checked::before {
 
 view,
 text {
-  line-height: 1.5;
-  font-size: 28upx;
+  /* line-height: 1.5; */
+  /* font-size: 28upx; */
 }
 
 .l-34 {

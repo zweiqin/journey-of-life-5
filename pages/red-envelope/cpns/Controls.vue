@@ -1,62 +1,63 @@
 <template>
-  <view class="control-container">
-    <!-- 城市格子 -->
-    <view
-      class="city-grid"
-      v-show="marks.length >= 6"
-      @click="cityGridVisible = true"
-    >
-      <BeeIcon
-        :src="require('../../../static/red/city-grid.png')"
-        :size="30"
-      ></BeeIcon>
+	<view class="control-container">
+		<!-- 城市格子 -->
+		<view
+			v-show="marks.length >= 6"
+			class="city-grid"
+			@click="cityGridVisible = true"
+		>
+			<BeeIcon
+				:src="require('../../../static/red/city-grid.png')"
+				:size="30"
+			></BeeIcon>
 
-      <text>城市格子</text>
-    </view>
+			<text>城市格子</text>
+		</view>
 
-    <transition>
-      <view class="red-envelope-container" v-show="cityGridVisible">
-        <tui-icon @click="cityGridVisible = false" name="shut" class="close-icon"></tui-icon>
-        <view class="wrapper">
-          <image
-            @click.stop="handleReceive(item)"
-            v-for="item in marks.slice(0, 9)"
-            :key="item.id"
-            class="item"
-            src="../../../static/red/red-envple-item.png"
-            mode=""
-          />
-        </view>
-      </view>
-    </transition>
-  </view>
+		<transition>
+			<view v-show="cityGridVisible" class="red-envelope-container">
+				<tui-icon name="shut" class="close-icon" @click="cityGridVisible = false"></tui-icon>
+				<view class="wrapper">
+					<image
+						v-for="item in marks.slice(0, 9)"
+						:key="item.id"
+						class="item"
+						src="../../../static/red/red-envple-item.png"
+						mode=""
+						@click.stop="handleReceive(item)"
+					/>
+				</view>
+			</view>
+		</transition>
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    marks: {
-      type: Array,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      cityGridVisible: false,
-      number: 20,
-    }
-  },
+	name: 'Controls',
+	props: {
+		marks: {
+			type: Array,
+			required: true
+		}
+	},
+	data() {
+		return {
+			cityGridVisible: true,
+			number: 20
+		}
+	},
 
-  methods: {
-    handleReceive(item) {
-      this.cityGridVisible = false
-      this.$emit('receive', {
-        detail: {
-          markerId: item.id,
-        },
-      })
-    },
-  },
+	methods: {
+		handleReceive(item) {
+			this.cityGridVisible = false
+			this.$emit('receive', {
+				detail: {
+					markerId: item.id
+				}
+			})
+		}
+	}
 }
 </script>
 
@@ -93,7 +94,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   .close-icon{
     position: fixed;
     top: 40upx;

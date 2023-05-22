@@ -1,17 +1,17 @@
 import {
-  CHANGE_CURRENT_LOCATION,
+  CHANGE_J_CURRENT_LOCATION,
   CHANGE_DEFAULT_LOCATION,
   CHANGE_CURRENT_LONGITUDE_AND_LATITUDE,
 } from "./types";
 import { getAdressDetailByLngLat } from "../../utils/location";
-import { CURRENT_LOCATION } from "../../constant";
+import { J_CURRENT_LOCATION } from "../../constant";
 
 export default {
   namespaced: true,
   state() {
     return {
       defaultLocation: "",
-      currentLocation: uni.getStorageSync(CURRENT_LOCATION) || "龙江镇",
+      currentLocation: uni.getStorageSync(J_CURRENT_LOCATION) || "龙江镇",
       lonAndLat: {
         longitude: 113.1219,
         latitude: 23.0218,
@@ -20,16 +20,16 @@ export default {
   },
 
   mutations: {
-    [CHANGE_CURRENT_LOCATION](state, currentLocation) {
+    [CHANGE_J_CURRENT_LOCATION](state, currentLocation) {
       state.currentLocation = currentLocation;
-      uni.setStorageSync(CURRENT_LOCATION, currentLocation);
+      uni.setStorageSync(J_CURRENT_LOCATION, currentLocation);
     },
 
     [CHANGE_DEFAULT_LOCATION](state, defaultLocation) {
       state.defaultLocation = defaultLocation;
 
       this.commit(
-        `location/${CHANGE_CURRENT_LOCATION}`,
+        `location/${CHANGE_J_CURRENT_LOCATION}`,
         defaultLocation.addressComponent.district
       );
     },
@@ -56,7 +56,7 @@ export default {
               }
             })
             .catch(() => {
-              commit(CHANGE_CURRENT_LOCATION, "定位失败");
+              commit(CHANGE_J_CURRENT_LOCATION, "定位失败");
             });
         },
       });
@@ -74,7 +74,7 @@ export default {
               }
             })
             .catch(() => {
-              commit(CHANGE_CURRENT_LOCATION, "定位失败");
+              commit(CHANGE_J_CURRENT_LOCATION, "定位失败");
             });
         },
       });

@@ -1,14 +1,17 @@
 <script>
 import { whoami } from './api/auth'
-import { J_USER_ID, J_USER_TOKEN, J_TOKEN_EXPIRE } from './constant'
+import { J_USER_ID, J_BRAND_ID, J_USER_INFO, J_USER_TOKEN, J_TOKEN_EXPIRE } from './constant'
+import { updateToken } from './utils'
 export default {
-	onShow: function () {
+	name: 'App',
+	// onShow() {
+	onLaunch() {
 		// 判断浏览器环境
-		var ua = navigator.userAgent.toLowerCase();
-		if (ua.search(/MicroMessenger/i) > -1 && !uni.getStorageSync("appType")) {
+		var ua = navigator.userAgent.toLowerCase()
+		if (ua.search(/MicroMessenger/i) > -1 && !uni.getStorageSync('appType')) {
 			// 微信环境
-			uni.setStorageSync("appType", 2);
-			http.mpAuthLogin();
+			uni.setStorageSync('appType', 2)
+			http.mpAuthLogin()
 		}
 
 		// #ifdef H5
@@ -16,27 +19,18 @@ export default {
 		if (!this.$store.state.location.currentLocation) {
 			this.$store.dispatch('location/getCurrentLocation')
 		}
-		// #endif 
+		// #endif
 
 		this.updateToken()
 	},
-	globalData: {},
+	globalData: { },
 	methods: {
 		// 更新token
-		async updateToken() {
-			const userId = uni.getStorageSync(J_USER_ID);
-			// debugger
-			if (userId) {
-				const { data } = await whoami(userId)
-
-				uni.setStorageSync(J_USER_TOKEN, data.token);
-				uni.setStorageSync(J_TOKEN_EXPIRE, data.expireTime)
-			}
-
-		}
-	},
-};
+		updateToken
+	}
+}
 </script>
+
 <style>
 @import "./app.css";
 

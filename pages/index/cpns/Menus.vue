@@ -1,31 +1,31 @@
 <template>
-  <view class="menus-container">
-    <view
-      class="menu-bar-item"
-      :style="{ width: 100 / column + '%' }"
-      v-for="item in data"
-      :key="item.name"
-      @click="go(item.url)"
-    >
-      <BeeIcon :src="item.icon" :size="40"></BeeIcon>
-      <text>{{ item.name }}</text>
-    </view>
-  </view>
+	<view class="menus-container">
+		<view
+			v-for="item in data"
+			:key="item.name"
+			class="menu-bar-item"
+			:style="{ width: 100 / column + '%' }"
+			@click="$emit('handleNavigate', item)"
+		>
+			<BeeIcon :src="item.icon" :size="40"></BeeIcon>
+			<text>{{ item.name }}</text>
+		</view>
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    data: {
-      type: Array,
-      required: true,
-    },
+	props: {
+		data: {
+			type: Array,
+			required: true
+		},
 
-    column: {
-      type: Number,
-      default: 4,
-    },
-  },
+		column: {
+			type: Number,
+			default: 4
+		}
+	}
 }
 </script>
 

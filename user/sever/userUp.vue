@@ -1,560 +1,205 @@
 <template>
-  <view class="up-vip-container">
-    <JHeader tabbar="/pages/user/user" :dark="false" title="会员升级"></JHeader>
+	<view class="up-vip-container">
+		<view style="padding: 30upx 20upx;color: #000000;background-color: #ff9900;">
+			<JHeader tabbar="/pages/user/user" title="会员升级"></JHeader>
+		</view>
+		<view class="head-wrapper">
+			<JAvatar :src="userInfo.avatarUrl" size="150" radius="50%" border="5upx solid #ffffff"></JAvatar>
+			<view style="margin-top: 10upx;">{{ userInfo.nickName || '--' }}</view>
+			<view style="margin-top: 10upx;">会员类别：{{ common.explainMembership(userInfo.roleIds) }}</view>
+		</view>
+		<view style="padding: 38upx;">
+			<view style="font-size: 32upx;font-weight: bold;">我的会员</view>
+			<view style="display: flex;align-items: center;margin-top: 20upx;font-size: 28upx;" @click="getPackageMemberList()">
+				<JAvatar
+					src="../../static/user-center/server/refresh-request.png" size="62" radius="50%"
+					border="5upx solid #ffffff"
+				></JAvatar>
+				<view style="margin-left: 20upx;">刷新会员申请</view>
+			</view>
+		</view>
+		<view style="padding: 0 38upx 140upx;">
+			<view style="font-size: 32upx;font-weight: bold;">会员升级</view>
+			<view style="display: flex;justify-content: space-between;flex-wrap: wrap;margin-top: 40upx;">
+				<view
+					v-for="item in packageMemberList" :key="item.id"
+					style="position: relative;display: flex;flex-direction: column;justify-content: center;align-items: center;width: 30%;padding: 30upx 8upx;background-color: #fdf8e2;"
+					:style="{ 'border': selectedPackageId === item.id ? '5upx solid #FF9900' : '' }"
+					@click="selectedPackageId = item.id"
+				>
+					<JAvatar
+						src="../../static/user-center/server/member-upgrade.png" size="102" radius="50%"
+						border="5upx solid #ffffff"
+					></JAvatar>
+					<view style="margin-top: 4upx;font-size: 26upx;font-weight: bold;color: #424890;">{{ item.title }}</view>
+					<view style="margin-top: 18upx;font-weight: bold;color: #FF9900;">
+						<text style="font-size: 26upx;">￥</text><text
+							style="font-size: 48upx;"
+						>
+							{{ item.amount }}
+						</text>
+					</view>
+					<view v-if="item.id === selectedPackageId" style="position: absolute;right: 0;bottom: 0;padding: 5upx;border-radius: 100% 0 0;background-color: #ff9900;">
+						<tui-icon name="check" color="#FFFFFF" size="38" unit="upx"></tui-icon>
+					</view>
+				</view>
+			</view>
+			<view style="margin-top: 40upx;font-size: 32upx;font-weight: bold;">升级权益</view>
+			<view style="padding: 20upx;margin-top: 28upx;background-color: #f6f6f6;">
+				<view>会员升级权益</view>
+				<view v-if="selectedPackageId" style="margin-top: 32upx;overflow-x: auto;">
+					<view style="display: flex;">
+						<view v-for="item in (packageMemberList.find(i => i.id === selectedPackageId) || {}).packageServices || []" :key="item.id" style="margin-right: 32upx;text-align: center;">
+							<JAvatar :src="common.seamingImgUrl(item.iconUrl)" size="58"></JAvatar>
+							<view style="white-space: nowrap;">{{ item.title }}</view>
+						</view>
+					</view>
+				</view>
+				<view v-else style="margin-top: 32upx;font-size: 26upx;">请选择会员套餐！</view>
+			</view>
+		</view>
 
-    <view class="item" v-for="item in vips" :key="item.label">
-      <view class="title">{{ item.label }}</view>
-      <view class="vip-pane">
-        <image
-          class="vip-icon"
-          src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/vlwhqwdgxqsb96z63itf.png"
-          mode=""
-        />
-      </view>
-
-      <view class="sub-title">{{ item.label }}权益</view>
-
-      <image :style="item.style" :src="item.powerUrl" mode="" />
-
-      <button class="apply-btn" @click="handleToUp(item)">
-        <text>￥</text>
-        <text class="vip-price">{{ item.price }}</text>
-        <text class="text">{{ item.label }}</text>
-      </button>
-
-      <view class="tip"> 放心开通，不会自动续费 </view>
-
-      <!-- <view class="apply-status" v-if="item.type === 4 && vipInfo">
-        <button class="uni-btn" @click="handleToViewApplyTable(item.type)">
-          申请表
-        </button> -->
-      <!-- <view class="status">{{ mapApplyStats(storeInfo.status) }}</view> -->
-      <!-- <button
-          v-if="[item.key].status === 0"
-          class="uni-btn"
-          @click="handleWhhithDrawApply(item.type)"
-        >
-          撤销申请
-        </button>
-      </view> -->
-
-      <view class="apply-status" v-if="item.type === 1 && storeInfo">
-        <button class="uni-btn" @click="handleToViewApplyTable(item.type)">
-          申请表
-        </button>
-        <!-- <view class="status">{{ mapApplyStats(storeInfo.status) }}</view> -->
-        <button
-          v-if="storeInfo.userUpgradeInfo.status === 0"
-          class="uni-btn"
-          @click="handleWhhithDrawApply(item.type)"
-        >
-          撤销申请
-        </button>
-
-        <button
-          class="uni-btn"
-          style="background: #52aa44"
-          @click="handlePay(1, 'pay')"
-          v-if="
-            storeInfo.userUpgradeInfo.status === 2 ||
-            storeInfo.userUpgradeInfo.status === 3
-          "
-        >
-          支付
-        </button>
-
-        <button
-          @click="handlePay(1, 'try')"
-          style="background: #2bcddd"
-          class="uni-btn"
-          v-if="
-            storeInfo.userUpgradeInfo.status === 2 ||
-            storeInfo.userUpgradeInfo.status === 3
-          "
-        >
-          试用
-        </button>
-      </view>
-
-      <view class="apply-status" v-if="item.type === 2 && marketingPlannerInfo">
-        <button class="uni-btn" @click="handleToViewApplyTable(item.type)">
-          申请表
-        </button>
-        <!-- <view class="status">{{ mapApplyStats(storeInfo.status) }}</view> -->
-        <button
-          v-if="marketingPlannerInfo.userUpgradeInfo.status === 0"
-          class="uni-btn"
-          @click="handleWhhithDrawApply(item.type)"
-        >
-          撤销申请
-        </button>
-
-        <button
-          class="uni-btn"
-          style="background: #52aa44"
-          @click="handlePay(2, 'pay')"
-          v-if="
-            marketingPlannerInfo.userUpgradeInfo.status === 2 ||
-            marketingPlannerInfo.userUpgradeInfo.status === 3
-          "
-        >
-          支付
-        </button>
-
-        <button
-          @click="handlePay(2, 'try')"
-          style="background: #2bcddd"
-          class="uni-btn"
-          v-if="
-            marketingPlannerInfo.userUpgradeInfo.status === 2 ||
-            marketingPlannerInfo.userUpgradeInfo.status === 3
-          "
-        >
-          试用
-        </button>
-      </view>
-    </view>
-
-    <view class="op">
-      <button
-        class="btn"
-        @click="go('/user/marketing-tools/apply-vip-history')"
-      >
-        申请记录
-      </button>
-      <button class="btn" @click="getApplyHistory">刷新会员信息</button>
-    </view>
-  </view>
+		<view style="position: fixed;bottom: 0;width: 100vw;padding: 30upx;background-color: #ffffff;;box-sizing: border-box;">
+			<tui-button type="warning" width="100%" height="80upx" @click="handleMemberUpgrade">
+				<text v-if="selectedPackageId" style="padding-right: 16upx;">
+					<text style="font-size: 26upx;">￥</text><text
+						style="font-size: 42upx;font-weight: bold;"
+					>
+						{{ (packageMemberList.find(i => i.id === selectedPackageId) || {}).amount }}
+					</text>
+				</text>
+				<text style="font-size: 28upx;">立即开通</text>
+			</tui-button>
+		</view>
+	</view>
 </template>
 
 <script>
 import {
-  getApplyTableApi,
-  widthDrawApi,
-  payStoreAndYingApi,
-  payTryStoreAndYingApi,
-  houxucaozuoApi,
-  applyVipApi,
-  payVipApplySuccessApi,
-} from "../../api/user";
-import { getUserId } from "../../utils";
-import { mapApplyStats, vips } from "./config";
+	getPackageMemberListApi,
+	upgradeOrderAddOrderApi
+} from '../../api/user'
+import { getUserId, updateToken } from '../../utils'
 import {
-  J_STORE_INFO,
-  J_USER_TOKEN,
-  J_MARKETING_PLANNER,
-  J_USER_INFO,
-  J_REFRSH,
-  PAY_TYPE,
-} from "../../constant";
-import { payOrderGoodsApi } from "../../api/goods";
-import { payFn } from "../../utils/pay";
+	J_USER_INFO,
+	J_PAY_TYPE
+} from '../../constant'
+import { payOrderGoodsApi } from '../../api/goods'
+import { payFn } from '../../utils/pay'
 
 export default {
-  data() {
-    return {
-      vips,
-      storeInfo: null,
-      vipInfo: null,
-      marketingPlannerInfo: null,
-      isReLoad: true,
-    };
-  },
+	name: 'UserUp',
+	data() {
+		return {
+			userInfo: uni.getStorageSync(J_USER_INFO) || {},
+			packageMemberList: [],
+			selectedPackageId: ''
+		}
+	},
 
-  onShow() {
-    this.getApplyHistory();
-  },
+	onShow() {
+		this.getPackageMemberList()
+		updateToken()
+	},
 
-  methods: {
-    getApplyHistory() {
-      const _this = this;
-      uni.showLoading({
-        title: "加载中",
-      });
+	methods: {
+		getPackageMemberList() {
+			uni.showLoading({
+				title: '加载中'
+			})
+			getPackageMemberListApi().then((res) => {
+				console.log(res)
+				this.packageMemberList = res.data
+				this.userInfo = uni.getStorageSync(J_USER_INFO) || {},
+				uni.hideLoading()
+			})
+				.catch((e) => {
+					uni.hideLoading()
+				})
+		},
 
-      getApplyTableApi({
-        userId: getUserId(),
-      }).then((res) => {
-        this.vipInfo =
-          res.data.items.find((item) => item.newGrade === 4) || null;
-        this.storeInfo =
-          res.data.items.find((item) => item.newGrade === 1) || null;
-        this.marketingPlannerInfo =
-          res.data.items.find((item) => item.newGrade === 2) || null;
-        if (
-          this.vipInfo &&
-          this.vipInfo.upgradeOrder &&
-          this.vipInfo.upgradeOrder.payStatus === 2
-        ) {
-          const info = uni.getStorageSync(J_USER_INFO);
-          if (info.userLevel == 4) {
-            uni.hideLoading();
-            return;
-          }
-          payVipApplySuccessApi({
-            userId: getUserId(),
-            mobile: info.phone,
-          }).then(() => {
-            this.$showToast("升级vip成功", "success");
-          });
-        }
+		handleToViewApplyTable(type) {
+			if (type === 1) {
+				this.go('/user/marketing-tools/store-application')
+			} else {
+				this.go('/user/marketing-tools/marketing-planner')
+			}
+		},
 
-        if (this.storeInfo && this.storeInfo.status !== 1) {
-          if (this.isReLoad) {
-            if (
-              this.storeInfo.upgradeOrder &&
-              this.storeInfo.upgradeOrder.payStatus === 2
-            ) {
-              houxucaozuoApi({
-                userId: getUserId(),
-                id: this.storeInfo.ticketsId,
-              })
-                .then((res) => {
-                  uni.setStorageSync(J_REFRSH, "refrush");
-                  _this.$showToast("商家升级成功", "success");
-                  _this.getApplyHistory();
-                  this.isReLoad = false;
-                })
-                .catch((err) => {});
-            }
-          }
-        }
-
-        if (
-          this.marketingPlannerInfo &&
-          this.marketingPlannerInfo.status !== 1
-        ) {
-          if (this.isReLoad) {
-            if (
-              this.marketingPlannerInfo.upgradeOrder &&
-              this.marketingPlannerInfo.upgradeOrder.payStatus === 2
-            ) {
-              houxucaozuoApi({
-                userId: getUserId(),
-                id: this.marketingPlannerInfo.ticketsId,
-              })
-                .then((res) => {
-                  uni.setStorageSync(J_REFRSH, "refrush");
-                  _this.$showToast("营销策划师升级成功", "success");
-                  _this.getApplyHistory();
-                  this.isReLoad = false;
-                })
-                .catch((err) => {});
-            }
-          }
-        }
-
-        // if (this.storeInfo) {
-        //   houxucaozuoApi({
-        //     userId: getUserId(),
-        //     id: this.storeInfo.ticketsId,
-        //   }).then(res => {
-        //     console.log(res);
-        //   }).catch(err => {
-
-        //   })
-        // }
-
-        if (this.storeInfo) {
-          uni.setStorageSync(J_STORE_INFO, {
-            info: this.storeInfo.userUpgradeInfo,
-            status: this.storeInfo.userUpgradeInfo.status,
-            ticketsId: this.storeInfo.ticketsId,
-          });
-        }
-
-        if (this.marketingPlannerInfo) {
-          uni.setStorageSync(J_MARKETING_PLANNER, {
-            info: this.marketingPlannerInfo.userUpgradeInfo,
-            status: this.marketingPlannerInfo.userUpgradeInfo.status,
-            ticketsId: this.marketingPlannerInfo.ticketsId,
-          });
-        }
-        uni.hideLoading();
-      });
-    },
-
-    handleToUp(item) {
-      // if (item.type === 4) {
-      //   const userInfo = uni.getStorageSync(J_USER_INFO);
-      //   if (userInfo.userLevel >= 1 && userInfo.userLevel !== 5) {
-      //     this.$showToast(
-      //       `您已经是${userInfo.userLevelDesc}等级了，无需升级vip`
-      //     );
-      //     return;
-      //   }
-      // }
-
-      // if (item.type === 1) {
-      //   const userInfo = uni.getStorageSync(J_USER_INFO);
-      //   if (userInfo.userLevel === 1) {
-      //     this.$showToast(
-      //       `您已经是${userInfo.userLevelDesc}等级了，无需重复申请`
-      //     );
-      //     return;
-      //   } else if (userInfo.userLevel > 1 && userInfo.userLevel !== 5) {
-      //     this.$showToast(
-      //       `您已经是${userInfo.userLevelDesc}等级了，无需申请门店`
-      //     );
-      //     return;
-      //   }
-      // }
-
-      // if (item.type === 2) {
-      //   const userInfo = uni.getStorageSync(J_USER_INFO);
-      //   if (userInfo.userLevel === 2) {
-      //     this.$showToast(
-      //       `您已经是${userInfo.userLevelDesc}等级了，无需重复申请`
-      //     );
-
-      //     return;
-      //   }
-      // }
-
-      if (item.type === 1 && this.storeInfo) {
-        return;
-      }
-
-      if (item.type === 2 && this.marketingPlannerInfo) {
-        return;
-      }
-
-      if (item.type === 4) {
-        applyVipApi({
-          userId: getUserId(),
-        }).then(({ data }) => {
-          payOrderGoodsApi({
-            orderNo: data.payOrderID,
-            userId: getUserId(),
-            payType: 4,
-          }).then((res) => {
-            payFn(res, PAY_TYPE.VIP.value);
-          });
-        });
-        return;
-      }
-
-      uni.navigateTo({
-        url: item.url,
-      });
-    },
-
-    mapApplyStats,
-
-    handleToViewApplyTable(type) {
-      if (type === 1) {
-        this.go("/user/marketing-tools/store-application?type=table");
-      } else {
-        this.go("/user/marketing-tools/marketing-planner?type=table");
-      }
-    },
-
-    handleWhhithDrawApply(type) {
-      const _this = this;
-      if (type === 1) {
-        uni.showModal({
-          title: "提示",
-          content: "是否要撤销商家申请？",
-          success: function (res) {
-            if (res.confirm) {
-              _this.widthDraw(_this.storeInfo.ticketsId);
-            }
-          },
-        });
-      } else {
-        uni.showModal({
-          title: "提示",
-          content: "是否要撤销营销策划师申请？",
-          success: function (res) {
-            if (res.confirm) {
-              _this.widthDraw(_this.marketingPlannerInfo.ticketsId);
-            }
-          },
-        });
-      }
-    },
-
-    widthDraw(id) {
-      const _this = this;
-      widthDrawApi({
-        userId: getUserId(),
-        token: uni.getStorageSync(J_USER_TOKEN),
-        id,
-      }).then(() => {
-        uni.showToast({
-          title: "撤销成功",
-          duration: 2000,
-        });
-      });
-    },
-
-    handlePay(type, payType) {
-      if (type === 1) {
-        const api =
-          payType === "pay" ? payStoreAndYingApi : payTryStoreAndYingApi;
-        api({
-          userId: getUserId(),
-          upOrderId: this.storeInfo.ticketsId,
-        }).then(({ data }) => {
-          payOrderGoodsApi({
-            orderNo: data.payOrderID,
-            userId: getUserId(),
-            payType: 4,
-          }).then((res) => {
-            payFn(res, PAY_TYPE.VIP.value);
-          });
-        });
-      } else if (type === 2) {
-        const api =
-          payType === "pay" ? payStoreAndYingApi : payTryStoreAndYingApi;
-        api({
-          userId: getUserId(),
-          upOrderId: this.marketingPlannerInfo.ticketsId,
-        }).then(({ data }) => {
-          payOrderGoodsApi({
-            orderNo: data.payOrderID,
-            userId: getUserId(),
-            payType: 4,
-          }).then((res) => {
-            payFn(res, PAY_TYPE.VIP.value);
-          });
-        });
-      }
-    },
-  },
-};
+		handleMemberUpgrade() {
+			const selectedPackage = this.packageMemberList.find((i) => i.id === this.selectedPackageId)
+			if (!selectedPackage) return this.$showToast('请选择会员套餐！')
+			console.log(this.userInfo.roleIds)
+			if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 4) {
+				this.go('/user/marketing-tools/marketing-planner')
+			} else if (this.userInfo.roleIds === 5 && selectedPackage.roleIds === 4) {
+				upgradeOrderAddOrderApi({
+					userId: getUserId(),
+					packageId: this.selectedPackageId
+				}).then(({ data }) => {
+					payOrderGoodsApi({
+						orderNo: data.payOrderID,
+						userId: getUserId(),
+						payType: 4
+					}).then((res) => {
+						payFn(res, J_PAY_TYPE.VIP.value)
+					})
+				})
+			} else if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 3) {
+				this.go('/user/marketing-tools/marketing-planner')
+			} else if (this.userInfo.roleIds === 5 && selectedPackage.roleIds === 3) {
+				upgradeOrderAddOrderApi({
+					userId: getUserId(),
+					packageId: this.selectedPackageId
+				}).then(({ data }) => {
+					payOrderGoodsApi({
+						orderNo: data.payOrderID,
+						userId: getUserId(),
+						payType: 4
+					}).then((res) => {
+						payFn(res, J_PAY_TYPE.VIP.value)
+					})
+				})
+			} else if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 6) {
+				this.go('/user/marketing-tools/store-application')
+			} else if (this.userInfo.roleIds === 7 && selectedPackage.roleIds === 6) {
+				upgradeOrderAddOrderApi({
+					userId: getUserId(),
+					packageId: this.selectedPackageId
+				}).then(({ data }) => {
+					payOrderGoodsApi({
+						orderNo: data.payOrderID,
+						userId: getUserId(),
+						payType: 4
+					}).then((res) => {
+						payFn(res, J_PAY_TYPE.VIP.value)
+					})
+				})
+			}
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>
-@import "../../style/mixin.less";
-
 .up-vip-container {
-  padding: 30upx 18upx;
-  box-sizing: border-box;
-  height: 100vh;
-  overflow: scroll;
-  background: url(https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/zwaljjiyz29rx6l3m5vl.png)
-    no-repeat;
-  font-size: 24upx;
-  color: #3d3d3d;
-  padding-bottom: 200upx;
+	position: relative;
+	box-sizing: border-box;
+	height: 100vh;
+	overflow-y: auto;
+	font-size: 24upx;
+	color: #3d3d3d;
 
-  .item {
-    width: 100%;
-    background-color: #fff;
-    border: 1upx solid #d8d8d8;
-    border-radius: 20upx;
-    padding: 24upx 32upx;
-    box-sizing: border-box;
-    margin-top: 60upx;
-
-    .title {
-      font-size: 28upx;
-    }
-
-    .vip-pane {
-      .flex(center, center);
-      width: 100%;
-      margin: 32upx 0 66upx 0;
-      border-radius: 20upx;
-      height: 180upx;
-      border: 1upx solid #ffc300;
-      background: linear-gradient(
-        180deg,
-        #fff8c6 0%,
-        rgba(255, 248, 198, 0) 100%
-      );
-
-      .vip-icon {
-        width: 142upx;
-        height: 128upx;
-      }
-    }
-
-    .sub-title {
-      color: #fa5151;
-      font-size: 24upx;
-    }
-
-    .apply-btn {
-      font-size: 48upx;
-      color: #fff;
-      box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.302);
-      border-radius: 10px 10px 10px 10px;
-      background: linear-gradient(270deg, #ff8f1f 0%, #ffc300 100%);
-      margin: 30upx 0 0 0;
-
-      .vip-price {
-        font-size: 72upx;
-      }
-
-      .text {
-        font-size: 36upx;
-        font-weight: bold;
-        vertical-align: 14upx;
-        margin-left: 10upx;
-      }
-    }
-
-    .tip {
-      text-align: center;
-      // padding-top: 24upx;
-      padding-bottom: 24upx;
-      margin-top: 50upx;
-      font-size: 24upx;
-      color: #999;
-    }
-  }
-
-  .op {
-    padding: 20upx 18upx;
-    box-sizing: border-box;
-    font-size: 32upx;
-    color: #000;
-    .flex();
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #fff;
-
-    .btn {
-      .flex(center, center);
-      width: 310upx;
-      color: rgb(255, 255, 255);
-      height: 70upx;
-      border: 1upx solid #ff0000;
-      margin: 0;
-      border-radius: 100px;
-      background: rgb(236, 0, 0);
-    }
-  }
-
-  .apply-status {
-    display: flex;
-    width: 100%;
-    height: 73upx;
-    background-color: #fff;
-    border-top: 1upx solid #dfdfdf;
-    padding-top: 20px;
-    margin-top: 20px;
-    justify-content: flex-end;
-
-    .uni-btn {
-      padding: 20upx 40upx;
-      margin-left: 20upx;
-      color: #fff;
-      font-size: 28upx;
-      letter-spacing: 2px;
-
-      &:nth-child(1) {
-        background: #ff8f1f;
-      }
-
-      &:nth-child(2) {
-        background: #999;
-      }
-    }
-  }
+	.head-wrapper {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 380upx;
+		font-size: 28upx;
+		color: #ffffff;
+		background: url('../../static/user-center/server/user-up-head.png') no-repeat center/cover;
+	}
 }
 </style>

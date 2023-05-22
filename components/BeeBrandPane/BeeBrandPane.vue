@@ -1,49 +1,54 @@
 <template>
-	<view class="bee-brand-pane-container" @click="go('/pages/store/detail/detail?brandId=' + brandInfo.id)">
-		<view class="left">
-			<BeeAvatar
-				:src="brandInfo.picUrl.includes('https') ? brandInfo.picUrl : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + brandInfo.picUrl"
-				radius="10upx"
-			></BeeAvatar>
-			<!-- <view class="tag"> 惊喜价 </view> -->
-		</view>
-		<view class="middle">
-			<view class="brand-name hidden">{{ brandInfo.name }}</view>
-			<view class="rate">
-				<BeeIcon :size="12" :src="require('./images/star.png')"></BeeIcon>
-				<text class="rate-text">{{ brandInfo.merchantRating || '5.0' }}分</text>
-				<text class="sub-text">{{ brandInfo.brandLabel | formatTag }}</text>
-				<text class="rate-text">￥{{ brandInfo.perCapita || '0' }}/人</text>
-				<text>月售 {{ brandInfo.salesVolume || '0' }}</text>
+	<view class="bee-brand-pane-container">
+		<view class="bee-brand-top" @click="go('/pages/store/detail/detail?brandId=' + brandInfo.id)">
+			<view class="left">
+				<BeeAvatar
+					:src="brandInfo.picUrl.includes('https') ? brandInfo.picUrl : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + brandInfo.picUrl"
+					radius="10upx"
+				></BeeAvatar>
+				<!-- <view class="tag"> 惊喜价 </view> -->
 			</view>
-			<BeeNavigation>
-				<view class="location-wrapper">
-					<BeeIcon :src="require('./images/location.png')" :size="14"></BeeIcon>
-					<view class="detail">
-						<text class="dis-container"> {{ Math.ceil(brandInfo.distance) || 0 }} m </text>
-						<BeeIcon :src="require('./images/to.png')" :size="14"></BeeIcon>
+			<view class="middle">
+				<view class="brand-name hidden">{{ brandInfo.name }}</view>
+				<view class="rate">
+					<BeeIcon :size="12" :src="require('./images/star.png')"></BeeIcon>
+					<text class="rate-text">{{ brandInfo.merchantRating || '5.0' }}分</text>
+					<text class="sub-text">{{ brandInfo.brandLabel | formatTag }}</text>
+					<text class="rate-text">￥{{ brandInfo.perCapita || '0' }}/人</text>
+					<text>月售 {{ brandInfo.salesVolume || '0' }}</text>
+				</view>
+				<BeeNavigation>
+					<view class="location-wrapper">
+						<BeeIcon :src="require('./images/location.png')" :size="14"></BeeIcon>
+						<view class="detail">
+							<!-- <text class="dis-container"> {{ Math.ceil(brandInfo.distance) || 0 }} km </text> -->
+							<text class="dis-container"> {{ brandInfo.distance || 0 }} km </text>
+							<BeeIcon :src="require('./images/to.png')" :size="14"></BeeIcon>
+						</view>
+					</view>
+				</BeeNavigation>
+				<view class="elva">
+					<BeeAvatar :size="15"></BeeAvatar>
+					<view class="elva-text hidden">
+						{{ brandInfo.desc || '--' }}
 					</view>
 				</view>
-			</BeeNavigation>
-			<view class="elva">
-				<BeeAvatar :size="15"></BeeAvatar>
-				<view class="elva-text hidden">
-					{{ brandInfo.desc || '--' }}
-				</view>
+				<!-- <view class="welfare-wrapper">
+					<view class="welfare-item" v-for="(item, index) in templateData" :key="index">
+					<view class="tag">{{ item.type }}</view>
+					<text class="price-text">{{ item.price }}元</text>
+					<view class="tag2">{{ item.discount }}折</view>
+					<text class="desc">{{ item.desc }}</text>
+					</view>
+					</view> -->
 			</view>
-
-			<!-- <view class="welfare-wrapper">
-				<view class="welfare-item" v-for="(item, index) in templateData" :key="index">
-				<view class="tag">{{ item.type }}</view>
-				<text class="price-text">{{ item.price }}元</text>
-				<view class="tag2">{{ item.discount }}折</view>
-				<text class="desc">{{ item.desc }}</text>
-				</view>
+			<!-- <view class="right">
+				<BeeIcon :size="25" class="heart-icon" :src="require('./images/heart.png')"></BeeIcon>
 				</view> -->
 		</view>
-		<!-- <view class="right">
-			<BeeIcon :size="25" class="heart-icon" :src="require('./images/heart.png')"></BeeIcon>
-			</view> -->
+		<view class="bee-brand-bottom">
+			<slot></slot>
+		</view>
 	</view>
 </template>
 
@@ -77,154 +82,158 @@ export default {
 
 <style lang="less" scoped>
 .hidden {
-  width: 374upx;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+	width: 374upx;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 }
 
 .bee-brand-pane-container {
-  // width: 100%;
-  background-color: #fff;
-  padding: 24upx 20upx;
-  border-radius: 20upx;
-  margin-top: 16upx;
-  display: flex;
-  align-items: flex-start;
-  transition: all 350ms;
+	// width: 100%;
+	background-color: #fff;
+	padding: 24upx 20upx;
+	border-radius: 20upx;
+	margin-top: 16upx;
+	transition: all 350ms;
 
-  &:active {
-    background-color: #e9e9e9;
-  }
+	&:active {
+		background-color: #e9e9e9;
+	}
 
-  .left {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+	.bee-brand-top {
+		display: flex;
+		align-items: flex-start;
+		width: 100%;
 
-    .tag {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 104upx;
-      height: 38upx;
-      background: url('./images/tag1.png');
-      background-size: cover;
-      color: #cb511e;
-      font-size: 24upx;
-      margin-top: 52upx;
-    }
-  }
+		.left {
+			display: flex;
+			align-items: center;
+			flex-direction: column;
 
-  .middle {
-    flex: 1;
-    margin: 0 28upx;
+			.tag {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 104upx;
+				height: 38upx;
+				background: url('./images/tag1.png');
+				background-size: cover;
+				color: #cb511e;
+				font-size: 24upx;
+				margin-top: 52upx;
+			}
+		}
 
-    .brand-name {
-      color: #000;
-      font-size: 32upx;
-      font-weight: bold;
-    }
+		.middle {
+			flex: 1;
+			margin: 0 28upx;
 
-    .rate {
-      display: flex;
-      align-items: center;
-      font-size: 24upx;
+			.brand-name {
+				color: #000;
+				font-size: 32upx;
+				font-weight: bold;
+			}
 
-      text {
-        font-size: 24upx;
-        margin-left: 8upx;
+			.rate {
+				display: flex;
+				align-items: center;
+				font-size: 24upx;
 
-        &.rate-text {
-          color: #fa5151;
-        }
-      }
-    }
+				text {
+					font-size: 24upx;
+					margin-left: 8upx;
 
-    .location-wrapper {
-      display: flex;
-      align-items: center;
+					&.rate-text {
+						color: #fa5151;
+					}
+				}
+			}
 
-      // /deep/ .icon-container {
-      //   margin-top: 6upx;
-      // }
+			.location-wrapper {
+				display: flex;
+				align-items: center;
 
-      .detail {
-        display: flex;
-        align-items: center;
-        background-color: #efefef;
-        vertical-align: text-bottom;
-        padding: 0 4upx;
-        border-radius: 4upx;
-        margin-left: 4upx;
-      }
-    }
+				// /deep/ .icon-container {
+				//   margin-top: 6upx;
+				// }
 
-    .elva {
-      display: flex;
-      align-items: center;
-      margin: 8upx 0;
+				.detail {
+					display: flex;
+					align-items: center;
+					background-color: #efefef;
+					vertical-align: text-bottom;
+					padding: 0 4upx;
+					border-radius: 4upx;
+					margin-left: 4upx;
+				}
+			}
 
-      .elva-text {
-        width: 348upx;
-        margin-left: 10upx;
-      }
-    }
+			.elva {
+				display: flex;
+				align-items: center;
+				margin: 8upx 0;
 
-    .welfare-wrapper {
-      margin-top: 20upx;
+				.elva-text {
+					width: 348upx;
+					margin-left: 10upx;
+				}
+			}
 
-      .welfare-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20upx;
+			.welfare-wrapper {
+				margin-top: 20upx;
 
-        text {
-          margin: 0 10upx;
-        }
+				.welfare-item {
+					display: flex;
+					align-items: center;
+					margin-bottom: 20upx;
 
-        .tag {
-          width: 30upx;
-          height: 30upx;
-          text-align: center;
-          line-height: 30upx;
-          font-size: 20upx;
-          color: #fff;
-          background: #fb7726;
-        }
+					text {
+						margin: 0 10upx;
+					}
 
-        .price-text {
-          color: #fa5151;
-        }
+					.tag {
+						width: 30upx;
+						height: 30upx;
+						text-align: center;
+						line-height: 30upx;
+						font-size: 20upx;
+						color: #fff;
+						background: #fb7726;
+					}
 
-        .tag2 {
-          width: 48upx;
-          height: 28upx;
-          background-color: #fcdbdb;
-          color: #fa5151;
-          font-size: 20upx;
-          text-align: center;
-          line-height: 28upx;
-        }
-      }
-    }
-  }
+					.price-text {
+						color: #fa5151;
+					}
 
-  .right {
-    height: 326upx;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: space-between;
+					.tag2 {
+						width: 48upx;
+						height: 28upx;
+						background-color: #fcdbdb;
+						color: #fa5151;
+						font-size: 20upx;
+						text-align: center;
+						line-height: 28upx;
+					}
+				}
+			}
+		}
 
-    .heart-icon {
-      border-radius: 50%;
-      transition: all 350ms;
+		.right {
+			height: 326upx;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			justify-content: space-between;
 
-      &:active {
-        background-color: #ffd8d8;
-      }
-    }
-  }
+			.heart-icon {
+				border-radius: 50%;
+				transition: all 350ms;
+
+				&:active {
+					background-color: #ffd8d8;
+				}
+			}
+		}
+	}
 }
 </style>

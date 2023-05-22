@@ -1,9 +1,11 @@
 <template>
 	<view v-if="goodsData" class="brand-goods-container">
-		<tui-lazyload-img
-			class=" goods-img" mode="aspectFit"
-			width="340rpx" height="176rpx" :src="getBeeUrl(goodsData.picUrl)" @click="go('/pages/store/goods-detail/goods-detail?goodsId=' + goodsData.id)"
-		></tui-lazyload-img>
+		<view style="max-height: 440upx;min-height: 120upx;overflow: hidden;">
+			<tui-lazyload-img
+				class="goods-img" mode="widthFix"
+				width="340rpx" height="auto" :src="common.seamingImgUrl(goodsData.picUrl)" @click="go('/pages/store/goods-detail/goods-detail?goodsId=' + goodsData.id)"
+			></tui-lazyload-img>
+		</view>
 
 		<view class=" brand-goods-name">
 			{{ goodsData.name }}

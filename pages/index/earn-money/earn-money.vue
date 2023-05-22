@@ -13,40 +13,43 @@
 				<view class="top-img">
 					<image src="../../../static/index/earn-money/组1.png" mode="" />
 				</view>
-				<view class="top-text">我的任务></view>
-				<view class="item-list">
+				<!-- s暂时隐藏 -->
+				<!-- <view class="top-text">我的任务></view>
+					<view class="item-list">
 					<view class="item" v-for="item in items" :key="item.id">
-						<image :src="item.icon" mode="" />
+					<image :src="item.icon" mode="" />
 					</view>
-				</view>
+					</view> -->
+				<!-- e暂时隐藏 -->
 			</view>
 			<view class="main-bot">
 				<view class="bot-img">
 					<image src="../../../static/index/earn-money/组2.png" mode="" />
 				</view>
-				<view class="data">
+				<!-- s暂时隐藏 -->
+				<!-- <view class="data">
 					<view class="left">
-						<image src="../../../static/index/earn-money/head.png" mode="" />
+					<image src="../../../static/index/earn-money/head.png" mode="" />
 					</view>
 					<view class="mid">
-						<view class="grade">我的会员:<text>合伙人</text></view>
-						<view class="info-list">
-							<view class="info">会员信息</view>
-							<view class="check">点我查看></view>
-						</view>
+					<view class="grade">我的会员:<text>合伙人</text></view>
+					<view class="info-list">
+					<view class="info">会员信息</view>
+					<view class="check">点我查看></view>
 					</view>
-
-				</view>
-				<view class="bar">
+					</view>
+					</view>
+					<view class="bar">
 					<image src="../../../static/index/earn-money/bar.png" mode="" />
-				</view>
-				<view class="level-list">
-					<view class="level" v-for="level in levels" :key="level.id">
-						<view class="level-name">{{ level.name }}</view>
-						<view class="money">{{ level.number }}<text>{{ level.unit }}</text></view>
-						<view class="register">{{ level.title }}</view>
 					</view>
-				</view>
+					<view class="level-list">
+					<view v-for="level in levels" :key="level.id" class="level">
+					<view class="level-name">{{ level.name }}</view>
+					<view class="money">{{ level.number }}<text>{{ level.unit }}</text></view>
+					<view class="register">{{ level.title }}</view>
+					</view>
+					</view> -->
+				<!-- e暂时隐藏 -->
 				<view class="explain">
 					<view class="first">• 以活动期间同一账户累计实付金额为准，不含已充值未消费金额、奖励金、优惠券等</view>
 					<view class="second"><text>• 会员一切解释权归巨蜂所属</text>, 放心开通 不自动续费</view>
@@ -54,8 +57,7 @@
 			</view>
 			<view class="main-foot">
 				<view class="text">会员规则</view>
-				<view class="why">?</view>
-				<!-- <image src="../../../static/index/earn-money/why.png" mode="" /> -->
+				<!-- <view class="why">?</view> -->
 			</view>
 		</view>
 	</view>
@@ -64,24 +66,24 @@
 <script>
 import { items, levels } from './data'
 export default {
-	name: "Earn-money",
+	name: 'EarnMoney',
 	props: {
 
 	},
 	data() {
 		return {
 			items,
-			levels,
+			levels
 		}
 	},
+	created() { },
 	methods: {
 		handleBack() {
 			uni.switchTab({
-				url: '/pages/index/index',
+				url: '/pages/index/index'
 			})
-		},
-	},
-	created() { }
+		}
+	}
 }
 </script>
 
@@ -236,7 +238,6 @@ export default {
 					}
 
 				}
-
 
 			}
 

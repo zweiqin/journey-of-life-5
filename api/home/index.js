@@ -6,15 +6,15 @@
  * @FilePath: \团蜂商城 - 副本\tuan-uniapp\api\home\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { RuanRequest } from "../../utils";
+
+import { RuanRequest } from '../../utils'
 
 /**
  * 获取首页商品列表
  * @returns
  */
-export const getIndexDataApi = () => {
-  return RuanRequest("/home/index", null, "get");
-};
+
+export const getIndexDataApi = () => RuanRequest('/home/index', null, 'get')
 
 /**
  * @description 获取分类
@@ -24,34 +24,34 @@ export const getIndexDataApi = () => {
  * } data
  * @returns
  */
-export const getGoodsTypesApi = (data) => {
-  return RuanRequest("/catalog/index", data, "get");
-};
+
+export const getGoodsTypesApi = (data) => RuanRequest('/catalog/index', data, 'get')
 
 /**
  * @description 获取当前分类下的二级类目
  */
-export const getTypeDetailList = (data) => {
-  return RuanRequest("/catalog/current", data, "get");
-};
+
+export const getTypeDetailList = (data) => RuanRequest('/catalog/current', data, 'get')
 
 /**
  *@exports 根据id查询商品
  * @param {*} data
  * @returns
  */
-export const getGoodsById = (data) => {
-  return RuanRequest("/goods/list", data, "get");
-};
 
-export const getUserCouponApi = (data) => {
-  return RuanRequest("/coupon/getUserCoupon", data, "get");
-};
+export const getGoodsById = (data) => RuanRequest('/goods/list', data, 'get')
 
-export const getAllCategoryList = () => {
-  return RuanRequest("/catalog/all", {}, 'get');
-};
+export const getUserCouponApi = (data) => RuanRequest('/coupon/getUserCoupon', data, 'get')
 
-export const getApponitGoodsApi = (data) => {
-  return RuanRequest('/appointGoods/list', data, 'get')
-}
+export const getAllCategoryList = () => RuanRequest('/catalog/all', {}, 'get')
+
+export const getApponitGoodsApi = (data) => RuanRequest('/appointGoods/list', data, 'get')
+
+/**
+ *@exports 根据关键字查询商品
+ * @param {*} data
+ * @returns
+ */
+
+export const getDtsBrandGoods = (data) => RuanRequest('/dtsBrand/search', data, 'get')
+

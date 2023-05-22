@@ -4,17 +4,17 @@
 		<view class="container">
 			<view class="search-header">
 				<BeeLocale></BeeLocale>
-				<SearchBar></SearchBar>
+				<SearchBar prevent @click="go('/pages/search-page/search-page')"></SearchBar>
 				<PhotoSearch></PhotoSearch>
 			</view>
 
-			<Menus :data="menusData"></Menus>
+			<Menus :data="menusData" @handleNavigate="handleNavigate"></Menus>
 
 			<!-- <view class="banner-wrapper">
 				<image src="../../static/index/banner.png" mode="" />
-			</view>
+				</view>
 
-			<Synthesize></Synthesize> -->
+				<Synthesize></Synthesize> -->
 
 			<view class="banner-wrapper" @click="go('/user/sever/userUp')">
 				<image src="../../static/index/banner2.png" mode="" />
@@ -31,8 +31,10 @@
 				<!-- <GoodsFilter :scrollTop="scrollTop"></GoodsFilter> -->
 
 				<view class="menus-wrapper">
-					<view @click="handleChooseMenu(item)" class="item" :class="{ active: currentFilterMenuId === item.id }"
-						v-for="item in menus" :key="item.id">
+					<view
+						v-for="item in menus" :key="item.id" class="item"
+						:class="{ active: currentFilterMenuId === item.id }" @click="handleChooseMenu(item)"
+					>
 						<BeeIcon :size="40" :src="item.icon"></BeeIcon>
 						<text>{{ item.name }}</text>
 					</view>
@@ -40,8 +42,10 @@
 
 				<scroll-view scroll-x="true">
 					<view class="sub-menus">
-						<view @click="handleChangeSubMenu(item)" class="item" :class="{ active: query.categoryId === item.id }"
-							v-for="item in submenus" :key="item.id">
+						<view
+							v-for="item in submenus" :key="item.id" class="item"
+							:class="{ active: query.categoryId === item.id }" @click="handleChangeSubMenu(item)"
+						>
 							{{ item.name }}
 						</view>
 					</view>
@@ -53,8 +57,10 @@
 
 				<LoadMore v-show="goodsList.length" :status="status"></LoadMore>
 
-				<GoodsSkeleton background="linear-gradient(180deg, #ffffff 0%, #f6f6f6 6%)" padding="20upx"
-					v-if="status === 'loading' && !goodsList.length"></GoodsSkeleton>
+				<GoodsSkeleton
+					v-if="status === 'loading' && !goodsList.length" background="linear-gradient(180deg, #ffffff 0%, #f6f6f6 6%)"
+					padding="20upx"
+				></GoodsSkeleton>
 			</view>
 		</view>
 	</view>
@@ -67,8 +73,8 @@ import Synthesize from './cpns/Synthesize.vue'
 import { getGoodsById } from '../../api/home'
 import { getTypeDetailList } from '../../api/home'
 
-
 export default {
+	name: 'Index',
 	components: { Menus, Synthesize },
 	data() {
 		return {
@@ -80,7 +86,7 @@ export default {
 				isNew: true,
 				order: 'asc',
 				categoryId: 100101312,
-				sort: 'retail_price',
+				sort: 'retail_price'
 			},
 			goodsList: [],
 			totalPages: 2,
@@ -90,28 +96,28 @@ export default {
 				{
 					name: '日用百货',
 					icon: require('../../static/index/shop/baihuo.png'),
-					id: 1001009,
+					id: 1001009
 				},
 				{
 					name: '巨蜂特惠',
 					icon: require('../../static/index/shop/tehui.png'),
-					id: 1001002,
+					id: 1001002
 				},
 				{
 					name: '家具用品',
 					icon: require('../../static/index/shop/jiaju.png'),
-					id: 1001011,
+					id: 1001011
 				},
 				{
 					name: '箱包首饰',
 					icon: require('../../static/index/shop/xiangbao.png'),
-					id: 1001013,
+					id: 1001013
 				},
 				{
 					name: '家电',
 					icon: require('../../static/index/shop//el.png'),
-					id: 100101466,
-				},
+					id: 100101466
+				}
 			]),
 			currentMenu: null,
 			submenus: []
@@ -127,12 +133,11 @@ export default {
 	},
 	mounted() {
 		this.getSubMenus()
-
 	},
 	methods: {
 		getGoodsList(isLoadMore) {
 			uni.showLoading({
-				title: '加载中',
+				title: '加载中'
 			})
 			getGoodsById(this.query).then(({ data }) => {
 				this.status = 'loading'
@@ -145,6 +150,17 @@ export default {
 				this.status = 'none'
 			})
 			uni.hideLoading()
+		},
+
+		handleNavigate(item, cb) {
+			console.log(item)
+			if (item.type === 'external') {
+				this.go('/user/view?target=' + item.url)
+			} else {
+				uni.navigateTo({
+					url: item.url
+				})
+			}
 		},
 
 		handleChooseMenu(item) {
@@ -164,7 +180,6 @@ export default {
 		handleChangeSubMenu(itme) {
 			this.query.categoryId = itme.id
 			this.getGoodsList()
-
 		}
 	},
 	onPageScroll(e) {
@@ -174,18 +189,16 @@ export default {
 		if (this.query.page >= this.totalPages) {
 			uni.showToast({
 				title: '没有更多了',
-				duration: 2000,
+				duration: 2000
 			})
 			return
 		}
-
-		if (this.query.size > this.goodsList) {
+		if (this.query.size > this.goodsList.length) {
 			return
 		}
-
 		this.query.page++
 		this.getGoodsList(true)
-	},
+	}
 }
 </script>
 
@@ -208,10 +221,10 @@ export default {
 	}
 
 	.container {
-		padding: 47.4upx 22.5upx 0 22.5upx;
+		padding: 10upx 22.5upx 0 22.5upx;
 		box-sizing: border-box;
-		background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 3%, #f6f6f6 8%);
-
+		// background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 3%, #f6f6f6 8%);
+		background-color: #f6f6f6;
 
 		.banner-wrapper {
 			margin-top: 20upx;
@@ -276,7 +289,6 @@ export default {
 			}
 		}
 	}
-
 
 	.menus-wrapper {
 		white-space: nowrap;

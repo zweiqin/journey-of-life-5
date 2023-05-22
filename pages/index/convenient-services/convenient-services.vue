@@ -20,7 +20,7 @@
 		</view>
 		<view class="mid">
 			<view class="bar-list">
-				<view class="bar" v-for="item in items" :key="item.id">
+				<view v-for="item in items" :key="item.id" class="bar">
 					<image :src="item.icon" mode="" @click="handleTo(item)" />
 					<view class="text">{{ item.name }}</view>
 				</view>
@@ -28,21 +28,23 @@
 			</view>
 			<!-- <view class="coupon-list">
 				<view class="coupon" v-for="item in coupons" :key="item.id">
-					<image :src="item.icon" mode="" />
+				<image :src="item.icon" mode="" />
 				</view>
-			</view> -->
+				</view> -->
 		</view>
 		<!-- <view class="text-list">
 			<view class="left">精选</view>
 			<view class="right">换一批</view>
-		</view>
-		<GasStation></GasStation>
-		<GasStation></GasStation>
-		<GasStation></GasStation>
-		<GasStation></GasStation> -->
+			</view>
+			<GasStation></GasStation>
+			<GasStation></GasStation>
+			<GasStation></GasStation>
+			<GasStation></GasStation> -->
 
-		<tui-modal :show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
-			@click="_handleClickTuiModel($event, 'login', '/pages/index/convenient-services/convenient-services')"></tui-modal>
+		<tui-modal
+			:show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
+			@click="_handleClickTuiModel($event, 'login', '/pages/index/convenient-services/convenient-services')"
+		></tui-modal>
 	</view>
 </template>
 
@@ -56,11 +58,11 @@ export default {
 			coupons
 		}
 	},
-	mixins: [showModel()],
+	mixins: [ showModel() ],
 	methods: {
 		handleBack() {
 			uni.switchTab({
-				url: '/pages/index/index',
+				url: '/pages/index/index'
 			})
 		},
 		handleTo(item) {
@@ -70,7 +72,7 @@ export default {
 				this.go(item.url)
 			}
 		}
-	},
+	}
 }
 </script>
 
@@ -78,11 +80,9 @@ export default {
 .convenient-services-container {
 	width: 100%;
 	min-height: 100vh;
-	padding: 20upx;
+	padding: 0 20upx;
 	box-sizing: border-box;
 	background: linear-gradient(180deg, #ffffff 0%, #f6f6f6 10%);
-
-
 
 	.header {
 		width: 100%;

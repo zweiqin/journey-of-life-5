@@ -1,42 +1,66 @@
 <template>
-  <view
-    class="search-bar-container"
-    :style="{
-      height: height,
-      borderColor: color,
-      background: background
-    }"
-  >
-    <BeeIcon :src="require('./search.png')"></BeeIcon>
-    <input class="f-12" type="text" placeholder="输入您想搜索的商品" />
+	<view
+		class="search-bar-container"
+		:style="{
+			height,
+			borderColor: color,
+			background
+		}"
+		@click="handleClick"
+	>
+		<BeeIcon :src="require('./search.png')"></BeeIcon>
+		<input v-model="content" class="f-12" type="text" placeholder="输入您想搜索的商品" />
 
-    <button class="bee-btn" :style="{ background: color }">
-      {{ btnText }}
-    </button>
-  </view>
+		<button class="bee-btn" :style="{ background: color }" @click="handleClickBtn">
+			{{ btnText }}
+		</button>
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    height: {
-      type: String,
-      default: '72upx',
-    },
+	name: 'SearchBar',
+	props: {
+		prevent: {
+			type: Boolean,
+			default: false
+		},
 
-    color: {
-      type: String,
-      default: '#FA5151',
-    },
+		height: {
+			type: String,
+			default: '72upx'
+		},
 
-    btnText: {
-      type: String,
-      default: '搜索',
-    },
-    background: {
-      type: String
-    }
-  },
+		color: {
+			type: String,
+			default: '#FA5151'
+		},
+
+		btnText: {
+			type: String,
+			default: '搜索'
+		},
+		background: {
+			type: String
+		}
+	},
+	data() {
+		return {
+			content: ''
+		}
+	},
+	methods: {
+		handleClick() {
+			if (this.prevent) {
+				this.$emit('click')
+			}
+		},
+		handleClickBtn() {
+			if (!this.prevent) {
+				this.$emit('click-btn', this.content)
+			}
+		}
+	}
 }
 </script>
 

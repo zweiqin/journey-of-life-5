@@ -1,38 +1,49 @@
 <template>
-	<view class="goods-detail-container" v-if="goodsDetail">
+	<view v-if="goodsDetail" class="goods-detail-container">
 		<!-- 轮播图 -->
 		<view class="carousel-wrapper">
-			<Carousel :list="
-				goodsDetail.info.gallery.length
+			<Carousel
+				:list="goodsDetail.info.gallery.length
 					? goodsDetail.info.gallery
-					: [goodsDetail.info.picUrl.includes('http') ? goodsDetail.info.picUrl : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + goodsDetail.info.picUrl]
-			" :height="390" :top="0" :radius="0"></Carousel>
+					: [ goodsDetail.info.picUrl.includes('http') ? goodsDetail.info.picUrl : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + goodsDetail.info.picUrl ]
+				" :height="390" :top="0" :radius="0"
+			></Carousel>
 
 			<view class="header-top" :style="{ opacity: !showTopNav ? 1 : 0 }">
 				<view>
-					<image @click="handleBack" src="../../static/images/detail/back.png" mode="" />
+					<image src="../../static/images/detail/back.png" mode="" @click="handleBack" />
 				</view>
 
 				<view>
-					<image src="../../static/images/detail/brand.png" mode="" />
-					<image src="../../static/images/detail/share.png" mode="" />
+					<image src="../../static/images/detail/brand.png" mode="" @click="$showToast('功能未开放', 'none')" />
+					<image src="../../static/images/detail/share.png" mode="" @click="$showToast('功能未开放', 'none')" />
 				</view>
 			</view>
 
-			<view class="scroll-top-nav" :style="{
-				opacity: showTopNav ? 1 : 0,
-				'z-index': showTopNav ? 100 : -1,
-			}">
-				<image @click="handleBack" src="../../static/images/detail/top-back.png" mode="" />
+			<view
+				class="scroll-top-nav" :style="{
+					'opacity': showTopNav ? 1 : 0,
+					'z-index': showTopNav ? 100 : -1
+				}"
+			>
+				<image src="../../static/images/detail/top-back.png" mode="" @click="handleBack" />
 				<view class="center">
 					<view class="item" :class="{ active: currentMoveTag == 0 }" @click="moveToDetail(0)">商品</view>
 
-					<view :class="{
-						active: currentMoveTag == 1,
-					}" class="item" @click="moveToDetail(1)">评价</view>
-					<view class="item" :class="{
-						active: currentMoveTag == 2,
-					}" @click="moveToDetail(2)" v-if="goodsDetail.info.detail">详情</view>
+					<view
+						:class="{
+							active: currentMoveTag == 1
+						}" class="item" @click="moveToDetail(1)"
+					>
+						评价
+					</view>
+					<view
+						v-if="goodsDetail.info.detail" class="item" :class="{
+							active: currentMoveTag == 2
+						}" @click="moveToDetail(2)"
+					>
+						详情
+					</view>
 				</view>
 			</view>
 		</view>
@@ -46,23 +57,23 @@
 
 			<view class="salsed">
 				<text>月销100+</text>
-				<image class="share-tran" src="../../static/images/detail/share-tran.png" mode="" />
+				<image class="share-tran" src="../../static/images/detail/share-tran.png" mode="" @click="$showToast('功能未开放', 'none')" />
 			</view>
 
 			<!-- <view class="sub-info">
-        <view class="item" v-for="(item, index) in subInfoConfig" :key="index">
-          <image :src="item.icon" mode="" />
-          <text>{{ item.label }}</text>
-          <text class="attribute">{{ item.default }}</text>
-        </view>
-      </view> -->
+				<view class="item" v-for="(item, index) in subInfoConfig" :key="index">
+				<image :src="item.icon" mode="" />
+				<text>{{ item.label }}</text>
+				<text class="attribute">{{ item.default }}</text>
+				</view>
+				</view> -->
 
 			<view class="buy-info">
-				<view class="item" v-for="(item, index) in goodsInfoConfig" :key="index">
+				<view v-for="(item, index) in goodsInfoConfig" :key="index" class="item">
 					<image :src="item.icon" mode="" />
 					<view>
 						<view class="label">{{ item.label }}</view>
-						<view class="desc" v-if="item.desc">{{ item.desc }}</view>
+						<view v-if="item.desc" class="desc">{{ item.desc }}</view>
 					</view>
 				</view>
 			</view>
@@ -73,12 +84,14 @@
 			</view>
 
 			<!-- 店铺信息 -->
-			<view class="brand-wrapper" v-if="goodsDetail.brand.name">
+			<view v-if="goodsDetail.brand.name" class="brand-wrapper">
 				<view class="top">
-					<image class="image" :src="goodsDetail.brand.picUrl" mode="" v-if="goodsDetail.brand.picUrl" />
-					<view v-else class="image image-avatar">{{
-						goodsDetail.brand.name
-					}}</view>
+					<image v-if="goodsDetail.brand.picUrl" class="image" :src="goodsDetail.brand.picUrl" mode="" />
+					<view v-else class="image image-avatar">
+						{{
+							goodsDetail.brand.name
+						}}
+					</view>
 
 					<view class="brand-info">
 						<view class="brand-name">{{ goodsDetail.brand.name }}</view>
@@ -92,21 +105,23 @@
 				</view>
 				<!-- TODO  -->
 				<!-- <view class="bottom">
-          <button class="uni-btn">进店逛逛</button>
-          <button class="uni-btn">全部商品</button>
-        </view> -->
+					<button class="uni-btn">进店逛逛</button>
+					<button class="uni-btn">全部商品</button>
+					</view> -->
 			</view>
 
 			<!-- 店铺推荐 -->
-			<view class="brand-recommend" v-if="brandOtherGoods && brandOtherGoods.length">
+			<view v-if="brandOtherGoods && brandOtherGoods.length" class="brand-recommend">
 				<view class="sub-title">
 					<text>店铺推荐</text>
 					<image src="../../static/images/detail/right-arrow.png" mode="" />
 				</view>
 
 				<view class="wrapper">
-					<view class="item" v-for="item in brandOtherGoods" @click="go('/pages/prod/prod?goodsId=' + item.id)"
-						:key="item.id">
+					<view
+						v-for="item in brandOtherGoods" :key="item.id" class="item"
+						@click="go('/pages/prod/prod?goodsId=' + item.id)"
+					>
 						<image :src="item.picUrl" mode="" />
 
 						<view class="recommend-goods-name">{{ item.name }} </view>
@@ -118,29 +133,29 @@
 		</view>
 
 		<!-- 宝贝详情 -->
-		<view class="goods-detail" id="goods-detail" v-if="goodsDetail.info.detail">
+		<view v-if="goodsDetail.info.detail" id="goods-detail" class="goods-detail">
 			<text>宝贝详情</text>
 		</view>
 
-		<u-parse v-if="goodsDetail.info.detail" :content="goodsInfoDetail"></u-parse>
+		<UParse v-if="goodsDetail.info.detail" :content="goodsInfoDetail"></UParse>
 
 		<!-- 详情 -->
 
 		<!-- 为你推荐 -->
-		<view class="recommd-container">
+		<!-- <view class="recommd-container">
 			<view class="goods-detail">
-				<text>为你推荐</text>
+			<text>为你推荐</text>
 			</view>
-		</view>
+			</view> -->
 
-		<RecommendGoods :scrollTop="scrollTop" :showTitle="false" :id="goodsId"></RecommendGoods>
+		<!-- <RecommendGoods :id="goodsId" :scroll-top="scrollTop" :show-title="false"></RecommendGoods> -->
 
 		<view class="footer">
 			<view class="icon-wrapper">
 				<view class="item" @click="go('/user/sever/shop-car')">
 					<image src="../../static/images/detail/shap-active.png" mode="" />
 					<text>购物车</text>
-					<view class="number" v-if="shopCarNumber">{{ shopCarNumber }}</view>
+					<view v-if="shopCarNumber" class="number">{{ shopCarNumber }}</view>
 				</view>
 
 				<view class="item" @click="handleKefu">
@@ -149,11 +164,12 @@
 				</view>
 
 				<view class="item">
-					<image @click="handleCollect" :src="
-						isCollect
+					<image
+						:src="isCollect
 							? '../../static/images/detail/collection-active .png'
 							: '../../static/images/detail/collection.png'
-					" mode="" />
+						" mode="" @click="handleCollect"
+					/>
 					<text>收藏</text>
 				</view>
 			</view>
@@ -164,17 +180,17 @@
 			</view>
 		</view>
 
-		<JSpecification :data="goodsDetail" ref="specificationRef" :bottom="100" v-model="showSpecification"></JSpecification>
+		<JSpecification ref="specificationRef" v-model="showSpecification" :data="goodsDetail" :bottom="100"></JSpecification>
 	</view>
 </template>
 
 <script>
-import Carousel from "../../components/carousel";
-import { subInfoConfig, goodsInfoConfig } from "./config";
-import uParse from "../../components/u-parse/u-parse.vue";
-import { marked } from "marked";
-import { PAY_GOODS, J_USER_ID } from "../../constant";
-import RecommendGoods from "../../components/recommend-goods";
+import Carousel from '../../components/carousel'
+import { subInfoConfig, goodsInfoConfig } from './config'
+import uParse from '../../components/u-parse/u-parse.vue'
+import { marked } from 'marked'
+import { J_ONE_PAY_GOODS, J_USER_ID } from '../../constant'
+// import RecommendGoods from '../../components/recommend-goods'
 
 import {
 	getGoodsDetailApi,
@@ -182,15 +198,16 @@ import {
 	// getShopCarApi,
 	addShopCarApi,
 	getCarShopNumberApi,
-	goodsListApi,
-} from "../../api/goods";
-import { getUserId } from "../../utils";
+	goodsListApi
+} from '../../api/goods'
+import { getUserId } from '../../utils'
 
 export default {
+	name: 'Prod',
 	components: {
 		Carousel,
-		uParse,
-		RecommendGoods,
+		UParse: uParse
+		// RecommendGoods
 	},
 	data() {
 		return {
@@ -206,238 +223,26 @@ export default {
 			evalPosition: 0,
 			detailPosition: 0,
 			scrollTop: 0,
-			currentMoveTag: 0,
-		};
+			currentMoveTag: 0
+		}
 	},
 	onLoad(options) {
-		this.goodsId = options.goodsId * 1;
-		this.userId = uni.getStorageSync(J_USER_ID);
-		this.getGoodsDetail();
+		this.goodsId = options.goodsId * 1
+		this.userId = uni.getStorageSync(J_USER_ID)
+		this.getGoodsDetail()
 
 		uni.pageScrollTo({
 			scrollTop: 0,
-			duration: 0,
-		});
+			duration: 0
+		})
 	},
 
-	methods: {
-		// 回退
-		handleBack() {
-			uni.navigateBack();
-		},
-		// 获取商品详情
-		async getGoodsDetail() {
-			uni.showLoading();
-			const res = await getGoodsDetailApi(this.goodsId, this.userId);
-			uni.hideLoading();
-			if (res.errno === 0) {
-				this.goodsDetail = res.data;
-				this.isCollect = !!res.data.userHasCollect;
-				this.getBrandOtherGoods(res.data.brand.id);
-				if (this.userId) {
-					this.getCarShopNumber();
-				}
-			}
-		},
-
-		// 加入购物车
-		async addShopCar() {
-			const goodsInfo = await this.getSpacification();
-
-			const data = {
-				userId: getUserId(),
-				goodsId: this.goodsDetail.info.id,
-				number: goodsInfo.number,
-				productId: goodsInfo.product.id,
-			};
-
-			const res = await addShopCarApi(data);
-			if (res.errno === 0) {
-				uni.showToast({
-					title: "添加成功",
-					icon: "none",
-				});
-				this.showSpecification = false;
-				this.getCarShopNumber();
-			} else {
-				uni.showToast({
-					title: "购物车添加失败",
-					icon: "none",
-				});
-			}
-		},
-		// 立即购买
-		async fastBuy() {
-			const goodsInfo = await this.getSpacification();
-			uni.setStorageSync(PAY_GOODS, {
-				currentGoodsImg: goodsInfo.product.url || this.goodsDetail.info.picUrl,
-				currentSpecification: goodsInfo.spStr,
-				currentPrice: goodsInfo.product.price,
-				number: goodsInfo.number,
-				status: 0,
-				...this.goodsDetail,
-				selectedProduct: goodsInfo,
-				brandId: this.goodsDetail.brand.id,
-			});
-
-			uni.navigateTo({
-				url: "/pages/pre-order/pre-order",
-			});
-		},
-
-		// 获取商品规格参数
-		getSpacification() {
-			if (!this.userId) {
-				uni.showModal({
-					title: "提示",
-					content: "您还未登录，请先登录",
-					success: ({ confirm }) => {
-						if (confirm) {
-							uni.navigateTo({
-								url: "/pages/login/login",
-							});
-						}
-					},
-				});
-
-				return;
-			}
-			return new Promise((resolve, reject) => {
-				if (this.showSpecification) {
-					const goodsInfo = this.$refs.specificationRef.getVal();
-					if (goodsInfo.number > goodsInfo.product.number) {
-						this.$showToast("该货品库存为" + goodsInfo.product.number);
-						reject();
-					}
-					resolve(goodsInfo);
-				} else {
-					this.showSpecification = true;
-				}
-			});
-		},
-
-		// 获取购物车数量
-		async getCarShopNumber() {
-			const res = await getCarShopNumberApi({
-				userId: this.userId,
-				brandId: this.goodsDetail.brand.id,
-			});
-			if (res.errno === 0) {
-				this.shopCarNumber = res.data;
-			}
-		},
-
-		// 获取品牌商的其他商品
-		async getBrandOtherGoods(id) {
-			if (!id) return;
-			const res = await goodsListApi({
-				page: 1,
-				size: 6,
-				brandId: id,
-			});
-
-			if (res.errno === 0) {
-				this.brandOtherGoods = res.data.goodsList;
-			} else {
-				uni.showLoading({
-					title: res.errmsg,
-					icon: "none",
-				});
-			}
-		},
-
-		// 添加收藏
-		async handleCollect() {
-			if (!this.userId) {
-				uni.showModal({
-					title: "提示",
-					content: "您还未登录，请先登录",
-					success: ({ confirm }) => {
-						if (confirm) {
-							uni.navigateTo({
-								url: "/pages/login/login",
-							});
-						}
-					},
-				});
-
-				return;
-			}
-
-			const res = await collectionApi({
-				userId: getUserId(),
-				type: 0,
-				valueId: this.goodsId,
-			});
-
-			if (res.errno === 0) {
-				uni.showToast({
-					title: res.data.type === "add" ? "收藏成功" : "取消收藏成功",
-					duration: 2000,
-				});
-
-				this.isCollect = !this.isCollect;
-			} else {
-				uni.showLoading({
-					title: "操作失败",
-					icon: "none",
-				});
-			}
-		},
-
-		handleKefu() {
-			uni.showLoading({
-				title: "暂未开放",
-				icon: "none",
-				duration: 1000,
-			});
-		},
-
-		// 获取移动的位置
-		initMovePosition() {
-			const _this = this;
-			const query = uni.createSelectorQuery().in(this);
-			query
-				.select(".eval")
-				.boundingClientRect((data) => {
-					_this.evalPosition = data.top;
-				})
-				.exec();
-
-			query
-				.select("#goods-detail")
-				.boundingClientRect((data) => {
-					_this.detailPosition = data.top;
-				})
-				.exec();
-		},
-
-		// 点击移动到对应的位置
-		moveToDetail(tag) {
-			const _this = this;
-			// this.currentMoveTag = tag;
-			switch (tag) {
-				case 0:
-					uni.pageScrollTo({
-						scrollTop: 0,
-						duration: 0,
-					});
-					break;
-				case 1:
-					uni.pageScrollTo({
-						scrollTop: _this.evalPosition - 40,
-						duration: 0,
-					});
-					break;
-
-				case 2:
-					uni.pageScrollTo({
-						scrollTop: _this.detailPosition - 40,
-						duration: 0,
-					});
-					break;
-			}
-		},
+	computed: {
+		goodsInfoDetail() {
+			return this.goodsDetail.info.detail
+				? marked(this.goodsDetail.info.detail)
+				: ''
+		}
 	},
 
 	watch: {
@@ -445,71 +250,277 @@ export default {
 			handler(value) {
 				if (value && this.brandOtherGoods) {
 					this.$nextTick(() => {
-						this.initMovePosition();
-					});
+						this.initMovePosition()
+					})
 				}
 			},
-
 			immediate: true,
-			deep: true,
+			deep: true
 		},
 
 		brandOtherGoods: {
 			handler(value) {
 				if (value && this.goodsDetail) {
 					this.$nextTick(() => {
-						this.initMovePosition();
-					});
+						this.initMovePosition()
+					})
 				}
 			},
-
 			immediate: true,
-			deep: true,
-		},
+			deep: true
+		}
 	},
+	mounted() { },
 
-	computed: {
-		goodsInfoDetail() {
-			return this.goodsDetail.info.detail
-				? marked(this.goodsDetail.info.detail)
-				: "";
+	methods: {
+		// 回退
+		handleBack() {
+			uni.navigateBack()
 		},
+		// 获取商品详情
+		async getGoodsDetail() {
+			uni.showLoading()
+			const res = await getGoodsDetailApi(this.goodsId, this.userId)
+			uni.hideLoading()
+			if (res.errno === 0) {
+				this.goodsDetail = res.data
+				this.isCollect = !!res.data.userHasCollect
+				this.getBrandOtherGoods(res.data.brand.id)
+				if (this.userId) {
+					this.getCarShopNumber()
+				}
+			}
+		},
+
+		// 加入购物车
+		async addShopCar() {
+			const goodsInfo = await this.getSpacification()
+
+			const data = {
+				userId: getUserId(),
+				goodsId: this.goodsDetail.info.id,
+				number: goodsInfo.number,
+				productId: goodsInfo.product.id
+			}
+
+			const res = await addShopCarApi(data)
+			if (res.errno === 0) {
+				uni.showToast({
+					title: '添加成功',
+					icon: 'none'
+				})
+				this.showSpecification = false
+				this.getCarShopNumber()
+			} else {
+				uni.showToast({
+					title: '购物车添加失败',
+					icon: 'none'
+				})
+			}
+		},
+		// 立即购买
+		async fastBuy() {
+			const goodsInfo = await this.getSpacification()
+			uni.setStorageSync(J_ONE_PAY_GOODS, {
+				currentGoodsImg: goodsInfo.product.url || this.goodsDetail.info.picUrl,
+				currentSpecification: goodsInfo.spStr,
+				currentPrice: goodsInfo.product.price,
+				number: goodsInfo.number,
+				status: 0,
+				...this.goodsDetail,
+				selectedProduct: goodsInfo,
+				brandId: this.goodsDetail.brand.id
+			})
+
+			uni.navigateTo({
+				url: '/pages/pre-order/pre-order'
+			})
+		},
+
+		// 获取商品规格参数
+		getSpacification() {
+			if (!this.userId) {
+				uni.showModal({
+					title: '提示',
+					content: '您还未登录，请先登录',
+					success: ({ confirm }) => {
+						if (confirm) {
+							uni.navigateTo({
+								url: '/pages/login/login'
+							})
+						}
+					}
+				})
+
+				return
+			}
+			return new Promise((resolve, reject) => {
+				if (this.showSpecification) {
+					const goodsInfo = this.$refs.specificationRef.getVal()
+					if (goodsInfo.number > goodsInfo.product.number) {
+						this.$showToast('该货品库存为' + goodsInfo.product.number)
+						reject()
+					}
+					resolve(goodsInfo)
+				} else {
+					this.showSpecification = true
+				}
+			})
+		},
+
+		// 获取购物车数量
+		async getCarShopNumber() {
+			const res = await getCarShopNumberApi({
+				userId: this.userId,
+				brandId: this.goodsDetail.brand.id
+			})
+			if (res.errno === 0) {
+				this.shopCarNumber = res.data
+			}
+		},
+
+		// 获取品牌商的其他商品
+		async getBrandOtherGoods(id) {
+			this.brandOtherGoods = []
+			// if (!id) return
+			// const res = await goodsListApi({
+			// 	page: 1,
+			// 	size: 6,
+			// 	brandId: id
+			// })
+			// if (res.errno === 0) {
+			// 	this.brandOtherGoods = res.data.goodsList
+			// } else {
+			// 	uni.showLoading({
+			// 		title: res.errmsg,
+			// 		icon: 'none'
+			// 	})
+			// }
+		},
+
+		// 添加收藏
+		async handleCollect() {
+			if (!this.userId) {
+				uni.showModal({
+					title: '提示',
+					content: '您还未登录，请先登录',
+					success: ({ confirm }) => {
+						if (confirm) {
+							uni.navigateTo({
+								url: '/pages/login/login'
+							})
+						}
+					}
+				})
+				return
+			}
+			const res = await collectionApi({
+				userId: getUserId(),
+				type: 0,
+				valueId: this.goodsId
+			})
+			if (res.errno === 0) {
+				uni.showToast({
+					title: res.data.type === 'add' ? '收藏成功' : '取消收藏成功',
+					duration: 2000
+				})
+				this.isCollect = !this.isCollect
+			} else {
+				uni.showLoading({
+					title: '操作失败',
+					icon: 'none'
+				})
+			}
+		},
+
+		handleKefu() {
+			uni.showLoading({
+				title: '暂未开放',
+				icon: 'none',
+				duration: 1000
+			})
+		},
+
+		// 获取移动的位置
+		initMovePosition() {
+			const _this = this
+			const query = uni.createSelectorQuery().in(this)
+			query
+				.select('.eval')
+				.boundingClientRect((data) => {
+					_this.evalPosition = data.top
+				})
+				.exec()
+
+			query
+				.select('#goods-detail')
+				.boundingClientRect((data) => {
+					console.log(_this.detailPosition)
+					_this.detailPosition = data.top
+				})
+				.exec()
+		},
+
+		// 点击移动到对应的位置
+		moveToDetail(tag) {
+			const _this = this
+			// this.currentMoveTag = tag;
+			switch (tag) {
+				case 0:
+					uni.pageScrollTo({
+						scrollTop: 0,
+						duration: 0
+					})
+					break
+				case 1:
+					uni.pageScrollTo({
+						scrollTop: _this.evalPosition - 40,
+						duration: 0
+					})
+					break
+				case 2:
+					console.log(_this.detailPosition)
+					uni.pageScrollTo({
+						scrollTop: _this.detailPosition - 40,
+						duration: 0
+					})
+					break
+			}
+		}
 	},
 
 	onPullDownRefresh() {
-		this.getGoodsDetail();
+		this.getGoodsDetail()
 		if (this.userId) {
-			this.getCarShopNumber();
+			this.getCarShopNumber()
 		}
-		uni.stopPullDownRefresh();
+		uni.stopPullDownRefresh()
 	},
 
 	onPageScroll(e) {
-		this.showTopNav = !!e.scrollTop;
-		this.scrollTop = e.scrollTop;
+		this.showTopNav = !!e.scrollTop
+		this.scrollTop = e.scrollTop
 
 		this.$nextTick(() => {
 			if (this.detailPosition) {
 				if (e.scrollTop < this.evalPosition - 60) {
-					this.currentMoveTag = 0;
+					this.currentMoveTag = 0
 				} else if (
 					e.scrollTop >= this.evalPosition - 60 &&
 					e.scrollTop < this.detailPosition - 60
 				) {
-					this.currentMoveTag = 1;
+					this.currentMoveTag = 1
 				} else if (e.scrollTop > this.detailPosition - 60) {
-					this.currentMoveTag = 2;
+					this.currentMoveTag = 2
 				}
-			} else {
-				if (e.scrollTop < this.evalPosition - 60) {
-					this.currentMoveTag = 0;
-				} else if (e.scrollTop >= this.evalPosition - 60) {
-					this.currentMoveTag = 1;
-				}
+			} else if (e.scrollTop < this.evalPosition - 60) {
+				this.currentMoveTag = 0
+			} else if (e.scrollTop >= this.evalPosition - 60) {
+				this.currentMoveTag = 1
 			}
-		});
-	},
-};
+		})
+	}
+}
 </script>
 
 <style lang="less" scoped>

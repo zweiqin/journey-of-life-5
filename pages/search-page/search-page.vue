@@ -1,190 +1,212 @@
 <template>
-  <!--pages/search-page/search-page.wxml-->
-  <view class="container">
-    <!-- 搜索框 -->
-    <view class="search-bar">
-      <view class="search-box">
-        <input
-          placeholder="输入关键字搜索"
-          class="sear-input"
-          confirm-type="search"
-          @confirm="toSearchProdPage"
-          @input="search"
-          :value="queryStr"
-        />
-        <image src="/static/images/icon/search.png" class="search-img"></image>
-      </view>
-      <text class="search-hint" @tap="goBackIndex">取消</text>
-    </view>
+	<view class="search-page-container">
+		<view class="search-container">
+			<BeeBack>
+				<BeeIcon :size="30" color="#1e1e1e" name="arrowleft"></BeeIcon>
+			</BeeBack>
+			<view class="search-wrapper">
+				<tui-icon name="search" :size="24" class="search-icon"></tui-icon>
+				<input
+					v-model="searchValue" type="text" confirm-type="search" placeholder="请输入您要搜索的商品"
+					@confirm="handelSearch(searchValue)"
+				/>
+				<tui-icon v-show="searchValue" name="close" :size="20" class="close-icon" @click="searchValue = ''"></tui-icon>
+			</view>
 
-    <view class="search-display" v-if="searchHistory[type].length">
-      <view class="history-search">
-        <view class="title-text history-line">
-          搜索历史
-          <view class="clear-history">
-            <image
-              src="/static/images/icon/clear-his.png"
-              @tap="clearSearch"
-            ></image>
-          </view>
-        </view>
-        <block v-for="(item, index) in searchHistory[type]" :key="index">
-          <view class="his-search-tags">
-            <text class="tags" @click="handleResearch(item)">{{ item }}</text>
-          </view>
-        </block>
-      </view>
+			<button class="uni-btn search-btn" @click="handelSearch(searchValue)">
+				搜索
+			</button>
+		</view>
 
-      <Article :data="data" :status="loadingStatus"></Article>
+		<view v-if="searchData && userId" class="search-history">
+			<view class="title-container">
+				<view class="search-title">搜索历史</view>
+				<view class="delete" @click="handleClearSearchHostory">
+					<tui-icon :size="15" name="delete"></tui-icon>
+					<text style="font-size: 28upx; color: #605d52">清空搜索</text>
+				</view>
+			</view>
 
-      <NoData v-show="isShowNoData" text="没有相关文章"></NoData>
+			<view v-if="searchData && searchData.historyKeywordList.length" class="keywords-wraper">
+				<view
+					v-for="item in searchData.historyKeywordList" :key="item.id" class="item"
+					@click="handelSearch(item.keyword)"
+				>
+					{{ item.keyword }}
+				</view>
+			</view>
 
-      <!-- <view class="history-search">
-        <view class="title-text history-line"> 猜你喜欢 </view>
-        <block>
-          <img
-            class="guess-img"
-            src="https://img0.baidu.com/it/u=1088731986,324059000&fm=253&fmt=auto?w=500&h=217"
-            alt=""
-          />
-        </block>
-      </view> -->
-    </view>
-  </view>
+			<view v-else class="keywords-wraper">
+				<view class="no-data">暂无搜索记录</view>
+			</view>
+		</view>
+
+		<view v-if="searchData" class="hot-search">
+			<view class="search-title"> 热门搜索 </view>
+
+			<view class="keywords-wraper">
+				<view v-for="item in searchData.hotKeywordList" :key="item.id" class="item" @click="handelSearch(item.keyword)">
+					{{
+						item.keyword }}
+				</view>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
-import {
-  J_ARTICLE_SEARCH_HISTORY,
-  J_GOODS_SEARCH_HISTORY,
-} from "../../constant";
-
-import { getIndustryInformationListApi } from "../../api/marketing-treasure-house";
-import Article from "../../pages/marketing-treasure-house/components/article-pane";
-import NoData from "../../components/no-data";
-import { debounce } from "../../utils";
-
-const mapUrl = {
-  article: "/pages/marketing-treasure-house/marketing-treasure-house",
-  goods: "/pages/index/index",
-};
-
-const mapCatch = {
-  article: J_ARTICLE_SEARCH_HISTORY,
-  goods: J_GOODS_SEARCH_HISTORY,
-};
-
+import { J_USER_ID } from 'constant'
+import { getUserId } from '../../utils'
+// import {
+// 	getUserSearchHistoryApi,
+// 	clearSearchSearchHistoryApi
+// } from '../../api/goods'
 export default {
-  components: {
-    Article,
-    NoData,
-  },
-  data() {
-    return {
-      hotSearchList: [],
-      prodName: "",
-      type: "",
-      searchHistory: {
-        article: uni.getStorageSync(J_ARTICLE_SEARCH_HISTORY) || [],
-      },
-      queryStr: "",
-      search: null,
-      data: [],
-      query: {
-        page: 1,
-        size: 10,
-      },
-      totalData: 0,
-      loadingStatus: "more",
-      isShowNoData: false,
-    };
-  },
-  onLoad: function (options) {
-    this.type = options.type;
-    this.search = debounce(this.handleSearch, 500);
-  },
+	name: 'SearchPage',
+	data() {
+		return {
+			searchValue: '',
+			keywordsList: ['沙发', '床', '儿童床', '办公椅', '茶几', '餐桌'],
+			searchData: null,
+			userId: uni.getStorageSync(J_USER_ID)
+		}
+	},
 
-  methods: {
-    // 点击取消
-    goBackIndex() {
-      uni.switchTab({
-        url: mapUrl[this.type],
-      });
-    },
+	onShow() {
+		// this.getUserSearchHistory()
+	},
 
-    // 点击确认
-    toSearchProdPage() {},
+	methods: {
+		async getUserSearchHistory() {
+			const { data } = await getUserSearchHistoryApi({
+				userId: uni.getStorageSync(J_USER_ID)
+			})
 
-    // 搜索
-    handleSearch(e) {
-      const { value } = e.detail;
-      value.trim() ? this.loadData(value) : (this.data = []);
-    },
+			this.searchData = data
+		},
 
-    // 搜索数据
-    loadData(value, isLoadMore) {
-      this.setHistory(value);
-      this.queryStr = value;
-      getIndustryInformationListApi({
-        ...this.query,
-        title: value,
-      }).then(({ data }) => {
-        this.totalData = data.total;
-        if (isLoadMore) {
-          this.data.push(...data.items);
-        } else {
-          this.data = data.items;
-        }
+		handelSearch(keywords) {
+			if (!keywords) {
+				uni.showToast({
+					title: '请输入搜索的商品',
+					icon: 'none'
+				})
+				return
+			}
+			uni.navigateTo({
+				url: '/pages/search-page/search-result?keywords=' + keywords
+			})
+		},
 
-        this.isShowNoData = this.data.length === 0;
-      });
-    },
+		handleBack() {
+			uni.switchTab({
+				url: '/pages/index/index'
+			})
+		},
 
-    // 重新缓存历史
-    setHistory(history) {
-      if (!this.searchHistory[this.type].includes(history)) {
-        this.searchHistory[this.type].push(history);
-        uni.setStorageSync(mapCatch[this.type], this.searchHistory[this.type]);
-      }
-    },
+		handleClearSearchHostory() {
+			const _this = this
+			clearSearchSearchHistoryApi({
+				userId: getUserId()
+			}).then(() => {
+				uni.showToast({
+					title: '清除成功'
+				})
 
-    // 删除历史
-    clearSearch() {
-      const _this = this;
-      uni.showModal({
-        title: "提示",
-        content: "清空全部历史吗？",
-        success: function (res) {
-          if (res.confirm) {
-            uni.setStorageSync(mapCatch[_this.type], []);
-            _this.searchHistory[_this.type] = [];
-          }
-        },
-      });
-    },
-
-    // 重新搜索
-    handleResearch(keywords) {
-      this.loadData(keywords);
-    },
-  },
-
-  onReachBottom() {
-    if (this.data.length < this.query.size) {
-      this.loadingStatus = "more";
-      return;
-    }
-
-    if (this.data.length >= this.totalData) {
-      this.loadingStatus = "noMore";
-      return;
-    }
-
-    this.query.page++;
-    this.loadData(this.queryStr, true);
-  },
-};
+				_this.getUserSearchHistory()
+			})
+		}
+	}
+}
 </script>
-<style>
-@import "./search-page.css";
+
+<style lang="less" scoped>
+.search-page-container {
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20upx 20upx 20upx 0;
+
+    .search-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #f6f6f5;
+      border-radius: 100px;
+      height: 72upx;
+      margin-right: 24upx;
+      padding: 20upx 24upx;
+      box-sizing: border-box;
+
+      .search-icon {
+        padding-right: 16upx;
+        margin-right: 16upx !important;
+        border-right: 1upx solid #ccc;
+      }
+
+      input {
+        font-size: 28upx;
+        color: #3a3629;
+        flex: 1;
+      }
+    }
+
+    .search-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 128upx;
+      height: 72upx;
+      border-radius: 100px;
+      background-color: #ffc117;
+      color: #fff;
+      font-size: 26upx;
+    }
+  }
+
+  .title-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .no-data {
+    flex: 1;
+    text-align: center;
+    padding: 30upx 0;
+    color: #9e9e9e;
+    font-size: 28upx;
+  }
+
+  .hot-search,
+  .search-history {
+    padding: 20upx;
+    box-sizing: border-box;
+  }
+
+  .search-title {
+    color: #9e9e9e;
+    font-size: 28upx;
+    margin-bottom: 20upx;
+  }
+
+  .keywords-wraper {
+    padding: 10upx;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .item {
+      padding: 7upx 32upx;
+      background-color: #f6f6f5;
+      border-radius: 100px;
+      margin-right: 20upx;
+      margin-bottom: 20upx;
+      color: #3a3629;
+      font-size: 28upx;
+    }
+  }
+}
 </style>

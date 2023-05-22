@@ -1,617 +1,672 @@
 {
-  "pages": [
-    {
-      "path": "pages/index/index",
-      "style": {
-        "backgroundTextStyle": "dark",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "商城"
-      }
-    },
-    {
-      "path": "pages/map-navigation/map-navigation",
-      "style": {
-        "navigationBarTitleText": "导航"
-      }
-    },
-    {
-      "path": "user/digital-store/newBusiness/index",
-      "style": {
-        "navigationBarTitleText": ""
-      }
-    },
-    {
-      "path": "user/digital-store/newBusiness/addUser/index",
-      "style": {
-        "navigationBarTitleText": ""
-      }
-    },
-    {
-      "path": "pages/red-envelope/red-envelope",
-      "style": {
-        "navigationBarTitleText": "地图红包"
-      }
-    },
-    {
-      "path": "pages/pay-result/pay-result",
-      "style": {
-        "navigationBarTitleText": "支付结果"
-      }
-    },
-    {
-      "path": "pages/marketing-treasure-house/marketing-treasure-house",
-      "style": {
-        "navigationBarTitleText": "达人广场"
-      }
-    },
-    {
-      "path": "pages/pre-order/pre-order",
-      "style": {
-        "navigationBarTitleText": "订单详情",
-        "usingComponents": {
-          "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
-          "uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
-        }
-      }
-    },
-    {
-      "path": "pages/qrcode/qrcode",
-      "style": {
-        "navigationBarTitleText": "扫码"
-      }
-    },
-    {
-      "path": "pages/user/user",
-      "style": {
-        "navigationBarTitleText": "会员中心"
-      }
-    },
-    {
-      "path": "pages/search-page/search-page",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "搜索",
-        "navigationBarTextStyle": "black"
-      }
-    },
-    {
-      "path": "pages/prod/prod",
-      "style": {
-        "navigationBarTitleText": "商品详情",
-        "usingComponents": {
-          "uni-number-box": "/uni_modules/uni-number-box/components/uni-number-box/uni-number-box"
-        }
-      }
-    },
-    {
-      "path": "pages/login/login",
-      "style": {
-        "navigationBarTitleText": "登录"
-      }
-    },
-    {
-      "path": "pages/reset-password/reset-password",
-      "style": {
-        "navigationBarTitleText": "重置密码"
-      }
-    },
-    {
-      "path": "pages/login/bind-phone",
-      "style": {
-        "navigationBarTitleText": "绑定手机号"
-      }
-    },
-    {
-      "path": "pages/prod-classify/prod-classify",
-      "style": {
-        "onReachBottomDistance": 0
-      }
-    },
-    {
-      "path": "pages/recent-news/recent-news",
-      "style": {
-        "backgroundTextStyle": "light",
-        "navigationBarTitleText": "最新公告",
-        "navigationBarTextStyle": "black",
-        "navigationBarBackgroundColor": "#fafafa"
-      }
-    },
-    {
-      "path": "pages/register/register"
-    },
-    {
-      "path": "pages/store/store",
-      "style": {
-        "navigationBarTitleText": "本地生活",
-        "enablePullDownRefresh": true
-      }
-    },
-    {
-      "path": "pages/index/shop/shop",
-      "style": {
-        "navigationBarTitleText": "巨蜂商城"
-      }
-    },
-    {
-      "path": "pages/index/hot/hot",
-      "style": {
-        "navigationBarTitleText": "爆款中心"
-      }
-    },
-    {
-      "path": "pages/index/market/market",
-      "style": {
-        "navigationBarTitleText": "数字商圈"
-      }
-    },
-    {
-      "path": "pages/index/earn-money/earn-money",
-      "style": {
-        "navigationBarTitleText": "赚钱中心"
-      }
-    },
-    {
-      "path": "pages/index/coupons/coupons",
-      "style": {
-        "navigationBarTitleText": "领券中心"
-      }
-    },
-    {
-      "path": "pages/choose-address/choose-address",
-      "style": {
-        "navigationBarTitleText": "选择定位"
-      }
-    },
-    {
-      "path": "pages/index/sign/sign",
-      "style": {
-        "navigationBarTitleText": "今日签到"
-      }
-    },
-    {
-      "path": "pages/index/sign/points-mall",
-      "style": {
-        "navigationBarTitleText": "积分商城"
-      }
-    },
-    {
-      "path": "pages/index/convenient-services/service-oil",
-      "style": {
-        "navigationBarTitleText": "加油"
-      }
-    },
-    {
-      "path": "pages/index/convenient-services/recharge",
-      "style": {
-        "navigationBarTitleText": "充值"
-      }
-    },
-    {
-      "path": "pages/index/convenient-services/amount",
-      "style": {
-        "navigationBarTitleText": "充值"
-      }
-    },
-    {
-      "path": "pages/index/convenient-services/tuanyouh5",
-      "style": {
-        "navigationBarTitleText": "加油"
-      }
-    }
-  ],
-  "tabBar": {
-    "selectedColor": "#FA5151",
-    "color": "#777777",
-    "backgroundColor": "#fff",
-    "borderStyle": "white",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "text": "商城",
-        "iconPath": "/static/images/tabbar/home.png",
-        "selectedIconPath": "/static/images/tabbar/home-active.png"
-      },
-      {
-        "pagePath": "pages/store/store",
-        "text": "本地生活",
-        "iconPath": "/static/images/tabbar/store.png",
-        "selectedIconPath": "/static/images/tabbar/store-active.png"
-      },
-      {
-        "pagePath": "pages/red-envelope/red-envelope",
-        "text": "抢红包",
-        "iconPath": "/static/images/tabbar/red-pack-active.png",
-        "selectedIconPath": "/static/images/tabbar/red-pack-active.png"
-      },
-      {
-        "pagePath": "pages/marketing-treasure-house/marketing-treasure-house",
-        "text": "达人广场",
-        "iconPath": "/static/images/tabbar/books.png",
-        "selectedIconPath": "/static/images/tabbar/books-active.png"
-      },
-      {
-        "pagePath": "pages/user/user",
-        "text": "会员中心",
-        "iconPath": "/static/images/tabbar/vip.png",
-        "selectedIconPath": "/static/images/tabbar/vip-active.png"
-      }
-    ]
-  },
-  "sitemapLocation": "sitemap.json",
-  "globalStyle": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "black",
-    "app-plus": {
-      "animationType": "pop-in",
-      "animationDuration": 500
-    }
-  },
-  "subPackages": [
-    {
-      "root": "user",
-      "pages": [
-        {
-          "path": "marketing-tools/red-envelope-distribution",
-          "style": {
-            "navigationBarTitleText": "红包发放"
-          }
-        },
-        {
-          "path": "info/detail",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {
-              "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
-              "uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
-            }
-          }
-        },
-        {
-          "path": "info/cropper",
-          "style": {
-            "navigationBarTitleText": "更换头像"
-          }
-        },
-        {
-          "path": "sever/shop-car",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "promotionCenter/index",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "site/site-manage",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "site/add-site",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "Collection/Goods-Collection",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "orderForm/order-form",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "orderForm/order-form-detail",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "subscription/subscription",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {
-              "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
-            }
-          }
-        },
-        {
-          "path": "sever/userUp",
-          "style": {
-            "navigationBarTitleText": "会员升级"
-          }
-        },
-        {
-          "path": "sever/memberUp",
-          "style": {
-            "navigationBarTitleText": "会员升级"
-          }
-        },
-        {
-          "path": "sever/coupon",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "digital-store/information-sentry",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {
-              "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
-            }
-          }
-        },
-        {
-          "path": "digital-store/marketing-portrait",
-          "style": {
-            "navigationBarTitleText": ""
-          }
-        },
-        {
-          "path": "digital-store/add",
-          "style": {
-            "navigationBarTitleText": ""
-          }
-        },
-        {
-          "path": "digital-store/choose-words"
-        },
-        {
-          "path": "digital-store/marketing-portrait",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "digital-store/business/index",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "digital-store/performance",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "digital-store/addperformance",
-          "style": {
-            "navigationBarTitleText": "",
-            "usingComponents": {}
-          }
-        },
-        {
-          "path": "marketing-tools/store-application"
-        },
-        {
-          "path": "marketing-tools/apply-vip-history"
-        },
-        {
-          "path": "marketing-tools/marketing-planner"
-        },
-        {
-          "path": "sever/pay-shop-card"
-        },
-        {
-          "path": "sever/view-history"
-        },
-        {
-          "path": "marketing-tools/contact-guide/index"
-        },
-        {
-          "path": "marketing-tools/contact-guide/my-cards",
-          "style": {
-            "navigationBarTitleText": "名片夹"
-          }
-        },
-        {
-          "path": "marketing-tools/contact-guide/create-namezcard",
-          "style": {
-            "navigationBarTitleText": "新建名片"
-          }
-        },
-        {
-          "path": "otherServe/voucher/index",
-          "style": {
-            "navigationBarTitleText": "代金劵"
-          }
-        },
-        {
-          "path": "otherServe/voucher/voucher-turnover",
-          "style": {
-            "navigationBarTitleText": "代金劵流水"
-          }
-        },
-        {
-          "path": "otherServe/voucher/recharge-history",
-          "style": {
-            "navigationBarTitleText": "充值记录"
-          }
-        },
-        {
-          "path": "otherServe/voucher/recharge",
-          "style": {
-            "navigationBarTitleText": "充值"
-          }
-        },
-        {
-          "path": "otherServe/voucher/recharge-give",
-          "style": {
-            "navigationBarTitleText": "代金劵转增"
-          }
-        },
-        {
-          "path": "marketing-tools/contact-guide/name-card-detail",
-          "style": {
-            "navigationBarTitleText": "我的名片"
-          }
-        },
-        {
-          "path": "marketing-tools/contact-guide/share-card",
-          "style": {
-            "navigationBarTitleText": "分享名片"
-          }
-        },
-        {
-          "path": "sever/regional-agent",
-          "style": {
-            "navigationBarTitleText": "申请区域代理"
-          }
-        }
-      ]
-    },
-    {
-      "root": "goods",
-      "pages": [
-        {
-          "path": "goods-detail"
-        }
-      ]
-    },
-    {
-      "root": "marketing-treasure-house",
-      "pages": [
-        {
-          "path": "article-list"
-        },
-        {
-          "path": "article-detail"
-        },
-        {
-          "path": "marketing-house",
-          "style": {
-            "navigationBarTitleText": "营销宝库"
-          }
-        },
-        {
-          "path": "daren-square/daren-center",
-          "style": {
-            "navigationBarTitleText": "我的达人"
-          }
-        },
-        {
-          "path": "daren-square/apply-daren",
-          "style": {
-            "navigationBarTitleText": "达人入驻"
-          }
-        },
-        {
-          "path": "daren-square/task-detail",
-          "style": {
-            "navigationBarTitleText": "任务详情"
-          }
-        },
-        {
-          "path": "talent-list/talent-list",
-          "style": {
-            "navigationBarTitleText": "巨蜂认证营销策划师"
-          }
-        },
-        {
-          "path": "detail/detail",
-          "style": {
-            "navigationBarTitleText": "达人详情"
-          }
-        }
-      ]
-    },
-    {
-      "root": "home",
-      "pages": [
-        {
-          "path": "activity-recommendation"
-        },
-        {
-          "path": "activity-detail"
-        },
-        {
-          "path": "ranking-list"
-        }
-      ]
-    },
-    // 2.0
-    {
-      "root": "pages/store",
-      "pages": [
-        {
-          "path": "detail/detail",
-          "style": {
-            "navigationBarTitleText": "门店详情"
-          }
-        },
-        {
-          "path": "fine-food/fine-food",
-          "style": {
-            "navigationBarTitleText": "美食饮品"
-          }
-        },
-        {
-          "path": "fine-food/food-nearby/food-nearby",
-          "style": {
-            "navigationBarTitleText": "附近美食"
-          }
-        },
-        {
-          "path": "goods-detail/goods-detail",
-          "style": {
-            "navigationBarTitleText": "商品详情"
-          }
-        },
-        {
-          "path": "order-detail/order-detail",
-          "style": {
-            "navigationBarTitleText": "订单详情"
-          }
-        },
-        {
-          "path": "apponit/apponit",
-          "style": {
-            "navigationBarTitleText": "预约"
-          }
-        }
-      ]
-    },
-    {
-      "root": "pages/index",
-      "pages": [
-        {
-          "path": "convenient-services/convenient-services",
-          "style": {
-            "navigationBarTitleText": "便民服务"
-          }
-        }
-      ]
-    }
-  ],
-  "easycom": {
-    "autoscan": true,
-    "custom": {
-      "tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue"
-    }
-  }
+	"pages": [
+		{
+			"path": "pages/store/store",
+			"style": {
+				"navigationBarTitleText": "本地生活",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"backgroundTextStyle": "dark",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTextStyle": "black",
+				"navigationBarTitleText": "商城"
+			}
+		},
+		{
+			"path": "pages/map-navigation/map-navigation",
+			"style": {
+				"navigationBarTitleText": "导航"
+			}
+		},
+		{
+			"path": "pages/jump/jump",
+			"style": {
+				"navigationBarTitleText": "跳转"
+			}
+		},
+		{
+			"path": "user/digital-store/newBusiness/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "user/digital-store/newBusiness/addUser/index",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+		{
+			"path": "pages/red-envelope/red-envelope",
+			"style": {
+				"navigationBarTitleText": "地图红包"
+			}
+		},
+		{
+			"path": "pages/pay-result/pay-result",
+			"style": {
+				"navigationBarTitleText": "支付结果"
+			}
+		},
+		{
+			"path": "pages/marketing-treasure-house/marketing-treasure-house",
+			"style": {
+				"navigationBarTitleText": "达人广场"
+			}
+		},
+		{
+			"path": "pages/pre-order/pre-order",
+			"style": {
+				"navigationBarTitleText": "订单详情",
+				"usingComponents": {
+					"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
+					"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
+				}
+			}
+		},
+		{
+			"path": "pages/qrcode/qrcode",
+			"style": {
+				"navigationBarTitleText": "扫码"
+			}
+		},
+		{
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "会员中心"
+			}
+		},
+		{
+			"path": "pages/search-page/search-page",
+			"style": {
+				"backgroundTextStyle": "light",
+				"navigationBarBackgroundColor": "#fff",
+				"navigationBarTitleText": "搜索",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/search-page/search-result",
+			"style": {
+				"navigationBarTitleText": "搜索商品"
+			}
+		},
+		{
+			"path": "pages/prod/prod",
+			"style": {
+				"navigationBarTitleText": "商品详情",
+				"usingComponents": {
+					"uni-number-box": "/uni_modules/uni-number-box/components/uni-number-box/uni-number-box"
+				}
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		// {
+		// 	"path": "pages/reset-password/reset-password",
+		// 	"style": {
+		// 		"navigationBarTitleText": "重置密码"
+		// 	}
+		// },
+		{
+			"path": "pages/login/bind-phone",
+			"style": {
+				"navigationBarTitleText": "绑定手机号"
+			}
+		},
+		{
+			"path": "pages/prod-classify/prod-classify",
+			"style": {
+				"onReachBottomDistance": 0
+			}
+		},
+		{
+			"path": "pages/recent-news/recent-news",
+			"style": {
+				"backgroundTextStyle": "light",
+				"navigationBarTitleText": "最新公告",
+				"navigationBarTextStyle": "black",
+				"navigationBarBackgroundColor": "#fafafa"
+			}
+		},
+		{
+			"path": "pages/register/register"
+		},
+		// {
+		// 	"path": "pages/store/store",
+		// 	"style": {
+		// 		"navigationBarTitleText": "本地生活",
+		// 		"enablePullDownRefresh": true
+		// 	}
+		// },
+		{
+			"path": "pages/index/shop/shop",
+			"style": {
+				"navigationBarTitleText": "巨蜂商城"
+			}
+		},
+		{
+			"path": "pages/index/hot/hot",
+			"style": {
+				"navigationBarTitleText": "爆款中心"
+			}
+		},
+		{
+			"path": "pages/index/market/market",
+			"style": {
+				"navigationBarTitleText": "数字商圈"
+			}
+		},
+		{
+			"path": "pages/index/earn-money/earn-money",
+			"style": {
+				"navigationBarTitleText": "赚钱中心"
+			}
+		},
+		{
+			"path": "pages/index/coupons/coupons",
+			"style": {
+				"navigationBarTitleText": "领券中心"
+			}
+		},
+		{
+			"path": "pages/choose-address/choose-address",
+			"style": {
+				"navigationBarTitleText": "选择定位"
+			}
+		},
+		{
+			"path": "pages/index/sign/sign",
+			"style": {
+				"navigationBarTitleText": "今日签到"
+			}
+		},
+		{
+			"path": "pages/index/sign/points-mall",
+			"style": {
+				"navigationBarTitleText": "积分商城"
+			}
+		},
+		{
+			"path": "pages/index/convenient-services/service-oil",
+			"style": {
+				"navigationBarTitleText": "加油"
+			}
+		},
+		{
+			"path": "pages/index/convenient-services/recharge",
+			"style": {
+				"navigationBarTitleText": "充值"
+			}
+		},
+		{
+			"path": "pages/index/convenient-services/amount",
+			"style": {
+				"navigationBarTitleText": "充值"
+			}
+		},
+		{
+			"path": "pages/index/convenient-services/tuanyouh5",
+			"style": {
+				"navigationBarTitleText": "加油"
+			}
+		}
+	],
+	"tabBar": {
+		"selectedColor": "#FA5151",
+		"color": "#777777",
+		"backgroundColor": "#fff",
+		"borderStyle": "white",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "商城",
+				"iconPath": "/static/images/tabbar/home.png",
+				"selectedIconPath": "/static/images/tabbar/home-active.png"
+			},
+			{
+				"pagePath": "pages/store/store",
+				"text": "本地生活",
+				"iconPath": "/static/images/tabbar/store.png",
+				"selectedIconPath": "/static/images/tabbar/store-active.png"
+			},
+			{
+				"pagePath": "pages/red-envelope/red-envelope",
+				"text": "抢红包",
+				"iconPath": "/static/images/tabbar/red-pack-active.png",
+				"selectedIconPath": "/static/images/tabbar/red-pack-active.png"
+			},
+			{
+				"pagePath": "pages/marketing-treasure-house/marketing-treasure-house",
+				"text": "达人广场",
+				"iconPath": "/static/images/tabbar/books.png",
+				"selectedIconPath": "/static/images/tabbar/books-active.png"
+			},
+			{
+				"pagePath": "pages/user/user",
+				"text": "会员中心",
+				"iconPath": "/static/images/tabbar/vip.png",
+				"selectedIconPath": "/static/images/tabbar/vip-active.png"
+			}
+		]
+	},
+	"sitemapLocation": "sitemap.json",
+	"globalStyle": {
+		"backgroundTextStyle": "light",
+		"navigationBarBackgroundColor": "#fff",
+		"navigationBarTitleText": "WeChat",
+		"navigationBarTextStyle": "black",
+		"app-plus": {
+			"animationType": "pop-in",
+			"animationDuration": 500
+		}
+	},
+	"subPackages": [
+		{
+			"root": "user",
+			"pages": [
+				{
+					"path": "view",
+					"style": {
+						"navigationBarTitleText": ""
+					}
+				},
+				{
+					"path": "marketing-tools/red-envelope-distribution/index",
+					"style": {
+						"navigationBarTitleText": "红包发放"
+					}
+				},
+				{
+					"path": "marketing-tools/red-envelope-distribution/publication-type",
+					"style": {
+						"navigationBarTitleText": "发放类型"
+					}
+				},
+				{
+					"path": "marketing-tools/red-envelope-distribution/publication-template",
+					"style": {
+						"navigationBarTitleText": "发放模板"
+					}
+				},
+				{
+					"path": "info/detail",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {
+							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
+							"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
+						}
+					}
+				},
+				{
+					"path": "info/cropper",
+					"style": {
+						"navigationBarTitleText": "更换头像"
+					}
+				},
+				{
+					"path": "sever/shop-car",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "promotionCenter/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "site/site-manage",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "site/add-site",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "Collection/Goods-Collection",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "orderForm/order-form",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "orderForm/order-form-detail",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "subscription/subscription",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {
+							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
+						}
+					}
+				},
+				{
+					"path": "sever/userUp",
+					"style": {
+						"navigationBarTitleText": "会员升级"
+					}
+				},
+				// {
+				// 	"path": "sever/memberUp",
+				// 	"style": {
+				// 		"navigationBarTitleText": "会员升级"
+				// 	}
+				// },
+				{
+					"path": "sever/application-record/application-record",
+					"style": {
+						"navigationBarTitleText": "申请记录"
+					}
+				},
+				{
+					"path": "sever/fan-list",
+					"style": {
+						"navigationBarTitleText": "粉丝列表"
+					}
+				},
+				{
+					"path": "sever/related-merchants",
+					"style": {
+						"navigationBarTitleText": "关联商家"
+					}
+				},
+				{
+					"path": "sever/coupon",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "digital-store/information-sentry",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {
+							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
+						}
+					}
+				},
+				{
+					"path": "digital-store/marketing-portrait",
+					"style": {
+						"navigationBarTitleText": ""
+					}
+				},
+				{
+					"path": "digital-store/add",
+					"style": {
+						"navigationBarTitleText": ""
+					}
+				},
+				{
+					"path": "digital-store/choose-words"
+				},
+				{
+					"path": "digital-store/marketing-portrait",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "digital-store/business/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "digital-store/performance",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "digital-store/addperformance",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "marketing-tools/store-application"
+				},
+				// {
+				// 	"path": "marketing-tools/apply-vip-history"
+				// },
+				{
+					"path": "marketing-tools/marketing-planner"
+				},
+				{
+					"path": "sever/pay-shop-card"
+				},
+				{
+					"path": "sever/view-history"
+				},
+				{
+					"path": "marketing-tools/contact-guide/index"
+				},
+				{
+					"path": "marketing-tools/contact-guide/my-cards",
+					"style": {
+						"navigationBarTitleText": "名片夹"
+					}
+				},
+				{
+					"path": "marketing-tools/contact-guide/create-namezcard",
+					"style": {
+						"navigationBarTitleText": "新建名片"
+					}
+				},
+				{
+					"path": "otherServe/voucher/index",
+					"style": {
+						"navigationBarTitleText": "代金劵"
+					}
+				},
+				{
+					"path": "otherServe/voucher/voucher-turnover",
+					"style": {
+						"navigationBarTitleText": "代金劵流水"
+					}
+				},
+				{
+					"path": "otherServe/voucher/recharge-history",
+					"style": {
+						"navigationBarTitleText": "充值记录"
+					}
+				},
+				{
+					"path": "otherServe/voucher/recharge",
+					"style": {
+						"navigationBarTitleText": "充值"
+					}
+				},
+				{
+					"path": "otherServe/voucher/recharge-give",
+					"style": {
+						"navigationBarTitleText": "代金劵转增"
+					}
+				},
+				{
+					"path": "marketing-tools/contact-guide/name-card-detail",
+					"style": {
+						"navigationBarTitleText": "我的名片"
+					}
+				},
+				{
+					"path": "marketing-tools/contact-guide/share-card",
+					"style": {
+						"navigationBarTitleText": "分享名片"
+					}
+				},
+				{
+					"path": "sever/regional-agent",
+					"style": {
+						"navigationBarTitleText": "申请区域代理"
+					}
+				}
+			]
+		},
+		{
+			"root": "goods",
+			"pages": [
+				{
+					"path": "goods-detail"
+				}
+			]
+		},
+		{
+			"root": "marketing-treasure-house",
+			"pages": [
+				{
+					"path": "article-list"
+				},
+				{
+					"path": "article-detail"
+				},
+				{
+					"path": "marketing-house",
+					"style": {
+						"navigationBarTitleText": "营销宝库"
+					}
+				},
+				{
+					"path": "daren-square/daren-center",
+					"style": {
+						"navigationBarTitleText": "我的达人"
+					}
+				},
+				{
+					"path": "daren-square/apply-daren",
+					"style": {
+						"navigationBarTitleText": "达人入驻"
+					}
+				},
+				{
+					"path": "daren-square/task-detail",
+					"style": {
+						"navigationBarTitleText": "任务详情"
+					}
+				},
+				{
+					"path": "talent-list/talent-list",
+					"style": {
+						"navigationBarTitleText": "巨蜂认证营销策划师"
+					}
+				},
+				{
+					"path": "detail/detail",
+					"style": {
+						"navigationBarTitleText": "达人详情"
+					}
+				}
+			]
+		},
+		{
+			"root": "home",
+			"pages": [
+				{
+					"path": "activity-recommendation"
+				},
+				{
+					"path": "activity-detail"
+				},
+				{
+					"path": "ranking-list"
+				}
+			]
+		},
+		// 2.0
+		{
+			"root": "pages/store",
+			"pages": [
+				{
+					"path": "detail/detail",
+					"style": {
+						"navigationBarTitleText": "门店详情"
+					}
+				},
+				{
+					"path": "fine-food/fine-food",
+					"style": {
+						"navigationBarTitleText": "美食饮品"
+					}
+				},
+				{
+					"path": "fine-food/food-nearby/food-nearby",
+					"style": {
+						"navigationBarTitleText": "附近美食"
+					}
+				},
+				{
+					"path": "goods-detail/goods-detail",
+					"style": {
+						"navigationBarTitleText": "商品详情"
+					}
+				},
+				{
+					"path": "order-detail/order-detail",
+					"style": {
+						"navigationBarTitleText": "订单详情"
+					}
+				},
+				{
+					"path": "apponit/apponit",
+					"style": {
+						"navigationBarTitleText": "预约"
+					}
+				}
+			]
+		},
+		{
+			"root": "pages/index",
+			"pages": [
+				{
+					"path": "convenient-services/convenient-services",
+					"style": {
+						"navigationBarTitleText": "便民服务"
+					}
+				}
+			]
+		}
+	],
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue"
+		}
+	}
 }
