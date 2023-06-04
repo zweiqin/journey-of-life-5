@@ -33,15 +33,22 @@ export default {
 		FieldPaneSA
 	},
 	onLoad(options) {
-		this.form.accountInfo.code = options.code || ''
+		// this.form.accountInfo.code = options.code || ''
+		this.packageId = options.packageId * 1
 	},
 	data() {
 		return {
 			applyStoreOne: [
 				{
+					label: '营销策划师所在区域：',
+					field: 'plannerArea',
+					type: 'area',
+					placeholder: '请选择营销策划师所在区域'
+				},
+				{
 					label: '营销策划师邀请码：',
 					field: 'code',
-					type: 'input',
+					type: 'inputSelect',
 					placeholder: '可用于绑定营销策划师'
 				},
 				{
@@ -146,15 +153,12 @@ export default {
 				storeInfo: {},
 				imgs: {}
 			},
-
-			ticketsId: null,
-			showApplyBtn: true
+			packageId: ''
 		}
 	},
 
 	methods: {
 		handleSaveImg(field, imgUrl) {
-			console.log(field, imgUrl)
 			this.form.imgs[field] = imgUrl
 			this.$forceUpdate()
 		},
@@ -166,8 +170,13 @@ export default {
 				...this.form.storeInfo,
 				...this.form.accountInfo,
 				userId: getUserId(),
-				longitude: this.form.storeInfo.lonAndLatString.split(',')[0],
-				latitude: this.form.storeInfo.lonAndLatString.split(',')[0]
+				longitude: this.form.storeInfo.lonAndLatString ? this.form.storeInfo.lonAndLatString.split(',')[0] : '',
+				latitude: this.form.storeInfo.lonAndLatString ? this.form.storeInfo.lonAndLatString.split(',')[1] : '',
+				packageId: this.packageId
+			}
+			if (!data.code) {
+				this.$showToast('缺少邀请码')
+				return
 			}
 			if (!data.username) {
 				this.$showToast('请输入要登录的帐号')
@@ -219,6 +228,7 @@ export default {
 				this.$showToast('请上传法人身份证国徽面')
 				return
 			}
+			if (!data.packageId) return this.$showToast('缺少套餐信息')
 			// getAddressLongitudeAndLatitude(data.address.replace('-', '')).then((res) => {
 			// 	data.longitude = res.result.location.lng
 			// 	data.latitude = res.result.location.lat

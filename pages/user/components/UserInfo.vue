@@ -2,7 +2,7 @@
 	<view class="user-info-wrapper">
 		<view class="default-info">
 			<BeeAvatar
-				:size="80" :src="userInfo.userId ? getBeeUrl(userInfo.avatarUrl) : require('../../../static/user-center/default-avatar.png')"
+				:size="80" :src="userInfo.userId ? common.seamingImgUrl(userInfo.avatarUrl) : require('../../../static/user-center/default-avatar.png')"
 				@click="go(userInfo.userId ? '/user/info/detail' : '/pages/login/login')"
 			>
 			</BeeAvatar>
@@ -21,14 +21,14 @@
 				<view class="value">{{ common.explainMembership(userInfo.roleIds) || '--' }}</view>
 				<view class="title">会员类型</view>
 			</view>
-			<view class="item">
-
+			<view class="item" @click="go('/user/otherServe/voucher/index')">
 				<view class="value">{{ userInfo.voucherNumber ? transformNumber(userInfo.voucherNumber) : '0.00' }}</view>
 				<view class="title">代金券</view>
 			</view>
-			<view class="item">
+			<view class="item" @click="go('/user/otherServe/withdrawal/index?type=1')">
 				<view class="value">{{ userInfo.commission || '0.00' }}</view>
 				<view class="title">收入佣金</view>
+				<view style="font-size: 24upx;color: #999999;">去提现 ></view>
 			</view>
 		</view>
 	</view>

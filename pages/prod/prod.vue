@@ -4,8 +4,8 @@
 		<view class="carousel-wrapper">
 			<Carousel
 				:list="goodsDetail.info.gallery.length
-					? goodsDetail.info.gallery
-					: [ goodsDetail.info.picUrl.includes('http') ? goodsDetail.info.picUrl : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + goodsDetail.info.picUrl ]
+					? goodsDetail.info.gallery.map(i => common.seamingImgUrl(i))
+					: [ common.seamingImgUrl(goodsDetail.info.picUrl) ]
 				" :height="390" :top="0" :radius="0"
 			></Carousel>
 
@@ -49,7 +49,15 @@
 		</view>
 
 		<view class="pane goods-info">
-			<view class="detail-price">￥<text class="price-text">{{ goodsDetail.info.counterPrice }}</text>起</view>
+			<view class="detail-price" style="display: flex;align-items: center;">
+				<text style="margin-right: 20upx;">￥<text class="price-text">{{ goodsDetail.info.counterPrice }}</text>起</text>
+				<text
+					v-if="goodsDetail.info.voucherNum"
+					style="height: 100%;padding: 6upx 12upx;background-color: #f0f0f0;border-radius: 22upx;vertical-align: middle;"
+				>
+					可使用{{ goodsDetail.info.voucherNum }}代金券抵扣
+				</text>
+			</view>
 
 			<view class="goods-name">
 				{{ goodsDetail.info.name }}
@@ -57,7 +65,10 @@
 
 			<view class="salsed">
 				<text>月销100+</text>
-				<image class="share-tran" src="../../static/images/detail/share-tran.png" mode="" @click="$showToast('功能未开放', 'none')" />
+				<image
+					class="share-tran" src="../../static/images/detail/share-tran.png" mode=""
+					@click="$showToast('功能未开放', 'none')"
+				/>
 			</view>
 
 			<!-- <view class="sub-info">
@@ -86,7 +97,10 @@
 			<!-- 店铺信息 -->
 			<view v-if="goodsDetail.brand.name" class="brand-wrapper">
 				<view class="top">
-					<image v-if="goodsDetail.brand.picUrl" class="image" :src="goodsDetail.brand.picUrl" mode="" />
+					<image
+						v-if="goodsDetail.brand.picUrl" class="image" :src="common.seamingImgUrl(goodsDetail.brand.picUrl)"
+						mode=""
+					/>
 					<view v-else class="image image-avatar">
 						{{
 							goodsDetail.brand.name
@@ -122,7 +136,7 @@
 						v-for="item in brandOtherGoods" :key="item.id" class="item"
 						@click="go('/pages/prod/prod?goodsId=' + item.id)"
 					>
-						<image :src="item.picUrl" mode="" />
+						<image :src="common.seamingImgUrl(item.picUrl)" mode="" />
 
 						<view class="recommend-goods-name">{{ item.name }} </view>
 

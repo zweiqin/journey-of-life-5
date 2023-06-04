@@ -39,7 +39,6 @@
 <script>
 import { getRedEnvelopeListApi, receiveRedEnvelopeApi, getWrapRedReleaseApi, addWrapRedReceiveApi } from '../../api/user'
 import { delayedLoginStatus, getUserId } from '../../utils'
-import { J_LOACTION } from '../../constant'
 // import Controls from './cpns/Controls.vue'
 
 export default {
@@ -73,29 +72,27 @@ export default {
 	},
 
 	created() {
-		this.getLoaction()
+		// this.getLoaction()
 	},
 
 	destroyed() {
-		uni.removeStorageSync(J_LOACTION)
 	},
 
 	methods: {
 		getRedEnvelopeList() {
 			uni.getLocation({
 				type: 'gcj02',
-				altitude: true,
-				geocode: false,
-				highAccuracyExpireTime: 2100,
-				timeout: 5,
-				cacheTimeout: 2100,
-				accuracy: 'high',
-				isHighAccuracy: true,
 				success: (result) => {
+					this.longitude = result.longitude * 1
+					this.latitude = result.latitude * 1
+					// this.longitude = 113.06092
+					// this.latitude = 22.89223
+					console.log(result)
 					getWrapRedReleaseApi({
-						// ...this.$store.getters.lonAndLat
 						longitude: result.longitude * 1,
 						latitude: result.latitude * 1
+						// longitude: 113.06092,
+						// latitude: 22.89223
 					}).then((res) => {
 						this.allMarks = res.data
 						console.log(this.allMarks)
@@ -106,7 +103,7 @@ export default {
 								id: redPack.id,
 								latitude: redPack.latitude,
 								longitude: redPack.longitude,
-								title: redPack.brandName + '的红包',
+								title: redPack.remark + '的红包',
 								width: 40,
 								height: 50,
 								anchor: {
@@ -124,7 +121,7 @@ export default {
 								id: redPack.id,
 								latitude: redPack.latitude,
 								longitude: redPack.longitude,
-								title: redPack.brandName + '的红包',
+								title: redPack.remark + '的红包',
 								width: 80,
 								height: 50,
 								anchor: {
@@ -146,69 +143,42 @@ export default {
 						icon: 'none'
 					})
 				}
-
 			})
 		},
 
 		handleReceive(e) {
 			console.log(e)
 			if (!getUserId()) return
-			const _this = this
 			const { markerId } = e.detail
 			if (markerId) {
-				const currentMark = this.allMarks.find((item) => item.id === markerId)
+				const currentMark = this.allMarks.find((item) => item.id == markerId)
 				if (currentMark) {
 					this.redForm = currentMark
-					// this.showRedPackage = true
-				}
-				uni.getLocation({
-					type: 'gcj02',
-					success(res) {
-						addWrapRedReceiveApi({
-							id: currentMark.id,
-							userId: getUserId()
-						}).then(() => {
-							_this.showRedPackage = true
-							_this.getRedEnvelopeList()
-						})
-					},
-					fail: () => {
-						uni.showToast({
-							title: '领取失败',
-							duration: 2000,
-							icon: 'none'
-						})
-					}
-				})
-			}
-		},
-
-		getLoaction() {
-			const locationInfo = uni.getStorageSync(J_LOACTION)
-			if (locationInfo) {
-				this.latitude = locationInfo.latitude
-				this.longitude = locationInfo.longitude
-				return
-			}
-			const _this = this
-			uni.getLocation({
-				type: 'gcj02',
-				success(res) {
-					_this.longitude = res.longitude * 1 + 0.001
-					_this.latitude = res.latitude * 1 + 0.001
-
-					uni.setStorageSync(J_LOACTION, {
-						latitude: res.latitude,
-						longitude: res.longitude
+					addWrapRedReceiveApi({
+						id: currentMark.id,
+						userId: getUserId()
+					}).then(() => {
+						this.showRedPackage = true
+						this.getRedEnvelopeList()
 					})
-
-					location.reload()
-				},
-				fail(err) {
-					_this.$showToast('获取定位失败，请确保您开启了定位')
 				}
-			})
+			}
 		},
+
+		// getLoaction() {
+		// 	uni.getLocation({
+		// 		type: 'gcj02',
+		// 		success(res) {
+		// 			this.longitude = res.longitude * 1 + 0.001
+		// 			this.latitude = res.latitude * 1 + 0.001
+		// 			// location.reload()
+		// 		},
+		// 		fail(err) {
+		// 			console.log(err)
+		// 			this.$showToast('获取定位失败，请确保您开启了定位')
+		// 		}
+		// 	})
+		// },
 
 		handleClose() {
 			this.showRedPackage = false

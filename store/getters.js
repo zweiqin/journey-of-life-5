@@ -1,8 +1,11 @@
 export default {
-  // 当前地址
-  currentLocation: (state) => state.location.currentLocation,
-  // 当前定位的详细地址
-  defaultLocation: (state) => state.location.defaultLocation,
-  // 当前经纬度
-  lonAndLat: (state) => state.location.lonAndLat,
-};
+	// 位置
+	currentCity: (state) => state.location.currentCity,
+	detailAddress: (state) => state.location.detailAddress,
+
+	// 聊天
+	customerServiceInfo: (state) => state.customerService.customerServiceInfo,
+	chatListData: (state) => state.customerService.chatListData,
+	wsHandleInfo: (state) => state.customerService.wsHandleInfo,
+	wsHandle: (state) => state.customerService.wsHandle
+}

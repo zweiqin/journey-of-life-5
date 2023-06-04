@@ -198,6 +198,7 @@ export default {
 				this.areaInfo.province.text +
 				this.areaInfo.city.text +
 				this.areaInfo.county.text
+			console.log({ ...this.areaInfo, area: this.areaString })
 			this.$emit('confirm', { ...this.areaInfo, area: this.areaString })
 			this.$refs.popup.close()
 		}

@@ -3,30 +3,30 @@
 		<!-- 头部 -->
 		<view class="header">
 			<JBack width="50" dark height="50" style="margin-top: 8upx"></JBack>
-			<h2 class="">确认订单</h2>
+			<h2 class="">确认预约</h2>
 		</view>
 
 		<!-- 收货信息 -->
-		<view v-if="defaultAddress" class="consignee-info">
-			<view class="pane">
-				<view class="name">
-					<view>
-						收货人：{{ defaultAddress.name }} {{ defaultAddress.mobile }}
+		<view v-if="type === 'mall'">
+			<view v-if="defaultAddress" class="consignee-info">
+				<view class="pane">
+					<view class="name">
+						<view>
+							收货人：{{ defaultAddress.name }} {{ defaultAddress.mobile }}
+						</view>
+					</view>
+					<view @click="handleChooseAddress">
+						更换
+						<JIcon width="32" height="32" type="right-arrow"></JIcon>
 					</view>
 				</view>
-				<view @click="handleChooseAddress">
-					更换
-					<JIcon width="32" height="32" type="right-arrow"></JIcon>
-				</view>
+				<view class="address"> 地址：{{ defaultAddress.detailedAddress }} </view>
+				<view class="no-data"> </view>
 			</view>
-
-			<view class="address"> 地址：{{ defaultAddress.detailedAddress }} </view>
-			<view class="no-data"> </view>
-		</view>
-
-		<view v-else class="address-null" @click="handleChooseAddress">
-			<view>请选择收货地址</view>
-			<JIcon width="32" height="32" type="right-arrow"></JIcon>
+			<view v-else class="address-null" @click="handleChooseAddress">
+				<view>请选择收货地址</view>
+				<JIcon width="32" height="32" type="right-arrow"></JIcon>
+			</view>
 		</view>
 
 		<!-- 商品信息 -->
@@ -38,10 +38,10 @@
 				</view>
 				<Goods
 					v-for="item in brand.brandCartgoods" :key="item.id" :name="item.goodsName" :price="item.price"
-					:img-url="item.picUrl" :desc="item.desc" read-only
+					:img-url="common.seamingImgUrl(item.picUrl)" :desc="item.desc" read-only
 				></Goods>
 
-				<view v-if="brand.brandName === '巨蜂自营'" class="line-pane">
+				<view v-if="brand.brandId === 1001079" class="line-pane">
 					<view class="title">是否使用代金劵</view>
 					<view class="desc" style="color: #999">
 						<label style="display: flex; align-items: center" @click="handleUserVoucher(index)">
@@ -71,7 +71,10 @@
 					￥{{ payOrderInfo.actualPrice }}
 				</text>
 			</view>
-			<button class="uni-btn pay-btn" @click="handleToPay">立即支付</button>
+			<button class="uni-btn pay-btn" @click="handleToPay">
+				<text v-if="type === 'mall'">立即支付</text>
+				<text v-else-if="type === 'reservation'">确认预约</text>
+			</button>
 		</view>
 	</view>
 </template>
@@ -91,10 +94,10 @@ export default {
 		Goods
 	},
 
-	onLoad() {
+	onLoad(options) {
+		this.type = options.type || '' // mall商城和本地生活、reservation预约
 		this.getGoods()
 		this.getAddress()
-
 		getVoucherNumberApi({ userId: getUserId() }).then(({ data }) => {
 			this.voucherNumber = data[0].number
 		})
@@ -109,6 +112,7 @@ export default {
 
 	data() {
 		return {
+			type: '',
 			goodsList: [],
 			totalPrice: 0,
 			isNoAddress: false,
@@ -123,7 +127,7 @@ export default {
 		// 获取本地的购物车数据
 		getGoods() {
 			const payGoodsInfo = uni.getStorageSync(J_TWO_PAY_GOODS) || {}
-			this.goodsList = payGoodsInfo.cardsInfo
+			this.goodsList = payGoodsInfo.cardsInfo.filter((item) => item.brandCartgoods && item.brandCartgoods.length)
 			this.totalPrice = payGoodsInfo.pay
 		},
 		// 获取地址信息
@@ -136,11 +140,8 @@ export default {
 					_this.isNoAddress = true
 					return
 				}
-
 				const defaultAddress = data.find((item) => !!item.isDefault)
-
 				_this.defaultAddress = defaultAddress || data[0]
-
 				if (_this.defaultAddress) {
 					this.handleBuildPayCount()
 				}
@@ -161,14 +162,12 @@ export default {
 				...currentBrand,
 				useVoucher: !currentBrand.useVoucher
 			})
-
 			this.handleBuildPayCount()
 		},
 
 		// 获取数据
 		getPostData() {
 			const cartDtoList = []
-
 			for (const item of this.goodsList) {
 				console.log(item)
 				cartDtoList.push({
@@ -178,13 +177,11 @@ export default {
 					useBalance: false
 				})
 			}
-
 			const subData = {
 				userId: getUserId(),
 				addressId: this.defaultAddress.id,
 				cartDtoList
 			}
-
 			return subData
 		},
 
@@ -206,32 +203,41 @@ export default {
 				this.$showToast('请选择收货地址')
 				return
 			}
-
-			// return;
-
-			payAllGoodsSubmit(this.getPostData()).then(({ data }) => {
-				payOrderGoodsApi({
-					orderNo: data.orderSn,
-					userId: getUserId(),
-					payType: 1
-				}).then((res) => {
-					const payData = JSON.parse(res.h5PayUrl)
-					const form = document.createElement('form')
-					form.setAttribute('action', payData.url)
-					form.setAttribute('method', 'POST')
-					const data = JSON.parse(payData.data)
-					let input
-					for (const key in data) {
-						input = document.createElement('input')
-						input.name = key
-						input.value = data[key]
-						form.appendChild(input)
-					}
-					document.body.appendChild(form)
-					form.submit()
-					document.body.removeChild(form)
+			if (this.type === 'mall') {
+				payAllGoodsSubmit(this.getPostData()).then(({ data }) => {
+					payOrderGoodsApi({
+						orderNo: data.orderSn,
+						userId: getUserId(),
+						payType: 1
+					}).then((res) => {
+						const payData = JSON.parse(res.h5PayUrl)
+						const form = document.createElement('form')
+						form.setAttribute('action', payData.url)
+						form.setAttribute('method', 'POST')
+						const data = JSON.parse(payData.data)
+						let input
+						for (const key in data) {
+							input = document.createElement('input')
+							input.name = key
+							input.value = data[key]
+							form.appendChild(input)
+						}
+						document.body.appendChild(form)
+						form.submit()
+						document.body.removeChild(form)
+					})
 				})
-			})
+			} else if (this.type === 'reservation') {
+				payAllGoodsSubmit(this.getPostData()).then(({ data }) => {
+					// { "orderId": 566, "orderSn": "20230603506567" }
+					this.$showToast('预约成功')
+					setTimeout(() => {
+						uni.redirectTo({
+							url: '/user/merchant-orders/order-form-detail?id=' + data.orderId
+						})
+					}, 2000)
+				})
+			}
 		}
 	}
 }

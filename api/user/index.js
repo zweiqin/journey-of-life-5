@@ -160,9 +160,9 @@ export const payTryStoreAndYingApi = (data) => RuanRequest('/levelPay/TryStorePr
 // 后续操作
 export const houxucaozuoApi = (data) => RuanRequest('/userUpInfo/signin', data, 'get')
 
-// 优惠劵
-// 查询用户优惠劵
-export const getCouponListApi = (data) => RuanRequest('/coupon/getUserCoupon', data, 'get')
+// // 优惠劵
+// // 查询用户优惠劵
+// export const getUserCouponListApi = (data) => RuanRequest('/coupon/getUserCoupon', data, 'get')
 
 // 代金劵
 // 获取代金劵配置
@@ -193,11 +193,11 @@ export const getVoucherTansformApi = (data) => RuanRequest('/voucher/getVoucherC
 export const getAccountVoucherHistoryTimes = (data) => RuanRequest('/voucher/getMoney', data, 'get')
 
 /**
- * 推广码
+ * 邀请码
  */
 
-// 获取推广码
-export const getExtensionCodeApi = (data) => RuanRequest('/qrCode/getQrCodeByH5', data, 'get')
+// 获取邀请码
+export const getQrCodeByH5Api = (data) => RuanRequest('/qrCode/getQrCodeByH5', data, 'get')
 
 // // 绑定上级
 // export const bindLastUserApi = (data) => RuanRequest('/bindUser/add', data)
@@ -231,6 +231,22 @@ export const applyRegionagentApi = (data) => RuanRequest('/regionagent/saveRegio
 
 // 查询区域代理状态
 export const getApplyRegionagentStatusApi = (data) => RuanRequest('/regionagent/queryIsApproved', data, 'get')
+
+/**
+ * 页面或总体接口
+ */
+
+// 查询H5的用户角色授权菜单
+export const getRolePermissionMenuApi = (data) => RuanRequest('/rolePermission/h5RoleMenu', data, 'get')
+
+// 门店分类树
+export const getStoreTypeTreeApi = (data) => RuanRequest('/dtsStoreType/typeTree', data, 'get')
+
+// 区域编码ID调用下级区域
+export const getAreaListOneApi = (data) => RuanRequest('/dtsArea/listOne', data, 'get')
+
+// 商品类别
+export const getGoodsTypeApi = (data) => RuanRequest('/dtsStoreType/goodsType', data, 'get')
 
 /**
  * 地图红包
@@ -276,17 +292,17 @@ export const getPackageMemberListApi = (data) => RuanRequest('/dtsPackageMember/
 // 申请成为普通营销策划师（会员升级页判断进入申请）
 export const upgradeRequestApplyForApi = (data) => RuanRequest('/dtsUpgradeRequest/applyFor', data)
 
+// 查询所有分公司
+export const getBranchOfficeApi = (data) => RuanRequest('/dtsUser/branchOffice', data, 'get')
+
 // 用户申请列表（用户页点申请记录进去）
 export const upgradeRequestSelectApplyApi = (data) => RuanRequest('/dtsUpgradeRequest/selectApply', data, 'get')
 
 // 商家免费入驻（会员升级页判断进入 或 用户页点商家入驻进入 或 普通用户扫策推码进入）
 export const updateBrandSettleInsApi = (data) => RuanRequest('/dtsBrand/settleIns', data)
 
-// 门店分类树
-export const getStoreTypeTreeApi = (data) => RuanRequest('/dtsStoreType/typeTree', data, 'get')
-
-// 区域编码ID调用下级区域
-export const getAreaListOneApi = (data) => RuanRequest('/dtsArea/listOne', data, 'get')
+// 通过区域编码查询所在区域的策划师
+export const getPlannerCollectionApi = (data) => RuanRequest('/dtsUser/plannerCollection', data, 'get')
 
 // 用户购买会员升级创建订单（会员升级页购买创建订单）
 export const upgradeOrderAddOrderApi = (data) => RuanRequest('/dtsJfUpgradeOrder/addOrder', data)
@@ -306,5 +322,142 @@ export const getSelectBrandListApi = (data) => RuanRequest('/dtsBrand/selectBran
 // 查看自己的区域内未绑定的商家（初级或高级策划师查询，查询哪些商家未绑定策划师）
 export const getBePendingApi = (data) => RuanRequest('/dtsUser/bePending', data, 'get')
 
-// 查询H5的用户角色授权菜单
-export const getRolePermissionMenuApi = (data) => RuanRequest('/rolePermission/h5RoleMenu', data, 'get')
+/**
+ * 商品管理
+ */
+
+// 查询商家商品列表
+export const getBrandGoodsBrandApi = (data) => RuanRequest('/dtsGoods/brandGoods', data, 'get')
+
+// 商家新增商品
+export const createGoodsBrandApi = (data) => RuanRequest('/dtsBrandUser/createGoods', data)
+
+// 商家编辑商品
+export const updateGoodsBrandApi = (data) => RuanRequest('/dtsBrandUser/updateGoods', data)
+
+/**
+ * 优惠券管理
+ */
+
+// 查询商家商品列表
+export const getBrandGoodsListApi = (data) => RuanRequest('/dtsGoods/brandGoods', data, 'get')
+
+/**
+ * 提现
+ */
+
+// 查询用户密码信息
+export const getPwdSelectByIdApi = (data) => RuanRequest('/dtsPwd/selectById', data, 'get')
+
+// 修改提现密码
+export const updateWithdrawalPwdApi = (data) => RuanRequest('/dtsPwd/', data)
+
+// 查询银行卡信息
+export const getPwdSelectBankApi = (data) => RuanRequest('/withdrawalBank/selectBank', data, 'get')
+
+// 添加用户银行信息
+export const addWithdrawalBankCardApi = (data) => RuanRequest('/withdrawalBank/add', data)
+
+// 查询银行信息
+export const getBankCardOwnershipApi = (data) => RuanRequest('/dtsBankCardOwnership/list', data, 'get')
+
+// 提现金额手续费计算
+export const getWithdrawalCountApi = (data) => RuanRequest('/dtsUserWithdrawal/count', data)
+
+// 提现申请
+export const addWithdrawalApplyApi = (data) => RuanRequest('/dtsUserWithdrawal/apply', data)
+
+/**
+ * 区域代理
+ */
+
+// 申请成为区域代理
+export const updateApplyRegionalAgentApi = (data) => RuanRequest('/dtsUpgradeRequest/applyRegionalAgent', data)
+
+/**
+ * 用户收益
+ */
+
+// 普通人用户收益
+export const getUserIncomeApi = (data) => RuanRequest('/dtsUser/userIncome', data, 'get')
+
+// 普通用户收益记录（目前只有红包）
+export const getRevenueRecordsApi = (data) => RuanRequest('/dtsUser/revenueRecords', data, 'get')
+
+/**
+ * 用户绑定关系
+ */
+
+// 所有生成并返推广码
+export const getExtensionCodeApi = (data) => RuanRequest('/dtsUserActivityInfoCode/createCode', data, 'get')
+
+// 所有用户的绑定码（扫码绑定）
+export const updateUserBindingUserApi = (data) => RuanRequest('/dtsUserActivityBinding/userBindingUser', data)
+
+// 用户粉丝类别筛选
+export const getMyFansListApi = (data) => RuanRequest('/dtsUser/myFansList', data, 'get')
+
+// 用户的粉丝统计
+export const getMyFansStatisticsApi = (data) => RuanRequest('/dtsUser/myFansStatistics', data, 'get')
+
+/**
+ * 商家订单
+ */
+
+// 商家的订单
+export const getSelectBrandOrderApi = (data) => RuanRequest('/dtsBrand/selectBrandOrder', data, 'get')
+
+/**
+ * 代金券
+ */
+
+// 商家代金券设置
+export const updateBrandSetVoucherApi = (data) => RuanRequest('/dtsBrand/setVoucher', data)
+
+/**
+ * 代金券
+ */
+
+// 生成用户订单的核销码
+export const getVerificationCodeHxCodeApi = (data) => RuanRequest('/dtsUserVerificationCode/getHxCode', data, 'get')
+
+// 输入code核销码核销
+export const updateSetHxCodeApi = (data) => RuanRequest('/dtsUserVerificationCode/setHxCode', data)
+
+/**
+ * 领券中心和优惠券
+ */
+
+// 领卷中心专门商城的卷
+export const getCouponListApi = (data) => RuanRequest('/coupon/list', data, 'get')
+
+// 用户收藏添加或删除
+export const updateCollectAddordeleteApi = (data) => RuanRequest('/collect/addordelete', data)
+
+// 个人优惠券列表
+export const getUserCouponListApi = (data) => RuanRequest('/coupon/list', data, 'get')
+
+// 个人可领取优惠券列表
+export const getUserCouponReceiveApi = (data) => RuanRequest('/coupon/getUserCoupon', data, 'get')
+
+// 优惠券领取
+export const updateCollectReceiveApi = (data) => RuanRequest('/collect/receive', data)
+
+// 一键领取优惠券
+export const updateCollectReceiveAllApi = (data) => RuanRequest('/collect/receiveAll', data)
+
+/**
+ * 商家优惠券
+ */
+
+// 查询商家的优惠卷
+export const getBrandCouponListApi = (data) => RuanRequest('/dtsCoupon/getCoupon', data, 'get')
+
+// 商家发布优惠卷
+export const addCouponReleaseApi = (data) => RuanRequest('/dtsCoupon/releaseCoupon', data)
+
+// 商家撤销优惠卷
+export const updateCouponRevokeApi = (data) => RuanRequest('/dtsCoupon/revokeCoupon', data)
+
+// 领卷中心
+export const getCouponNeckApi = (data) => RuanRequest('/dtsCoupon/neckCoupon', data, 'get')

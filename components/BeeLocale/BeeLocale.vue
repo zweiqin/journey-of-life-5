@@ -1,10 +1,10 @@
 <template>
-  <view class="bee-locale-container" @click="go('/pages/choose-address/choose-address')">
-    <slot>
-      <BeeIcon :src="require('./locale.png')" :size="20"></BeeIcon>
-      <view class="location-text">{{ $store.getters.currentLocation }}</view>
-    </slot>
-  </view>
+	<view class="bee-locale-container" @click="go('/pages/choose-address/choose-address')">
+		<slot>
+			<BeeIcon :src="require('./locale.png')" :size="20"></BeeIcon>
+			<view class="location-text">{{ $store.getters.currentCity }}</view>
+		</slot>
+	</view>
 </template>
 
 <script>

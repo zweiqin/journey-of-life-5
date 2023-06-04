@@ -22,12 +22,9 @@ export {
 	transformNumber,
 	isInWx,
 	getUrlCode,
+	timestampToTime,
 	throttle
 } from './DWHutils'
 export { formatTime, debounce } from './util'
 export { nums } from './filter'
-export {
-	getAdressDetailByLngLat,
-	navigationAddress,
-	getLngLatByAddress
-} from './location'
+export { getAdressDetailByLngLat, navigationAddress, getLngLatByAddress, MapLoader } from './location'

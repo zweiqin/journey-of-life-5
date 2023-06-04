@@ -18,6 +18,7 @@ Vue.mixin({
 				// 	return 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/'
 				// },
 				seamingImgUrl(url) {
+					if (!url) return ''
 					return url.startsWith('https://') ? url : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + url
 				},
 				explainMembership(roleIds) {

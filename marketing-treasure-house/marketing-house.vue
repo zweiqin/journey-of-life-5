@@ -19,7 +19,6 @@
 import { navs } from './config'
 import ArticlePane from '../pages/marketing-treasure-house copy/components/article-pane.vue'
 import { getIndustryInformationListApi } from '../api/marketing-treasure-house'
-import { J_LOACTION } from '../constant'
 
 export default {
 	name: 'MarketingHouse',
@@ -29,9 +28,7 @@ export default {
 	onLoad() {
 		this.getArticleList()
 	},
-	onShow() {
-		uni.removeStorageSync(J_LOACTION)
-	},
+	onShow() {},
 	data() {
 		return {
 			navs,

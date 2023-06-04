@@ -97,8 +97,8 @@
 
 		<view ref="previewWrapperRef" class="preview-wrapper">
 			<JRedEnvelope
-				:desc="redForm.remark" :src="redForm.imageUrl" :name="businessInfo.nickName"
-				:avatar="common.seamingImgUrl(businessInfo.avatarUrl)"
+				:desc="redForm.remark" :src="redForm.imageUrl" :name="userInfo.nickName"
+				:avatar="common.seamingImgUrl(userInfo.avatarUrl)"
 			></JRedEnvelope>
 			<view class="op">
 				<button class="btn" @click="reUploadBgi">重新上传</button>
@@ -204,7 +204,7 @@ export default {
 				type: '0'
 			},
 			redPackAddress: '',
-			businessInfo: uni.getStorageSync(J_USER_INFO) || {}
+			userInfo: uni.getStorageSync(J_USER_INFO) || {}
 		}
 	},
 
@@ -281,11 +281,15 @@ export default {
 				this.$showToast('请输入正确的红包金额')
 				return
 			}
-			if (this.redForm.redpackAllmonkey < 0.1) {
-				this.$showToast('红包金额不能小于0.1')
+			if (this.redForm.redpackAllmonkey < 0.2) {
+				this.$showToast('红包金额不能小于0.2')
 			}
 			if (!this.redForm.latitude || !this.redForm.longitude) {
 				this.$showToast('请选择红包位置')
+				return
+			}
+			if (!this.redForm.type) {
+				this.$showToast('请选择金额是否随机')
 				return
 			}
 			const data = {
@@ -299,7 +303,9 @@ export default {
 				redpackAllmonkey: this.redForm.redpackAllmonkey,
 				imageUrl: this.redForm.imageUrl,
 				remark: this.redForm.remark,
-				effectiveDistance: this.redForm.effectiveDistance || 1
+				effectiveDistance: this.redForm.effectiveDistance || 1,
+				type: this.redForm.type,
+				brandId: this.userInfo.brandId || ''
 			}
 			addWrapRedReleaseApi(data)
 				.then((res) => {

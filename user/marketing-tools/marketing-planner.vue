@@ -22,20 +22,27 @@ export default {
 	},
 
 	onLoad(options) {
+		this.packageId = options.packageId * 1
 	},
 
 	data() {
 		return {
 			infomations: [
+				// {
+				// 	label: '分公司所属地区：',
+				// 	type: 'city',
+				// 	field: 'area',
+				// 	placeholder: '省份、城市、区县'
+				// },
 				{
-					label: '分公司所属地区：',
-					type: 'city',
-					field: 'area',
-					placeholder: '省份、城市、区县'
+					label: '分公司：',
+					type: 'select',
+					field: 'branchId',
+					placeholder: '请选择分公司'
 				},
 				{
 					label: '策划师所属地区：',
-					type: 'area',
+					type: 'subregion',
 					field: 'areaUser',
 					placeholder: '省份、城市、区县、乡镇'
 				},
@@ -49,7 +56,8 @@ export default {
 			// 表单
 			form: {
 				accountInfo: {}
-			}
+			},
+			packageId: ''
 		}
 	},
 
@@ -58,11 +66,14 @@ export default {
 		submit(tag) {
 			const data = {
 				...this.form.accountInfo,
-				userId: getUserId()
+				userId: getUserId(),
+				packageId: this.packageId
 			}
 			if (!data.area) return this.$showToast('请选择分公司所属地区')
+			if (!data.branchId) return this.$showToast('请选择分公司')
 			if (!data.areaUser) return this.$showToast('请选择策划师所属地区')
 			if (!data.address) return this.$showToast('请填写详细地址')
+			if (!data.packageId) return this.$showToast('缺少套餐信息')
 			uni.showModal({
 				title: '提示',
 				content: '确定要提交当前的申请信息吗？',

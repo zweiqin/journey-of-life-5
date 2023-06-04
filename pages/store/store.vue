@@ -47,8 +47,8 @@ export default {
 	name: 'Store',
 	data() {
 		return {
-			menusData: Object.freeze(menusData),
-			loopTimer: null
+			menusData: Object.freeze(menusData)
+			// loopTimer: null
 		}
 	},
 	mixins: [
@@ -70,41 +70,54 @@ export default {
 		this.getCategoryList()
 	},
 	onUnload() {
-		this.loopTimer && clearInterval(this.loopTimer)
+		// this.loopTimer && clearInterval(this.loopTimer)
 	},
 	methods: {
 		getBrandList() {
 			const _this = this
 			const queryLocation = { longitude: '', latitude: '' }
-			let num = 0
-
+			// let num = 0
+			this.$data._status = 'loading'
 			uni.getLocation({
 				type: 'gcj02',
-				altitude: false,
+				highAccuracyExpireTime: 3000,
 				success: (result) => {
-					_this.$store.commit('location/CHANGE_CURRENT_LONGITUDE_AND_LATITUDE', result)
 					queryLocation.longitude = result.longitude
 					queryLocation.latitude = result.latitude
 					console.log(queryLocation)
+					_this.$data._query = { ..._this.$data._query, ...queryLocation }
+					_this._loadData()
+				},
+				fail: () => {
+					_this.$data._query = {
+						..._this.$data._query,
+						longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+						latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0]
+					}
+					_this._loadData()
 				}
 			})
 
-			this.loopTimer = setInterval(() => {
-				num++
-				if (num === 3) {
-					if (queryLocation.longitude) {
-						clearInterval(_this.loopTimer)
-						_this.loopTimer = null
-						_this.$data._query = { ..._this.$data._query, ...queryLocation }
-						_this._loadData()
-					} else {
-						clearInterval(_this.loopTimer)
-						_this.loopTimer = null
-						_this.$data._query = { ..._this.$data._query, ...this.$store.getters.lonAndLat }
-						_this._loadData()
-					}
-				}
-			}, 100)
+			// this.loopTimer = setInterval(() => {
+			// 	num++
+			// 	if (num === 3) {
+			// 		if (queryLocation.longitude) {
+			// 			clearInterval(_this.loopTimer)
+			// 			_this.loopTimer = null
+			// 			_this.$data._query = { ..._this.$data._query, ...queryLocation }
+			// 			_this._loadData()
+			// 		} else {
+			// 			clearInterval(_this.loopTimer)
+			// 			_this.loopTimer = null
+			// 			_this.$data._query = {
+			// 				..._this.$data._query,
+			// 				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+			// 				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0]
+			// 			}
+			// 			_this._loadData()
+			// 		}
+			// 	}
+			// }, 100)
 		},
 
 		// 获取首页分类数据

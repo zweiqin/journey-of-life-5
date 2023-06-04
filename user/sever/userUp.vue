@@ -1,7 +1,7 @@
 <template>
 	<view class="up-vip-container">
 		<view style="padding: 30upx 20upx;color: #000000;background-color: #ff9900;">
-			<JHeader tabbar="/pages/user/user" title="会员升级"></JHeader>
+			<JHeader tabbar="/pages/user/user" title="会员升级" width="50" height="50"></JHeader>
 		</view>
 		<view class="head-wrapper">
 			<JAvatar :src="userInfo.avatarUrl" size="150" radius="50%" border="5upx solid #ffffff"></JAvatar>
@@ -10,6 +10,15 @@
 		</view>
 		<view style="padding: 38upx;">
 			<view style="font-size: 32upx;font-weight: bold;">我的会员</view>
+			<view style="display: flex;align-items: center;margin-top: 20upx;font-size: 28upx;">
+				<JAvatar
+					src="../../static/user-center/server/purchase-record.png" size="62" radius="50%"
+					border="5upx solid #ffffff"
+				></JAvatar>
+				<BeeCommissionAgreement left-text="关闭" right-text="确认">
+					<view style="margin-left: 20upx;">《佣金协议》</view>
+				</BeeCommissionAgreement>
+			</view>
 			<view style="display: flex;align-items: center;margin-top: 20upx;font-size: 28upx;" @click="getPackageMemberList()">
 				<JAvatar
 					src="../../static/user-center/server/refresh-request.png" size="62" radius="50%"
@@ -118,20 +127,12 @@ export default {
 				})
 		},
 
-		handleToViewApplyTable(type) {
-			if (type === 1) {
-				this.go('/user/marketing-tools/store-application')
-			} else {
-				this.go('/user/marketing-tools/marketing-planner')
-			}
-		},
-
 		handleMemberUpgrade() {
 			const selectedPackage = this.packageMemberList.find((i) => i.id === this.selectedPackageId)
 			if (!selectedPackage) return this.$showToast('请选择会员套餐！')
 			console.log(this.userInfo.roleIds)
 			if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 4) {
-				this.go('/user/marketing-tools/marketing-planner')
+				this.go(`/user/marketing-tools/marketing-planner?packageId=${this.selectedPackageId}`)
 			} else if (this.userInfo.roleIds === 5 && selectedPackage.roleIds === 4) {
 				upgradeOrderAddOrderApi({
 					userId: getUserId(),
@@ -146,7 +147,7 @@ export default {
 					})
 				})
 			} else if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 3) {
-				this.go('/user/marketing-tools/marketing-planner')
+				this.go(`/user/marketing-tools/marketing-planner?packageId=${this.selectedPackageId}`)
 			} else if (this.userInfo.roleIds === 5 && selectedPackage.roleIds === 3) {
 				upgradeOrderAddOrderApi({
 					userId: getUserId(),
@@ -161,7 +162,7 @@ export default {
 					})
 				})
 			} else if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 6) {
-				this.go('/user/marketing-tools/store-application')
+				this.go(`/user/marketing-tools/store-application?packageId=${this.selectedPackageId}`)
 			} else if (this.userInfo.roleIds === 7 && selectedPackage.roleIds === 6) {
 				upgradeOrderAddOrderApi({
 					userId: getUserId(),

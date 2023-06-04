@@ -82,9 +82,7 @@ export default {
 		delayedLoginStatus()
 	},
 
-	onShow() {
-		uni.removeStorageSync(J_LOACTION)
-	},
+	onShow() { },
 
 	data() {
 		return {

@@ -6,7 +6,8 @@
 
 <script>
 import { J_USER_INFO, J_NEW_BIND_TYPE, J_NEW_BIND_CODE, J_NEW_BIND_ID } from '../../constant'
-import { bindUserSaoMaApi, bindSaoMaBrandApi } from '../../api/user'
+// import { bindUserSaoMaApi, bindSaoMaBrandApi } from '../../api/user'
+import { updateUserBindingUserApi } from '../../api/user'
 import { getUserId } from '../../utils'
 
 export default {
@@ -113,50 +114,72 @@ export default {
 	onShareAppMessage() { },
 	methods: {
 		// 业务逻辑
-		handleBusiness(e) {
-			console.log(e)
+		handleBusiness(isFromLogin) {
+			console.log(isFromLogin)
 			uni.removeStorageSync(J_NEW_BIND_TYPE)
 			uni.removeStorageSync(J_NEW_BIND_CODE)
 			uni.removeStorageSync(J_NEW_BIND_ID)
-			if (this.type === 'bindingPlanner') {
-				// http://localhost:8989/JFShop_Uni_H5/#/pages/jump/jump?userId=277&type=bindingPlanner&code=JFFPLXER
-				if (this.userInfo.roleIds === 10) {
-					// this.go(`/user/marketing-tools/store-application?code=${this.code}`)
-					uni.redirectTo({
-						url: `/user/marketing-tools/store-application?code=${this.code}`
+			if (this.type === 'nothing') {
+				uni.switchTab({
+					url: '/pages/store/store'
+				})
+			} else if (this.type === 'invitation') {
+				setTimeout(() => {
+					uni.switchTab({
+						url: '/pages/user/user'
 					})
-				} else if (this.userInfo.roleIds === 7 || this.userInfo.roleIds === 6) {
-					bindUserSaoMaApi({ marketingId: this.otherSideUserId, userId: this.userId })
-						.then((res) => {
-							this.$showToast('绑定策划师成功', 'success')
-						})
-						.finally((e) => {
-							setTimeout(() => {
-								console.log(111)
-								uni.switchTab({
-									url: '/pages/user/user'
-								})
-							}, 2000)
-						})
-				}
-			} else if (this.type === 'bindingStore') {
-				if (this.userInfo.roleIds === 10) {
-					bindSaoMaBrandApi({ marketingId: this.otherSideUserId, userId: this.userId })
-						.then((res) => {
-							this.$showToast('绑定商户成功', 'success')
+				}, 1000)
+			} else if (this.type === 'bindingBranchOffice' || this.type === 'bindingPlanner' || this.type === 'bindingStore') {
+				updateUserBindingUserApi({ userCode: this.code, userId: this.userId })
+					.then((res) => {
+						this.$showToast('绑定成功', 'success')
+					})
+					.finally((e) => {
+						setTimeout(() => {
 							uni.switchTab({
 								url: '/pages/user/user'
 							})
-						})
-						.finally((e) => {
-							setTimeout(() => {
-								uni.switchTab({
-									url: '/pages/user/user'
-								})
-							}, 2000)
-						})
-				}
+						}, 2000)
+					})
 			}
+			// else if (this.type === 'bindingPlanner') {
+			// 	// http://localhost:8989/JFShop_Uni_H5/#/pages/jump/jump?userId=277&type=bindingPlanner&code=JFFPLXER
+			// 	if (this.userInfo.roleIds === 10) {
+			// 		// this.go(`/user/xxx?code=${this.code}`)
+			// 		uni.redirectTo({
+			// 			url: `/user/xxx?code=${this.code}`
+			// 		})
+			// 	} else if (this.userInfo.roleIds === 7 || this.userInfo.roleIds === 6) {
+			// 		bindUserSaoMaApi({ marketingId: this.otherSideUserId, userId: this.userId })
+			// 			.then((res) => {
+			// 				this.$showToast('绑定策划师成功', 'success')
+			// 			})
+			// 			.finally((e) => {
+			// 				setTimeout(() => {
+			// 					uni.switchTab({
+			// 						url: '/pages/user/user'
+			// 					})
+			// 				}, 2000)
+			// 			})
+			// 	}
+			// } else if (this.type === 'bindingStore') {
+			// 	if (this.userInfo.roleIds === 10) {
+			// 		bindSaoMaBrandApi({ marketingId: this.otherSideUserId, userId: this.userId })
+			// 			.then((res) => {
+			// 				this.$showToast('绑定商户成功', 'success')
+			// 				uni.switchTab({
+			// 					url: '/pages/user/user'
+			// 				})
+			// 			})
+			// 			.finally((e) => {
+			// 				setTimeout(() => {
+			// 					uni.switchTab({
+			// 						url: '/pages/user/user'
+			// 					})
+			// 				}, 2000)
+			// 			})
+			// 	}
+			// }
 		}
 	}
 }

@@ -47,6 +47,12 @@
 				<view class="unbound font-14 f-c-9">未绑定</view>
 			</view>
 
+			<view class="item" @click="$refs.WithdrawalPwdDialogRef.open()">
+				<view class="title font-14 f-c-3d">提现密码</view>
+				<view class="value font-14 f-c-3d">**********</view>
+				<img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
+			</view>
+
 			<!-- <view class="item">
 				<view class="title font-14 f-c-3d">解绑账号</view>
 				<img
@@ -90,6 +96,21 @@
 			</uni-popup-dialog>
 		</uni-popup>
 
+		<uni-popup ref="WithdrawalPwdDialogRef" type="dialog">
+			<uni-popup-dialog ref="inputClose" mode="base" type="info" title="修改提现密码" @confirm="handleConfirmWithdrawalPwd">
+				<view class="edit-input">
+					<view class="input-wrapper">
+						<view class="title">原密码：</view>
+						<input v-model="WithdrawalPwdForm.oldPassword" type="text" />
+					</view>
+					<view class="input-wrapper" style="margin-top: 20rpx;">
+						<view class="title">新密码：</view>
+						<input v-model="WithdrawalPwdForm.newPassword" type="text" />
+					</view>
+				</view>
+			</uni-popup-dialog>
+		</uni-popup>
+
 		<!-- <JUploadAvatar
 			@close="handleCloseUpload"
 			ref="jUploadAvatarRef"
@@ -99,7 +120,7 @@
 </template>
 
 <script>
-import { updateUserInfoApi, refrshUserInfoApi } from '../../api/user'
+import { updateUserInfoApi, refrshUserInfoApi, updateWithdrawalPwdApi } from '../../api/user'
 import { getUserId } from '../../utils'
 import { J_USER_INFO } from '../../constant'
 
@@ -109,7 +130,12 @@ export default {
 		return {
 			showLogout: false,
 			nickname: '',
-			userInfo: {}
+			userInfo: {},
+			WithdrawalPwdForm: {
+				oldPassword: '',
+				newPassword: '',
+				userId: getUserId()
+			}
 		}
 	},
 
@@ -161,6 +187,19 @@ export default {
 		},
 
 		/**
+		 * @description 点击确定修改提现密码
+		 */
+
+		handleConfirmWithdrawalPwd() {
+			if (!this.WithdrawalPwdForm.oldPassword || !this.WithdrawalPwdForm.newPassword) return this.$showToast('请填写完整信息')
+			uni.showLoading()
+			updateWithdrawalPwdApi(this.WithdrawalPwdForm).then(({ data }) => {
+				uni.hideLoading()
+				this.$showToast('修改成功')
+			})
+		},
+
+		/**
 		 * 点击退出
 		 */
 
@@ -178,14 +217,13 @@ export default {
 			uni.removeStorage({ key: 'J_SELECT_ADDRESS' })
 			uni.removeStorage({ key: 'J_TWO_PAY_GOODS' })
 			uni.removeStorage({ key: 'J_APPONIT_GOODS' })
-			uni.removeStorage({ key: 'J_LOACTION' })
 			uni.removeStorage({ key: 'J_NEW_BIND_TYPE' })
 			uni.removeStorage({ key: 'J_NEW_BIND_CODE' })
 			uni.removeStorage({ key: 'J_NEW_BIND_ID' })
 			uni.removeStorage({ key: 'J_SELECT_WORDS' })
 			uni.removeStorage({ key: 'J_PAY_ORDER' })
 			uni.removeStorage({ key: 'J_PAY_TYPE' })
-			uni.removeStorage({ key: 'J_CURRENT_LOCATION' })
+			uni.removeStorage({ key: 'J_CURRENT_ADDRESS' })
 			uni.showToast({
 				title: '退出成功',
 				duration: 2000

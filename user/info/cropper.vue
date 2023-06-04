@@ -1,86 +1,86 @@
 <template>
-  <view class="cropper-container">
-    <tui-cropper :isRound="true" :imageUrl="cropperUrl" @cropper="handleConfirm" @ready="handleReady"></tui-cropper>
+	<view class="cropper-container">
+		<tui-cropper :is-round="true" :image-url="cropperUrl" @cropper="handleConfirm" @ready="handleReady"></tui-cropper>
 
-    <tui-toast ref="toast"></tui-toast>
-  </view>
+		<tui-toast ref="toast"></tui-toast>
+	</view>
 </template>
 
 <script>
 import { J_USER_INFO } from '../../constant'
 import { updateUserInfoApi, refrshUserInfoApi } from '../../api/user'
 export default {
-  onLoad(params) {
-    this.imgUrl = params.imgUrl
-  },
+	onLoad(params) {
+		this.imgUrl = params.imgUrl
+	},
 
-  data() {
-    return {
-      imgUrl: '',
-      cropperUrl: '',
-      timer: null,
-    }
-  },
+	data() {
+		return {
+			imgUrl: '',
+			cropperUrl: '',
+			timer: null
+		}
+	},
 
-  methods: {
-    handleReady() {
-      this.cropperUrl = this.imgUrl
-    },
+	methods: {
+		handleReady() {
+			this.cropperUrl = this.imgUrl
+		},
 
-    handleConfirm(e) {
-      const _this = this
-      const userInfo = uni.getStorageSync(J_USER_INFO)
-      uni.showLoading({
-        title: '图片上传中...',
-      })
-      uni.uploadFile({
-        url: 'https://www.tuanfengkeji.cn:9527/dts-app-api/wx/storage/upload',
-        filePath: e.url,
-        name: 'file',
-        success: async uploadFileRes => {
-          const avatarUrl = JSON.parse(uploadFileRes.data).data.url
-          const originData = {
-            nickname: userInfo.nickName,
-            avatar: userInfo.avatarUrl,
-            password: userInfo.password,
-            id: userInfo.userId,
-            avatar: avatarUrl,
-          }
+		handleConfirm(e) {
+			const _this = this
+			const userInfo = uni.getStorageSync(J_USER_INFO)
+			uni.showLoading({
+				title: '图片上传中...'
+			})
+			uni.uploadFile({
+				url: 'https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload',
+				filePath: e.url,
+				name: 'file',
+				success: async (uploadFileRes) => {
+					const avatarUrl = JSON.parse(uploadFileRes.data).data.url
+					const originData = {
+						nickname: userInfo.nickName,
+						avatar: userInfo.avatarUrl,
+						password: userInfo.password,
+						id: userInfo.userId,
+						avatar: avatarUrl
+					}
 
-          updateUserInfoApi(originData)
-            .then(data => {
-              uni.hideLoading()
-              uni.showToast({
-                title: '头像修改成功',
-              })
+					updateUserInfoApi(originData)
+						.then((data) => {
+							uni.hideLoading()
+							uni.showToast({
+								title: '头像修改成功'
+							})
 
-              refrshUserInfoApi({
-                userId: userInfo.userId,
-                openId: ' '
-              }).then(({ data }) => {
-                uni.setStorageSync(J_USER_INFO, data)
-                this.userInfo = data
-                this.$forceUpdate()
-              })
-            })
-            .catch(err => {
-              console.log(err)
-              uni.hideLoading()
-            })
+							refrshUserInfoApi({
+								userId: userInfo.userId,
+								openId: ' '
+							}).then(({ data }) => {
+								uni.setStorageSync(J_USER_INFO, data)
+								this.userInfo = data
+								this.$forceUpdate()
+							})
+						})
+						.catch((err) => {
+							console.log(err)
+							uni.hideLoading()
+						})
 
-          uni.showToast({
-            title: '头像上传成功',
-          })
-          setTimeout(() => {
-            uni.redirectTo({ url: '/user/info/detail' })
-          }, 1000)
-        },
-        complete: () => {
-          uni.hideLoading()
-        },
-      })
-    },
-  },
+					uni.showToast({
+						title: '头像上传成功'
+					})
+					setTimeout(() => {
+						uni.redirectTo({ url: '/user/info/detail' })
+					}, 1000)
+				},
+				complete: () => {
+					uni.hideLoading()
+				}
+			})
+		}
+	}
 }
 </script>
 

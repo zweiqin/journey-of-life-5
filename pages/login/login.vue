@@ -129,7 +129,6 @@ export default {
 		// 点击微信登录
 		async handleWXLogin() {
 			// #ifdef H5
-			const _this = this
 			const appid = 'wx603b04a561e4683e'
 			const local =
 				'https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/login/login'

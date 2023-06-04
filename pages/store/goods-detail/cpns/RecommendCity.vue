@@ -1,43 +1,43 @@
 <template>
-  <view class="recommend-city-container" v-if="data.length">
-    <h2 class="title">更多好吃好玩的地点推荐</h2>
+	<view v-if="data.length" class="recommend-city-container">
+		<h2 class="title">更多好吃好玩的地点推荐</h2>
 
-    <view class="list-container">
-      <view class="item" v-for="item in data" :key="item.id">
-        <view class="title-wrapper">
-          <view class="brand-name" @click="go('/pages/store/detail/detail?brandId=' + item.id)">
-            <BeeIcon :src="require('../../../../static/brand/goods-detial/brand-icon.png')" :size="14"></BeeIcon>
-            <text class="brand-name-text">{{ item.name }}</text>
-          </view>
-          <view class="dist">距你{{ (item.distance / 1000).toFixed(2) }}km</view>
-        </view>
+		<view class="list-container">
+			<view v-for="item in data" :key="item.id" class="item">
+				<view class="title-wrapper">
+					<view class="brand-name" @click="go('/pages/store/detail/detail?brandId=' + item.id)">
+						<BeeIcon :src="require('../../../../static/brand/goods-detial/brand-icon.png')" :size="14"></BeeIcon>
+						<text class="brand-name-text">{{ item.name }}</text>
+					</view>
+					<view class="dist">距你{{ (item.distance / 1000).toFixed(2) }}km</view>
+				</view>
 
-        <view class="brand-info" v-if="item.goods">
-          <BeeAvatar :size="60" radius="10upx" :src="item.goods.picUrl">
-          </BeeAvatar>
-          <view class="brand-info-container">
-            <view class="goods-name hidden">{{ item.goods.name }}</view>
-            <!-- <view class="desc hidden">鲍鱼·清远鸡·金汤·海参·鱼翅·...</view> -->
-            <view class="price-text">
-              <text class="current-price">￥{{ item.goods.counterPrice }}</text>
-              <!-- <text class="old-price">￥987</text> -->
-              <text class="sale-number" style=" margin-left: 30upx;">已售{{ item.goods.sales }}</text>
-            </view>
-          </view>
-        </view>
-      </view>
-    </view>
-  </view>
+				<view v-if="item.goods" class="brand-info">
+					<BeeAvatar :size="60" radius="10upx" :src="common.seamingImgUrl(item.goods.picUrl)">
+					</BeeAvatar>
+					<view class="brand-info-container">
+						<view class="goods-name hidden">{{ item.goods.name }}</view>
+						<!-- <view class="desc hidden">鲍鱼·清远鸡·金汤·海参·鱼翅·...</view> -->
+						<view class="price-text">
+							<text class="current-price">￥{{ item.goods.counterPrice }}</text>
+							<!-- <text class="old-price">￥987</text> -->
+							<text class="sale-number" style=" margin-left: 30upx;">已售{{ item.goods.sales }}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    data: {
-      type: Array,
-      required: true
-    }
-  }
+	props: {
+		data: {
+			type: Array,
+			required: true
+		}
+	}
 }
 </script>
 
@@ -61,7 +61,6 @@ export default {
     background-color: #fff;
     border-radius: 20upx;
     margin-bottom: 20upx;
-
 
     .title-wrapper {
       position: relative;

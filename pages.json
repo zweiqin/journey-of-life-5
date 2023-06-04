@@ -274,6 +274,24 @@
 			"root": "user",
 			"pages": [
 				{
+					"path": "my-tools/account-book/index",
+					"style": {
+						"navigationBarTitleText": "小账本"
+					}
+				},
+				{
+					"path": "my-tools/bank-card/index",
+					"style": {
+						"navigationBarTitleText": "银行卡"
+					}
+				},
+				{
+					"path": "my-tools/bank-card/bank-card-form",
+					"style": {
+						"navigationBarTitleText": "银行卡表单"
+					}
+				},
+				{
 					"path": "view",
 					"style": {
 						"navigationBarTitleText": ""
@@ -314,13 +332,6 @@
 					}
 				},
 				{
-					"path": "sever/shop-car",
-					"style": {
-						"navigationBarTitleText": "",
-						"usingComponents": {}
-					}
-				},
-				{
 					"path": "promotionCenter/index",
 					"style": {
 						"navigationBarTitleText": "",
@@ -341,13 +352,13 @@
 						"usingComponents": {}
 					}
 				},
-				{
-					"path": "Collection/Goods-Collection",
-					"style": {
-						"navigationBarTitleText": "",
-						"usingComponents": {}
-					}
-				},
+				// {
+				// 	"path": "Collection/Goods-Collection",
+				// 	"style": {
+				// 		"navigationBarTitleText": "",
+				// 		"usingComponents": {}
+				// 	}
+				// },
 				{
 					"path": "orderForm/order-form",
 					"style": {
@@ -363,12 +374,40 @@
 					}
 				},
 				{
+					"path": "merchant-orders/index",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "merchant-orders/order-form-detail",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
 					"path": "subscription/subscription",
 					"style": {
 						"navigationBarTitleText": "",
 						"usingComponents": {
 							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
 						}
+					}
+				},
+				{
+					"path": "sever/shop-car",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "sever/shop-car-reservation",
+					"style": {
+						"navigationBarTitleText": "",
+						"usingComponents": {}
 					}
 				},
 				{
@@ -396,6 +435,12 @@
 					}
 				},
 				{
+					"path": "sever/fan-statistics",
+					"style": {
+						"navigationBarTitleText": "粉丝统计"
+					}
+				},
+				{
 					"path": "sever/related-merchants",
 					"style": {
 						"navigationBarTitleText": "关联商家"
@@ -407,6 +452,24 @@
 						"navigationBarTitleText": "",
 						"usingComponents": {}
 					}
+				},
+				{
+					"path": "sever/regional-agent",
+					"style": {
+						"navigationBarTitleText": "申请区域代理"
+					}
+				},
+				{
+					"path": "sever/customer-service/customer-service",
+					"style": {
+						"navigationBarTitleText": "联系客服"
+					}
+				},
+				{
+					"path": "sever/pay-shop-card"
+				},
+				{
+					"path": "sever/view-history"
 				},
 				{
 					"path": "digital-store/information-sentry",
@@ -461,6 +524,20 @@
 					}
 				},
 				{
+					"path": "digital-store/goods-management/index",
+					"style": {
+						"navigationBarTitleText": "商品管理",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "digital-store/goods-management/goods-form",
+					"style": {
+						"navigationBarTitleText": "商品表单",
+						"usingComponents": {}
+					}
+				},
+				{
 					"path": "marketing-tools/store-application"
 				},
 				// {
@@ -468,12 +545,6 @@
 				// },
 				{
 					"path": "marketing-tools/marketing-planner"
-				},
-				{
-					"path": "sever/pay-shop-card"
-				},
-				{
-					"path": "sever/view-history"
 				},
 				{
 					"path": "marketing-tools/contact-guide/index"
@@ -521,6 +592,21 @@
 					}
 				},
 				{
+					"path": "otherServe/withdrawal/index",
+					"style": {
+						"navigationBarTitleText": "提现"
+					}
+				},
+				{
+					"path": "otherServe/chat/chat",
+					"style": {
+						"navigationBarTitleText": "消息"
+					}
+				},
+				{
+					"path": "otherServe/chat/chat-detail"
+				},
+				{
 					"path": "marketing-tools/contact-guide/name-card-detail",
 					"style": {
 						"navigationBarTitleText": "我的名片"
@@ -530,12 +616,6 @@
 					"path": "marketing-tools/contact-guide/share-card",
 					"style": {
 						"navigationBarTitleText": "分享名片"
-					}
-				},
-				{
-					"path": "sever/regional-agent",
-					"style": {
-						"navigationBarTitleText": "申请区域代理"
 					}
 				}
 			]
@@ -642,13 +722,13 @@
 					"style": {
 						"navigationBarTitleText": "订单详情"
 					}
-				},
-				{
-					"path": "apponit/apponit",
-					"style": {
-						"navigationBarTitleText": "预约"
-					}
 				}
+				// {
+				// 	"path": "apponit/apponit",
+				// 	"style": {
+				// 		"navigationBarTitleText": "预约"
+				// 	}
+				// }
 			]
 		},
 		{

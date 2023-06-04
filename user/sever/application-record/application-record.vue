@@ -6,7 +6,7 @@
 		<view v-if="applicationRecordList && applicationRecordList.length">
 			<view v-for="(item, index) in applicationRecordList" :key="index" class="" style="padding-bottom: 45upx;">
 				<tui-card
-					:title="{ text: item.type === 0 ? '普通营销策划师申请' : item.type === 1 ? '商家申请' : '--' }"
+					:title="{ text: item.type === 0 ? '普通营销策划师申请' : item.type === 1 ? '商家申请' : item.type === 2 ? '区域代理申请' : '--' }"
 					:tag="{ text: `申请用户ID：${item.userId}` }"
 				>
 					<template #body>
@@ -40,7 +40,13 @@
 								<text v-else-if="item.auditMethod === 1">实体考察</text>
 								<text v-else>--</text>
 							</view>
-							<view>提交时间：{{ item.creatTime || '--' }}</view>
+							<view>提交时间：{{ new Date(item.createTime).toLocaleString() || '--' }}</view>
+						</view>
+					</template>
+					<template #footer>
+						<view style="display: flex;justify-content: space-between;padding: 0 20rpx 20rpx;">
+							<tui-button v-if="item.type === 0 && item.status === 2" type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="handleApplicationPay(item)">去支付</tui-button>
+							<tui-button v-if="item.type === 1 && item.status === 2" type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="handleApplicationPay(item)">去支付</tui-button>
 						</view>
 					</template>
 				</tui-card>
@@ -53,8 +59,11 @@
 </template>
 
 <script>
-import { upgradeRequestSelectApplyApi } from '../../../api/user'
+import { upgradeRequestSelectApplyApi, upgradeOrderAddOrderApi } from '../../../api/user'
+import { payOrderGoodsApi } from '../../../api/goods'
 import { getUserId } from '../../../utils'
+import { payFn } from '../../../utils/pay'
+import { J_PAY_TYPE } from '../../../constant'
 
 export default {
 	name: 'ApplicationRecord',
@@ -82,6 +91,20 @@ export default {
 		handleBack() {
 			uni.switchTab({
 				url: '/pages/user/user'
+			})
+		},
+		handleApplicationPay(item) {
+			upgradeOrderAddOrderApi({
+				userId: getUserId(),
+				packageId: item.packageId
+			}).then(({ data }) => {
+				payOrderGoodsApi({
+					orderNo: data.payOrderID,
+					userId: getUserId(),
+					payType: 4
+				}).then((res) => {
+					payFn(res, J_PAY_TYPE.VIP.value)
+				})
 			})
 		}
 	},

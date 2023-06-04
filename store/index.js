@@ -1,13 +1,15 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import getters from "./getters";
-import location from "./modules/location";
+import Vue from 'vue'
+import Vuex from 'vuex'
+import getters from './getters'
+import customerService from './modules/customerService'
+import location from './modules/location'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
-  getters,
-  modules: {
-    location,
-  },
-});
+	getters,
+	modules: {
+		location,
+		customerService
+	}
+})

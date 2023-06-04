@@ -11,15 +11,26 @@
 				>
 					<view class="sub-title">{{ item.label }}</view>
 
-					<JCity
+					<!-- <JAnyCity
 						v-if="item.type === 'city'" style="flex: 1" :text="areaName" :placeholder="item.placeholder"
 						@confirm="handleInput(item.field, $event)"
-					></JCity>
+						></JAnyCity> -->
 
-					<JArea
-						v-if="item.type === 'area'" style="flex: 1" :text="areaUserName" :placeholder="item.placeholder"
-						@confirm="handleInput(item.field, $event)"
-					></JArea>
+					<input
+						v-if="item.type === 'select'" :value="branchIdName" class="input" :disabled="true"
+						type="text"
+						:placeholder="item.placeholder" @click="handleBranchListSelect"
+					/>
+
+					<view v-if="item.type === 'subregion'" style="flex: 1">
+						<view v-if="form.area">
+							<JSubArea
+								:code="form.area" :text="areaUserName" :placeholder="item.placeholder"
+								@confirm="handleInput(item.field, $event)"
+							></JSubArea>
+						</view>
+						<view v-else style="color: #999999;" @click="$showToast('请先选择分公司')">省份、城市、区县、乡镇</view>
+					</view>
 
 					<textarea
 						v-if="item.type === 'textarea'" :value="form[item.field]" class="textarea"
@@ -28,11 +39,16 @@
 				</view>
 			</template>
 		</view>
+		<!-- 分公司 -->
+		<tui-select
+			:list="branchList" reverse :show="isShowBranchListSelect" @confirm="handleSelectBranchList"
+			@close="isShowBranchListSelect = false"
+		></tui-select>
 	</view>
 </template>
 
 <script>
-// import { getStoreTypesApi } from '.././../../api/user'
+import { getBranchOfficeApi } from '.././../../api/user'
 
 export default {
 	name: 'FieldPaneMP',
@@ -50,9 +66,17 @@ export default {
 
 	data() {
 		return {
-			form: {},
-			areaName: '',
-			areaUserName: ''
+			form: {
+				area: '',
+				branchId: '',
+				areaUser: '',
+				address: ''
+			},
+			// areaName: '',
+			areaUserName: '',
+			branchIdName: '',
+			branchList: [],
+			isShowBranchListSelect: false
 		}
 	},
 
@@ -80,16 +104,40 @@ export default {
 		}
 	},
 
-	mounted() {},
+	mounted() { },
 
 	methods: {
+		async handleBranchListSelect(e) {
+			// if (this.form.area) {
+			// 	await getBranchOfficeApi({ area: this.form.area })
+			await getBranchOfficeApi()
+				.then((res) => {
+					this.branchList = res.data.map((item) => ({
+						...item,
+						value: item.id,
+						text: item.nickname
+					}))
+					this.isShowBranchListSelect = true
+				})
+			// } else {
+			// 	this.$showToast('请先选择分公司所属地区')
+			// }
+		},
+		handleSelectBranchList(e) {
+			this.isShowBranchListSelect = false
+			this.branchIdName = e.options.nickname
+			this.form.area = e.options.areaId
+			this.form.branchId = e.options.id
+		},
+
 		handleInput(field, e) {
 			console.log(field, e)
-			if (field === 'area') {
-				this.form[field] = e.city.code
-				this.areaName = e.area
-			} else if (field === 'areaUser') {
-				this.form[field] = e.township.code
+			// if (field === 'area') {
+			// 	this.form[field] = e.county.code || e.city.code || e.province.code
+			// 	this.areaName = e.area
+			// } else
+			if (field === 'areaUser') {
+				this.form[field] = e.areaInfo[e.areaInfo.length - 1].code
 				this.areaUserName = e.area
 			} else if (field === 'address') {
 				this.form[field] = e.detail.value
@@ -135,6 +183,11 @@ export default {
 			/deep/ .uni-textarea-placeholder {
 				font-size: @f12;
 				color: @c9;
+			}
+
+			.input {
+				flex: 1;
+				font-size: @f12;
 			}
 
 			.textarea {

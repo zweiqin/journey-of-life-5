@@ -28,3 +28,11 @@
   padding: @pd;
   box-sizing: border-box;
 }
+
+.h-flex(@justifyContent: space-between, @direction: row, @wrap: nowrap) {
+  display: flex;
+  align-items: center;
+  justify-content: @justifyContent;
+  flex-wrap: @wrap;
+  flex-direction: @direction;
+}

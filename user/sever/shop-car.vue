@@ -1,13 +1,7 @@
 <template>
 	<view class="shop-car-container">
 		<view class="header">
-			<JBack
-				tabbar="/pages/user/user"
-				style="margin-top: 10upx"
-				width="50"
-				height="50"
-				dark
-			></JBack>
+			<JBack :tabbar="isBack === '1' ? '' : '/pages/user/user'" style="margin-top: 10upx" width="50" height="50" dark></JBack>
 			<h2>购物车</h2>
 			<button class="edit" @click="handleSwitchShopCarStatus">
 				{{ opStatus === 'EDIT' ? '编辑' : '完成' }}
@@ -22,28 +16,18 @@
 				</view>
 
 				<view class="shop-goods-list">
-					<view
-						v-for="(item, index) in store.cartList"
-						:key="item.productId"
-						class="goods-item"
-					>
+					<view v-for="(item, index) in store.cartList" :key="item.productId" class="goods-item">
 						<JIcon
-							v-show="opStatus === 'EDIT'"
-							class="icon"
-							:type="item.checked ? 'active-choose' : 'active-default'"
+							v-show="opStatus === 'EDIT'" class="icon" :type="item.checked ? 'active-choose' : 'active-default'"
 							@click="handleChangeGoodsStatus(item, index, store)"
 						></JIcon>
 						<JIcon
-							v-show="opStatus === 'CONFIRM'"
-							class="icon"
-							:type="
-								opList.includes(item.productId)
-									? 'active-choose'
-									: 'active-default'
-							"
-							@click="handleOp(item)"
+							v-show="opStatus === 'CONFIRM'" class="icon" :type="opList.includes(item.productId)
+								? 'active-choose'
+								: 'active-default'
+							" @click="handleOp(item)"
 						></JIcon>
-						<JAvatar radius="10" :size="120" :src="item.picUrl"></JAvatar>
+						<JAvatar radius="10" :size="120" :src="common.seamingImgUrl(item.picUrl)"></JAvatar>
 
 						<view class="goods-pane-right">
 							<view class="goods-pane-name">{{ item.goodsName.trim() }} </view>
@@ -58,17 +42,11 @@
 								<text class="goods-pane-price">￥{{ item.price }}</text>
 
 								<view class="ops">
-									<text
-										class="item"
-										@click="handleChangeNumber(-1, item, index, store)"
-									>
+									<text class="item" @click="handleChangeNumber(-1, item, index, store)">
 										-
 									</text>
 									<text class="item">{{ item.number }}</text>
-									<text
-										class="item"
-										@click="handleChangeNumber(+1, item, index, store)"
-									>
+									<text class="item" @click="handleChangeNumber(+1, item, index, store)">
 										+
 									</text>
 								</view>
@@ -85,10 +63,7 @@
 				v-if="loadingStatus === 'loading'"
 				></uni-load-more> -->
 
-			<view
-				v-if="shopCarList && !shopCarList.length && loadingStatus !== 'loading'"
-				class="no-data"
-			>
+			<view v-if="shopCarList && !shopCarList.length && loadingStatus !== 'loading'" class="no-data">
 				暂无商品，快去添加吧~
 			</view>
 		</view>
@@ -97,26 +72,19 @@
 		<view v-if="recommentList.length" class="all-look">
 			<JLineTitle title="热销推荐"></JLineTitle>
 			<Goods
-				v-for="item in recommentList"
-				:id="item.id"
-				:key="item.id"
-				:price="item.counterPrice"
+				v-for="item in recommentList" :id="item.id" :key="item.id" :price="item.counterPrice"
 				:name="item.name"
 				:img-url="item.picUrl"
 			></Goods>
 		</view>
 
 		<view
-			class="shop-car-footer"
-			:class="{
+			class="shop-car-footer" :class="{
 				show: !shopCarList.length
 			}"
 		>
 			<view class="choose-all" @click="handleChooseAll">
-				<JIcon
-					class="icon"
-					:type="allCheckStatus ? 'active-choose' : 'active-default'"
-				></JIcon>
+				<JIcon class="icon" :type="allCheckStatus ? 'active-choose' : 'active-default'"></JIcon>
 				<text class="text">全选</text>
 			</view>
 			<!-- 编辑 -->
@@ -153,15 +121,16 @@ const EDIT = 'EDIT'
 const CONFIRM = 'CONFIRM'
 
 export default {
+	name: 'ShopCar',
 	components: {
 		RecommendGoods,
 		Goods
 	},
 
-	onLoad() {
+	onLoad(options) {
 		this.getShopList()
+		this.isBack = options.isBack || '0'
 		uni.removeStorageSync(J_SELECT_ADDRESS)
-
 		// this.getRecommentList();
 	},
 
@@ -187,7 +156,8 @@ export default {
 			loadingStatus: 'noMore',
 			isChangeNumber: false,
 			recommentList: [],
-			opGoodsList: []
+			opGoodsList: [],
+			isBack: '0'
 		}
 	},
 
@@ -248,7 +218,6 @@ export default {
 			if (this.opStatus === CONFIRM) {
 				this.opList = []
 			}
-
 			this.$forceUpdate()
 		},
 
@@ -416,9 +385,7 @@ export default {
 		// 去结算
 		handleToPay() {
 			uni.showLoading()
-
 			const op = []
-
 			for (const item of this.shopCarList) {
 				op.push({
 					brandId: item.brandId,
@@ -426,16 +393,13 @@ export default {
 					brandCartgoods: item.cartList.filter((item) => item.checked)
 				})
 			}
-
 			uni.setStorageSync(J_TWO_PAY_GOODS, {
 				cardsInfo: op,
 				pay: this.totalPrice
 			})
-
 			uni.hideLoading()
-
 			uni.navigateTo({
-				url: '/user/sever/pay-shop-card'
+				url: '/user/sever/pay-shop-card?type=mall'
 			})
 		},
 

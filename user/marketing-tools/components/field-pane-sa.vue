@@ -10,8 +10,20 @@
 					}"
 				>
 					<view class="sub-title">{{ item.label }}</view>
+					<view v-if="item.type === 'inputSelect'" class="input" style="display: flex;justify-content: space-between;">
+						<input
+							:value="form[item.field]" :disabled="item.field === 'username'"
+							:type="item.field === 'password' ? 'password' : 'text'" :placeholder="item.placeholder" @input="handleInput(item.field, $event)"
+						/>
+						<tui-button
+							type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;"
+							@click="handlePlannerListSelect"
+						>
+							选择
+						</tui-button>
+					</view>
 					<input
-						v-if="item.type === 'input'" :value="form[item.field]" class="input" :disabled="item.field === 'code' || item.field === 'username'"
+						v-if="item.type === 'input'" :value="form[item.field]" class="input" :disabled="item.field === 'username'"
 						:type="item.field === 'password' ? 'password' : 'text'" :placeholder="item.placeholder" @input="handleInput(item.field, $event)"
 					/>
 					<input
@@ -49,6 +61,11 @@
 					</view>
 
 					<JArea
+						v-if="item.type === 'area' && item.field === 'plannerArea'" style="flex: 1" :text="plannerAreaName" :placeholder="item.placeholder"
+						@confirm="handleSelectPlannerArea"
+					></JArea>
+
+					<JArea
 						v-if="item.type === 'area' && item.field === 'areaId'" style="flex: 1" :text="areaIdName" :placeholder="item.placeholder"
 						@confirm="handleInput(item.field, $event)"
 					></JArea>
@@ -74,11 +91,16 @@
 		<!-- 门店类型picker -->
 		<tui-picker :show="isShowPicker" :layer="pickerLayer" :picker-data="storeTypesArr" @hide="isShowPicker = false" @change="handleInput('brandgenre', $event)">
 		</tui-picker>
+		<!-- 策划师列表 -->
+		<tui-select
+			:list="plannerList" reverse :show="isShowPlannerListSelect" @confirm="handleSelectPlannerList"
+			@close="isShowPlannerListSelect = false"
+		></tui-select>
 	</view>
 </template>
 
 <script>
-import { getStoreTypeTreeApi } from '.././../../api/user'
+import { getStoreTypeTreeApi, getPlannerCollectionApi } from '.././../../api/user'
 
 export default {
 	name: 'FieldPaneSA',
@@ -97,12 +119,15 @@ export default {
 	data() {
 		return {
 			form: {},
+			plannerList: [],
+			isShowPlannerListSelect: false,
 			storeTypesArr: [],
 			isShowPicker: false,
 			radioLevel: '3',
 			pickerLayer: '3',
 			brandgenreName: '',
-			areaIdName: ''
+			areaIdName: '',
+			plannerAreaName: ''
 		}
 	},
 
@@ -133,14 +158,12 @@ export default {
 	mounted() {
 		getStoreTypeTreeApi()
 			.then((res) => {
-				console.log(res)
 				this.storeTypesArr = res.data
 				this.mapTree(this.storeTypesArr)
 			})
 			.catch(() => {
 				this.$showToast('门店类型获取失败')
 			})
-		console.log(this.$refs)
 	},
 
 	methods: {
@@ -154,6 +177,32 @@ export default {
 					this.mapTree(items.children)
 				}
 			})
+		},
+
+		async handlePlannerListSelect(e) {
+			if (this.form.plannerArea) {
+				await getPlannerCollectionApi({ code: this.form.plannerArea })
+					.then((res) => {
+						this.plannerList = res.data.map((item) => ({
+							...item,
+							value: item.id,
+							text: item.nickname
+						}))
+						this.isShowPlannerListSelect = true
+					})
+			} else {
+				this.$showToast('请先选择营销策划师所在区域')
+			}
+		},
+
+		handleSelectPlannerList(e) {
+			this.isShowPlannerListSelect = false
+			this.form.code = e.options.code
+		},
+
+		handleSelectPlannerArea(e) {
+			this.plannerAreaName = e.area
+			this.form.plannerArea = e.township.code
 		},
 
 		handleInput(field, e) {
@@ -170,7 +219,7 @@ export default {
 			} else if (field === 'areaId') {
 				this.areaIdName = e.area
 				this.form[field] = e.township.code
-			} else if (field === 'name' || field === 'desc' || field === 'address' || field === 'explain' || field === 'phone') {
+			} else if (field === 'code' || field === 'name' || field === 'desc' || field === 'address' || field === 'explain' || field === 'phone') {
 				this.form[field] = e.detail.value
 			} else if (field === 'lonAndLatString') {
 				uni.chooseLocation({

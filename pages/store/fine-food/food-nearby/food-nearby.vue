@@ -6,15 +6,17 @@
 					<BeeBack>
 						<view class="header-title">
 							<BeeIcon :size="24" color="#000" name="arrowleft"></BeeIcon>
-							<h1>{{ this.title }}</h1>
+							<h1>{{ title }}</h1>
 						</view>
 					</BeeBack>
 					<SearchBar background="#fff"></SearchBar>
 					<view class="control">
 						<view class="item">
-							<BeeIcon :size="24" :src="
-								require('../../../../static/brand/find-food/food-nearby/location.png')
-							"></BeeIcon>
+							<BeeIcon
+								:size="24" :src="
+									require('../../../../static/brand/find-food/food-nearby/location.png')
+								"
+							></BeeIcon>
 							<text>位置</text>
 						</view>
 					</view>
@@ -22,8 +24,10 @@
 			</view>
 
 			<view class="menus-wrapper">
-				<view @click="handleChooseMenu(item)" class="item" :class="{ active: currentMenu === item.id }"
-					v-for="item in list" :key="item.text">
+				<view
+					v-for="item in list" :key="item.text" class="item"
+					:class="{ active: currentMenu === item.id }" @click="handleChooseMenu(item)"
+				>
 					<text>{{ item.storeName }}</text>
 				</view>
 			</view>
@@ -36,7 +40,7 @@
 			<LoadMore :status="$data._status"></LoadMore>
 		</view>
 
-		<view class="no-data" v-if="!$data._list.length && $data._status !== 'loading'">
+		<view v-if="!$data._list.length && $data._status !== 'loading'" class="no-data">
 			暂无商家~
 		</view>
 	</view>
@@ -50,7 +54,7 @@ import FilterPane from './cpns/FilterPane.vue'
 import { menus, navs } from './data'
 export default {
 	components: {
-		FilterPane,
+		FilterPane
 	},
 	mixins: [
 		loadData({
@@ -58,15 +62,13 @@ export default {
 			mapKey: {
 				list: 'tfBrandList',
 				totalPages: 'total',
-				size: 'size',
+				size: 'size'
 			},
 			dataFn(data) {
 				const ignoreBrandList = ['佛山市顺德区修江缘美食餐饮店', '测试门店呀']
-				return data.filter(item => {
-					return !ignoreBrandList.includes(item.name)
-				})
-			},
-		}),
+				return data.filter((item) => !ignoreBrandList.includes(item.name))
+			}
+		})
 	],
 	data() {
 		return {
@@ -84,8 +86,6 @@ export default {
 		this.title = options.name
 		this.id = options.id
 		this.getMenus()
-
-
 	},
 
 	methods: {
@@ -94,15 +94,15 @@ export default {
 			this.$data._query.dressing = this.currentMenu
 			this._loadData()
 		},
-		//导航栏
+		// 导航栏
 		async getNavsList() {
 			const data = navs
-			console.log('数据', data);
+			console.log('数据', data)
 			const nid = data[0].id
-			console.log('类id', nid);
+			console.log('类id', nid)
 			this.nid = nid
 			const list = data[0].list
-			console.log('list', list);
+			console.log('list', list)
 			this.list = list
 		},
 
@@ -115,10 +115,14 @@ export default {
 			this.list = data
 			this.currentMenu = data[0].id
 			this.$data._query.dressing = this.currentMenu
-			this.$data._query = { ...this.$data._query, ...this.$store.getters.lonAndLat }
+			this.$data._query = {
+				...this.$data._query,
+				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0]
+			}
 			this._loadData()
 		}
-	},
+	}
 }
 </script>
 
@@ -235,7 +239,6 @@ export default {
 						width: 48upx;
 					}
 				}
-
 
 			}
 		}

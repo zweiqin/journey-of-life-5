@@ -116,7 +116,6 @@
 import { J_USER_TOKEN, J_PAY_TYPE, J_USER_INFO } from '../../../constant'
 import { getUserId } from '../../../utils'
 import { getCouponMagicIsBindingApi, getCouponMagicListApi, getWrapAdminMagicApi, getMagicListIdApi } from '../../../api/user'
-// import { payOrderGoodsApi } from '../../../api/goods'
 
 export default {
 	name: 'PublicationType',

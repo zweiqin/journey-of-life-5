@@ -5,7 +5,7 @@
 			<tui-icon name="arrowleft" color="#000" @click="handleBack"></tui-icon>
 			<BeeLocale style="flex: 1">
 				<view class="address-wrapper">
-					<view class="current-addresss">位置：{{ $store.getters.currentLocation }}</view>
+					<view class="current-addresss">位置：{{ $store.getters.currentCity }}</view>
 					<BeeIcon :src="require('../../../static/index/bianmin/location.png')" :size="24"></BeeIcon>
 				</view>
 			</BeeLocale>

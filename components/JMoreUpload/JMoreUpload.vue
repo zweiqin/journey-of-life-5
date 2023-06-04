@@ -1,65 +1,69 @@
 <template>
-  <view>
-    <view class="title" v-if="title">{{ title }}</view>
-    <view class="upload-pane">
-      <view class="left">
-        <view @click="chooseImg" class="upload">+</view>
-        <view class="img-wrapper" v-for="item in imgs" :key="item">
-          <img class="iamge-background img" :src="item" mode="" />
-          <JIcon
-            @click="removeBackground(item)"
-            class="delete-icon"
-            width="40"
-            height="40"
-            type="delete"
-          ></JIcon>
-        </view>
-      </view>
-    </view>
-  </view>
+	<view>
+		<view v-if="title" class="title">{{ title }}</view>
+		<view class="upload-pane">
+			<view class="left">
+				<view v-if="imgs.length < limit" class="upload" @click="chooseImg">+</view>
+				<view v-for="item in imgs" :key="item" class="img-wrapper">
+					<img class="iamge-background img" :src="common.seamingImgUrl(item)" mode="" />
+					<JIcon
+						class="delete-icon"
+						width="40"
+						height="40"
+						type="delete"
+						@click="removeBackground(item)"
+					></JIcon>
+				</view>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    title: String,
-    imgs: {
-      type: Array,
-      required: true,
-    },
-  },
-  methods: {
-    removeBackground(item) {
-      console.log(item);
-      const _this = this;
-      uni.showModal({
-        title: "提示",
-        content: "确定删除当前图片吗？",
-        success: function (res) {
-          if (res.confirm) {
-            _this.$emit("delete", item);
-          }
-        },
-      });
-    },
+	props: {
+		title: String,
+		imgs: {
+			type: Array,
+			required: true
+		},
+		limit: {
+			type: Number,
+			default: 5
+		}
+	},
+	methods: {
+		removeBackground(item) {
+			// console.log(item)
+			const _this = this
+			uni.showModal({
+				title: '提示',
+				content: '确定删除当前图片吗？',
+				success(res) {
+					if (res.confirm) {
+						_this.$emit('delete', item)
+					}
+				}
+			})
+		},
 
-    chooseImg() {
-      const _this = this;
-      uni.chooseImage({
-        success: (chooseImageRes) => {
-          uni.uploadFile({
-            url: "https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload",
-            filePath: chooseImageRes.tempFiles[0].path,
-            name: "file",
-            success: (uploadFileRes) => {
-              _this.$emit("upload", JSON.parse(uploadFileRes.data).data.url);
-            },
-          });
-        },
-      });
-    },
-  },
-};
+		chooseImg() {
+			const _this = this
+			uni.chooseImage({
+				success: (chooseImageRes) => {
+					uni.uploadFile({
+						url: 'https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload',
+						filePath: chooseImageRes.tempFiles[0].path,
+						name: 'file',
+						success: (uploadFileRes) => {
+							_this.$emit('upload', JSON.parse(uploadFileRes.data).data.url)
+						}
+					})
+				}
+			})
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>
@@ -67,7 +71,7 @@ export default {
   color: #3d3d3d;
   font-size: 24upx;
   margin: 48upx 0 20upx 0;
-  
+
 }
 
 .upload-pane {

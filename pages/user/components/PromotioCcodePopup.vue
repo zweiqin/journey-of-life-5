@@ -53,12 +53,14 @@ export default {
 				title: '加载中'
 			})
 			let tempUrl
-			if (this.userInfo.roleIds === 6) {
+			if (this.userInfo.roleIds === 2) {
+				tempUrl = `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/jump/jump?userId=${getUserId()}&type=bindingBranchOffice&code=`
+			} else if (this.userInfo.roleIds === 6) {
 				tempUrl = `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/jump/jump?userId=${getUserId()}&type=bindingPlanner&code=`
 			} else if (this.userInfo.roleIds === 4 || this.userInfo.roleIds === 3) {
 				tempUrl = `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/jump/jump?userId=${getUserId()}&type=bindingStore&code=`
 			} else if (this.userInfo.roleIds === 11 || this.userInfo.roleIds === 10 || this.userInfo.roleIds === 7 || this.userInfo.roleIds === 5) {
-				tempUrl = `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/store/store?undefined=`
+				tempUrl = `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/jump/jump?userId=${getUserId()}&type=nothing&code=`
 			}
 			getExtensionCodeApi({
 				url: tempUrl

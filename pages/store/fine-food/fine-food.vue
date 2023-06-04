@@ -99,7 +99,11 @@ export default {
 	onLoad(options) {
 		this.id = options.id
 		this.$data._query.dressing = this.id
-		this.$data._query = { ...this.$data._query, ...this.$store.getters.lonAndLat }
+		this.$data._query = {
+			...this.$data._query,
+			longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+			latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0]
+		}
 		this._loadData()
 		this.getMenus(options.id)
 	},

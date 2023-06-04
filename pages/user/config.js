@@ -1,7 +1,8 @@
 export const myTools = [
 	{
-		name: '我的收益',
-		icon: require('../../static/user-center/menus/wallet.png')
+		name: '小账本',
+		icon: require('../../static/user-center/menus/wallet.png'),
+		url: '/user/my-tools/account-book/index'
 	},
 	{
 		name: '我的订单',
@@ -17,10 +18,20 @@ export const myTools = [
 		name: '我的地址',
 		icon: require('../../static/user-center/menus/address.png'),
 		url: '/user/site/site-manage'
+	},
+	{
+		name: '银行卡',
+		icon: require('../../static/user-center/menus/shenqingjilu.png'),
+		url: '/user/my-tools/bank-card/index'
 	}
 ]
 
 export const myServe = [
+	{
+		name: '商家订单',
+		icon: require('../../static/user-center/menus/order.png'),
+		url: '/user/merchant-orders/index'
+	},
 	{
 		name: '我的拼团',
 		icon: require('../../static/user-center/menus/wodepintuan.png')
@@ -37,12 +48,19 @@ export const myServe = [
 	},
 	{
 		name: '联系客服',
-		icon: require('../../static/user-center/menus/lianxikefu.png')
+		icon: require('../../static/user-center/menus/lianxikefu.png'),
+		url: '/user/sever/customer-service/customer-service'
 	},
 	{
 		name: '推广码',
 		icon: require('../../static/user-center/menus/tuiguangma.png'),
 		type: 'code',
+		role: [11, 10, 7, 5, 6, 4, 3]
+	},
+	{
+		name: '邀请码',
+		icon: require('../../static/user-center/menus/tuiguangma.png'),
+		type: 'invitationCode',
 		role: [11, 10, 7, 5, 6, 4, 3]
 	},
 	{
@@ -53,18 +71,12 @@ export const myServe = [
 	{
 		name: '代金券',
 		icon: require('../../static/user-center/menus/daijinjuan.png'),
-		url: '/user/otherServe/voucher/index',
-		role: [6, 4, 3]
+		url: '/user/otherServe/voucher/index'
+		// role: [6, 4, 3]
 	},
 	{
 		name: '进销存',
 		icon: require('../../static/user-center/menus/jinxiaocun.png')
-	},
-	{
-		name: '商家入驻',
-		icon: require('../../static/user-center/menus/shangjiaruzhu.png'),
-		url: '/user/marketing-tools/store-application',
-		role: [10, 7]
 	},
 	{
 		name: '申请记录',
@@ -75,6 +87,11 @@ export const myServe = [
 		name: '粉丝列表',
 		icon: require('../../static/user-center/menus/shenqingjilu.png'),
 		url: '/user/sever/fan-list'
+	},
+	{
+		name: '粉丝统计',
+		icon: require('../../static/user-center/menus/shenqingjilu.png'),
+		url: '/user/sever/fan-statistics'
 	},
 	{
 		name: '关联商家',
@@ -107,6 +124,11 @@ export const myStore = [
 		icon: require('../../static/user-center/menus/yewuguan.png'),
 		url: '/user/digital-store/newBusiness/index',
 		role: [6, 4, 3]
+	},
+	{
+		name: '商品管理',
+		icon: require('../../static/user-center/menus/shangpinguanli.png'),
+		url: '/user/digital-store/goods-management/index'
 	}
 ]
 

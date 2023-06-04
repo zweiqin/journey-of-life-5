@@ -3,18 +3,18 @@
 		<!-- <view class="header">
 			<tui-icon name="arrowleft" color="#000" @click="handleBack"></tui-icon>
 			<BeeAddress>
-				<view class="address-wrapper">
-					<view class="current-addresss">位置：广东省佛山市</view>
-					<BeeIcon :src="require('../../../static/index/bianmin/location.png')" :size="24"></BeeIcon>
-				</view>
+			<view class="address-wrapper">
+			<view class="current-addresss">位置：广东省佛山市</view>
+			<BeeIcon :src="require('../../../static/index/bianmin/location.png')" :size="24"></BeeIcon>
+			</view>
 			</BeeAddress>
-		</view> -->
+			</view> -->
 		<view class="top">
 			<image src="../../../static/index/convenient-services/return.png" mode="" @click="back" />
 			<text>加油</text>
 		</view>
 		<view class="bar-list">
-			<view class="bar" v-for="test in tests" :key="test.id">
+			<view v-for="test in tests" :key="test.id" class="bar">
 				<image :src="test.icon" mode="" @click="processById(test.id)" />
 				<view class="text">{{ test.name }}</view>
 			</view>
@@ -23,13 +23,14 @@
 
 			<view class="card">
 				<image src="../../../static/index/convenient-services/card.png" mode="" />
-				<view v-if="showyouka" class="number">油卡编号: <text>{{ youkabianhao }}</text>
+				<view v-if="showyouka" class="number">
+					油卡编号: <text>{{ youkabianhao }}</text>
 					<view class="copy" @tap="copyText(youkabianhao)">复制</view>
 				</view>
 				<view v-if="showyouka" class="surplus">油卡余额: <text>{{ youkayue }}</text></view>
 			</view>
 
-			<view class="order-form" v-for="test in czlog" :key="test.id">
+			<view v-for="test in czlog" :key="test.id" class="order-form">
 				<view class="order-number">订单号: <text>{{ test.orderno }}</text></view>
 				<view class="copy1" @tap="copyText(test.orderno)">复制</view>
 				<view class="money">金额: <text>{{ test.amount }}</text></view>
@@ -48,10 +49,9 @@
 
 <script>
 import { items, coupons, tests, tests1 } from './data'
-import { RuanRequest, getUserId } from "../../../utils"
-import { payOrderGoodsApi } from "../../../api/goods"
+import { RuanRequest, getUserId } from '../../../utils'
 export default {
-	name: "Phone-bill",
+	name: 'PhoneBill',
 	props: {
 	},
 	data() {
@@ -61,10 +61,32 @@ export default {
 			tests,
 			tests1,
 			showyouka: false,
-			youkabianhao: "",
+			youkabianhao: '',
 			youkayue: 0,
-			czlog: [],
+			czlog: []
 		}
+	},
+	created() {
+		RuanRequest('/tuanyou/queryYouKaAmount', null, 'post').then(({ data }) => {
+			console.log(data)
+			if (data.youKa != null) {
+				this.showyouka = true
+				this.youkabianhao = data.youKa
+				this.youkayue = data.accountBalance
+				this.tests = this.tests1
+
+				const reqData = {
+					'page': 1,
+					'limit': 50
+				}
+				RuanRequest('/tuanyou/userczlog', reqData, 'post').then(({ data }) => {
+					console.log(data)
+					if (data.items != null) {
+						this.czlog = data.items
+					}
+				})
+			}
+		})
 	},
 	methods: {
 		back() {
@@ -73,32 +95,32 @@ export default {
 		copyText(value) {
 			uni.setClipboardData({
 				data: value,
-				success: function () {
-					console.log("success", value);
-				},
-			});
+				success() {
+					console.log('success', value)
+				}
+			})
 		},
 		processById(id) {
 			if (id == 1) {
-				RuanRequest("/tuanyou/createyouka", null, "post").then(({ data }) => {
-					console.log(data);
-					RuanRequest("/tuanyou/queryYouKaAmount", null, "post").then(({ data }) => {
-						console.log(data);
+				RuanRequest('/tuanyou/createyouka', null, 'post').then(({ data }) => {
+					console.log(data)
+					RuanRequest('/tuanyou/queryYouKaAmount', null, 'post').then(({ data }) => {
+						console.log(data)
 						if (data.youKa != null) {
-							this.showyouka = true;
-							this.youkabianhao = data.youKa;
-							this.youkayue = data.accountBalance;
-							this.tests = this.tests1;
+							this.showyouka = true
+							this.youkabianhao = data.youKa
+							this.youkayue = data.accountBalance
+							this.tests = this.tests1
 						}
-					});
-				});
+					})
+				})
 			} else if (id == 2) {
 				uni.navigateTo({
-					url: '/pages/index/convenient-services/recharge?kahao=' + this.youkabianhao,
+					url: '/pages/index/convenient-services/recharge?kahao=' + this.youkabianhao
 				})
 			} else if (id == 3) {
-				RuanRequest("/tuanyou/getjumpurl", null, "post").then(({ data }) => {
-					console.log(data);
+				RuanRequest('/tuanyou/getjumpurl', null, 'post').then(({ data }) => {
+					console.log(data)
 					// uni.navigateToMiniProgram({
 					// 	appId: 'wx1f1ea04b716771be',
 					// 	path: data,
@@ -113,33 +135,11 @@ export default {
 					// 	}
 					// })
 					uni.navigateTo({
-						url: '/pages/index/convenient-services/tuanyouh5?url=' + data,
+						url: '/pages/index/convenient-services/tuanyouh5?url=' + data
 					})
-				});
+				})
 			}
 		}
-	},
-	created() {
-		RuanRequest("/tuanyou/queryYouKaAmount", null, "post").then(({ data }) => {
-			console.log(data);
-			if (data.youKa != null) {
-				this.showyouka = true;
-				this.youkabianhao = data.youKa;
-				this.youkayue = data.accountBalance;
-				this.tests = this.tests1;
-
-				const reqData = {
-					"page": 1,
-					"limit": 50,
-				};
-				RuanRequest("/tuanyou/userczlog", reqData, "post").then(({ data }) => {
-					console.log(data);
-					if (data.items != null) {
-						this.czlog = data.items;
-					}
-				});
-			}
-		});
 	}
 }
 </script>
@@ -359,8 +359,6 @@ export default {
 
 			}
 		}
-
-
 
 	}
 }

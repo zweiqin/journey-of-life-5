@@ -1,85 +1,79 @@
 <template>
-  <view class="local-wrapper" @click.stop="handleClick">
-    <JIcon type="locale" width="34" height="40"></JIcon>
-    <text class="locale">{{ address }}</text>
+	<view class="local-wrapper" @click.stop="handleClick">
+		<JIcon type="locale" width="34" height="40"></JIcon>
+		<text class="locale">{{ address }}</text>
 
-    <view
-      class="popup"
-      :style="{
-        transform: show ? 'scale(1)' : 'scale(0)',
-      }"
-    >
-      <view>定位失败</view>
-      <view>
-        {{ error }}
-      </view>
-      <button @click.prevent.stop="show = false">关闭</button>
-    </view>
-  </view>
+		<view
+			class="popup"
+			:style="{
+				transform: show ? 'scale(1)' : 'scale(0)'
+			}"
+		>
+			<view>定位失败</view>
+			<view>
+				{{ error }}
+			</view>
+			<button @click.prevent.stop="show = false">关闭</button>
+		</view>
+	</view>
 </template>
 
 <script>
-import { getAdressDetailByLngLat } from "../../utils/DWHutils";
-import { J_LOACTION } from "../../constant";
+import { getAdressDetailByLngLat } from '../../utils/DWHutils'
 export default {
-  mounted() {
-    this.getLocation();
-  },
 
-  data() {
-    return {
-      address: "位置",
-      error: null,
-      show: false,
-    };
-  },
+	data() {
+		return {
+			address: '位置',
+			error: null,
+			show: false
+		}
+	},
+	mounted() {
+		this.getLocation()
+	},
 
-  methods: {
-    getLocation() {
-      this.address = "定位中...";
-      const _this = this;
-      uni.getLocation({
-        type: "gcj02",
-        success: function (res) {
-          uni.setStorageSync(J_LOACTION, {
-            latitude: res.latitude,
-            longitude: res.longitude,
-          });
+	methods: {
+		getLocation() {
+			this.address = '定位中...'
+			const _this = this
+			uni.getLocation({
+				type: 'gcj02',
+				success(res) {
+					getAdressDetailByLngLat(res.latitude, res.longitude)
+						.then((res) => {
+							if (res.status == '1') {
+								// console.log(123, res);
+								const result = res.regeocode.addressComponent.township
+								_this.address = result
+							}
+						})
+						.catch((err) => {
+							_this.error = err
+							_this.show = true
+							_this.address = '定位失败'
+						})
+				}
+			})
+		},
 
-          getAdressDetailByLngLat(res.latitude, res.longitude)
-            .then((res) => {
-              if (res.status == "1") {
-                // console.log(123, res);
-                const result = res.regeocode.addressComponent.township;
-                _this.address = result;
-              }
-            })
-            .catch((err) => {
-              _this.error = err;
-              _this.show = true;
-              _this.address = "定位失败";
-            });
-        },
-      });
-    },
-
-    handleClick() {
-      const _this = this;
-      if (this.address === "定位失败" || this.address === "定位中...") {
-        uni.showModal({
-          title: "提示",
-          confirmText: "我已打开定位",
-          content: "请确认您已开启了定位",
-          success: function (res) {
-            if (res.confirm) {
-              _this.getLocation();
-            }
-          },
-        });
-      }
-    },
-  },
-};
+		handleClick() {
+			const _this = this
+			if (this.address === '定位失败' || this.address === '定位中...') {
+				uni.showModal({
+					title: '提示',
+					confirmText: '我已打开定位',
+					content: '请确认您已开启了定位',
+					success(res) {
+						if (res.confirm) {
+							_this.getLocation()
+						}
+					}
+				})
+			}
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>

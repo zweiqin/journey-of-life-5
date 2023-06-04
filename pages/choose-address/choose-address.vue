@@ -10,8 +10,8 @@
 		<view class="current-address" @click="handleGetCurrentAddress">
 			<text class="current-address-text">
 				当前：{{
-					$store.getters.currentLocation
-						? $store.getters.currentLocation
+					$store.getters.currentCity
+						? $store.getters.currentCity
 						: '定位失败，重新定位'
 				}}
 			</text>
@@ -65,6 +65,7 @@
 
 <script>
 export default {
+	name: 'ChooseAddress',
 
 	data() {
 		return {
@@ -114,7 +115,12 @@ export default {
 		},
 
 		handleChooseCity(cityName) {
-			this.$store.commit('location/CHANGE_J_CURRENT_LOCATION', cityName)
+			uni.showLoading()
+			this.$store.dispatch('location/getDetailAddress', {
+				city: cityName,
+				distinguish: '',
+				town: ''
+			})
 			this.handleBack()
 		},
 

@@ -1,155 +1,155 @@
 <template>
-  <view class="apply-daren">
-    <view class="pane">
-      <JHeader width="50" height="50" title="成为达人"></JHeader>
-    </view>
+	<view class="apply-daren">
+		<view class="pane">
+			<JHeader width="50" height="50" title="成为达人"></JHeader>
+		</view>
 
+		<view class="pane">
+			<view class="title">达人信息</view>
 
-    <view class="pane">
-      <view class="title">达人信息</view>
+			<view class="pane-title">达人头像</view>
+			<view class="select" style="border-bottom: none;">
+				<JUpload style="flex: 1" :img-url="form.avatar" @upload="handleUploadAvatar" @delete="handleDeleteAvatar">
+				</JUpload>
+			</view>
 
-      <view class="pane-title">达人头像</view>
-      <view class="select" style="border-bottom: none;">
-        <JUpload style="flex: 1" :imgUrl="form.avatar" @upload="handleUploadAvatar" @delete="handleDeleteAvatar">
-        </JUpload>
-      </view>
+			<view class="pane-title">达人姓名</view>
+			<view class="select">
+				<input v-model="form.name" type="text" placeholder="请输入达人姓名" />
+			</view>
 
-      <view class="pane-title">达人姓名</view>
-      <view class="select">
-        <input type="text" v-model="form.name" placeholder="请输入达人姓名" />
-      </view>
+			<view class="pane-title">达人电话</view>
+			<view class="select">
+				<input v-model="form.phone" type="text" placeholder="请输入达人电话" />
+			</view>
 
-      <view class="pane-title">达人电话</view>
-      <view class="select">
-        <input v-model="form.phone" type="text" placeholder="请输入达人电话" />
-      </view>
+			<view class="pane-title">达人性别</view>
+			<view class="select" style="padding-bottom: 20upx;">
+				<view class="tui-dck--box">
+					<tui-data-checkbox
+						v-model="form.grade"
+						:options="[{ text: '男', value: '1' }, { text: '女', value: '0' }]"
+					></tui-data-checkbox>
+				</view>
 
-      <view class="pane-title">达人性别</view>
-      <view class="select" style="padding-bottom: 20upx;">
-        <view class="tui-dck--box">
-          <tui-data-checkbox v-model="form.grade"
-            :options="[{ text: '男', value: '1' }, { text: '女', value: '0' }]"></tui-data-checkbox>
-        </view>
+			</view>
 
-      </view>
+			<view class="pane-title">达人服务区域</view>
+			<view class="select">
+				<JCity style="flex: 1" :text="form.region" @confirm="handleChooseArea"></JCity>
+			</view>
 
-      <view class="pane-title">达人服务区域</view>
-      <view class="select">
-        <JCity style="flex: 1" @confirm="handleChooseArea" :text="form.region"></JCity>
-      </view>
+			<view class="pane-title">个性标签</view>
+			<view class="select">
+				<textarea v-model="form.introduce"></textarea>
+			</view>
+		</view>
 
-      <view class="pane-title">个性标签</view>
-      <view class="select">
-        <textarea v-model="form.introduce"></textarea>
-      </view>
-    </view>
+		<button class="uni-btn" @click="submit">提交</button>
 
-
-    <button class="uni-btn" @click="submit">提交</button>
-
-    <tui-toast ref="toast"></tui-toast>
-  </view>
+		<tui-toast ref="toast"></tui-toast>
+	</view>
 </template>
 
 <script>
 import { submitApplyApi } from '../../api/marketing-treasure-house'
 export default {
-  data() {
-    return {
-      form: {
-        "name": "",
-        "grade": '1',
-        "phone": "",
-        "avatar": "",
-        "region": "",
-        "introduce": ""
-      },
+	data() {
+		return {
+			form: {
+				'name': '',
+				'grade': '1',
+				'phone': '',
+				'avatar': '',
+				'region': '',
+				'introduce': ''
+			},
 
-      loading: ''
-    }
-  },
+			loading: ''
+		}
+	},
 
-  methods: {
-    handleChooseArea(areaInfo) {
-      this.form.region = areaInfo.area
-    },
+	methods: {
+		handleChooseArea(areaInfo) {
+			this.form.region = areaInfo.area
+		},
 
-    handleUploadAvatar(avatarInfo) {
-      this.form.avatar = this.getBeeUrl(avatarInfo)
-    },
+		handleUploadAvatar(avatarInfo) {
+			this.form.avatar = this.common.seamingImgUrl(avatarInfo)
+		},
 
-    // 删除图片
-    handleDeleteAvatar() {
-      this.form.avatar = ''
-    },
+		// 删除图片
+		handleDeleteAvatar() {
+			this.form.avatar = ''
+		},
 
-    // 提交
-    async submit() {
-      if (!this.form.avatar) {
-        this.ttoast({
-          type: 'fail',
-          title: "请上传头像"
-        })
-        return
-      }
-      if (!this.form.name) {
-        this.ttoast({
-          type: 'fail',
-          title: "请输入达人姓名"
-        })
-        return
-      }
-      if (!this.form.phone) {
-        this.ttoast({
-          type: 'fail',
-          title: "请输入达人联系方式"
-        })
-        return
-      }
-      if (!this.form.region) {
-        this.ttoast({
-          type: 'fail',
-          title: "请输入达人服务区域"
-        })
-        return
-      }
+		// 提交
+		async submit() {
+			if (!this.form.avatar) {
+				this.ttoast({
+					type: 'fail',
+					title: '请上传头像'
+				})
+				return
+			}
+			if (!this.form.name) {
+				this.ttoast({
+					type: 'fail',
+					title: '请输入达人姓名'
+				})
+				return
+			}
+			if (!this.form.phone) {
+				this.ttoast({
+					type: 'fail',
+					title: '请输入达人联系方式'
+				})
+				return
+			}
+			if (!this.form.region) {
+				this.ttoast({
+					type: 'fail',
+					title: '请输入达人服务区域'
+				})
+				return
+			}
 
-      if (this.loading) {
-        this.ttoast({
-          type: 'info',
-          title: '已经提交申请',
-          content: '请勿重复提交'
-        })
-        return
-      }
-      this.loading = true
-      uni.showLoading({
-        title: '提交中...',
-      });
+			if (this.loading) {
+				this.ttoast({
+					type: 'info',
+					title: '已经提交申请',
+					content: '请勿重复提交'
+				})
+				return
+			}
+			this.loading = true
+			uni.showLoading({
+				title: '提交中...'
+			})
 
-      try {
-        await submitApplyApi(this.form)
-        this.ttoast('申请成功')
-        this.form = {
-          "name": "",
-          "grade": '1',
-          "phone": "",
-          "avatar": "",
-          "region": "",
-          "introduce": ""
-        }
+			try {
+				await submitApplyApi(this.form)
+				this.ttoast('申请成功')
+				this.form = {
+					'name': '',
+					'grade': '1',
+					'phone': '',
+					'avatar': '',
+					'region': '',
+					'introduce': ''
+				}
 
-        setTimeout(() => {
-          uni.switchTab({
-            url: '/pages/marketing-treasure-house/marketing-treasure-house',
-          });
-        }, 1000)
-      } finally {
-        uni.hideLoading();
-        this.loading = false
-      }
-    }
-  }
+				setTimeout(() => {
+					uni.switchTab({
+						url: '/pages/marketing-treasure-house/marketing-treasure-house'
+					})
+				}, 1000)
+			} finally {
+				uni.hideLoading()
+				this.loading = false
+			}
+		}
+	}
 }
 </script>
 

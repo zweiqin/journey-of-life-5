@@ -57,16 +57,7 @@
 
 			<CouponList v-show="currentMenu === 2" :coupon-data="couponList"></CouponList>
 
-			<!-- <view v-show="currentMenu === 3" class="no-data f-center">
-				<view>
-				暂无预约<text class="p-color" style="font-size: 36upx;" @click="go('/pages/store/apponit/apponit')">去预约</text>
-
-				</view>
-				<BeeAvatar radius="0upx" :width="179" :height="156" :src="require('../../../static/brand/detail/apponit.png')">
-				</BeeAvatar>
-				</view> -->
-
-			<Apponit v-show="currentMenu === 3" :apponit-list="apponitList" :data="brandDetail"></Apponit>
+			<Reservation v-show="currentMenu === 3" :brand-detail="brandDetail"></Reservation>
 
 			<view v-show="currentMenu === 4" class="no-data f-center">
 				暂无会员
@@ -89,7 +80,7 @@
 		<RecommendList></RecommendList>
 
 		<view class="shop-car-fixed">
-			<BeeIcon :src="require('../../../static/brand/detail/shop-car.png')" :size="40" @click="go('/user/sever/shop-car')">
+			<BeeIcon :src="require('../../../static/brand/detail/shop-car.png')" :size="40" @click="go(`/user/sever/shop-car?isBack=1`)">
 			</BeeIcon>
 		</view>
 
@@ -105,14 +96,14 @@
 import BrandGoods from './cpns/BrandGoods.vue'
 import BrandInfo from './cpns/BrandInfo'
 import { menusData } from './data'
-import { getBrandDetailApi, getBrandCouponApi, addShopCarApi, getApponitListApi, folleBrandApi } from '../../../api/brand'
-import { goodsListApi } from '../../../api/goods'
+import { getBrandDetailApi, getBrandCouponApi, folleBrandApi } from '../../../api/brand'
+import { goodsListApi, getGoodsDetailApi, addShopCarApi } from '../../../api/goods'
 import loadData from '../../../mixin/loadData'
 import AppraisePane from './cpns/AppraisePane.vue'
 import RecommendList from './cpns/RecommendList.vue'
 import CouponList from './cpns/CouponList.vue'
+import Reservation from './cpns/Reservation.vue'
 import showModel from '../../../mixin/showModel'
-import Apponit from './cpns/Apponit.vue'
 import { navigationAddress } from '../../../utils'
 
 export default {
@@ -123,8 +114,7 @@ export default {
 		AppraisePane,
 		RecommendList,
 		CouponList,
-		Apponit
-
+		Reservation
 	},
 
 	mixins: [loadData({ api: goodsListApi }), showModel()],
@@ -135,8 +125,7 @@ export default {
 			currentMenu: 0,
 			brandId: null,
 			brandDetail: {},
-			couponList: [],
-			apponitList: []
+			couponList: []
 		}
 	},
 
@@ -149,7 +138,12 @@ export default {
 
 	methods: {
 		async getBrandDetail() {
-			const { data } = await getBrandDetailApi({ id: this.brandId, ...this.$store.getters.lonAndLat, userId: this.userId })
+			const { data } = await getBrandDetailApi({
+				id: this.brandId,
+				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+				userId: this.userId
+			})
 			this.brandDetail = data
 			this.handleShareServe(true)
 		},
@@ -162,9 +156,6 @@ export default {
 					if (!this.couponList.length) {
 						this.getBrandCoupon()
 					}
-					break
-				case 3:
-					this.getApponitList()
 					break
 			}
 		},
@@ -180,31 +171,35 @@ export default {
 		async addShopCar(goodsInfo) {
 			if (this.isLogin()) {
 				try {
-					await addShopCarApi({
-						'userId': this.userId,
-						'brandId': goodsInfo.brandId,
-						'goodsId': goodsInfo.id,
-						'checked': 1,
-						'number': 1
-					})
-
-					this.ttoast('购物车添加成功')
+					// console.log(goodsInfo)
+					const { data } = await getGoodsDetailApi(
+						goodsInfo.id,
+						this.userId
+					)
+					// console.log(data)
+					if (data.productList[0].goodsId) {
+						await addShopCarApi({
+							'userId': this.userId,
+							'brandId': goodsInfo.brandId,
+							'goodsId': goodsInfo.id,
+							'checked': 1,
+							'number': 1,
+							'productId': data.productList[0].id
+						})
+						this.ttoast('购物车添加成功')
+					} else {
+						this.ttoast('商品参数出错，无法添加！')
+					}
 				} catch (error) {
-					this.ttoast({
-						type: 'fail',
-						title: '添加失败'
-					})
+					console.log(error)
+					// this.ttoast({
+					// 	type: 'fail',
+					// 	title: '添加失败'
+					// })
 				}
 			} else {
 				this.$data._isShowTuiModel = true
 			}
-		},
-
-		// 获取预约列表
-		async getApponitList() {
-			const { data } = await getApponitListApi({ userId: this.userId, brandId: this.brandDetail.id })
-			console.log('123456789'.data)
-			this.apponitList = data
 		},
 
 		// 收藏商家
@@ -250,11 +245,7 @@ export default {
 				})
 				return
 			}
-
-			navigationAddress({
-				longitude: this.brandDetail.longitude,
-				latitude: this.brandDetail.latitude
-			})
+			navigationAddress(`${this.brandDetail.longitude},${this.brandDetail.latitude}`)
 		}
 	}
 }

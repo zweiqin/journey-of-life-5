@@ -16,8 +16,6 @@ export const J_SELECT_ADDRESS = 'J_SELECT_ADDRESS'
 export const J_TWO_PAY_GOODS = 'J_TWO_PAY_GOODS'
 export const J_APPONIT_GOODS = 'J_APPONIT_GOODS'
 
-export const J_LOACTION = 'J_LOACTION'
-
 // vip
 // export const J_STORE_INFO = 'J_STORE_INFO'
 // export const J_MARKETING_PLANNER = 'J_MARKETING_PLANNER'
@@ -55,4 +53,4 @@ export const J_PAY_TYPE = {
 	}
 }
 
-export const J_CURRENT_LOCATION = 'J_CURRENT_LOCATION'
+export const J_CURRENT_ADDRESS = 'J_CURRENT_ADDRESS'

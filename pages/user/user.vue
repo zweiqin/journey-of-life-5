@@ -6,20 +6,20 @@
 		<!-- 账户余额 -->
 		<Pane v-if="isLogin()" title="账户余额">
 			<text slot="title" class="balance-text">￥{{ userInfo.account || 0 }}</text>
-			<button slot="right" class="bee-btn" @click="empty()">去提现</button>
+			<button slot="right" class="bee-btn" @click="go('/user/otherServe/withdrawal/index?type=0')">去提现</button>
 		</Pane>
 
 		<!-- 我的服务 -->
-		<Pane title="我的工具" :menu-data="myTools" @menu-click="handleClickMenu"></Pane>
+		<Pane title="我的工具" :menu-data="myTools" :permission-data="myToolsList" @menu-click="handleClickMenu"></Pane>
 
 		<!-- 我的服务 -->
-		<Pane title="我的服务" :menu-data="myServe" @menu-click="handleClickMenu"></Pane>
+		<Pane title="我的服务" :menu-data="myServe" :permission-data="myServeList" @menu-click="handleClickMenu"></Pane>
 
 		<!-- 数字化门店 -->
-		<Pane title="数字化营销门店" :menu-data="myStore" @menu-click="handleClickMenu"></Pane>
+		<Pane title="数字化营销门店" :menu-data="myStore" :permission-data="myStoreList" @menu-click="handleClickMenu"></Pane>
 
 		<!-- 营销工具 -->
-		<Pane title="营销工具" :menu-data="marketingTools" @menu-click="handleClickMenu"></Pane>
+		<Pane title="营销工具" :menu-data="marketingTools" :permission-data="marketingToolsList" @menu-click="handleClickMenu"></Pane>
 
 		<!-- 提示相关组件 -->
 		<tui-toast ref="toast"></tui-toast>
@@ -29,8 +29,10 @@
 		></tui-modal>
 		<tui-modal :show="isShow" title="提示" content="您的会员等级不够，是否前去升级？" @click="handleUp"></tui-modal>
 
-		<!-- 特殊的 menu 操作 -->
+		<!-- 特殊code的 menu 操作 -->
 		<PromotioCcodePopup ref="codeRef"></PromotioCcodePopup>
+		<!-- 特殊invitationCode的 menu 操作 -->
+		<InvitationCodePopup ref="invitationCodeRef"></InvitationCodePopup>
 	</view>
 </template>
 
@@ -40,9 +42,10 @@ import UserInfo from './components/UserInfo.vue'
 import Pane from './components/Pane.vue'
 import { myTools, myServe, myStore, marketingTools } from './config'
 import showModelMixin from '../../mixin/showModel'
-import { J_USER_INFO, J_LOACTION } from '../../constant'
+import { J_USER_INFO } from '../../constant'
 import PromotioCcodePopup from './components/PromotioCcodePopup.vue'
-import { refrshUserInfoApi } from '../../api/user'
+import InvitationCodePopup from './components/InvitationCodePopup.vue'
+import { refrshUserInfoApi, getRolePermissionMenuApi } from '../../api/user'
 import { getUserId } from '../../utils'
 
 export default {
@@ -51,41 +54,78 @@ export default {
 		HeaderTool,
 		UserInfo,
 		Pane,
-		PromotioCcodePopup
+		PromotioCcodePopup,
+		InvitationCodePopup
 	},
 	mixins: [ showModelMixin() ],
 	data() {
 		return {
 			myTools: Object.freeze(myTools),
+			myToolsList: [],
 			myServe: Object.freeze(myServe),
+			myServeList: [],
 			myStore: Object.freeze(myStore),
+			myStoreList: [],
 			marketingTools: Object.freeze(marketingTools),
+			marketingToolsList: [],
 			isShow: false,
 			userInfo: {}
+
 		}
 	},
 
 	onLoad() {},
 
 	onShow() {
-		const _this = this
 		this.$forceUpdate()
 		this.userInfo = uni.getStorageSync(J_USER_INFO)
 		this.$nextTick(() => {
 			this.$refs.userInfoRef.setUserInfo()
 		})
-
 		if (getUserId()) {
 			refrshUserInfoApi({
 				userId: getUserId()
 			}).then((res) => {
-				_this.userInfo = res.data
+				this.userInfo = res.data
 				uni.setStorageSync(J_USER_INFO, res.data)
-				_this.$refs.userInfoRef.setUserInfo()
+				this.$refs.userInfoRef.setUserInfo()
+			})
+			getRolePermissionMenuApi({
+				userId: getUserId()
+			}).then((res) => {
+				// 	console.log(res)
+				const myToolsList = []
+				const myServeList = []
+				const myStoreList = []
+				const marketingToolsList = []
+				res.data.forEach((item) => {
+					switch (item.type) {
+						case 0:
+							myToolsList.push(item)
+							break
+						case 1:
+							myServeList.push(item)
+							break
+						case 2:
+							myStoreList.push(item)
+							break
+						case 3:
+							marketingToolsList.push(item)
+							break
+						default:
+							break
+					}
+				})
+				// this.myToolsList = myToolsList.map((item) => item.iconName)
+				// this.myServeList = myServeList.map((item) => item.iconName)
+				// this.myStoreList = myStoreList.map((item) => item.iconName)
+				// this.marketingToolsList = marketingToolsList.map((item) => item.iconName)
+				this.myToolsList = myToolsList
+				this.myServeList = myServeList
+				this.myStoreList = myStoreList
+				this.marketingToolsList = marketingToolsList
 			})
 		}
-
-		uni.removeStorageSync(J_LOACTION)
 	},
 
 	mounted() {
@@ -137,10 +177,12 @@ export default {
 
 		// 特殊的menu处理
 		handleSpecificMenu(type) {
-			const _this = this
 			switch (type) {
 				case 'code':
-					_this.$refs.codeRef.getCode()
+					this.$refs.codeRef.getCode()
+					break
+				case 'invitationCode':
+					this.$refs.invitationCodeRef.getCode()
 					break
 			}
 		}

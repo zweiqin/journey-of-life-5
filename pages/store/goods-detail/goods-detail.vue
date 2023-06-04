@@ -6,7 +6,7 @@
 			<!-- <image src="https://img2.baidu.com/it/u=631516092,1411937024&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800">
 				</image> -->
 
-			<BeeSwiper height="540rpx" :list="goodsDetail.info.gallery.map(item => getBeeUrl(item)) || '[]'" mode="aspectFit" @click="handlePreviewImg"></BeeSwiper>
+			<BeeSwiper height="540rpx" :list="goodsDetail.info.gallery.map(item => common.seamingImgUrl(item))" mode="aspectFit" @click="handlePreviewImg"></BeeSwiper>
 
 			<view class="header-tool">
 				<BeeBack>
@@ -121,7 +121,6 @@ export default {
 				this.goodsId,
 				this.userId
 			)
-
 			this.goodsDetail = data
 			this.spData = {
 				info: {
@@ -129,7 +128,6 @@ export default {
 					unit: data.unit,
 					picUrl: data.picUrl
 				},
-
 				productList: data.productList,
 				specificationList: data.specificationList
 			}
@@ -152,7 +150,8 @@ export default {
 		// 更多地点推荐
 		async getMoreCityRecommend() {
 			const { data } = await getMoreCityRecommendApi({
-				...this.$store.getters.lonAndLat
+				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0]
 			})
 
 			this.recommendBrandList = data.filter((item) => item.goods && item.id !== this.goodsDetail.brandId)

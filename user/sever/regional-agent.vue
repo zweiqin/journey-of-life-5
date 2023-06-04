@@ -1,148 +1,156 @@
 <template>
-  <view class="regional-agent-container">
-    <view class="regional-agent-title">
-      <tui-icon @click="handleBack" name="arrowleft" color="#fff"></tui-icon>
-    </view>
-    <view class="main-area">
-      <view class="title">区域代理申请</view>
-      <view class="item">
-        <view class="item-title">区域</view>
-        <view class="field-wrapper">
-          <!-- <input disabled readonly type="text" placeholder="请选择代理区域" /> -->
-          <JCity :control="false" :text="cityText" @confirm="handleChooseCity"></JCity>
-          <tui-icon name="arrowdown" :size="24"></tui-icon>
-        </view>
-      </view>
+	<view class="regional-agent-container">
+		<view class="regional-agent-title">
+			<tui-icon name="arrowleft" color="#fff" @click="handleBack"></tui-icon>
+		</view>
+		<view class="main-area">
+			<view class="title">区域代理申请</view>
+			<view class="item">
+				<view class="item-title">区域</view>
+				<view class="field-wrapper">
+					<!-- <input disabled readonly type="text" placeholder="请选择代理区域" /> -->
+					<JAnyCity :control="false" :text="cityText" @confirm="handleChooseCity"></JAnyCity>
+					<tui-icon name="arrowdown" :size="24"></tui-icon>
+				</view>
+			</view>
 
-      <view class="item">
-        <view class="item-title">详细地址</view>
-        <view class="field-wrapper">
-          <input v-model.trim="form.companyAddress" type="text" placeholder="请填写您的详细地址" />
-        </view>
-      </view>
+			<view class="item">
+				<view class="item-title">详细地址</view>
+				<view class="field-wrapper">
+					<input v-model.trim="form.address" type="text" placeholder="请填写您的详细地址" />
+				</view>
+			</view>
 
-      <view class="item">
-        <view class="item-title">姓名</view>
-        <view class="field-wrapper">
-          <input v-model.trim="form.legalPerson" type="text" placeholder="请填写您的姓名" />
-        </view>
-      </view>
+			<view class="item">
+				<view class="item-title">姓名</view>
+				<view class="field-wrapper">
+					<input v-model.trim="form.name" type="text" placeholder="请填写您的姓名" />
+				</view>
+			</view>
 
-      <view class="item">
-        <view class="item-title">手机号</view>
-        <view class="field-wrapper">
-          <input v-model.trim="form.legalP" type="number" placeholder="请填写您的手机号" />
-        </view>
-      </view>
+			<view class="item">
+				<view class="item-title">手机号</view>
+				<view class="field-wrapper">
+					<input v-model.trim="form.phone" type="number" placeholder="请填写您的手机号" />
+				</view>
+			</view>
 
-      <button @click="submit" class="uni-btn">确定申请</button>
-    </view>
+			<button class="uni-btn" @click="submit">确定申请</button>
+		</view>
 
-    <tui-toast ref="toast"></tui-toast>
-  </view>
+		<tui-toast ref="toast"></tui-toast>
+	</view>
 </template>
 
 <script>
 import form from '../../components/common/tui-validation/tui-validation'
+import { J_USER_INFO } from '../../constant'
 const rules = [
-  {
-    name: 'legalPerson',
-    rule: ['require'],
-    msg: ['请填写您的姓名'],
-  },
-  {
-    name: 'legalP',
-    rule: ['required', 'isMobile'],
-    msg: ['请输入手机号', '请输入正确的手机号'],
-  },
-  {
-    name: 'companyAddress',
-    rule: ['required'],
-    msg: ['请填写您的详细地址'],
-  },
-  {
-    name: 'agentCode',
-    rule: ['required'],
-    msg: ['请选择代理区域'],
-  },
+	{
+		name: 'name',
+		rule: [ 'require' ],
+		msg: [ '请填写您的姓名' ]
+	},
+	{
+		name: 'phone',
+		rule: ['required', 'isMobile'],
+		msg: ['请输入手机号', '请输入正确的手机号']
+	},
+	{
+		name: 'address',
+		rule: [ 'required' ],
+		msg: [ '请填写您的详细地址' ]
+	},
+	{
+		name: 'area',
+		rule: [ 'required' ],
+		msg: [ '请选择代理区域' ]
+	}
 ]
 import { getUserId } from '../../utils'
 import {
-  applyRegionagentApi,
-  getApplyRegionagentStatusApi,
+	updateApplyRegionalAgentApi,
+	getApplyRegionagentStatusApi
 } from '../../api/user'
 export default {
-  data() {
-    return {
-      form: {
-        userId: getUserId(),
-        legalPerson: '',
-        legalP: '',
-        agentCode: '',
-        companyAddress: '',
-      },
-      cityText: '',
-    }
-  },
+	name: 'RegionalAgent',
+	data() {
+		return {
+			form: {
+				userId: getUserId(),
+				name: '',
+				phone: '',
+				area: '',
+				address: ''
+			},
+			cityText: '',
+			userInfo: {}
+		}
+	},
 
-  onLoad() {
-    this.getApplyRegionagentStatus()
-  },
+	onLoad() {
+		this.userInfo = uni.getStorageSync(J_USER_INFO)
+		this.getApplyRegionagentStatus()
+	},
 
-  methods: {
-    handleChooseCity(data) {
-      this.cityText = data.area
-      this.form.agentCode = (data.county.code || data.city.code || data.province.code) + ''
-    },
+	methods: {
+		handleChooseCity(data) {
+			this.cityText = data.area
+			this.form.area = (data.county.code || data.city.code || data.province.code) + ''
+		},
 
-    // 提交申请
-    async submit() {
-      const vali = form.validation(this.form, rules)
-      if (!vali) {
-        try {
-          await applyRegionagentApi(this.form)
-          uni.showToast({
-            title: '提交申请成功，请等待管理员审核',
-            duration: 2000,
-            icon: 'none',
-          })
-          this.form = {
-            userId: getUserId(),
-            legalPerson: '',
-            legalP: '',
-            agentCode: '',
-            companyAddress: '',
-          }
-        } catch (error) {
-          uni.showToast({
-            title: error,
-            duration: 2000,
-            icon: 'none',
-          })
-        }
-      } else {
-        uni.showToast({
-          title: vali,
-          duration: 2000,
-          icon: 'none',
-        })
-      }
-    },
+		// 提交申请
+		async submit() {
+			const vali = form.validation(this.form, rules)
+			if (!vali) {
+				try {
+					await updateApplyRegionalAgentApi({
+						...this.form,
+						roleIds: uni.getStorageSync(J_USER_INFO).roleIds
+					})
+					uni.showToast({
+						title: '提交申请成功，请等待管理员审核',
+						duration: 2000,
+						icon: 'none'
+					})
+					this.form = {
+						userId: getUserId(),
+						name: '',
+						phone: '',
+						area: '',
+						address: ''
+					}
+					setTimeout(() => {
+						uni.navigateBack()
+					}, 2000)
+				} catch (error) {
+					uni.showToast({
+						title: error,
+						duration: 2000,
+						icon: 'none'
+					})
+				}
+			} else {
+				uni.showToast({
+					title: vali,
+					duration: 2000,
+					icon: 'none'
+				})
+			}
+		},
 
-    async getApplyRegionagentStatus() {
-      const { data } = await getApplyRegionagentStatusApi({
-        userId: getUserId(),
-      })
+		async getApplyRegionagentStatus() {
+			const { data } = await getApplyRegionagentStatusApi({
+				userId: getUserId()
+			})
+		},
 
-      console.log(data)
-    },
-
-    handleBack() {
-      uni.switchTab({
-        url: '/pages/user/user',
-      })
-    },
-  },
+		handleBack() {
+			uni.switchTab({
+				url: '/pages/user/user'
+			})
+		}
+	}
 }
 </script>
 

@@ -59,7 +59,8 @@ export default {
 		async getBrandGoodsList() {
 			this.loading = 'loading'
 			const { data } = await getDtsBrandGoods({
-				...this.$store.getters.lonAndLat,
+				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
 				keywords: this.searchValue
 			})
 			console.log(data)
