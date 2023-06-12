@@ -55,8 +55,11 @@ export const payShopCarApi = (data) => RuanRequest('/cart/checkout', data, 'get'
 // 全平台购物车下单
 export const payAllShopCarApi = (data) => RuanRequest('/cart/allCheckout', data)
 
-// 全平台下单
-export const payAllGoodsSubmit = (data) => RuanRequest('/order/allSubmit', data)
+// // 全平台下单
+// export const payAllGoodsSubmit = (data) => RuanRequest('/order/allSubmit', data)
+
+// 全平台下单-新
+export const payAllGoodsSubmit = (data) => RuanRequest('/dtsOrder/submit', data)
 
 // 移入收藏
 export const addCollectionsApi = (data) => RuanRequest('/collect/addBatch', data)

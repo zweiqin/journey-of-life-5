@@ -20,6 +20,11 @@
 							<view>添加时间：{{ new Date(item.createTime).toLocaleString() || '--' }}</view>
 						</view>
 					</template>
+					<template #footer>
+						<view style="display: flex;justify-content: space-between;padding: 0 20rpx 20rpx;">
+							<tui-button type="danger" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="handleDeleteBankCard(item)">删除</tui-button>
+						</view>
+					</template>
 				</tui-card>
 			</view>
 		</view>
@@ -30,7 +35,7 @@
 </template>
 
 <script>
-import { getPwdSelectBankApi, createGoodsBrandApi, updateGoodsBrandApi } from '../../../api/user'
+import { getPwdSelectBankApi, deleteWithdrawalBankApi, createGoodsBrandApi, updateGoodsBrandApi } from '../../../api/user'
 import { J_USER_INFO } from '../../../constant'
 import { getUserId, getBrandId } from '../../../utils'
 
@@ -60,6 +65,14 @@ export default {
 				})
 				.catch(() => {
 					uni.hideLoading()
+				})
+		},
+		handleDeleteBankCard(item) {
+			deleteWithdrawalBankApi({ id: item.id })
+				.then(({ data }) => {
+					this.getBankCardList()
+				})
+				.catch(() => {
 				})
 		}
 	},

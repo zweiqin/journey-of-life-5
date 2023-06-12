@@ -90,6 +90,10 @@
 			style="margin: 24upx;padding: 18upx;text-align: center;font-size: 32upx;font-weight: bold;color: red;background-color: #ffffff;"
 		>
 			<view>请到店向商家出示该核销码</view>
+			<view style="display: flex;justify-content: center;align-items: center;">
+				<view>{{ verificationCode || '--' }}</view>
+				<tui-button margin="0 0 0 20upx" type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="handleCopyData(verificationCode)">复制</tui-button>
+			</view>
 			<!-- <image style="width: 420upx;" :src="verificationCodeUrl" mode="" /> -->
 			<image style="width: 420upx;" mode="widthFix" :src="verificationCodeUrl" />
 		</view>
@@ -140,7 +144,8 @@ import {
 	getOrderDetailApi,
 	orderCancelApi,
 	orderDeleteApi,
-	sendCommentApi
+	// sendCommentApi
+	addCommentPostApi
 } from '../../api/order'
 import { getVerificationCodeHxCodeApi } from '../../api/user'
 import { getUserId } from '../../utils'
@@ -208,11 +213,23 @@ export default {
 					console.log(res)
 					if (res.errno === -1) return
 					// res.data.hxCode；res.data.code；res.data.orderType：0商城1本地
+					this.verificationCode = res.data.code
 					this.verificationCodeUrl = res.data.hxCode
 				})
 					.catch((e) => {
 						uni.hideToast()
 					})
+			})
+		},
+
+		handleCopyData(text) {
+			uni.setClipboardData({
+				data: text,
+				success: () => {
+					uni.showToast({
+						title: '复制成功'
+					})
+				}
 			})
 		},
 
@@ -238,18 +255,18 @@ export default {
 			const _this = this
 			const mapMethods = {
 				cancel: {
-					text: '确定要取消当前订单吗?',
+					text: '确定要取消当前订单吗？',
 					api: orderCancelApi,
 					success: '取消成功'
 				},
 				delete: {
-					text: '确定要删除当前订单吗?',
+					text: '确定要删除当前订单吗？',
 					api: orderDeleteApi,
 					success: '删除成功'
 				}
 				// comment: {
-				//   text: "确定提交评价吗",
-				//   api: sendCommentApi,
+				//   text: "确定提交评价吗？",
+				//   api: addCommentPostApi,
 				//   success: "评论成功",
 				// },
 			}
@@ -316,9 +333,11 @@ export default {
 							_this.evForm.picUrls = [ ..._this.evForm.picUrls ]
 							const data = {
 								..._this.evForm,
-								orderGoodsId: _this.commentGoodsId * 1
+								// orderGoodsId: _this.commentGoodsId * 1,
+								type: 0,
+								valueId: this.commentGoodsId
 							}
-							sendCommentApi(data).then(() => {
+							addCommentPostApi(data).then(() => {
 								uni.showToast({
 									title: '评论成功',
 									duration: 2000

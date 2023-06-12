@@ -280,7 +280,7 @@ export const getWrapRedReleaseApi = (data) => RuanRequest('/dtsWrapRed/releaseWr
 export const addWrapRedReleaseApi = (data) => RuanRequest('/dtsWrapRed/release', data)
 
 // 用户领取红包
-export const addWrapRedReceiveApi = (data) => RuanRequest('/dtsWrapRed/receiveWrap', data)
+export const addWrapRedReceiveApi = (data) => RuanRequest('/dtsWrapRed/receiveWrap', data, 'get')
 
 /**
  * 会员升级
@@ -306,6 +306,9 @@ export const getPlannerCollectionApi = (data) => RuanRequest('/dtsUser/plannerCo
 
 // 用户购买会员升级创建订单（会员升级页购买创建订单）
 export const upgradeOrderAddOrderApi = (data) => RuanRequest('/dtsJfUpgradeOrder/addOrder', data)
+
+// 判断是否存在审核中的申请
+export const upgradeDoesItExistApi = (data) => RuanRequest('/dtsUpgradeRequest/doesItExist', data)
 
 // 商家扫营销策划师码绑定
 export const bindUserSaoMaApi = (data) => RuanRequest('/dtsUser/saoMa', data)
@@ -358,6 +361,12 @@ export const getPwdSelectBankApi = (data) => RuanRequest('/withdrawalBank/select
 // 添加用户银行信息
 export const addWithdrawalBankCardApi = (data) => RuanRequest('/withdrawalBank/add', data)
 
+// 删除银行卡
+export const deleteWithdrawalBankApi = (data) => RuanRequest('/withdrawalBank/deleteBank', data, 'get')
+
+// 银行卡校验
+export const updateWithdrawalBankCardCheckApi = (data) => RuanRequest('/withdrawalBank/checkBank', data, 'get')
+
 // 查询银行信息
 export const getBankCardOwnershipApi = (data) => RuanRequest('/dtsBankCardOwnership/list', data, 'get')
 
@@ -375,14 +384,93 @@ export const addWithdrawalApplyApi = (data) => RuanRequest('/dtsUserWithdrawal/a
 export const updateApplyRegionalAgentApi = (data) => RuanRequest('/dtsUpgradeRequest/applyRegionalAgent', data)
 
 /**
- * 用户收益
+ * 小账本
  */
 
+// 分公司
+// 分公司一级页面佣金收益统计
+export const getBranchOfficeIncomeApi = (data) => RuanRequest('/statistics/branchOfficeIncome', data, 'get')
+
+// 分公司一级页面粉丝数统计
+export const getBranchOfficeFansNumApi = (data) => RuanRequest('/statistics/branchOfficeFansNum', data, 'get')
+
+// 分公司二级页面佣金收益列表
+export const getBranchOfficeIncomeListApi = (data) => RuanRequest('/statistics/branchOfficeIncomeList', data, 'get')
+
+// 分公司二级页面策划师与粉丝列表
+export const getBranchOfficeListApi = (data) => RuanRequest('/statistics/branchOfficeList', data, 'get')
+
+// 分公司三级页面策划师与粉丝数据详情
+export const getBranchOfficeDetailsApi = (data) => RuanRequest('/statistics/branchOfficeDetails', data, 'get')
+
+// 普通用户
 // 普通人用户收益
 export const getUserIncomeApi = (data) => RuanRequest('/dtsUser/userIncome', data, 'get')
 
-// 普通用户收益记录（目前只有红包）
+// 普通用户收益记录
 export const getRevenueRecordsApi = (data) => RuanRequest('/dtsUser/revenueRecords', data, 'get')
+
+// 营销策划师
+// 营销策划师一级页面佣金数据统计
+export const getPlannerBenefitsApi = (data) => RuanRequest('/statistics/plannerBenefits', data, 'get')
+
+// 营销策划师一级页面粉丝数据统计
+export const getPlannerFansApi = (data) => RuanRequest('/statistics/plannerFans', data, 'get')
+
+// 营销策划师一级页面佣金数据列表
+export const getPlannerBenefitsListApi = (data) => RuanRequest('/statistics/plannerBenefitsList', data, 'get')
+
+// 营销策划师一级页面粉丝数据列表
+export const getPlannerListApi = (data) => RuanRequest('/statistics/plannerList', data, 'get')
+
+// 营销策划师一级页面粉丝数据详情
+export const getPlannerDetailsApi = (data) => RuanRequest('/statistics/plannerDetails', data, 'get')
+
+// 商家
+// 商家二级页面佣金统计
+export const getBrandCommissionApi = (data) => RuanRequest('/statistics/brandCommission', data, 'get')
+
+// 商家账一级页面粉丝数据量统计
+export const getBrandFansNumApi = (data) => RuanRequest('/statistics/brandFansNum', data, 'get')
+
+// 商家二级页面佣金列表
+export const getBrandCommissionListApi = (data) => RuanRequest('/statistics/brandCommissionList', data, 'get')
+
+// 商家账一级页面粉丝数据列表
+export const getBrandFansApi = (data) => RuanRequest('/statistics/brandFans', data, 'get')
+
+// 商家账一级页面粉丝详情表
+export const getBrandFansDetailsApi = (data) => RuanRequest('/statistics/brandFansDetails', data, 'get')
+
+// 订单
+// 商家账本数据一级页面统计
+export const getBrandAccountBookApi = (data) => RuanRequest('/statistics/brandAccountBook', data, 'get')
+
+// 商家一级页面账本入账出账记录
+export const getBrandLedgerRecordsApi = (data) => RuanRequest('/statistics/brandLedgerRecords', data, 'get')
+
+// 商家二级级页面订单数量统计
+export const getBrandOrderNumberApi = (data) => RuanRequest('/statistics/brandOrderNumber', data, 'get')
+
+// 商家二级级页面订单收益统计
+export const getBrandOrderRecordsApi = (data) => RuanRequest('/statistics/brandOrderRecords', data, 'get')
+
+// 商家订单记录
+export const getBrandOrderListApi = (data) => RuanRequest('/statistics/brandOrderList', data, 'get')
+
+// 代金券
+// 商家二级页面代金券统计
+export const getBrandVoucherApi = (data) => RuanRequest('/statistics/brandVoucher', data, 'get')
+
+// 商家二级页面代金券记录
+export const getBrandVoucherRecordApi = (data) => RuanRequest('/statistics/brandVoucherRecord', data, 'get')
+
+// 红包与优惠券
+// 商家二级页面红包与优惠卷统计
+export const getBrandWrapApi = (data) => RuanRequest('/statistics/brandWrap', data, 'get')
+
+// 商家二级页面红包与优惠卷列表
+export const getBrandWrapListApi = (data) => RuanRequest('/statistics/brandWrapList', data, 'get')
 
 /**
  * 用户绑定关系
@@ -424,27 +512,30 @@ export const getVerificationCodeHxCodeApi = (data) => RuanRequest('/dtsUserVerif
 // 输入code核销码核销
 export const updateSetHxCodeApi = (data) => RuanRequest('/dtsUserVerificationCode/setHxCode', data)
 
+// 取消预约接口
+export const updateCancelReservationApi = (data) => RuanRequest('/dtsUserVerificationCode/cancellation', data)
+
 /**
  * 领券中心和优惠券
  */
 
-// 领卷中心专门商城的卷
+// 领卷中心专门商城的卷（每个门店的所有的优惠券，本地生活里的门店详情页的所有优惠券）
 export const getCouponListApi = (data) => RuanRequest('/coupon/list', data, 'get')
 
-// 用户收藏添加或删除
-export const updateCollectAddordeleteApi = (data) => RuanRequest('/collect/addordelete', data)
+// 个人优惠券列表（领券中心里的我的券包的优惠券，本地生活里的门店详情页的我的已领取的优惠券）
+export const getUserCouponListApi = (data) => RuanRequest('/coupon/mylist', data, 'get')
 
-// 个人优惠券列表
-export const getUserCouponListApi = (data) => RuanRequest('/coupon/list', data, 'get')
-
-// 个人可领取优惠券列表
+// 个人可领取优惠券列表（领券中心里的领取优惠券查巨蜂自营的优惠券，本地生活里的门店详情页的我的未领取的优惠券）
 export const getUserCouponReceiveApi = (data) => RuanRequest('/coupon/getUserCoupon', data, 'get')
 
 // 优惠券领取
-export const updateCollectReceiveApi = (data) => RuanRequest('/collect/receive', data)
+export const updateCollectReceiveApi = (data) => RuanRequest('/coupon/receive', data)
 
-// 一键领取优惠券
-export const updateCollectReceiveAllApi = (data) => RuanRequest('/collect/receiveAll', data)
+// 一键领取优惠券（本地生活里的门店详情页的我的未领取的优惠券的一键领取按钮）
+export const updateCollectReceiveAllApi = (data) => RuanRequest('/coupon/receiveAll', data)
+
+// 当前购物车下单商品订单可用优惠券
+export const getCouponSelectlistApi = (data) => RuanRequest('/coupon/selectlist', data, 'get')
 
 /**
  * 商家优惠券
@@ -461,3 +552,85 @@ export const updateCouponRevokeApi = (data) => RuanRequest('/dtsCoupon/revokeCou
 
 // 领卷中心
 export const getCouponNeckApi = (data) => RuanRequest('/dtsCoupon/neckCoupon', data, 'get')
+
+/**
+ * 智能画册
+ */
+
+// 查询图册
+export const getUserCrmSlbumList = (data) => RuanRequest('/userCrmSlbum/list', data, 'get')
+
+// id查询智能图册
+export const getUserCrmSlbumSelectId = (data) => RuanRequest('/userCrmSlbum/selectId', data, 'get')
+
+// 新建智能图册
+export const buildUserCrmSlbumApi = (data) => RuanRequest('/userCrmSlbum/create', data)
+
+// 删除图册
+export const userCrmSlbumDeleteApi = (data) => RuanRequest('/userCrmSlbum/delete', data, 'get')
+
+/**
+ * 评论
+ */
+
+// 发表评论
+export const addCommentPostApi = (data) => RuanRequest('/comment/post', data)
+
+// 评论数量
+export const getCommentCountApi = (data) => RuanRequest('/comment/count', data, 'get')
+
+// 评论列表
+export const getCommentListApi = (data) => RuanRequest('/comment/list', data, 'get')
+
+// 用户的评价列表
+export const getUserCommentApi = (data) => RuanRequest('/dtsComment/userComment', data, 'get')
+
+/**
+ * 签到
+ */
+
+// 用户签到接口
+export const addUserSignInApi = (data) => RuanRequest('/dtsUserSignin/userSignIn', data, 'get')
+
+// 用户签到列表
+export const getUserSignInListApi = (data) => RuanRequest('/dtsUserSignin/userSignInList', data, 'get')
+
+// 连续签到天数与明天积分
+export const getUserSigninContinuousApi = (data) => RuanRequest('/dtsUserSignin/continuous', data, 'get')
+
+/**
+ * 团购
+ */
+
+// 创建团购规则
+export const addGrouponCreateRuleApi = (data) => RuanRequest('/dtsGroupon/create', data)
+
+// 获取团购规则列表
+export const getGrouponListRuleApi = (data) => RuanRequest('/dtsGroupon/list', data, 'get')
+
+// 根据id获取团购规则
+export const getGrouponRuleByIdApi = (data) => RuanRequest('/dtsGroupon/detail', data, 'get')
+
+// 更新团购规则
+export const updateGrouponRuleApi = (data) => RuanRequest('/dtsGroupon/update', data)
+
+// 删除团购规则
+export const deleteGrouponRuleApi = (data) => RuanRequest('/dtsGroupon/delete', data)
+
+// 查看加团记录
+export const getGrouponListRecordApi = (data) => RuanRequest('/dtsGroupon/listRecord', data, 'get')
+
+// 获取团购商品列表
+export const getGrouponListGoodsApi = (data) => RuanRequest('/groupon/list', data, 'get')
+
+// 发起或加入团购
+export const addGrouponApi = (data) => RuanRequest('groupon/用户发起或加入团购', data)
+
+// 查看别人分享的团购活动详情
+export const getGrouponDetailApi = (data) => RuanRequest('/groupon/detail', data, 'get')
+
+// 我的开团或我的入团列表
+export const getGrouponMyApi = (data) => RuanRequest('/groupon/my', data, 'get')
+
+// 查看商品所对应的团购规则
+export const getGrouponQueryApi = (data) => RuanRequest('/groupon/query', data, 'get')

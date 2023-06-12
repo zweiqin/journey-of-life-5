@@ -3,6 +3,37 @@
 		<view class="title">{{ title }}</view>
 		<view v-for="item in fields" :key="item.label">
 			<view v-if="item.field === 'id'"></view>
+			<view v-else-if="item.field === 'bankName'">
+				<template>
+					<view>
+						<view class="item">
+							<view
+								class="input-wrapper" :style="{
+									'flex-direction': item.type === 'textarea' ? 'column' : '',
+									'align-items': item.type === 'textarea' ? 'flex-start' : ''
+								}"
+							>
+								<view class="sub-title">{{ item.label }}</view>
+								<input
+									v-if="item.type === 'input'" :value="form[item.field]" class="input" :disabled="false"
+									:type="item.field === 'bankNumber' ? 'number' : 'text'"
+									:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
+								/>
+								<input
+									v-if="item.type === 'select'" :value="form[item.field]" class="input" :disabled="true"
+									type="text"
+									:placeholder="item.placeholder" @click="isShowBankListSelect = true"
+								/>
+							</view>
+						</view>
+						<view v-if="checkCard && checkCard.cardName" style="display: flex;align-items: center;margin: 10upx 20upx;padding: 10upx;color: #6082bd;background-color: #EEEEEE;" @click="handleChooseCheckCard">
+							<BeeAvatar :width="100" :height="45" radius="10upx" :src="checkCard.bankLog"></BeeAvatar>
+							<text style="margin-left: 20upx;">{{ checkCard.cardName }}</text>
+							<text>（{{ checkCard.abbreviation }}）</text>
+						</view>
+					</view>
+				</template>
+			</view>
 			<view v-else class="item">
 				<template>
 					<view
@@ -37,8 +68,8 @@
 </template>
 
 <script>
-import { getBankCardOwnershipApi } from '.././../../../api/user'
-// import { getUserId, getBrandId } from '../../../../utils'
+import { getBankCardOwnershipApi, updateWithdrawalBankCardCheckApi } from '.././../../../api/user'
+import { getUserId, handleDebounce } from '../../../../utils'
 
 export default {
 	name: 'FieldPaneBCF',
@@ -58,7 +89,13 @@ export default {
 		return {
 			form: {},
 			bankList: [],
-			isShowBankListSelect: false
+			isShowBankListSelect: false,
+			checkCard: {
+				bankLog: '',
+				cardName: '',
+				abbreviation: ''
+			},
+			handleDebounce: ''
 		}
 	},
 
@@ -86,12 +123,31 @@ export default {
 			deep: true
 		}
 	},
+	created() {
+		this.handleDebounce = handleDebounce(this.getCheckCard, 1000)
+	},
 
 	mounted() {
 		// console.log(this.$refs)
 	},
 
 	methods: {
+		getCheckCard() {
+			updateWithdrawalBankCardCheckApi({ bankCode: this.form.bankNumber })
+				.then(({ data }) => {
+					console.log(data)
+					this.checkCard = data
+				})
+				.catch((e) => {
+					console.log(e)
+				})
+		},
+		handleChooseCheckCard() {
+			this.form.bankName = this.checkCard.cardName
+			this.form.bankCode = this.checkCard.abbreviation
+			this.checkCard = { bankLog: '', cardName: '', abbreviation: '' }
+		},
+
 		getBankList() {
 			getBankCardOwnershipApi()
 				.then((res) => {
@@ -113,6 +169,11 @@ export default {
 		handleInput(field, e) {
 			console.log(field, e)
 			if (field === 'id') {
+			} else if (field === 'bankNumber') {
+				this.form[field] = e.detail.value
+				if ((/^[1-9]\d{9,29}$/).test(this.form.bankNumber)) {
+					this.handleDebounce()
+				}
 			} else if (field === 'cnname' || field === 'bankName' || field === 'bankCode' || field === 'bankNumber') {
 				this.form[field] = e.detail.value
 			}

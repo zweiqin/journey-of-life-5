@@ -95,11 +95,12 @@ export default {
 		},
 		handleApplicationPay(item) {
 			upgradeOrderAddOrderApi({
-				userId: getUserId(),
-				packageId: item.packageId
+				// userId: getUserId(),
+				// packageId: item.packageId
+				id: item.id
 			}).then(({ data }) => {
 				payOrderGoodsApi({
-					orderNo: data.payOrderID,
+					orderNo: data,
 					userId: getUserId(),
 					payType: 4
 				}).then((res) => {

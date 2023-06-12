@@ -54,7 +54,7 @@
 						v-if="commentGoodsId ? item.id == commentGoodsId : true"
 						class="goods-item"
 					>
-						<image :src="item.picUrl" class="goods-img" mode="" />
+						<image :src="common.seamingImgUrl(item.picUrl)" class="goods-img" mode="" />
 						<view class="goods-info-content">
 							<view class="goods-name">{{ item.goodsName }}</view>
 							<view class="sp">{{ item.specifications | fomatSp }}</view>

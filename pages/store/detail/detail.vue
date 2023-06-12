@@ -55,7 +55,7 @@
 				暂无优惠劵
 				</view> -->
 
-			<CouponList v-show="currentMenu === 2" :coupon-data="couponList"></CouponList>
+			<CouponList v-show="currentMenu === 2" :brand-detail="brandDetail" :is-first-show-coupon="isFirstShowCoupon"></CouponList>
 
 			<Reservation v-show="currentMenu === 3" :brand-detail="brandDetail"></Reservation>
 
@@ -96,15 +96,15 @@
 import BrandGoods from './cpns/BrandGoods.vue'
 import BrandInfo from './cpns/BrandInfo'
 import { menusData } from './data'
-import { getBrandDetailApi, getBrandCouponApi, folleBrandApi } from '../../../api/brand'
-import { goodsListApi, getGoodsDetailApi, addShopCarApi } from '../../../api/goods'
+import { getBrandDetailApi } from '../../../api/brand'
+import { goodsListApi, getGoodsDetailApi, addShopCarApi, collectionApi } from '../../../api/goods'
 import loadData from '../../../mixin/loadData'
 import AppraisePane from './cpns/AppraisePane.vue'
 import RecommendList from './cpns/RecommendList.vue'
 import CouponList from './cpns/CouponList.vue'
 import Reservation from './cpns/Reservation.vue'
 import showModel from '../../../mixin/showModel'
-import { navigationAddress } from '../../../utils'
+import { getUserId, navigationAddress } from '../../../utils'
 
 export default {
 	name: 'Detail',
@@ -125,7 +125,7 @@ export default {
 			currentMenu: 0,
 			brandId: null,
 			brandDetail: {},
-			couponList: []
+			isFirstShowCoupon: false
 		}
 	},
 
@@ -153,18 +153,11 @@ export default {
 			this.currentMenu = value
 			switch (value) {
 				case 2:
-					if (!this.couponList.length) {
-						this.getBrandCoupon()
+					if (!this.isFirstShowCoupon) {
+						this.isFirstShowCoupon = true
 					}
 					break
 			}
-		},
-
-		// 获取优惠劵
-		async getBrandCoupon() {
-			const { data } = await getBrandCouponApi({ brandId: this.brandId })
-			this.couponList = data
-			console.log(data)
 		},
 
 		// 添加购物车
@@ -204,15 +197,15 @@ export default {
 
 		// 收藏商家
 		async handleFollowBrand() {
-			const { data } = await folleBrandApi({
+			const { data } = await collectionApi({
 				userId: this.userId,
-				brandId: this.brandDetail.id,
-				is: !this.brandDetail.is
+				// brandId: this.brandDetail.id,
+				// is: !this.brandDetail.is,
+				valueId: this.brandDetail.id,
+				type: 2
 			})
-
 			this.ttoast(`${this.brandDetail.is ? '取消收藏' : '收藏'}成功`)
 			this.brandDetail.is = !this.brandDetail.is
-
 			console.log(data)
 		},
 

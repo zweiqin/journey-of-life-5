@@ -280,6 +280,12 @@
 					}
 				},
 				{
+					"path": "my-tools/daily-attendance/index",
+					"style": {
+						"navigationBarTitleText": "每日签到"
+					}
+				},
+				{
 					"path": "my-tools/bank-card/index",
 					"style": {
 						"navigationBarTitleText": "银行卡"
@@ -289,6 +295,31 @@
 					"path": "my-tools/bank-card/bank-card-form",
 					"style": {
 						"navigationBarTitleText": "银行卡表单"
+					}
+				},
+				{
+					"path": "my-tools/smart-album/index",
+					"style": {
+						"navigationBarTitleText": "智能画册",
+						"onReachBottomDistance": 0
+					}
+				},
+				{
+					"path": "my-tools/smart-album/add-album",
+					"style": {
+						"navigationBarTitleText": "新建画册"
+					}
+				},
+				{
+					"path": "my-tools/smart-album/album-detail",
+					"style": {
+						"navigationBarTitleText": "画册详情"
+					}
+				},
+				{
+					"path": "my-tools/my-comment/index",
+					"style": {
+						"navigationBarTitleText": "我的评价"
 					}
 				},
 				{
@@ -313,6 +344,18 @@
 					"path": "marketing-tools/red-envelope-distribution/publication-template",
 					"style": {
 						"navigationBarTitleText": "发放模板"
+					}
+				},
+				{
+					"path": "marketing-tools/group-buying/index",
+					"style": {
+						"navigationBarTitleText": "团购管理"
+					}
+				},
+				{
+					"path": "marketing-tools/group-buying/group-buying-form",
+					"style": {
+						"navigationBarTitleText": "团购规则表单"
 					}
 				},
 				{
@@ -449,7 +492,21 @@
 				{
 					"path": "sever/coupon",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "优惠券",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "sever/merchant-certificate/index",
+					"style": {
+						"navigationBarTitleText": "商家券包",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "sever/merchant-certificate/coupon-form",
+					"style": {
+						"navigationBarTitleText": "优惠券表单",
 						"usingComponents": {}
 					}
 				},
@@ -613,6 +670,12 @@
 					}
 				},
 				{
+					"path": "otherServe/comment-list/index",
+					"style": {
+						"navigationBarTitleText": "评论列表"
+					}
+				},
+				{
 					"path": "marketing-tools/contact-guide/share-card",
 					"style": {
 						"navigationBarTitleText": "分享名片"
@@ -620,14 +683,14 @@
 				}
 			]
 		},
-		{
-			"root": "goods",
-			"pages": [
-				{
-					"path": "goods-detail"
-				}
-			]
-		},
+		// {
+		// 	"root": "goods",
+		// 	"pages": [
+		// 		{
+		// 			"path": "goods-detail"
+		// 		}
+		// 	]
+		// },
 		{
 			"root": "marketing-treasure-house",
 			"pages": [

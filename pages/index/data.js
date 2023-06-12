@@ -23,7 +23,7 @@ export const menusData = [
 	{
 		name: '领劵中心',
 		icon: require('../../static/index/menus/counp.png'),
-		url: '/pages/index/coupons/coupons'
+		url: '/pages/index/coupons/coupons?currentTab=1'
 	},
 	{
 		name: '赚钱中心',

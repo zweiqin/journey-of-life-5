@@ -1,6 +1,6 @@
 <template>
 	<view class="header-tool-wrapper">
-		<view class="item">
+		<view class="item" @click="$emit('menu-click', { url: '/user/otherServe/chat/chat' })">
 			<image class="icon" src="../../../static/user-center/menus/h-message.png"></image>
 		</view>
 

@@ -86,7 +86,8 @@
 <script>
 import {
 	getPackageMemberListApi,
-	upgradeOrderAddOrderApi
+	upgradeOrderAddOrderApi,
+	upgradeDoesItExistApi
 } from '../../api/user'
 import { getUserId, updateToken } from '../../utils'
 import {
@@ -109,6 +110,7 @@ export default {
 	onShow() {
 		this.getPackageMemberList()
 		updateToken()
+		this.userInfo = uni.getStorageSync(J_USER_INFO) || {}
 	},
 
 	methods: {
@@ -130,53 +132,78 @@ export default {
 		handleMemberUpgrade() {
 			const selectedPackage = this.packageMemberList.find((i) => i.id === this.selectedPackageId)
 			if (!selectedPackage) return this.$showToast('请选择会员套餐！')
+			if (!getUserId()) return
 			console.log(this.userInfo.roleIds)
-			if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 4) {
-				this.go(`/user/marketing-tools/marketing-planner?packageId=${this.selectedPackageId}`)
-			} else if (this.userInfo.roleIds === 5 && selectedPackage.roleIds === 4) {
-				upgradeOrderAddOrderApi({
-					userId: getUserId(),
-					packageId: this.selectedPackageId
-				}).then(({ data }) => {
-					payOrderGoodsApi({
-						orderNo: data.payOrderID,
-						userId: getUserId(),
-						payType: 4
-					}).then((res) => {
-						payFn(res, J_PAY_TYPE.VIP.value)
-					})
-				})
-			} else if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 3) {
-				this.go(`/user/marketing-tools/marketing-planner?packageId=${this.selectedPackageId}`)
-			} else if (this.userInfo.roleIds === 5 && selectedPackage.roleIds === 3) {
-				upgradeOrderAddOrderApi({
-					userId: getUserId(),
-					packageId: this.selectedPackageId
-				}).then(({ data }) => {
-					payOrderGoodsApi({
-						orderNo: data.payOrderID,
-						userId: getUserId(),
-						payType: 4
-					}).then((res) => {
-						payFn(res, J_PAY_TYPE.VIP.value)
-					})
-				})
-			} else if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 6) {
-				this.go(`/user/marketing-tools/store-application?packageId=${this.selectedPackageId}`)
-			} else if (this.userInfo.roleIds === 7 && selectedPackage.roleIds === 6) {
-				upgradeOrderAddOrderApi({
-					userId: getUserId(),
-					packageId: this.selectedPackageId
-				}).then(({ data }) => {
-					payOrderGoodsApi({
-						orderNo: data.payOrderID,
-						userId: getUserId(),
-						payType: 4
-					}).then((res) => {
-						payFn(res, J_PAY_TYPE.VIP.value)
-					})
-				})
-			}
+			upgradeDoesItExistApi({
+				userId: getUserId(),
+				packageId: this.selectedPackageId
+			}).then(({ data: result }) => {
+				console.log(result)
+				if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 4) {
+					if (result) return this.$showToast('已提交申请，请等待审核！')
+					this.go(`/user/marketing-tools/marketing-planner?packageId=${this.selectedPackageId}`)
+				} else if (this.userInfo.roleIds === 5 && selectedPackage.roleIds === 4) {
+					if (result) {
+						upgradeOrderAddOrderApi({
+							id: result.id
+						}).then(({ data }) => {
+							payOrderGoodsApi({
+								orderNo: data,
+								userId: getUserId(),
+								payType: 4
+							}).then((res) => {
+								payFn(res, J_PAY_TYPE.VIP.value)
+							})
+						})
+					} else {
+						return this.$showToast('未查询到申请记录')
+					}
+				} else if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 3) {
+					if (result) return this.$showToast('已提交申请，请等待审核！')
+					this.go(`/user/marketing-tools/marketing-planner?packageId=${this.selectedPackageId}`)
+				} else if (this.userInfo.roleIds === 5 && selectedPackage.roleIds === 3) {
+					if (result) {
+						upgradeOrderAddOrderApi({
+							id: result.id
+						}).then(({ data }) => {
+							payOrderGoodsApi({
+								orderNo: data,
+								userId: getUserId(),
+								payType: 4
+							}).then((res) => {
+								payFn(res, J_PAY_TYPE.VIP.value)
+							})
+						})
+					} else {
+						return this.$showToast('未查询到申请记录')
+					}
+				} else if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 6) {
+					if (result) return this.$showToast('已提交申请，请等待审核！')
+					this.go(`/user/marketing-tools/store-application?packageId=${this.selectedPackageId}`)
+				} else if (this.userInfo.roleIds === 7 && selectedPackage.roleIds === 6) {
+					if (result) {
+						upgradeOrderAddOrderApi({
+							id: result.id
+						}).then(({ data }) => {
+							payOrderGoodsApi({
+								orderNo: data,
+								userId: getUserId(),
+								payType: 4
+							}).then((res) => {
+								payFn(res, J_PAY_TYPE.VIP.value)
+							})
+						})
+					} else {
+						return this.$showToast('未查询到申请记录')
+					}
+				} else if (this.userInfo.roleIds === 6 || this.userInfo.roleIds === 4 || this.userInfo.roleIds === 3 || this.userInfo.roleIds === 2) {
+					return this.$showToast(`您的会员类型为：${this.common.explainMembership(this.userInfo.roleIds)}。不满足申请条件，无法开通！`)
+				} else if (this.userInfo.roleIds === 5 && selectedPackage.roleIds === 6) {
+					return this.$showToast(`您的会员类型为：${this.common.explainMembership(this.userInfo.roleIds)}。不满足申请条件，无法开通！`)
+				} else if (this.userInfo.roleIds === 7 && (selectedPackage.roleIds === 4 || selectedPackage.roleIds === 3)) {
+					return this.$showToast(`您的会员类型为：${this.common.explainMembership(this.userInfo.roleIds)}。不满足申请条件，无法开通！`)
+				}
+			})
 		}
 	}
 }

@@ -1,35 +1,78 @@
 <template>
-  <view class="evaluate-container pane-wrapper">
-    <h3>评价</h3>
-    <view class="main">
-      <view class="title-wrapper">
-        <h4>商品所属门店评价(1264)条</h4>
-        <!-- <view class="more">
-          <text class="more-btn"> 查看全部 </text>
-          <BeeIcon name="arrowright"></BeeIcon>
-        </view> -->
-      </view>
+	<view class="evaluate-container pane-wrapper" @click="go(`/user/otherServe/comment-list/index?valueId=${data.info.id}`)">
+		<view class="comment-title" style="display: flex;justify-content: space-between;">
+			<h3>评价</h3>
+			<tui-icon name="arrowright" :size="48" unit="rpx" color="#777777"></tui-icon>
+		</view>
+		<view class="main">
+			<view class="title-wrapper">
+				<h4>商品所属门店评价（{{ commentCount.allCount }}）条</h4>
+				<!-- <view class="more">
+					<text class="more-btn"> 查看全部 </text>
+					<BeeIcon name="arrowright"></BeeIcon>
+					</view> -->
+			</view>
 
-      <view class="values">
-        <view class="tag"> <tui-icon :size="12" name="agree-fill"></tui-icon>环境真棒(22)</view>
-        <view class="tag">服务热情(10)</view>
-        <view class="tag">口味超赞(22)</view>
-        <view class="tag">食物超赞(12)</view>
-        <view class="tag">性价比高(19)</view>
-      </view>
-    </view>
-  </view>
+			<view class="values">
+				<!-- <view class="tag"> <tui-icon :size="12" name="agree-fill"></tui-icon>环境真棒(22)</view> -->
+				<!-- <view class="tag">服务热情(10)</view>
+					<view class="tag">口味超赞(22)</view>
+					<view class="tag">食物超赞(12)</view>
+					<view class="tag">性价比高(19)</view> -->
+				<view class="tag">有图评价（{{ commentCount.hasPicCount }}）</view>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
+import { getCommentCountApi } from '../../../../api/user'
 export default {
+	name: 'Evaluate',
+	props: {
+		data: {
+			type: Object,
+			required: true
+		}
+	},
+
+	data() {
+		return {
+			commentCount: {
+				allCount: '--',
+				hasPicCount: '--'
+			}
+		}
+	},
+
+	computed: {
+	},
+
+	watch: {
+	},
+	created() {
+		// console.log(this.data)
+		this.getCommentCount()
+	},
+
+	methods: {
+		getCommentCount() {
+			getCommentCountApi({
+				type: 0,
+				valueId: this.data.info.id
+			}).then(({ data }) => {
+				this.commentCount = data
+				console.log(data)
+			})
+		}
+	}
 
 }
 </script>
 
 <style lang="less" scoped>
 .evaluate-container {
-  h3 {
+  .comment-title {
     padding-bottom: 10upx;
     position: relative;
     font-size: 34upx;
@@ -73,6 +116,7 @@ export default {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
+			margin-top: 10upx;
 
       .tag {
         color: #777;

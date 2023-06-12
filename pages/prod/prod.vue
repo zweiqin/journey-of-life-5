@@ -51,11 +51,16 @@
 		<view class="pane goods-info">
 			<view class="detail-price" style="display: flex;align-items: center;">
 				<text style="margin-right: 20upx;">￥<text class="price-text">{{ goodsDetail.info.counterPrice }}</text>起</text>
-				<text
+				<!-- <text
 					v-if="goodsDetail.info.voucherNum"
 					style="height: 100%;padding: 6upx 12upx;background-color: #f0f0f0;border-radius: 22upx;vertical-align: middle;"
-				>
+					>
 					可使用{{ goodsDetail.info.voucherNum }}代金券抵扣
+					</text> -->
+				<text
+					style="height: 100%;padding: 6upx 12upx;background-color: #f0f0f0;border-radius: 22upx;vertical-align: middle;"
+				>
+					可使用{{ Math.ceil(Number(goodsDetail.info.counterPrice)) }}代金券抵扣
 				</text>
 			</view>
 
@@ -89,8 +94,8 @@
 				</view>
 			</view>
 
-			<view class="eval">
-				<text>评价(0)</text>
+			<view class="eval" @click="go(`/user/otherServe/comment-list/index?valueId=${goodsDetail.info.id}`)">
+				<text>评价（{{ commentCount.allCount }}）</text>
 				<image src="../../static/images/detail/right-arrow.png" mode="" />
 			</view>
 
@@ -214,6 +219,7 @@ import {
 	getCarShopNumberApi,
 	goodsListApi
 } from '../../api/goods'
+import { getCommentCountApi } from '../../api/user'
 import { getUserId } from '../../utils'
 
 export default {
@@ -237,14 +243,17 @@ export default {
 			evalPosition: 0,
 			detailPosition: 0,
 			scrollTop: 0,
-			currentMoveTag: 0
+			currentMoveTag: 0,
+			commentCount: {
+				allCount: '--',
+				hasPicCount: '--'
+			}
 		}
 	},
 	onLoad(options) {
 		this.goodsId = options.goodsId * 1
 		this.userId = uni.getStorageSync(J_USER_ID)
 		this.getGoodsDetail()
-
 		uni.pageScrollTo({
 			scrollTop: 0,
 			duration: 0
@@ -300,10 +309,20 @@ export default {
 				this.goodsDetail = res.data
 				this.isCollect = !!res.data.userHasCollect
 				this.getBrandOtherGoods(res.data.brand.id)
+				this.getCommentCount(res.data.info.id)
 				if (this.userId) {
 					this.getCarShopNumber()
 				}
 			}
+		},
+		getCommentCount(id) {
+			getCommentCountApi({
+				type: 0,
+				valueId: id
+			}).then(({ data }) => {
+				this.commentCount = data
+				console.log(data)
+			})
 		},
 
 		// 加入购物车

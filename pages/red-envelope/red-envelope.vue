@@ -82,6 +82,7 @@ export default {
 		getRedEnvelopeList() {
 			uni.getLocation({
 				type: 'gcj02',
+				highAccuracyExpireTime: 1500,
 				success: (result) => {
 					this.longitude = result.longitude * 1
 					this.latitude = result.latitude * 1

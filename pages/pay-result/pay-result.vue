@@ -50,8 +50,6 @@
 import { getPayOrderResultApi } from '../../api/goods'
 const { formatTime } = require('../../utils/util')
 import { grantVoucherApi } from '../../api/user'
-
-import { getUserId } from '../../utils'
 import {
 	J_USER_INFO,
 	J_PAY_ORDER,

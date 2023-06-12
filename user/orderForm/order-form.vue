@@ -126,19 +126,19 @@ export default {
 			orderTypesStore: [
 				{
 					label: '待付款',
-					value: 5
+					value: 8
 				},
 				{
 					label: '已付款',
-					value: 6
+					value: 5
 				},
 				{
 					label: '已核销',
-					value: 7
+					value: 6
 				},
 				{
 					label: '已过期',
-					value: 8
+					value: 7
 				},
 				{
 					label: '已取消',
@@ -158,9 +158,7 @@ export default {
 		}
 	},
 
-	onLoad(options) {
-		this.currentStatus = options.type * 1 || 0
-	},
+	onLoad(options) { },
 
 	onShow() {
 		this.getOrderList()
@@ -207,15 +205,15 @@ export default {
 			}
 			const mapMethods = {
 				cancel: {
-					text: '确定要取消当前订单吗?',
+					text: '确定要取消当前订单吗？',
 					api: orderCancelApi
 				},
 				delete: {
-					text: '确定要删除当前订单吗?',
+					text: '确定要删除当前订单吗？',
 					api: orderDeleteApi
 				},
 				confirm: {
-					text: '确定要收货吗',
+					text: '确定要收货吗？',
 					api: receiveGoodsApi
 				}
 			}

@@ -3,7 +3,8 @@
 		<!-- 头部 -->
 		<view class="header">
 			<JBack width="50" dark height="50" style="margin-top: 8upx"></JBack>
-			<h2 class="">确认预约</h2>
+			<h2 v-if="type === 'mall'">确认订单</h2>
+			<h2 v-else-if="type === 'reservation'">确认预约</h2>
 		</view>
 
 		<!-- 收货信息 -->
@@ -51,6 +52,7 @@
 						</label>
 					</view>
 				</view>
+				<CouponUse :brand-id="brand.brandId" @choose="handleChooseCoupon($event, index)"></CouponUse>
 			</view>
 		</view>
 
@@ -60,10 +62,10 @@
 			<view class="desc">￥{{ payOrderInfo.actualPrice }}</view>
 		</view>
 
-		<view class="line-pane">
+		<!-- <view class="line-pane">
 			<view class="title">优惠劵</view>
 			<view class="desc" style="color: #999">暂无优惠劵可用</view>
-		</view>
+			</view> -->
 
 		<view class="footer">
 			<view class="price-wrapper">
@@ -98,9 +100,10 @@ export default {
 		this.type = options.type || '' // mall商城和本地生活、reservation预约
 		this.getGoods()
 		this.getAddress()
-		getVoucherNumberApi({ userId: getUserId() }).then(({ data }) => {
-			this.voucherNumber = data[0].number
-		})
+		getVoucherNumberApi({ userId: getUserId() })
+			.then(({ data }) => {
+				this.voucherNumber = data[0].number
+			})
 	},
 
 	onShow() {
@@ -127,7 +130,8 @@ export default {
 		// 获取本地的购物车数据
 		getGoods() {
 			const payGoodsInfo = uni.getStorageSync(J_TWO_PAY_GOODS) || {}
-			this.goodsList = payGoodsInfo.cardsInfo.filter((item) => item.brandCartgoods && item.brandCartgoods.length)
+			this.goodsList = payGoodsInfo.cardsInfo.filter((item) => item.brandCartgoods && item.brandCartgoods.length).map((item) => ({ ...item, couponId: -1 }))
+			console.log(this.goodsList)
 			this.totalPrice = payGoodsInfo.pay
 		},
 		// 获取地址信息
@@ -165,13 +169,18 @@ export default {
 			this.handleBuildPayCount()
 		},
 
+		handleChooseCoupon(item, index) {
+			this.goodsList[index].couponId = item.id
+			this.handleBuildPayCount()
+		},
+
 		// 获取数据
 		getPostData() {
 			const cartDtoList = []
 			for (const item of this.goodsList) {
-				console.log(item)
+				// console.log(item)
 				cartDtoList.push({
-					couponId: -1,
+					couponId: item.couponId,
 					brandId: item.brandId * 1,
 					useVoucher: !!item.useVoucher,
 					useBalance: false
@@ -233,7 +242,7 @@ export default {
 					this.$showToast('预约成功')
 					setTimeout(() => {
 						uni.redirectTo({
-							url: '/user/merchant-orders/order-form-detail?id=' + data.orderId
+							url: '/user/orderForm/order-form-detail?id=' + data.orderId
 						})
 					}, 2000)
 				})

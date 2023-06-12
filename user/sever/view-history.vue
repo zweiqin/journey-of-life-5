@@ -4,17 +4,24 @@
 		<view class="navs">
 			<view
 				v-for="item in labelList" :key="item.label" class="item" :class="{ active: currentPage === item.value }"
-				@click="handleSwitchTab(item.value)"
+				@click="handleSwitchNav(item.value)"
 			>
 				{{ item.name }}
 			</view>
 		</view>
 
 		<view class="list-wrapper">
+			<view v-show="currentPage === 'collection'">
+				<tui-tabs
+					style="width: 684upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="375" :padding="0"
+					item-width="342rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
+					:tabs="[{ name: '商品' }, { name: '店铺' }]" :current-tab="currentTab"
+					@change="handleSwitchTab"
+				></tui-tabs>
+				<CollectionsGoods v-if="currentTab === 0" :data="collectionInfo.data" @delete="getCollections"></CollectionsGoods>
+				<CollectionsStore v-else-if="currentTab === 1" :data="collectionInfo.data" @delete="getCollections"></CollectionsStore>
+			</view>
 			<FootPrint v-show="currentPage === 'history'" ref="footerPrintRef"></FootPrint>
-
-			<Collections v-show="currentPage === 'collection'" :data="collectionInfo.data" @delete="getCollections">
-			</Collections>
 
 			<uni-load-more v-show="loadingStatus !== 'hidden'" :status="loadingStatus"></uni-load-more>
 
@@ -30,19 +37,18 @@ import {
 } from '../../api/user'
 import { getUserId } from '../../utils'
 import FootPrint from './components/FootPrint.vue'
-import Collections from './components/Collections.vue'
+import CollectionsGoods from './components/CollectionsGoods.vue'
+import CollectionsStore from './components/CollectionsStore.vue'
 
 const mapCurrentInfo = {
 	history: {
 		title: '我的足迹',
 		api: 'getFootPrint'
 	},
-
 	collection: {
 		title: '我的收藏',
 		api: 'getCollections'
 	},
-
 	follow: {
 		title: '我的订阅'
 	}
@@ -52,31 +58,13 @@ export default {
 	name: 'ViewHistory',
 	components: {
 		FootPrint,
-		Collections
+		CollectionsGoods,
+		CollectionsStore
 	},
 	data() {
 		return {
 			currentPage: '',
 			currentPageInfo: '',
-
-			historyInfo: {
-				query: {
-					page: 1,
-					size: 20
-				},
-
-				data: {},
-				totalPage: 0
-			},
-
-			collectionInfo: {
-				query: {
-					page: 1,
-					size: 20
-				},
-				data: [],
-				totalPage: 0
-			},
 
 			labelList: [
 				{
@@ -92,13 +80,25 @@ export default {
 					value: 'follow'
 				}
 			],
-			currentActive: 0,
-			info: {
-				range: true,
-				insert: false,
-				selected: []
+
+			collectionInfo: {
+				query: {
+					page: 1,
+					size: 20
+				},
+				data: [],
+				totalPage: 0
 			},
-			currentTime: '',
+			currentTab: 0,
+
+			historyInfo: {
+				query: {
+					page: 1,
+					size: 20
+				},
+				data: {},
+				totalPage: 0
+			},
 
 			loadingStatus: 'loading',
 			showNoData: false
@@ -116,24 +116,24 @@ export default {
 	},
 
 	methods: {
-		// 切换nav
-		handleChangeCurrentPane(index) {
-			this.currentActive = index
-		},
-
-		handleSwitchTab(currentPage) {
+		handleSwitchNav(currentPage) {
 			this.currentPage = currentPage
 			this.currentPageInfo = mapCurrentInfo[this.currentPage]
-			this.currentPageInfo.api
-				? this[this.currentPageInfo.api]()
-				: this.showNoData = true
+			this.currentPageInfo.api ? this[this.currentPageInfo.api]() : this.showNoData = true
+		},
+		handleSwitchTab(e) {
+			this.currentTab = e.index
+			this.collectionInfo.query.page = 1
+			this.collectionInfo.query.size = 20
+			this.collectionInfo.data = []
+			this.collectionInfo.totalPage = 0
+			this.getCollections()
 		},
 
 		// 获取足迹数据
 		getFootPrint() {
 			const _this = this
 			this.loadingStatus = 'loading'
-
 			getUserViewHistoryApi({
 				...this.historyInfo.query,
 				userId: getUserId()
@@ -148,7 +148,6 @@ export default {
 						data[key].push(item)
 					}
 				}
-
 				this.loadingStatus = 'hidden'
 				this.$refs.footerPrintRef.setData(this.historyInfo.data)
 				this.showNoData = JSON.stringify(this.historyInfo.data) === '{}'
@@ -156,18 +155,23 @@ export default {
 		},
 
 		// 获取收藏数据
-		getCollections() {
+		getCollections(isLoadmore) {
 			const _this = this
 			this.loadingStatus = 'loading'
 			getUserCollectionListApi({
 				...this.collectionInfo.query,
 				userId: getUserId(),
-				type: 0
+				type: this.currentTab === 0 ? 0 : this.currentTab === 1 ? 2 : ''
 			}).then(({ data }) => {
+				console.log(data)
 				_this.collectionInfo.totalPage = data.totalPages
-				_this.collectionInfo.data = data.collectList
+				if (isLoadmore) {
+					_this.collectionInfo.data.push(...data.collectList)
+				} else {
+					_this.collectionInfo.data = data.collectList
+					this.showNoData = this.collectionInfo.data.length == 0
+				}
 				_this.loadingStatus = 'hidden'
-				this.showNoData = this.collectionInfo.data.length == 0
 			})
 		}
 	},
@@ -178,31 +182,26 @@ export default {
 				if (this.historyInfo.data.length < this.historyInfo.query.size) {
 					return
 				}
-
 				if (this.historyInfo.query.page >= this.historyInfo.totalPage) {
 					this.loadingStatus = 'noMore'
 					return
 				}
-
 				if (this.historyInfo.query.page < this.historyInfo.totalPage) {
 					this.historyInfo.query.page++
 					this.getFootPrint()
 				}
 				break
-
 			case 'collection':
 				if (this.collectionInfo.data.length < this.collectionInfo.query.size) {
 					return
 				}
-
 				if (this.collectionInfo.query.page >= this.collectionInfo.totalPage) {
 					this.loadingStatus = 'noMore'
 					return
 				}
-
 				if (this.collectionInfo.query.page < this.collectionInfo.totalPage) {
 					this.collectionInfo.query.page++
-					this.getCollections()
+					this.getCollections(true)
 				}
 				break
 		}
@@ -225,6 +224,11 @@ export default {
 
 		.active {
 			color: #fa5151ff;
+		}
+	}
+	.tui-tabs-view{
+		/deep/ .tui-tabs-slider{
+		margin-left: -32upx;
 		}
 	}
 }

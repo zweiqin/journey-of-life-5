@@ -1,33 +1,34 @@
 <template>
-  <view class="pane-wrapper recomment-pane-wrapper">
-    <h3>更多本店推荐</h3>
-    <scroll-view class="" scroll-x="true">
-      <view class="goods-list">
-        <view class="goods-item" v-for="item in data" :key="item.id">
-          <BeeAvatar :width="100" :height="85" radius="10upx" :src="item.picUrl">
-          </BeeAvatar>
+	<view class="pane-wrapper recomment-pane-wrapper">
+		<h3>更多本店推荐</h3>
+		<scroll-view class="" scroll-x="true">
+			<view class="goods-list">
+				<view v-for="item in data" :key="item.id" class="goods-item">
+					<BeeAvatar :width="100" :height="85" radius="10upx" :src="common.seamingImgUrl(item.picUrl)">
+					</BeeAvatar>
 
-          <view class="goods-name">{{ item.name }}
-          </view>
+					<view class="goods-name">
+						{{ item.name }}
+					</view>
 
-          <view class="price-wrapper">
-            <text class="current-price">￥{{ item.retailPrice }}</text>
-            <!-- <text class="old-price">￥987</text> -->
-          </view>
-        </view>
-      </view>
-    </scroll-view>
-  </view>
+					<view class="price-wrapper">
+						<text class="current-price">￥{{ item.retailPrice }}</text>
+						<!-- <text class="old-price">￥987</text> -->
+					</view>
+				</view>
+			</view>
+		</scroll-view>
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    data: {
-      type: Array,
-      required: true
-    }
-  }
+	props: {
+		data: {
+			type: Array,
+			required: true
+		}
+	}
 }
 </script>
 

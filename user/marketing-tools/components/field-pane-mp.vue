@@ -1,43 +1,103 @@
 <template>
 	<view class="field-pane-container">
 		<view class="title">{{ title }}</view>
-		<view v-for="item in fields" :key="item.label" class="item">
-			<template>
-				<view
-					class="input-wrapper" :style="{
-						'flex-direction': item.type === 'textarea' ? 'column' : '',
-						'align-items': item.type === 'textarea' ? 'flex-start' : ''
-					}"
-				>
-					<view class="sub-title">{{ item.label }}</view>
+		<view v-for="item in fields" :key="item.field">
+			<view v-if="item.field === 'id'"></view>
+			<view v-else-if="item.field === 'branchId' || item.field === 'areaUserOne'">
+				<view v-if="form.isConnectBranch === 'true'" class="item">
+					<template>
+						<view
+							class="input-wrapper" :style="{
+								'flex-direction': item.type === 'textarea' ? 'column' : '',
+								'align-items': item.type === 'textarea' ? 'flex-start' : ''
+							}"
+						>
+							<view class="sub-title">{{ item.label }}</view>
 
-					<!-- <JAnyCity
-						v-if="item.type === 'city'" style="flex: 1" :text="areaName" :placeholder="item.placeholder"
-						@confirm="handleInput(item.field, $event)"
-						></JAnyCity> -->
+							<input
+								v-if="item.type === 'select'" :value="branchIdName" class="input" :disabled="true"
+								type="text"
+								:placeholder="item.placeholder" @click="handleBranchListSelect"
+							/>
 
-					<input
-						v-if="item.type === 'select'" :value="branchIdName" class="input" :disabled="true"
-						type="text"
-						:placeholder="item.placeholder" @click="handleBranchListSelect"
-					/>
+							<view v-if="item.type === 'subregion'" style="flex: 1">
+								<view v-if="form.area">
+									<JSubArea
+										:code="form.area" :text="areaUserNameOne" :placeholder="item.placeholder"
+										@confirm="handleInput(item.field, $event)"
+									></JSubArea>
+								</view>
+								<view v-else style="color: #999999;" @click="$showToast('请先选择分公司')">省份、城市、区县、乡镇</view>
+							</view>
 
-					<view v-if="item.type === 'subregion'" style="flex: 1">
-						<view v-if="form.area">
-							<JSubArea
-								:code="form.area" :text="areaUserName" :placeholder="item.placeholder"
-								@confirm="handleInput(item.field, $event)"
-							></JSubArea>
 						</view>
-						<view v-else style="color: #999999;" @click="$showToast('请先选择分公司')">省份、城市、区县、乡镇</view>
-					</view>
-
-					<textarea
-						v-if="item.type === 'textarea'" :value="form[item.field]" class="textarea"
-						:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
-					></textarea>
+					</template>
 				</view>
-			</template>
+				<view v-else></view>
+			</view>
+			<view v-else-if="item.field === 'areaUserTwo'">
+				<view v-if="form.isConnectBranch === 'false'" class="item">
+					<template>
+						<view
+							class="input-wrapper" :style="{
+								'flex-direction': item.type === 'textarea' ? 'column' : '',
+								'align-items': item.type === 'textarea' ? 'flex-start' : ''
+							}"
+						>
+							<view class="sub-title">{{ item.label }}</view>
+
+							<view v-if="item.type === 'subregion'" style="flex: 1">
+								<JAnyArea
+									:code="form.area" :text="areaUserNameTwo" :placeholder="item.placeholder"
+									@confirm="handleInput(item.field, $event)"
+								></JAnyArea>
+							</view>
+
+						</view>
+					</template>
+				</view>
+				<view v-else></view>
+			</view>
+			<view v-else class="item">
+				<template>
+					<view
+						class="input-wrapper" :style="{
+							'flex-direction': item.type === 'textarea' || item.type === 'select' ? 'column' : '',
+							'align-items': item.type === 'textarea' || item.type === 'select' ? 'flex-start' : ''
+						}"
+					>
+						<view class="sub-title" style="margin-bottom: 20upx;">{{ item.label }}</view>
+
+						<!-- <JAnyCity
+							v-if="item.type === 'city'" style="flex: 1" :text="areaName" :placeholder="item.placeholder"
+							@confirm="handleInput(item.field, $event)"
+							></JAnyCity> -->
+
+						<tui-radio-group
+							v-if="item.type === 'radio'" v-model="form[item.field]" style="display: flex;"
+							@change="(e) => { }"
+						>
+							<tui-label
+								v-for="(part, index) in [{ name: '是', value: 'true' }, { name: '否', value: 'false' }]"
+								:key="index"
+							>
+								<tui-list-cell padding="16upx">
+									<view>
+										<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
+										</tui-radio>
+										<text class="tui-text">{{ part.name }}</text>
+									</view>
+								</tui-list-cell>
+							</tui-label>
+						</tui-radio-group>
+
+						<textarea
+							v-if="item.type === 'textarea'" :value="form[item.field]" class="textarea"
+							:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
+						></textarea>
+					</view>
+				</template>
+			</view>
 		</view>
 		<!-- 分公司 -->
 		<tui-select
@@ -73,7 +133,8 @@ export default {
 				address: ''
 			},
 			// areaName: '',
-			areaUserName: '',
+			areaUserNameOne: '',
+			areaUserNameTwo: '',
 			branchIdName: '',
 			branchList: [],
 			isShowBranchListSelect: false
@@ -115,7 +176,7 @@ export default {
 					this.branchList = res.data.map((item) => ({
 						...item,
 						value: item.id,
-						text: item.nickname
+						text: `${item.nickname}（区域编码：${item.areaId}）`
 					}))
 					this.isShowBranchListSelect = true
 				})
@@ -125,7 +186,7 @@ export default {
 		},
 		handleSelectBranchList(e) {
 			this.isShowBranchListSelect = false
-			this.branchIdName = e.options.nickname
+			this.branchIdName = `${e.options.nickname}（区域编码：${e.options.areaId}）`
 			this.form.area = e.options.areaId
 			this.form.branchId = e.options.id
 		},
@@ -136,9 +197,12 @@ export default {
 			// 	this.form[field] = e.county.code || e.city.code || e.province.code
 			// 	this.areaName = e.area
 			// } else
-			if (field === 'areaUser') {
+			if (field === 'areaUserOne') {
 				this.form[field] = e.areaInfo[e.areaInfo.length - 1].code
-				this.areaUserName = e.area
+				this.areaUserNameOne = e.area
+			} else if (field === 'areaUserTwo') {
+				this.form[field] = e.county.code || e.city.code || e.province.code
+				this.areaUserNameTwo = e.area
 			} else if (field === 'address') {
 				this.form[field] = e.detail.value
 			}
@@ -169,6 +233,7 @@ export default {
 		padding: 20upx 0;
 		border-bottom: 1upx solid #d8d8d8;
 		margin-top: 20upx;
+		margin-bottom: 76upx;
 
 		.input-wrapper {
 			.flex();

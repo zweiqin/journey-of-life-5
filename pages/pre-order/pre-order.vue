@@ -51,6 +51,8 @@
 			</view>
 		</view>
 
+		<CouponUse :brand-id="orderInfo.brandId" @choose="handleChooseCoupon"></CouponUse>
+
 		<view v-if="calcOrderMsg" class="prder-cost container">
 			<view class="line">
 				<view class="title">订单总金额：</view>
@@ -78,6 +80,7 @@ import { getUserId } from '../../utils'
 import { payShopCarApi } from '../../api/cart'
 import { J_ONE_PAY_GOODS, J_SELECT_ADDRESS } from '../../constant'
 export default {
+	name: 'PreOrder',
 	onLoad() {
 		this.getAddressList()
 		this.getOrderInfo()
@@ -97,7 +100,8 @@ export default {
 				message: '',
 				useVoucher: false
 			},
-			calcOrderMsg: null // 计算现在的费用
+			calcOrderMsg: null, // 计算现在的费用
+			couponId: 0
 		}
 	},
 
@@ -137,7 +141,7 @@ export default {
 		// 获取订单信息
 		getOrderInfo() {
 			this.orderInfo = uni.getStorageSync(J_ONE_PAY_GOODS)
-			// console.log(this.orderInfo);
+			console.log(this.orderInfo)
 			if (this.orderInfo.info.supportVoucher) {
 				this.getVoucherHold()
 			}
@@ -147,7 +151,6 @@ export default {
 		// 计算订单费用
 		getCardId() {
 			const _this = this
-			console.log('丢俩', this.orderInfo)
 			const data = {
 				userId: getUserId(),
 				goodsId: this.orderInfo.info.id,
@@ -171,7 +174,7 @@ export default {
 				brandId: this.orderInfo.info.brandId,
 				cartId: this.cartId,
 				userId: getUserId(),
-				couponId: 0,
+				couponId: this.couponId,
 				grouponRulesId: '',
 				useVoucher: this.opForm.useVoucher
 			}
@@ -187,6 +190,11 @@ export default {
 			this.calcOrderCost()
 		},
 
+		handleChooseCoupon(item) {
+			this.couponId = item.id
+			this.calcOrderCost()
+		},
+
 		// 提交订单支付
 		handleToPay() {
 			if (!this.defaultAddress || !this.defaultAddress.id) {
@@ -199,7 +207,7 @@ export default {
 				userId: getUserId(),
 				cartId: this.cartId,
 				addressId: _this.defaultAddress.id,
-				couponId: 0,
+				couponId: this.couponId,
 				grouponRulesId: '',
 				grouponLinkId: '',
 				brandId: _this.orderInfo.brandId,

@@ -5,6 +5,11 @@ export const myTools = [
 		url: '/user/my-tools/account-book/index'
 	},
 	{
+		name: '每日签到',
+		icon: require('../../static/user-center/menus/meiriqiandao.png'),
+		url: '/user/my-tools/daily-attendance/index'
+	},
+	{
 		name: '我的订单',
 		icon: require('../../static/user-center/menus/order.png'),
 		url: '/user/orderForm/order-form'
@@ -20,9 +25,19 @@ export const myTools = [
 		url: '/user/site/site-manage'
 	},
 	{
+		name: '我的券包',
+		icon: require('../../static/user-center/menus/shenqingjilu.png'),
+		url: '/pages/index/coupons/coupons?currentTab=2'
+	},
+	{
 		name: '银行卡',
 		icon: require('../../static/user-center/menus/shenqingjilu.png'),
 		url: '/user/my-tools/bank-card/index'
+	},
+	{
+		name: '智能画册',
+		icon: require('../../static/user-center/menus/shenqingjilu.png'),
+		url: '/user/my-tools/smart-album/index'
 	}
 ]
 
@@ -61,18 +76,24 @@ export const myServe = [
 		name: '邀请码',
 		icon: require('../../static/user-center/menus/tuiguangma.png'),
 		type: 'invitationCode',
-		role: [11, 10, 7, 5, 6, 4, 3]
+		role: [11, 10, 7, 5, 6, 4, 3, 2]
 	},
 	{
 		name: '优惠劵',
-		icon: require('../../static/user-center/menus/youhuijuan.png')
-		// url: '/user/sever/coupon
+		icon: require('../../static/user-center/menus/youhuijuan.png'),
+		url: '/user/sever/coupon'
 	},
 	{
 		name: '代金券',
 		icon: require('../../static/user-center/menus/daijinjuan.png'),
 		url: '/user/otherServe/voucher/index'
 		// role: [6, 4, 3]
+	},
+	{
+		name: '商家券包',
+		icon: require('../../static/user-center/menus/shenqingjilu.png'),
+		url: '/user/sever/merchant-certificate/index',
+		role: [ 6 ]
 	},
 	{
 		name: '进销存',
@@ -128,7 +149,8 @@ export const myStore = [
 	{
 		name: '商品管理',
 		icon: require('../../static/user-center/menus/shangpinguanli.png'),
-		url: '/user/digital-store/goods-management/index'
+		url: '/user/digital-store/goods-management/index',
+		role: [6, 4, 3]
 	}
 ]
 
@@ -141,11 +163,7 @@ export const marketingTools = [
 		name: '红包发放',
 		icon: require('../../static/user-center/menus/hongbaofafang+.png'),
 		url: '/user/marketing-tools/red-envelope-distribution/index',
-		role: [6, 4, 3]
-	},
-	{
-		name: '每日签到',
-		icon: require('../../static/user-center/menus/meiriqiandao.png')
+		role: [10, 7, 6, 5, 4, 3, 2]
 	},
 	{
 		name: '推广中心',
@@ -159,6 +177,12 @@ export const marketingTools = [
 	{
 		name: '秒杀活动',
 		icon: require('../../static/user-center/menus/maioshahuodong.png')
+	},
+	{
+		name: '团购管理',
+		icon: require('../../static/user-center/menus/shenqingjilu.png'),
+		url: '/user/marketing-tools/group-buying/index',
+		role: [ 6 ]
 	},
 	{
 		name: '区域代理',

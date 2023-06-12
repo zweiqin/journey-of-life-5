@@ -66,26 +66,26 @@ export default {
 			orderTypesStore: [
 				{
 					label: '待付款',
-					value: 5
+					value: 8
 				},
 				{
 					label: '已付款',
-					value: 6
+					value: 5
 				},
 				{
 					label: '已核销',
-					value: 7
+					value: 6
 				},
 				{
 					label: '已过期',
-					value: 8
+					value: 7
 				},
 				{
 					label: '已取消',
 					value: 9
 				}
 			],
-			currentStatus: 0,
+			currentStatus: 8,
 			query: {
 				page: 1,
 				size: 10
@@ -96,9 +96,7 @@ export default {
 		}
 	},
 
-	onLoad(options) {
-		this.currentStatus = options.type * 1 || 0
-	},
+	onLoad(options) { },
 
 	onShow() {
 		this.getOrderList()
@@ -117,9 +115,9 @@ export default {
 				...this.query
 			}).then(({ data }) => {
 				if (loadMore) {
-					this.orderList.push(...data.data)
+					this.orderList.push(...data.orderList)
 				} else {
-					this.orderList = data.data
+					this.orderList = data.orderList
 				}
 				this.totalPages = data.totalPages
 				this.loadingStatus = 'hidden'

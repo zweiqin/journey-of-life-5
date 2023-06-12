@@ -34,6 +34,12 @@ export default {
 					placeholder: '请填写银行卡持有者姓名'
 				},
 				{
+					label: '银行卡卡号：',
+					field: 'bankNumber',
+					type: 'input',
+					placeholder: '请填写银行卡卡号'
+				},
+				{
 					label: '银行卡所属银行：',
 					field: 'bankName',
 					type: 'select',
@@ -44,12 +50,6 @@ export default {
 					field: 'bankCode',
 					type: 'select',
 					placeholder: '请选择所属银行缩写'
-				},
-				{
-					label: '银行卡卡号：',
-					field: 'bankNumber',
-					type: 'input',
-					placeholder: '请填写银行卡卡号'
 				}
 			],
 			form: {

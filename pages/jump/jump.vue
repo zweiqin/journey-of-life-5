@@ -1,13 +1,21 @@
 <template>
 	<view class="jump-container">
-		<tui-skeleton :preload-data="preloadData" style="z-index: 888;"></tui-skeleton>
+		<view v-if="viewType === 'verification'">
+			<view style="margin-top: 20vh;"><tui-input v-model="code" label="核销码" placeholder="请输入核销码" disabled></tui-input></view>
+			<view>
+				<tui-button margin="20upx 0 0 auto" type="green" width="260rpx" shape="circle" @click="handleVerification()">确认核销</tui-button>
+			</view>
+		</view>
+		<view v-else>
+			<tui-skeleton :preload-data="preloadData" style="z-index: 888;"></tui-skeleton>
+		</view>
 	</view>
 </template>
 
 <script>
 import { J_USER_INFO, J_NEW_BIND_TYPE, J_NEW_BIND_CODE, J_NEW_BIND_ID } from '../../constant'
 // import { bindUserSaoMaApi, bindSaoMaBrandApi } from '../../api/user'
-import { updateUserBindingUserApi } from '../../api/user'
+import { updateUserBindingUserApi, updateSetHxCodeApi } from '../../api/user'
 import { getUserId } from '../../utils'
 
 export default {
@@ -40,6 +48,7 @@ export default {
 					'skeletonType': 'fillet'
 				}
 			],
+			viewType: '',
 			type: '',
 			code: '',
 			otherSideUserId: '',
@@ -123,13 +132,26 @@ export default {
 				uni.switchTab({
 					url: '/pages/store/store'
 				})
+			} else if (this.type === 'verification') {
+				return this.viewType = 'verification'
+				// updateSetHxCodeApi({ code: this.code })
+				// 	.then((res) => {
+				// 		this.$showToast('核销成功', 'success')
+				// 	})
+				// 	.finally((e) => {
+				// 		setTimeout(() => {
+				// 			uni.switchTab({
+				// 				url: '/pages/user/user'
+				// 			})
+				// 		}, 2000)
+				// 	})
 			} else if (this.type === 'invitation') {
 				setTimeout(() => {
 					uni.switchTab({
 						url: '/pages/user/user'
 					})
 				}, 1000)
-			} else if (this.type === 'bindingBranchOffice' || this.type === 'bindingPlanner' || this.type === 'bindingStore') {
+			} else if (this.type === 'bindingBranchOffice' || this.type === 'bindingStore' || this.type === 'bindingPlanner') {
 				updateUserBindingUserApi({ userCode: this.code, userId: this.userId })
 					.then((res) => {
 						this.$showToast('绑定成功', 'success')
@@ -180,6 +202,19 @@ export default {
 			// 			})
 			// 	}
 			// }
+		},
+		handleVerification() {
+			updateSetHxCodeApi({ code: this.code, userId: getUserId() })
+				.then((res) => {
+					this.$showToast('核销成功', 'success')
+				})
+				.finally((e) => {
+					setTimeout(() => {
+						uni.switchTab({
+							url: '/pages/user/user'
+						})
+					}, 2000)
+				})
 		}
 	}
 }
@@ -187,7 +222,7 @@ export default {
 
 <style lang="less" scoped>
 .jump-container {
-	height: 100vh;
+	min-height: 100vh;
 	padding: 46upx;
 	box-sizing: border-box;
 }

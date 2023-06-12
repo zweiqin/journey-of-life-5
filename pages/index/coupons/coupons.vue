@@ -4,75 +4,258 @@
 			<image src="../../../static/index/coupons/return.png" mode="" @click="handleBack" />
 			<text>领券中心</text>
 		</view>
-		<view class="nav-list">
-			<view class="nav" v-for="nav in navs" :key="nav.id" :class="{ active: currentnav === nav.id }"
-				@click="handlePick(nav)">{{ nav.text }}</view>
+		<view v-show="currentTab === 1">
+			<view class="main">
+				<view style="margin-bottom: 20rpx;">
+					<tui-button type="danger" style="margin: 0 auto;" bold shape="circle" width="60%" height="64rpx" @click="handleReceiveAll">
+						一键领取
+					</tui-button>
+				</view>
+				<view v-if="receiveCouponList && receiveCouponList.length">
+					<view v-for="item in receiveCouponList" :key="item.id" class="item">
+						<view class="left" :style="{ background: '#FFA74D' }">
+							<view class="money">￥<text>{{ item.discount }}</text></view>
+							<view class="full">满{{ item.min }}可用</view>
+						</view>
+						<view class="right">
+							<view class="type" :style="{ background: '#FFA74D' }">{{ item.name }}</view>
+							<view class="rule">{{ item.desc }}</view>
+							<view v-if="item.days" class="rule">有效天数：{{ item.days }}</view>
+							<view class="list">
+								<view class="time"><text v-if="item.startTime && item.endTime">{{ item.startTime }}-{{ item.endTime }}</text></view>
+								<view class="order" @click="handleReceive(item)">立即领取</view>
+							</view>
+						</view>
+					</view>
+				</view>
+				<view v-else>
+					<tui-no-data>暂无可领取优惠券</tui-no-data>
+				</view>
+			</view>
 		</view>
-		<view class="select-list">
-			<view class="select" v-for="select in selects" :key="select.id">
+		<view v-show="currentTab === 2">
+			<!-- <view class="nav-list">
+				<view
+				v-for="nav in navs" :key="nav.id" class="nav" :class="{ active: currentnav === nav.id }"
+				@click="handlePick(nav)"
+				>
+				{{ nav.text }}
+				</view>
+				</view>
+				<view class="select-list">
+				<view v-for="select in selects" :key="select.id" class="select">
 				<view class="text">{{ select.name }}</view>
 				<image :src="select.icon" mode="" />
-			</view>
-			<text>管理</text>
-		</view>
-		<view class="main">
-			<view class="item" v-for="item in items" :key="item.id">
-				<view class="left" :style="{ background: item.background }">
-					<view class="money">￥<text>{{ item.number }}</text></view>
-					<view class="full">{{ item.full }}</view>
 				</view>
-				<view class="right">
-					<view class="type" :style="{ background: item.background }">{{ item.type }}</view>
-					<view class="rule">{{ item.rule }}</view>
-					<view class="list">
-						<view class="time">{{ item.remain }}<text>{{ item.time }}</text></view>
-						<view class="order">立即使用</view>
+				<text>管理</text>
+				</view> -->
+			<view class="main">
+				<view v-for="item in myCouponList" :key="item.id" class="item">
+					<view class="left" :style="{ background: '#FFA74D' }">
+						<view class="money">￥<text>{{ item.discount }}</text></view>
+						<view class="full">满{{ item.min }}可用</view>
+					</view>
+					<view class="right">
+						<view class="type" :style="{ background: '#FFA74D' }">{{ item.name }}</view>
+						<view class="rule">{{ item.desc }}</view>
+						<view class="list">
+							<view class="time"><text v-if="item.startTime && item.endTime">{{ item.startTime }}-{{ item.endTime }}</text></view>
+							<!-- <view class="order">立即使用</view> -->
+						</view>
 					</view>
 				</view>
 			</view>
+			<LoadMore v-show="myCouponList.length" :status="status"></LoadMore>
+			<view v-if="myCouponList && !myCouponList.length && loadingStatus !== 'loading'" class="no-data">
+				暂无优惠券，快去领取吧~
+			</view>
 		</view>
 		<view class="foot">
-			<view class="sub" v-for="sub in subs" :key="sub.id" :class="{ active: currentTab === sub.id }"
-				@click="handleChoice(sub)">
-				<image :src="sub.icon" mode="" />
+			<view
+				v-for="sub in subs" :key="sub.id" class="sub" :class="{ active: currentTab === sub.id }"
+				@click="handleChoice(sub)"
+			>
+				<tui-icon
+					:name="sub.icon" :size="48" unit="upx"
+					:style="{ color: currentTab === sub.id ? '#FA5151' : '' }"
+				></tui-icon>
 				<text>{{ sub.name }}</text>
 			</view>
-
 		</view>
 	</view>
 </template>
 
 <script>
-import { navs, selects, items, subs } from './data'
+import { getUserCouponReceiveApi, getUserCouponListApi, updateCollectReceiveApi, updateCollectReceiveAllApi } from '../../../api/user'
+import { getUserId } from '../../../utils'
 export default {
-	name: "Coupons",
-	props: {
-
-	},
+	name: 'Coupons',
+	props: {},
 	data() {
 		return {
-			navs,
-			selects,
-			items,
-			subs,
-			currentnav: 1,
-			currentTab: 2,
+			// navs: [
+			// 	{ id: 1, text: '未使用' },
+			// 	{ id: 2, text: '已使用' },
+			// 	{ id: 3, text: '已过期' },
+			// 	{ id: 4, text: '分享' }
+			// ],
+			// selects: [
+			// 	{ id: 1, name: '类型', icon: require('../../../static/index/coupons/eject-fill.png') },
+			// 	{ id: 2, name: '状态', icon: require('../../../static/index/coupons/eject-fill.png') },
+			// 	{ id: 3, name: '优惠', icon: require('../../../static/index/coupons/eject-fill.png') }
+			// ],
+			// items: [
+			// 	{
+			// 		id: 1,
+			// 		unit: '￥',
+			// 		number: 500,
+			// 		full: '满1500可用',
+			// 		type: '全场券',
+			// 		rule: '单品可用',
+			// 		remain: '剩余时间：00:25:00',
+			// 		background: '#8AADFE'
+			// 	},
+			// 	{
+			// 		id: 2,
+			// 		unit: '￥',
+			// 		number: 500,
+			// 		full: '满1500可用',
+			// 		type: '品牌券',
+			// 		rule: '耐克、李宁、阿迪、官方旗舰店都可用...',
+			// 		time: '2022.03.16-2022.04.05',
+			// 		background: '#FFA74D'
+			// 	},
+			// 	{
+			// 		id: 3,
+			// 		unit: '￥',
+			// 		number: 500,
+			// 		full: '满1500可用',
+			// 		type: '全场券',
+			// 		rule: '适用本平台自营商品可用',
+			// 		time: '2022.03.16-2022.04.05',
+			// 		background: '#FE4652'
+			// 	}
+			// ],
+			subs: [
+				{ id: 1, name: '领取优惠券', icon: 'coupon' },
+				{ id: 2, name: '我的券包', icon: 'people-fill' }
+			],
+			// currentnav: 1,
+			currentTab: 1,
+			myCouponQuery: {
+				page: 1,
+				size: 10,
+				userId: getUserId(),
+				brandId: ''
+			},
+			totalPages: 0,
+			status: 'none',
+			loadingStatus: 'noMore',
+			myCouponList: [],
+			receiveCouponList: []
+		}
+	},
+	onLoad(options) {
+		this.currentTab = options.currentTab * 1 || 1
+		if (this.currentTab === 1) {
+			this.getUserCouponReceive()
+		} else if (this.currentTab === 2) {
+			this.getUserCouponList()
 		}
 	},
 	methods: {
 		handleBack() {
 			uni.switchTab({
-				url: '/pages/index/index',
+				url: '/pages/index/index'
 			})
 		},
-		handlePick(item) {
-			this.currentnav = item.id
+		// handlePick(item) {
+		// 	this.currentnav = item.id
+		// },
+		getUserCouponReceive() {
+			if (!getUserId()) return
+			uni.showLoading()
+			getUserCouponReceiveApi({
+				userId: getUserId(),
+				brandId: 1001079
+			})
+				.then(({ data }) => {
+					console.log(data)
+					this.receiveCouponList = data.couponList
+					uni.hideLoading()
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
+		},
+		getUserCouponList(isLoadmore) {
+			if (!getUserId()) return
+			this.status = 'loading'
+			this.loadingStatus = 'loading'
+			getUserCouponListApi(this.myCouponQuery)
+				.then(({ data }) => {
+					console.log(data)
+					this.totalPages = data.totalPages
+					if (isLoadmore) {
+						this.myCouponList.push(...data.data)
+					} else {
+						this.myCouponList = data.data
+					}
+					this.status = 'none'
+					this.loadingStatus = 'noMore'
+				})
+				.catch(() => {
+					this.status = 'none'
+					this.loadingStatus = 'noMore'
+				})
 		},
 		handleChoice(item) {
 			this.currentTab = item.id
+			if (item.id === 1) {
+				this.receiveCouponList = []
+				this.getUserCouponReceive()
+			} else if (item.id === 2) {
+				this.myCouponList = []
+				this.totalPages = 0
+				this.myCouponQuery.page = 1
+				this.myCouponQuery.size = 10
+				this.getUserCouponList()
+			}
+		},
+		handleReceive(item) {
+			updateCollectReceiveApi({
+				userId: getUserId(),
+				couponId: item.id
+			})
+				.then(({ data }) => {
+					this.$showToast('领取成功', 'success')
+					this.getUserCouponReceive()
+				})
+		},
+		handleReceiveAll() {
+			updateCollectReceiveAllApi({
+				userId: getUserId(),
+				brandId: 1001079
+			})
+				.then(({ data }) => {
+					this.$showToast('领取成功', 'success')
+					this.getUserCouponReceive()
+				})
 		}
 	},
-	created() { }
+	onReachBottom() {
+		if (this.currentTab === 2) {
+			if (this.myCouponQuery.page >= this.totalPages) {
+				this.status = 'no-more'
+				return
+			}
+			if (this.myCouponQuery.size > this.myCouponList.length) {
+				return
+			}
+			this.myCouponQuery.page++
+			this.getUserCouponList(true)
+		}
+	}
 }
 </script>
 
@@ -162,8 +345,7 @@ export default {
 	}
 
 	.main {
-
-		padding: 24upx 30upx 0 30upx;
+		padding: 0upx 30upx 40upx 30upx;
 
 		.item {
 			margin-bottom: 22upx;
@@ -207,8 +389,10 @@ export default {
 
 				.type {
 
-					width: 110upx;
+					// width: 110upx;
+					width: fit-content;
 					height: 40upx;
+					padding: 0 20upx;
 					border-radius: 100upx;
 					background: #89AEFC;
 					color: #FFFFFF;
@@ -220,25 +404,21 @@ export default {
 				}
 
 				.rule {
-					padding-top: 8upx;
-					padding-bottom: 52upx;
+					padding-top: 4upx;
+					padding-bottom: 2upx;
 					font-size: 28upx;
 					color: #3D3D3D;
 				}
 
 				.list {
+					padding-top: 20upx;
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
 
 					.time {
 						font-size: 20upx;
-						color: #FE4652;
-
-						text {
-							color: #777777;
-							font-size: 20upx;
-						}
+						color: #777777;
 					}
 
 					.order {
@@ -275,20 +455,31 @@ export default {
 			flex-direction: column;
 			align-items: center;
 			color: #999999;
-			&.active{
+
+			&.active {
 				color: #FA5151;
 			}
 
-			image {
-				width: 48upx;
-				height: 48upx;
-			}
+			// image {
+			// 	width: 48upx;
+			// 	height: 48upx;
+			// }
 
 			text {
 				font-size: 24upx;
 
 			}
 		}
+	}
+
+	.no-data {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 180upx;
+		color: #999999;
+		font-size: 36upx;
+		letter-spacing: 2px;
 	}
 }
 </style>

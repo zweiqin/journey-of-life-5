@@ -18,10 +18,6 @@
 
 		<!-- 优惠卷列表 -->
 		<view ref="couponListRef" class="coupon-list">
-			<!-- <Coupon></Coupon>
-				<Coupon expire></Coupon>
-				<Coupon></Coupon>
-				<Coupon></Coupon> -->
 		</view>
 
 		<JNoData text="暂无优惠劵" type="coupon-color"></JNoData>

@@ -10,5 +10,5 @@ export const HUANG_LOCATION_URL = 'http://pc-20230204bcta:8080/demo/wx'
 
 // 客服聊天
 export const BASE_WS_API =
-  'wss://www.tuanfengkeji.cn:9528/jf-app-api/webSocket' // 生产
+  'wss://www.tuanfengkeji.cn:9529/jf-app-api/webSocket' // 生产
 // export const BASE_WS_API = 'wss://www.tuanfengkeji.cn:8098/dts-admin-api/webSocket'  // 测试

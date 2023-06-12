@@ -1,134 +1,139 @@
 <template>
-  <view class="service-station">
-    <view class="centre">
-      <view class="top">
-        <view class="left">
-          <view class="title">{{
-            storeInfo.brand.name || "团蜂家居社区服务站"
-          }}</view>
-          <view class="eva">
-            <img
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/g58vmepof8496v2stqvc.png"
-              alt=""
-              class="img"
-            />
-            <view class="year">1年</view>
-            <star rate="5" style="white-space: nowrap"></star>
-            <view class="star">5.0星</view>
-          </view>
-          <view class="sign">
-            <view class="text">及时服务</view>
-            <view class="text">官方直营</view>
-          </view>
-          <view class="main">
-            <view class="name">简介：</view>
-            <view class="home">{{ storeInfo.brand.desc || "暂无介绍" }}</view>
-          </view>
-        </view>
-        <view class="right">
-          <view class="enter" @click="handleEnterStore">进店</view>
-          <view class="address">
-            <img
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/siqsm9fzuch90mdw5rep.png"
-              alt=""
-              class="location"
-            />
-            <view class="name">{{
-              storeInfo.brand.address.slice(0, 6) || "暂无地址"
-            }}</view>
-          </view>
-        </view>
-      </view>
-      <view class="mid">
-        <view class="shop-list">
-          <view
-            class="item"
-            @click="handleToViewGoodsDetail(item.id)"
-            v-for="item in goodsList"
-            :key="item.id"
-          >
-            <img :src="item.picUrl" alt="" class="shop" />
-            <view class="sub">
-              <view class="goodsName">{{ item.name }}</view>
-              <view class="p">
-                <view class="symbol">￥</view>
-                <view class="money">{{ item.retailPrice }}</view>
-              </view>
-            </view>
-          </view>
-          <!-- <view class="item">
-            <img
-              src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lgu5io706xc02zrlkezh.png"
-              alt=""
-              class="shop"
-            />
-            <view class="sub">
-              <view class="name">北欧科技布沙发</view>
-              <view class="p">
-                <view class="symbol">￥</view>
-                <view class="money">3099</view>
-              </view>
-            </view>
-          </view> -->
-        </view>
-      </view>
-    </view>
-  </view>
+	<view class="service-station">
+		<view class="centre">
+			<view class="top">
+				<view class="left">
+					<view class="title">
+						{{
+							storeInfo.brand.name || "团蜂家居社区服务站"
+						}}
+					</view>
+					<view class="eva">
+						<img
+							src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/g58vmepof8496v2stqvc.png"
+							alt=""
+							class="img"
+						/>
+						<view class="year">1年</view>
+						<Star rate="5" style="white-space: nowrap"></Star>
+						<view class="star">5.0星</view>
+					</view>
+					<view class="sign">
+						<view class="text">及时服务</view>
+						<view class="text">官方直营</view>
+					</view>
+					<view class="main">
+						<view class="name">简介：</view>
+						<view class="home">{{ storeInfo.brand.desc || "暂无介绍" }}</view>
+					</view>
+				</view>
+				<view class="right">
+					<view class="enter" @click="handleEnterStore">进店</view>
+					<view class="address">
+						<img
+							src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/siqsm9fzuch90mdw5rep.png"
+							alt=""
+							class="location"
+						/>
+						<view class="name">
+							{{
+								storeInfo.brand.address.slice(0, 6) || "暂无地址"
+							}}
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="mid">
+				<view class="shop-list">
+					<view
+						v-for="item in goodsList"
+						:key="item.id"
+						class="item"
+						@click="handleToViewGoodsDetail(item.id)"
+					>
+						<img :src="common.seamingImgUrl(item.picUrl)" alt="" class="shop" />
+						<view class="sub">
+							<view class="goodsName">{{ item.name }}</view>
+							<view class="p">
+								<view class="symbol">￥</view>
+								<view class="money">{{ item.retailPrice }}</view>
+							</view>
+						</view>
+					</view>
+					<!-- <view class="item">
+						<img
+						src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/lgu5io706xc02zrlkezh.png"
+						alt=""
+						class="shop"
+						/>
+						<view class="sub">
+						<view class="name">北欧科技布沙发</view>
+						<view class="p">
+						<view class="symbol">￥</view>
+						<view class="money">3099</view>
+						</view>
+						</view>
+						</view> -->
+				</view>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
-import star from "../../components/rate";
+import star from '../../components/rate'
 export default {
-  name: "community",
-  props: {
-    storeInfo: [Object, Array],
-  },
-  components: { star },
+	name: 'Community',
+	components: { Star: star },
+	props: {
+		storeInfo: [Object, Array]
+	},
 
-  data() {
-    return {
-      goodsList: "",
-      picUrl: "",
-    };
-  },
-  computed: {},
-  methods: {
-    getGoodsList() {
-      if (this.storeInfo.goodsList.length >= 3) {
-        this.goodsList = this.storeInfo.goodsList.slice(0, 3);
-        console.log(this.goodsList);
-      }
-    },
-    handleEnterStore() {
-      uni.navigateTo({
-        url: "/store/store-detail?storeId=" + this.storeInfo.brand.id,
-      });
-    },
-    handleToViewGoodsDetail(e) {
-      uni.navigateTo({
-        url: "/pages/prod/prod?goodsId=" + e,
-      });
-    },
+	data() {
+		return {
+			goodsList: '',
+			picUrl: ''
+		}
+	},
+	computed: {},
+	watch: {},
 
-  },
-  watch: {},
+	// 组件周期函数--监听组件挂载完毕
+	mounted() {
+		this.getGoodsList()
+	},
+	// 组件周期函数--监听组件数据更新之前
+	beforeUpdate() {},
+	// 组件周期函数--监听组件数据更新之后
+	updated() {},
+	// 组件周期函数--监听组件激活(显示)
+	activated() {},
+	// 组件周期函数--监听组件停用(隐藏)
+	deactivated() {},
+	// 组件周期函数--监听组件销毁之前
+	beforeDestroy() {},
+	methods: {
+		getGoodsList() {
+			if (this.storeInfo.goodsList.length >= 3) {
+				this.goodsList = this.storeInfo.goodsList.slice(0, 3)
+				console.log(this.goodsList)
+			}
+		},
+		handleEnterStore() {
+			uni.navigateTo({
+				url: '/store/store-detail?storeId=' + this.storeInfo.brand.id
+			})
+		},
+		handleToViewGoodsDetail(e) {
+			uni.navigateTo({
+				url: '/pages/prod/prod?goodsId=' + e
+			})
+		}
 
-  // 组件周期函数--监听组件挂载完毕
-  mounted() {
-    this.getGoodsList();
-  },
-  // 组件周期函数--监听组件数据更新之前
-  beforeUpdate() {},
-  // 组件周期函数--监听组件数据更新之后
-  updated() {},
-  // 组件周期函数--监听组件激活(显示)
-  activated() {},
-  // 组件周期函数--监听组件停用(隐藏)
-  deactivated() {},
-  // 组件周期函数--监听组件销毁之前
-  beforeDestroy() {},
-};
+	}
+}
 </script>
+
 <style lang="less" scoped>
 .service-station {
   padding: 20upx;

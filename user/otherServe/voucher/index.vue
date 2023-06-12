@@ -35,7 +35,7 @@
 
 		<view class="footer-menus">
 			<view class="footer-desc">代金券解释权归巨峰商城所属</view>
-			<view v-if="!(userInfo.roleIds === 6)">
+			<view v-if="userInfo.roleIds === 6">
 				<tui-button
 					type="blue" width="220rpx" height="64rpx" margin="20upx auto"
 					style="border-radius: 50rpx;"
@@ -56,7 +56,11 @@
 			:show="isShowVoucherDialog" title="设置代金券" @click="handleClickVoucherDialog"
 		>
 			<template #content>
-				<tui-input v-model="tempVoucher" label="代金券" type="number" placeholder="请输入代金券数量" clearable></tui-input>
+				<tui-input v-model="tempVoucher" label="代金券" type="number" placeholder="请输入代金券比例">
+					<template #right>
+						<text>%</text>
+					</template>
+				</tui-input>
 			</template>
 		</tui-dialog>
 	</view>

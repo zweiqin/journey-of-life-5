@@ -80,7 +80,7 @@ export default {
 			this.$data._status = 'loading'
 			uni.getLocation({
 				type: 'gcj02',
-				highAccuracyExpireTime: 3000,
+				highAccuracyExpireTime: 1000,
 				success: (result) => {
 					queryLocation.longitude = result.longitude
 					queryLocation.latitude = result.latitude

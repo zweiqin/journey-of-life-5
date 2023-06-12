@@ -50,7 +50,7 @@
 
 		<view class="other-container">
 			<!-- 评价 -->
-			<Evaluate></Evaluate>
+			<Evaluate :data="goodsDetail"></Evaluate>
 
 			<!-- 宝贝详情 -->
 			<view v-if="goodsDetail.info.detail" id="goods-detail" class="goods-detail">
@@ -102,7 +102,6 @@ export default {
 	},
 	onLoad(options) {
 		this.goodsId = options.goodsId
-
 		this.getGoodsDetail()
 	},
 

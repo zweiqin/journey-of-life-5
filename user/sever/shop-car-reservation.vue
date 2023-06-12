@@ -332,7 +332,7 @@ export default {
 			for (const item of data.brandCartgoods) {
 				this.shopCarList = [...this.shopCarList, ...item.cartList]
 			}
-			this.loadingStatus = 'no-more'
+			this.loadingStatus = 'noMore'
 		},
 
 		// 是否全选

@@ -10,7 +10,7 @@
 
 					<view class="shop-goods-list">
 						<view v-for="(item, index) in goodsList" :key="item.id" class="goods-item">
-							<JAvatar radius="10" :size="120" :src="item.picUrl"></JAvatar>
+							<JAvatar radius="10" :size="120" :src="common.seamingImgUrl(item.picUrl)"></JAvatar>
 
 							<view class="goods-pane-right">
 								<view class="goods-pane-name">{{ item.name.trim() }} </view>
@@ -80,9 +80,9 @@ export default {
 	methods: {
 		// 获取商品列表
 		getGoodsList(isLoadmore) {
+			if (!getBrandId()) return
 			this.status = 'loading'
 			this.loadingStatus = 'loading'
-			if (!getBrandId()) return
 			goodsListApi(this.query)
 				.then(({ data }) => {
 					this.totalPages = data.totalPages
@@ -91,12 +91,10 @@ export default {
 					} else {
 						this.goodsList = data.goodsList
 					}
-					uni.hideLoading()
 					this.status = 'none'
 					this.loadingStatus = 'noMore'
 				})
 				.catch(() => {
-					uni.hideLoading()
 					this.status = 'none'
 					this.loadingStatus = 'noMore'
 				})

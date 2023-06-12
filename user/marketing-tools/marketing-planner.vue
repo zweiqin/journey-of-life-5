@@ -35,6 +35,12 @@ export default {
 				// 	placeholder: '省份、城市、区县'
 				// },
 				{
+					label: '是否关联分公司：',
+					field: 'isConnectBranch',
+					type: 'radio',
+					placeholder: '请选择是否关联分公司'
+				},
+				{
 					label: '分公司：',
 					type: 'select',
 					field: 'branchId',
@@ -43,19 +49,27 @@ export default {
 				{
 					label: '策划师所属地区：',
 					type: 'subregion',
-					field: 'areaUser',
+					field: 'areaUserOne',
+					placeholder: '省份、城市、区县、乡镇'
+				},
+				{
+					label: '策划师所属地区：',
+					type: 'subregion',
+					field: 'areaUserTwo',
 					placeholder: '省份、城市、区县、乡镇'
 				},
 				{
 					label: '详细地址（所属区域）',
 					type: 'textarea',
 					field: 'address',
-					placeholder: '请填写详细地址，如广东省佛山市顺德区龙江镇xxxxx'
+					placeholder: '可填写详细地址，如广东省佛山市顺德区龙江镇xxxxx'
 				}
 			],
 			// 表单
 			form: {
-				accountInfo: {}
+				accountInfo: {
+					isConnectBranch: ''
+				}
 			},
 			packageId: ''
 		}
@@ -65,14 +79,22 @@ export default {
 		// 提交表单
 		submit(tag) {
 			const data = {
-				...this.form.accountInfo,
+				address: this.form.accountInfo.address,
+				branchId: this.form.accountInfo.isConnectBranch === 'true' ? this.form.accountInfo.branchId : this.form.accountInfo.isConnectBranch === 'false' ? '' : '',
+				areaUser: this.form.accountInfo.isConnectBranch === 'true' ? this.form.accountInfo.areaUserOne : this.form.accountInfo.isConnectBranch === 'false' ? this.form.accountInfo.areaUserTwo : '',
 				userId: getUserId(),
 				packageId: this.packageId
 			}
-			if (!data.area) return this.$showToast('请选择分公司所属地区')
-			if (!data.branchId) return this.$showToast('请选择分公司')
-			if (!data.areaUser) return this.$showToast('请选择策划师所属地区')
-			if (!data.address) return this.$showToast('请填写详细地址')
+			if (!this.form.accountInfo.isConnectBranch) {
+				return this.$showToast('请选择是否关联分公司')
+			} else if (this.form.accountInfo.isConnectBranch === 'true') {
+				if (!data.area) return this.$showToast('请选择分公司所属地区')
+				if (!data.branchId) return this.$showToast('请选择分公司')
+				if (!data.areaUserOne) return this.$showToast('请选择策划师所属地区')
+			} else if (this.form.accountInfo.isConnectBranch === 'false') {
+				if (!data.areaUserTwo) return this.$showToast('请选择策划师所属地区')
+			}
+			// if (!data.address) return this.$showToast('请填写详细地址')
 			if (!data.packageId) return this.$showToast('缺少套餐信息')
 			uni.showModal({
 				title: '提示',

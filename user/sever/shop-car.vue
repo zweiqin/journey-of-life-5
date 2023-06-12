@@ -340,7 +340,7 @@ export default {
 			for (const item of data.brandCartgoods) {
 				this.shopCarList = [...this.shopCarList, ...item.cartList]
 			}
-			this.loadingStatus = 'no-more'
+			this.loadingStatus = 'noMore'
 		},
 
 		// 是否全选
@@ -393,6 +393,9 @@ export default {
 					brandCartgoods: item.cartList.filter((item) => item.checked)
 				})
 			}
+			// if (op.filter((item) => item.brandCartgoods && item.brandCartgoods.length).length > 1) {
+			// 	return this.$showToast('只能选择一家店铺的商品')
+			// }
 			uni.setStorageSync(J_TWO_PAY_GOODS, {
 				cardsInfo: op,
 				pay: this.totalPrice

@@ -1,20 +1,23 @@
 <template>
 	<view
 		class="code-mask" :style="{
-			'opacity': extensionCodeUrl && userInfo && userInfo.nickName ? '1' : '0',
+			'opacity': invitationCodeUrl && userInfo && userInfo.nickName ? '1' : '0',
 			'z-index':
-				extensionCodeUrl && userInfo && userInfo.nickName ? '1' : '-1'
-		}" @click="extensionCodeUrl = ''"
+				invitationCodeUrl && userInfo && userInfo.nickName ? '1' : '-1'
+		}" @click="invitationCodeUrl = ''"
 	>
 		<view
 			class="code-wrapper" :style="{
-				transform: extensionCodeUrl ? 'scale(1)' : 'scale(0)'
+				transform: invitationCodeUrl ? 'scale(1)' : 'scale(0)'
 			}"
 		>
 			<view class="header">
 				<image class="header-icon" src="/static/images/user/ju-icon.png" mode="" />
 				<text>我的邀请码：</text>
+			</view>
+			<view style="display: flex;justify-content: center;align-items: center;">
 				<text>{{ code }}</text>
+				<tui-button margin="0 0 0 20upx" type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="handleCopyData(code)">复制</tui-button>
 			</view>
 
 			<view class="big-wrapper">
@@ -26,10 +29,10 @@
 					<image src="/static/images/user/zhi.png" alt="" />
 					<text>长按扫码</text>
 				</view>
-				<image class="code" :src="extensionCodeUrl" alt="" />
+				<image class="code" :src="invitationCodeUrl" alt="" />
 			</view>
 
-			<button class="uni-btn" @click="extensionCodeUrl = ''">取消</button>
+			<button class="uni-btn" @click="invitationCodeUrl = ''">取消</button>
 		</view>
 	</view>
 </template>
@@ -43,7 +46,7 @@ export default {
 	data() {
 		return {
 			code: '',
-			extensionCodeUrl: '',
+			invitationCodeUrl: '',
 			userInfo: {}
 		}
 	},
@@ -59,8 +62,19 @@ export default {
 				url: tempUrl
 			}).then(({ data }) => {
 				this.code = data.code
-				this.extensionCodeUrl = data.qrCode
+				this.invitationCodeUrl = data.qrCode
 				uni.hideLoading()
+			})
+		},
+
+		handleCopyData(text) {
+			uni.setClipboardData({
+				data: text,
+				success: () => {
+					uni.showToast({
+						title: '复制成功'
+					})
+				}
 			})
 		}
 	}

@@ -12,7 +12,7 @@
 						>
 						去预约
 						</text> -->
-					<tui-button type="blue" style="margin: 0 auto;" bold shape="circle" width="60%" @click="go(`/user/sever/shop-car-reservation?isBack=1&brandId=${brandDetail.id || ''}&brandName=${brandDetail.name || ''}`)">
+					<tui-button type="danger" style="margin: 0 auto;" bold shape="circle" width="60%" height="64rpx" @click="go(`/user/sever/shop-car-reservation?isBack=1&brandId=${brandDetail.id || ''}&brandName=${brandDetail.name || ''}`)">
 						去预约
 					</tui-button>
 				</view>
@@ -110,6 +110,7 @@ import {
 	receiveGoodsApi
 } from '../../../../api/order'
 import { payOrderGoodsApi } from '../../../../api/goods'
+import { updateCancelReservationApi } from '../../../../api/user'
 import { getUserId } from '../../../../utils'
 export default {
 	name: 'Reservation',
@@ -126,26 +127,26 @@ export default {
 			orderTypesStore: [
 				{
 					label: '待付款',
-					value: 5
+					value: 8
 				},
 				{
 					label: '已付款',
-					value: 6
+					value: 5
 				},
 				{
 					label: '已核销',
-					value: 7
+					value: 6
 				},
 				{
 					label: '已过期',
-					value: 8
+					value: 7
 				},
 				{
 					label: '已取消',
 					value: 9
 				}
 			],
-			currentStatus: 5,
+			currentStatus: 8,
 			currentType: 1,
 			query: {
 				page: 1,
@@ -213,15 +214,16 @@ export default {
 			}
 			const mapMethods = {
 				cancel: {
-					text: '确定要取消当前预约吗?',
-					api: orderCancelApi
+					text: '确定要取消当前预约吗？',
+					// api: orderCancelApi
+					api: updateCancelReservationApi
 				},
 				delete: {
-					text: '确定要删除当前预约吗?',
+					text: '确定要删除当前预约吗？',
 					api: orderDeleteApi
 				},
 				confirm: {
-					text: '确定要收货吗',
+					text: '确定要收货吗？',
 					api: receiveGoodsApi
 				}
 			}
