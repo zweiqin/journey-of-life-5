@@ -14,7 +14,7 @@
 
 		<view class="middle">
 			<view class="date">
-				<view class="getMorePoints" @click="getSign" v-if="weekList[new Date().getDay()+1].flag == 1">
+				<view class="getMorePoints" @click="getSign" v-if="weekList[new Date().getDay()-1<0?6:new Date().getDay()-1].flag == 0">
 					<view class="getMorePoints_text"> 签到领积分 </view>
 				</view>
 				<view class="getMorePoints noanimation" v-else>
