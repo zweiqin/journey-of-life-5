@@ -23,6 +23,7 @@
 					}}
 					</view>
 				</view>
+				<!-- 日期显示/选择区 -->
 				<view class="day">
 					<view :class="[{ 'checkday': days.date == '' }, { 'choose': days.date == localDate || days.flag }]"
 						:style="'background:' + (days.date == localDate || days.flag ? bgday : '') + ';'"
@@ -47,6 +48,8 @@
 </template>
 
 <script>
+import { addUserSignInApi, getUserSignInListApi, getUserSigninContinuousApi } from "@/api/user"
+import { getUserId, transformNumber } from '@/utils'
 export default {
 	props: {
 		lang: {
@@ -82,6 +85,13 @@ export default {
 			aheadDay: 0,	// 前方空白天数数量
 			thisMonth: new Date().getMonth() + 1
 		}
+	},
+	created() {
+		getUserSignInListApi({userId: getUserId()}).then(res => {
+			console.log(res)
+		}).catch(err => {
+			console.log(err)
+		})
 	},
 	mounted() {
 		let that = this;
@@ -126,6 +136,7 @@ export default {
 			if (that.type == 'calendar') return;
 			// 限制本月可进行签到
 			if ((new Date().getMonth() + 1) != parseInt(obj.date.split('-')[1])) return;
+			console.log(obj,that.day)
 			// 禁用非本月点击签到且限制签到日期小于本日
 			if (obj.date != '' && obj.day < that.day) {
 				// 开启已签到提醒

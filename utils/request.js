@@ -4,8 +4,7 @@ const service = (base_url) => {
   return function (config) {
     /**
      * @param { string } url 请求地址
-     * @param { any } data 请求数据
-     * @param { string } method 请求方法
+     * @param { any } data 请求数据     * @param { string } method 请求方法
      * @param { boolean } loading 是否显示loading加载
      * @param { () => void } cb 额外的请求操作
      * @param { boolean } isZhult 是否是助力通接口

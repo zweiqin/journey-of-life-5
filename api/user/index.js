@@ -595,7 +595,7 @@ export const addUserSignInApi = (data) => RuanRequest('/dtsUserSignin/userSignIn
 // 用户签到列表
 export const getUserSignInListApi = (data) => RuanRequest('/dtsUserSignin/userSignInList', data, 'get')
 
-// 连续签到天数与明天积分
+// 连续签到天数与每天积分
 export const getUserSigninContinuousApi = (data) => RuanRequest('/dtsUserSignin/continuous', data, 'get')
 
 /**
