@@ -2,7 +2,7 @@
 	<view class="sign">
 		<view class="head">
 			<image src="../../../static/index/earn-money/back.png" mode="" @click="handleBack" />
-			<view class="points_buttom">
+			<view class="points_buttom" @click="go('/pages/index/sign/points-mall')">
 				<image src="@/static/index/earn-money/jifen.png" mode="" />
 				<text>13709</text>
 				<image class="goToPointsMall" src="@/static/index/earn-money/youjiantou.png" mode="" />
@@ -14,10 +14,11 @@
 
 		<view class="middle">
 			<view class="date">
-				<view class="getMorePoints" @click="getSign" v-if="weekList[new Date().getDay()-1<0?6:new Date().getDay()-1].flag == 0">
+				<view class="getMorePoints" @click="getSign"
+					v-if="weekList[new Date().getDay()-1<0?6:new Date().getDay()-1].flag == 0">
 					<view class="getMorePoints_text"> 签到领积分 </view>
 				</view>
-				<view class="getMorePoints noanimation" v-else>
+				<view class="getMorePoints noanimation" @click="getSign" v-else>
 					<view class="getMorePoints_text"> 获取更多积分 </view>
 				</view>
 				<view class="SignIn">
@@ -40,7 +41,7 @@
 						</view>
 					</view>
 				</view>
-				<image src="@/static/index/earn-money/xiangxiajiantou.png" mode=""></image>
+				<!-- <image src="@/static/index/earn-money/xiangxiajiantou.png" mode=""></image> -->
 				<!-- 月签到组件，后期需要时再做更改 由钟sir开发滴组件 -->
 				<!-- <YoulanSignIn type="sign" @change="signDate" /> -->
 			</view>
@@ -53,7 +54,7 @@
 							<image src="../../../static/index/sign/go.png" mode="" />
 						</view>
 					</view>
-					<view class="i-right" @click="go('/pages/index/')">前往商城</view>
+					<view class="i-right" @click="go('/pages/index/sign/points-mall')">前往商城</view>
 				</view>
 			</view>
 		</view>
@@ -62,8 +63,15 @@
 
 <script>
 	import Vue from "vue"
-	import { addUserSignInApi, getUserSignInListApi, getUserSigninContinuousApi } from "@/api/user"
-	import { getUserId, transformNumber } from '@/utils'
+	import {
+		addUserSignInApi,
+		getUserSignInListApi,
+		getUserSigninContinuousApi
+	} from "@/api/user"
+	import {
+		getUserId,
+		transformNumber
+	} from '@/utils'
 	import youlanSignIn from "../../../components/youlan-SignIn/youlan-SignIn.vue";
 	import JCalendar from "../../../components/j-calendar/j-calendar.vue";
 	export default {
@@ -82,32 +90,43 @@
 			};
 		},
 		computed: {
-			
+
 		},
 		created() {
 			// 获取当前星期的日期
 			this.getWeekList();
 			// console.log(this.weekList)
-			// 获取当前连续签到日期和明天签到积分
-			getUserSigninContinuousApi({userId: getUserId()}).then(res => {
-				this.SignDetails = res.data
-			}).catch(err => {
-				console.log(err)
-			})
-			// 获取当前签到的信息，一个星期签到了多少天等等。。。。,并将这些数据整合到一个数组里面
-			getUserSignInListApi({userId: getUserId()}).then(res => {
-				// console.log(res.data)
-				res.data.data.forEach((item,index) => {
-					// 传统的数组方法在改变长度时Vue有时会不响应改变，因此调用这个方法来刷新 Vue.set(this.Array, index, {yourData})
-					// this.weekList[index] = {...this.weekList[index],...res.data.data[index]}
-					Vue.set(this.weekList,index,{...this.weekList[index],...res.data.data[index]})
-				})
-				// console.log(this.weekList)
-			}).catch(err => {
-				console.log(err)
-			})
+			this.getUserData()
 		},
 		methods: {
+			getUserData() {
+				// 获取当前连续签到日期和明天签到积分
+				getUserSigninContinuousApi({
+					userId: getUserId()
+				}).then(res => {
+					this.SignDetails = res.data
+					console.log(res.data)
+				}).catch(err => {
+					console.log(err)
+				})
+				// 获取当前签到的信息，一个星期签到了多少天等等。。。。,并将这些数据整合到一个数组里面
+				getUserSignInListApi({
+					userId: getUserId()
+				}).then(res => {
+					// console.log(res.data)
+					res.data.data.forEach((item, index) => {
+						// 传统的数组方法在改变长度时Vue有时会不响应改变，因此调用这个方法来刷新 Vue.set(this.Array, index, {yourData})
+						// this.weekList[index] = {...this.weekList[index],...res.data.data[index]}
+						Vue.set(this.weekList, index, {
+							...this.weekList[index],
+							...res.data.data[index]
+						})
+					})
+					console.log(this.weekList)
+				}).catch(err => {
+					console.log(err)
+				})
+			},
 			handleBack() {
 				uni.switchTab({
 					url: "/pages/index/index",
@@ -191,12 +210,15 @@
 				// return this.weekList
 			},
 			getSign() {
-				addUserSignInApi({userId: getUserId()}).then(res => {
+				addUserSignInApi({
+					userId: getUserId()
+				}).then(res => {
 					uni.showToast({
 						title: res.data.errno > 0 ? '签到成功' : '重复签到',
 						icon: 'success'
 					});
 				})
+				this.getUserData()
 			}
 		},
 	};
@@ -205,22 +227,41 @@
 <style lang="less" scoped>
 	// 按钮动画
 	@keyframes animateBtn {
-	  0% {
-	    transform: scale(1);
-	  }
-	  50% {
-	    transform: scale(1.1);
-	  }
-	  100% {
-	    transform: scale(1);
-	  }
+		0% {
+			transform: scale(1);
+		}
+
+		50% {
+			transform: scale(1.1);
+		}
+
+		100% {
+			transform: scale(1);
+		}
 	}
+
 	@-webkit-keyframes shiny-btn1 {
-	    0% { -webkit-transform: scale(0) rotate(45deg); opacity: 0; }
-	    80% { -webkit-transform: scale(0) rotate(45deg); opacity: 0.5; }
-	    81% { -webkit-transform: scale(4) rotate(45deg); opacity: 1; }
-	    100% { -webkit-transform: scale(50) rotate(45deg); opacity: 0; }
+		0% {
+			-webkit-transform: scale(0) rotate(45deg);
+			opacity: 0;
+		}
+
+		80% {
+			-webkit-transform: scale(0) rotate(45deg);
+			opacity: 0.5;
+		}
+
+		81% {
+			-webkit-transform: scale(4) rotate(45deg);
+			opacity: 1;
+		}
+
+		100% {
+			-webkit-transform: scale(50) rotate(45deg);
+			opacity: 0;
+		}
 	}
+
 	.sign {
 		width: 100vw;
 		min-height: 100vh;
@@ -297,18 +338,20 @@
 				display: flex;
 				align-items: center;
 				flex-direction: column;
+
 				// 模仿光线效果
 				.getMorePoints:before {
-					    position: absolute;
-					    content: '';
-					    display: inline-block;
-					    top: -180px;
-					    left: 0;
-					    width: 50rpx;
-					    height: 100%;
-					    background-color: #fff;
-					    animation: shiny-btn1 3s ease-in-out infinite;
-					}
+					position: absolute;
+					content: '';
+					display: inline-block;
+					top: -180px;
+					left: 0;
+					width: 50rpx;
+					height: 100%;
+					background-color: #fff;
+					animation: shiny-btn1 3s ease-in-out infinite;
+				}
+
 				.getMorePoints {
 					// z-index: 0;
 					position: absolute;
@@ -336,6 +379,7 @@
 						height: 60rpx;
 					}
 				}
+
 				.noanimation {
 					animation: none;
 				}
@@ -375,15 +419,18 @@
 							}
 						}
 					}
+
 					// 下半部分打卡区
-					.SignI_Button{
+					.SignI_Button {
 						display: flex;
+
 						.SignI_ButtonItem {
 							flex: 1;
 							display: flex;
 							flex-direction: column;
 							align-items: center;
 							margin-top: 30rpx;
+
 							.SignRound {
 								width: 60rpx;
 								height: 60rpx;
@@ -394,12 +441,14 @@
 								line-height: 55rpx;
 								color: #a9acb8;
 							}
+
 							.SignRound_text {
 								margin-top: 12rpx;
 								font-size: 20rpx;
 								text-align: center;
 								color: #a9acb8;
 							}
+
 							.isSignIn {
 								background-color: #FFE5CC;
 								color: #d80000;
@@ -407,7 +456,8 @@
 						}
 					}
 				}
-				> image {
+
+				>image {
 					margin-top: 15rpx;
 					width: 38rpx;
 					height: 26rpx;

@@ -56,8 +56,12 @@ export default {
 	},
 	methods: {
 		handleBack() {
+			console.log(1)
 			uni.navigateTo({
-				url: '/pages/index/sign/sign',
+				url: '/user/my-tools/daily-attendance/index',
+				// fail:(res) => {
+				// 	console.log(res)
+				// }
 			})
 		},
 	},
