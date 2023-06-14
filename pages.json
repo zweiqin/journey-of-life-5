@@ -280,6 +280,30 @@
 					}
 				},
 				{
+					"path": "my-tools/account-book/fan-details",
+					"style": {
+						"navigationBarTitleText": "粉丝详情"
+					}
+				},
+				{
+					"path": "my-tools/account-book/wrap-record",
+					"style": {
+						"navigationBarTitleText": "红包和优惠券记录"
+					}
+				},
+				{
+					"path": "my-tools/account-book/voucher-record",
+					"style": {
+						"navigationBarTitleText": "代金券记录"
+					}
+				},
+				{
+					"path": "my-tools/account-book/order-data-record",
+					"style": {
+						"navigationBarTitleText": "订单数据记录"
+					}
+				},
+				{
 					"path": "my-tools/daily-attendance/index",
 					"style": {
 						"navigationBarTitleText": "每日签到"
