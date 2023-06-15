@@ -4,7 +4,7 @@
 			<image src="../../../static/index/earn-money/back.png" mode="" @click="handleBack" />
 			<view class="points_buttom" @click="go('/pages/index/sign/points-mall')">
 				<image src="@/static/index/earn-money/jifen.png" mode="" />
-				<text>{{SignDetails.totalNum}}</text>
+				<text>13709</text>
 				<image class="goToPointsMall" src="@/static/index/earn-money/youjiantou.png" mode="" />
 			</view>
 			<image src="@/static/index/earn-money/wenjian.png" mode="" />
@@ -50,7 +50,7 @@
 					<view class="i-left">
 						<view class="i-name">当前积分</view>
 						<view class="i-list">
-							<text>{{SignDetails.totalNum}}</text>
+							<text>9552</text>
 							<image src="../../../static/index/sign/go.png" mode="" />
 						</view>
 					</view>
@@ -84,34 +84,13 @@
 		data() {
 			return {
 				today: new Date().toISOString().slice(0, 10),
-				lastSignIndex: 0,
 				SignDetails: {},
 				weekName: ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
 				weekList: [],
 			};
 		},
 		computed: {
-			// 这里为已签到和未签到的天数的，因不符合需求暂时搁置，看后期如若需要再处理，不需要则删除
-			SignInDays: {
-				get() {
-					let arr = this.weekList.filter((item) => {
-						if (item.flag == 1) {
-							return item
-						}
-					})
-					return arr
-				}
-			},
-			DaysNosignin: {
-				get() {
-					let arr = this.weekList.filter((item) => {
-						if (item.flag == 1) {
-							return item
-						}
-					})
-					return arr
-				}
-			}
+
 		},
 		created() {
 			// 获取当前星期的日期
@@ -143,17 +122,7 @@
 							...res.data.data[index]
 						})
 					})
-					this.lastSignIndex = function (arr) {
-						var lastIndex = -1; // 默认下标为 -1，表示未找到
-						for (var i = arr.length - 1; i >= 0; i--) {
-							if (arr[i].flag === 1) {
-								lastIndex = i;
-								break; // 找到后直接退出循环
-							}
-						}
-						return lastIndex;
-					}(this.weekList)
-					// console.log(this.lastSignIndex)
+					console.log(this.weekList)
 				}).catch(err => {
 					console.log(err)
 				})
@@ -178,14 +147,14 @@
 				return nowTimeDate.setHours(0, 0, 0, 0)
 			},
 			// 时间戳转日期格式
-			timestampToTime(timestamp,type) {
+			timestampToTime(timestamp) {
 				var date = new Date(timestamp)
 				var Y = date.getFullYear() + '-'
 				var M =
 					(date.getMonth() + 1 < 10 ?
 						'0' + (date.getMonth() + 1) :
 						date.getMonth() + 1) + '-'
-				var D = date.getDate()-this.lastSignIndex
+				var D = date.getDate()
 				// var h = date.getHours() + ':';
 				// var m = date.getMinutes() + ':';
 				// var s = date.getSeconds();
@@ -198,7 +167,7 @@
 				var M =
 					(date.getMonth() + 1 < 10 ? date.getMonth() + 1 : date.getMonth() + 1) +
 					".";
-				var D = date.getDate()-this.lastSignIndex
+				var D = date.getDate();
 				return M + D;
 			},
 			// 获取一周的日期
@@ -234,26 +203,20 @@
 						today + (right + 1) * 1000 * 60 * 60 * 24;
 				}
 				week.map((el) => {
-					el.date = this.timestampToTime(el.timeStamp,'isDate');
-					el.easyDate = this.timestampToEasyTime(el.timeStamp,'iseasyDate');
+					el.date = this.timestampToTime(el.timeStamp);
+					el.easyDate = this.timestampToEasyTime(el.timeStamp);
 				});
 				this.weekList = JSON.parse(JSON.stringify(week));
-				console.log(this.weekList)
 				// return this.weekList
 			},
 			getSign() {
 				addUserSignInApi({
 					userId: getUserId()
 				}).then(res => {
-					res.data.errno >= 0 ?
-						uni.showToast({
-							title: res.data.errmsg,
-							icon: 'success'
-						}) :
-						uni.showToast({
-							title: res.data.errmsg,
-							icon: 'error'
-						})
+					uni.showToast({
+						title: res.data.errno > 0 ? '签到成功' : '重复签到',
+						icon: 'success'
+					});
 				})
 				this.getUserData()
 			}
