@@ -18,7 +18,7 @@
 					v-if="weekList[lastSignIndex].flag?weekList[lastSignIndex].flag == 0:true">
 					<view class="getMorePoints_text"> 签到领积分 </view>
 				</view>
-				<view class="getMorePoints noanimation" v-else>
+				<view class="getMorePoints noanimation" @click="getSign" v-else>
 					<view class="getMorePoints_text"> 获取更多积分 </view>
 				</view>
 				<view class="SignIn">
@@ -36,7 +36,8 @@
 								{{item.flag == 0?`+${item.integral}`:'√'}}
 							</view>
 							<view class="SignRound_text">
-								{{ new Date(item.date).getDate() ==new Date().getDate()?'今天':item.easyDate }}
+								第{{ index + 1 }}天
+								<!-- {{ new Date(item.date).getDate() ==new Date().getDate()?'今天':item.easyDate }} -->
 							</view>
 						</view>
 					</view>
