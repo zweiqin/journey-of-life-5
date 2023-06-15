@@ -46,7 +46,9 @@ export const orderDeleteApi = (data) => RuanRequest('/order/delete', data)
  * @returns
  */
 
-export const getOrderRefundApi = (data) => RuanRequest('/order/refund', data)
+// export const orderRefundApi = (data) => RuanRequest('/order/refund', data)
+
+export const orderRefundApi = (data) => RuanRequest('/dtsOrder/refunded', data) // 新
 
 export const getOrderDetailApi = (data) => RuanRequest('/order/detail', data, 'get')
 

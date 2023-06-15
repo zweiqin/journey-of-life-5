@@ -12,12 +12,17 @@
 			}"
 		>
 			<view class="header">
-				<image class="header-icon" src="/static/images/user/ju-icon.png" mode="" />
-				<text>我的邀请码：</text>
-			</view>
-			<view style="display: flex;justify-content: center;align-items: center;">
-				<text>{{ code }}</text>
-				<tui-button margin="0 0 0 20upx" type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="handleCopyData(code)">复制</tui-button>
+				<view style="display: flex;justify-content: center;align-items: center;">
+					<image class="header-icon" src="/static/images/user/ju-icon.png" mode="" />
+					<text>我的邀请码</text>
+				</view>
+				<view style="display: flex;justify-content: center;align-items: center;">
+					<text>{{ code }}</text>
+					<tui-button margin="0 0 0 20upx" type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="handleCopyData(code)">复制</tui-button>
+				</view>
+				<view>
+					昵称：{{ userInfo.nickName }}&nbsp;&nbsp;&nbsp;&nbsp;用户ID：{{ userInfo.userId }}
+				</view>
 			</view>
 
 			<view class="big-wrapper">
@@ -132,6 +137,7 @@ export default {
 
 		.header {
 			display: flex;
+			flex-direction: column;
 			justify-content: center;
 			align-items: center;
 
@@ -149,8 +155,8 @@ export default {
 			display: flex;
 
 			.big-icon {
-				width: 400upx;
-				height: 400upx;
+				width: 280upx;
+				height: 280upx;
 				object-fit: cover;
 			}
 		}
@@ -166,7 +172,7 @@ export default {
 			width: 540upx;
 			height: 540upx;
 			object-fit: cover;
-			border-radius: 54upx;
+			// border-radius: 54upx;
 		}
 
 		.uni-btn {

@@ -619,6 +619,13 @@
 					}
 				},
 				{
+					"path": "digital-store/refund-management/index",
+					"style": {
+						"navigationBarTitleText": "退款管理",
+						"usingComponents": {}
+					}
+				},
+				{
 					"path": "marketing-tools/store-application"
 				},
 				// {

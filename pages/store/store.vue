@@ -18,21 +18,21 @@
 		<view class="brand">
 			<BeeStoreFilter></BeeStoreFilter>
 			<view class="brand-list-wrapper">
-				<!-- <BeeBrandPane v-for="item in $data._list" :key="item.id" :brand-info="item"></BeeBrandPane> -->
-				<view style="margin-top: 20upx;">
+				<BeeBrandPane v-for="item in $data._list" :key="item.id" :brand-info="item"></BeeBrandPane>
+				<!-- <view style="margin-top: 20upx;">
 					<tui-waterfall :list-data="$data._list" :type="2">
-						<template #left="{ entity }">
-							<view style="width: 345upx;">
-								<BeeBrandCard :brand="entity"></BeeBrandCard>
-							</view>
-						</template>
-						<template #right="{ entity }">
-							<view style="width: 345upx;">
-								<BeeBrandCard :brand="entity"></BeeBrandCard>
-							</view>
-						</template>
+					<template #left="{ entity }">
+					<view style="width: 345upx;">
+					<BeeBrandCard :brand="entity"></BeeBrandCard>
+					</view>
+					</template>
+					<template #right="{ entity }">
+					<view style="width: 345upx;">
+					<BeeBrandCard :brand="entity"></BeeBrandCard>
+					</view>
+					</template>
 					</tui-waterfall>
-				</view>
+					</view> -->
 				<LoadMore :status="$data._status"></LoadMore>
 			</view>
 		</view>
@@ -65,6 +65,7 @@ export default {
 			}
 		})
 	],
+	onShow() { },
 	onLoad() {
 		this.getBrandList()
 		this.getCategoryList()

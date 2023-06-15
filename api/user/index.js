@@ -599,6 +599,19 @@ export const getUserSignInListApi = (data) => RuanRequest('/dtsUserSignin/userSi
 export const getUserSigninContinuousApi = (data) => RuanRequest('/dtsUserSignin/continuous', data, 'get')
 
 /**
+ * 订单退款
+ */
+
+// 查询用户选择退款原因
+export const getOrderRefundsReasonApi = (data) => RuanRequest('/dtsOrderRefundsReason/selectReason', data, 'get')
+
+// 商家退款申请列表
+export const getOrderRefundsListApi = (data) => RuanRequest('/dtsOrderRefunds/getRefundsList', data, 'get')
+
+// 商家审核退款申请
+export const updateOrderRefundsToExamineApi = (data) => RuanRequest('/dtsOrderRefunds/toExamine', data)
+
+/**
  * 团购
  */
 

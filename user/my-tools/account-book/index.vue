@@ -60,9 +60,8 @@
 						</view>
 					</view>
 				</view>
-				<view
-					style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;"
-				>
+				<WrapIncome :data="wrapIncome"></WrapIncome>
+				<view style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;">
 					<view style="font-size: 28upx;">数据记录</view>
 					<view>
 						<tui-tabs
@@ -193,9 +192,8 @@
 						</view>
 					</view>
 				</view>
-				<view
-					style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;"
-				>
+				<WrapIncome :data="wrapIncome"></WrapIncome>
+				<view style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;">
 					<view style="font-size: 28upx;">数据记录</view>
 					<view>
 						<tui-tabs
@@ -268,6 +266,34 @@
 			<!-- 会员商户 -->
 			<view v-else-if="userInfo.roleIds === 6">
 				<view style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;">
+					<view style="display: flex;justify-content: space-between;font-size: 28upx;">
+						<text>账本数据</text>
+						<tui-button type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="go('/user/my-tools/account-book/order-data-record')">记录</tui-button>
+					</view>
+					<view
+						style="display: flex;justify-content: space-between;align-items: center;width: 100%;margin-top: 30upx;font-size: 28upx;text-align: center;"
+					>
+						<view style="max-width: 33%;">
+							<view>当前佣金</view>
+							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+								{{ typeof brandOrderIncome.commissionTotal === 'number' ? transformNumber(brandOrderIncome.commissionTotal) : '--' }}
+							</view>
+						</view>
+						<view style="max-width: 33%;">
+							<view>当前代金券</view>
+							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+								{{ typeof brandOrderIncome.voucherTotal === 'number' ? transformNumber(brandOrderIncome.voucherTotal) : '--' }}
+							</view>
+						</view>
+						<view style="max-width: 33%;">
+							<view>订单数量</view>
+							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+								{{ typeof brandOrderIncome.orderTotal === 'number' ? brandOrderIncome.orderTotal : '--' }}
+							</view>
+						</view>
+					</view>
+				</view>
+				<view style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;">
 					<view style="font-size: 28upx;">我的收益（元）</view>
 					<view
 						style="display: flex;justify-content: space-between;align-items: center;width: 100%;margin-top: 30upx;font-size: 28upx;text-align: center;"
@@ -315,56 +341,7 @@
 						</view>
 					</view>
 				</view>
-				<view style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;">
-					<view style="display: flex;justify-content: space-between;font-size: 28upx;">
-						<text>红包和优惠券</text>
-						<tui-button type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="go('/user/my-tools/account-book/wrap-record')">记录</tui-button>
-					</view>
-					<view
-						style="display: flex;justify-content: space-between;align-items: center;width: 100%;margin-top: 30upx;font-size: 28upx;text-align: center;"
-					>
-						<view style="max-width: 23%;">
-							<view>红包总数</view>
-							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-								{{ typeof brandWrapIncome.wrapCount === 'number' ? brandWrapIncome.wrapCount : '--' }}
-							</view>
-						</view>
-						<view style="max-width: 23%;">
-							<view>今日红包数</view>
-							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-								{{ typeof brandWrapIncome.toDaysWrapCount === 'number' ? brandWrapIncome.toDaysWrapCount : '--' }}
-							</view>
-						</view>
-						<view style="max-width: 23%;">
-							<view>优惠券总数</view>
-							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-								{{ typeof brandWrapIncome.couponWrapCount === 'number' ? brandWrapIncome.couponWrapCount : '--' }}
-							</view>
-						</view>
-						<view>
-							<view>今日优惠券数</view>
-							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-								{{ typeof brandWrapIncome.toDaysCouponWrapCount === 'number' ? brandWrapIncome.toDaysCouponWrapCount : '--' }}
-							</view>
-						</view>
-					</view>
-					<view
-						style="display: flex;justify-content: space-around;align-items: center;width: 100%;margin-top: 30upx;font-size: 28upx;text-align: center;"
-					>
-						<view style="max-width: 48%;">
-							<view>累计发放红包金额</view>
-							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-								{{ typeof brandWrapIncome.totalAmount === 'number' ? transformNumber(brandWrapIncome.totalAmount) : '--' }}
-							</view>
-						</view>
-						<view style="max-width: 48%;">
-							<view>今日发布金额</view>
-							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-								{{ typeof brandWrapIncome.toDatsWrapRed === 'number' ? transformNumber(brandWrapIncome.toDatsWrapRed) : '--' }}
-							</view>
-						</view>
-					</view>
-				</view>
+				<WrapIncome :data="wrapIncome"></WrapIncome>
 				<view style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;">
 					<view style="display: flex;justify-content: space-between;font-size: 28upx;">
 						<text>代金券</text>
@@ -422,36 +399,6 @@
 					</view>
 				</view>
 				<view style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;">
-					<view style="display: flex;justify-content: space-between;font-size: 28upx;">
-						<text>账本数据</text>
-						<tui-button type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="go('/user/my-tools/account-book/order-data-record')">记录</tui-button>
-					</view>
-					<view
-						style="display: flex;justify-content: space-between;align-items: center;width: 100%;margin-top: 30upx;font-size: 28upx;text-align: center;"
-					>
-						<view style="max-width: 33%;">
-							<view>当前佣金</view>
-							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-								{{ typeof brandOrderIncome.commissionTotal === 'number' ? transformNumber(brandOrderIncome.commissionTotal) : '--' }}
-							</view>
-						</view>
-						<view style="max-width: 33%;">
-							<view>当前代金券</view>
-							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-								{{ typeof brandOrderIncome.voucherTotal === 'number' ? transformNumber(brandOrderIncome.voucherTotal) : '--' }}
-							</view>
-						</view>
-						<view style="max-width: 33%;">
-							<view>订单数量</view>
-							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-								{{ typeof brandOrderIncome.orderTotal === 'number' ? brandOrderIncome.orderTotal : '--' }}
-							</view>
-						</view>
-					</view>
-				</view>
-				<view
-					style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;"
-				>
 					<view style="font-size: 28upx;">数据记录</view>
 					<view>
 						<tui-tabs
@@ -552,6 +499,7 @@
 						</view>
 					</view>
 				</view>
+				<WrapIncome :data="wrapIncome"></WrapIncome>
 				<view style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;">
 					<view style="font-size: 28upx;">收益记录</view>
 					<view>
@@ -597,10 +545,13 @@ import {
 } from '../../../api/user'
 import { getUserId, getBrandId, transformNumber } from '../../../utils'
 import { J_USER_INFO } from '../../../constant'
+import WrapIncome from './components/WrapIncome.vue'
 
 export default {
 	name: 'AccountBook',
-	components: {},
+	components: {
+		WrapIncome
+	},
 
 	data() {
 		return {
@@ -632,7 +583,6 @@ export default {
 			brandFans: {},
 			brandListIncome: [],
 			brandListFans: [],
-			brandWrapIncome: {},
 			brandVoucherIncome: {},
 			brandOrderIncome: {},
 
@@ -644,7 +594,8 @@ export default {
 			totalPages: 0,
 			status: 'none',
 			loadingStatus: 'noMore',
-
+			// 红包和优惠券
+			wrapIncome: {},
 			// 收益或粉丝
 			currentIncomeOrFansTab: 0
 		}
@@ -660,6 +611,12 @@ export default {
 
 		getData(roleId) {
 			if (!getUserId()) return
+			getBrandWrapApi({
+				userId: getUserId()
+			}).then(({ data }) => {
+				console.log(data)
+				this.wrapIncome = data || {}
+			})
 			if (roleId === 2) {
 				getBranchOfficeIncomeApi({
 					userId: getUserId()
@@ -712,18 +669,12 @@ export default {
 					console.log(data)
 					this.brandFans = data || {}
 				})
-				getBrandWrapApi({
-					userId: getUserId()
-				}).then(({ data }) => {
-					console.log(data)
-					this.brandVoucherIncome = data || {}
-				})
-				getBrandVoucherApi({
+				getBrandAccountBookApi({
 					brandId: getBrandId(),
 					userId: getUserId()
 				}).then(({ data }) => {
 					console.log(data)
-					this.brandWrapIncome = data || {}
+					this.brandVoucherIncome = data || {}
 				})
 				getBrandAccountBookApi({
 					brandId: getBrandId(),

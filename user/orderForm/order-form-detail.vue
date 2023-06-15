@@ -145,9 +145,10 @@ import {
 	orderCancelApi,
 	orderDeleteApi,
 	// sendCommentApi
-	addCommentPostApi
+	addCommentPostApi,
+	orderRefundApi
 } from '../../api/order'
-import { getVerificationCodeHxCodeApi } from '../../api/user'
+import { getVerificationCodeHxCodeApi, getOrderRefundsReasonApi } from '../../api/user'
 import { getUserId } from '../../utils'
 import { orderOpButtons } from './config'
 import { payOrderGoodsApi } from '../../api/goods'
@@ -177,7 +178,14 @@ export default {
 				hasPicture: true,
 				picUrls: []
 			},
-			verificationCodeUrl: ''
+			verificationCodeUrl: '',
+			isShowRefundDialog: false,
+			refundRadioItems: [],
+			tempRefund: {
+				orderId: '',
+				reasonId: '',
+				refundRemark: ''
+			}
 		}
 	},
 
@@ -294,6 +302,13 @@ export default {
 						}
 					}
 				})
+			} else if (key === 'refund') {
+				getOrderRefundsReasonApi()
+					.then((res) => {
+						this.refundRadioItems = res.data
+						this.tempRefund.orderId = goods.id
+						this.isShowRefundDialog = true
+					})
 			} else if (key === 'pay') {
 				payOrderGoodsApi({
 					orderNo: goods.orderSn,
@@ -351,6 +366,26 @@ export default {
 					}
 				})
 			}
+		},
+
+		// 申请退款确认
+		async handleClickRefundDialog(e) {
+			console.log(e)
+			if (e.index === 0) {
+			} else if (e.index === 1) {
+				if (!getUserId()) return
+				if (!this.tempRefund.reasonId) return this.$showToast('请选择退款原因')
+				await orderRefundApi({ ...this.tempRefund, userId: getUserId() })
+					.then((res) => {
+						this.$showToast('提交成功')
+						this.getOrderList()
+					})
+			}
+			this.tempRefund = {
+				reasonId: '',
+				refundRemark: ''
+			}
+			this.isShowRefundDialog = false
 		}
 	}
 }

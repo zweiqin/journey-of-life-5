@@ -10,21 +10,21 @@
 					style="display: flex;justify-content: space-between;align-items: center;width: 100%;margin-top: 30upx;font-size: 28upx;text-align: center;"
 				>
 					<view style="max-width: 33%;">
-						<view>当前佣金</view>
+						<view>订单总数</view>
 						<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-							{{ typeof orderNumber.orderToday === 'number' ? orderNumber.orderToday : '--' }}
-						</view>
-					</view>
-					<view style="max-width: 33%;">
-						<view>累计佣金</view>
-						<view
-							style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
-						>
 							{{ typeof orderNumber.orderTotal === 'number' ? orderNumber.orderTotal : '--' }}
 						</view>
 					</view>
 					<view style="max-width: 33%;">
-						<view>今日佣金</view>
+						<view>今日已核销</view>
+						<view
+							style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+						>
+							{{ typeof orderNumber.orderToday === 'number' ? orderNumber.orderToday : '--' }}
+						</view>
+					</view>
+					<view style="max-width: 33%;">
+						<view>待核销</view>
 						<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
 							{{ typeof orderNumber.orderWritten === 'number' ? orderNumber.orderWritten : '--' }}
 						</view>
@@ -32,34 +32,34 @@
 				</view>
 			</view>
 			<view style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;">
-				<view style="font-size: 28upx;">订单数量</view>
+				<view style="font-size: 28upx;">订单收益</view>
 				<view
-					style="display: flex;justify-content: space-between;align-items: center;width: 100%;margin-top: 30upx;font-size: 28upx;text-align: center;"
+					style="display: flex;flex-wrap: wrap;justify-content: space-between;align-items: center;width: 100%;margin-top: 30upx;font-size: 28upx;text-align: center;"
 				>
-					<view style="max-width: 30%;">
+					<view>
 						<view>当前佣金</view>
-						<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+						<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;">
 							{{ typeof orderRecords.allRecords === 'number' ? orderRecords.allRecords : '--' }}
 						</view>
 					</view>
-					<view style="max-width: 30%;">
+					<view>
 						<view>累计佣金</view>
 						<view
-							style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+							style="margin-top: 10upx;font-size: 36upx;font-weight: bold;"
 						>
 							{{ typeof orderRecords.currentRecords === 'number' ? orderRecords.currentRecords : '--' }}
 						</view>
 					</view>
 					<view>
 						<view>今日佣金</view>
-						<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+						<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;">
 							{{ typeof orderRecords.expectedRecords === 'number' ? orderRecords.expectedRecords : '--' }}
 						</view>
 					</view>
-					<view style="max-width: 30%;">
+					<view>
 						<view>累计提现</view>
 						<view
-							style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+							style="margin-top: 10upx;font-size: 36upx;font-weight: bold;"
 						>
 							{{ typeof orderRecords.toDaysRecords === 'number' ? orderRecords.toDaysRecords : '--' }}
 						</view>

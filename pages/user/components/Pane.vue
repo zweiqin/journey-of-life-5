@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { J_USER_INFO } from '../../../constant'
 export default {
 	name: 'Pane',
 	props: {
@@ -45,6 +46,11 @@ export default {
 			default: 4
 		}
 	},
+	data() {
+		return {
+			userInfo: {}
+		}
+	},
 
 	computed: {
 		renderMenu() {
@@ -54,7 +60,13 @@ export default {
 			const haveMenuData = []
 			this.menuData.forEach((item) => {
 				const tempIconObj = this.permissionData.find((i) => i.iconName === item.name)
-				if (tempIconObj) haveMenuData.push({ ...item, iconUrl: tempIconObj.iconUrl })
+				if (tempIconObj) {
+					if (!item.showRole) {
+						haveMenuData.push({ ...item, iconUrl: tempIconObj.iconUrl })
+					} else if (item.showRole && item.showRole.includes(this.userInfo.roleIds)) {
+						haveMenuData.push({ ...item, iconUrl: tempIconObj.iconUrl })
+					}
+				}
 			})
 			return haveMenuData
 			// const haveMenuCopyData = JSON.parse(JSON.stringify(this.menuData))
@@ -70,6 +82,9 @@ export default {
 			// 	data: haveMenuCopyData
 			// }
 		}
+	},
+	created() {
+		this.userInfo = uni.getStorageSync(J_USER_INFO)
 	}
 
 }

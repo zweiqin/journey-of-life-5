@@ -70,13 +70,15 @@ export const myServe = [
 		name: '推广码',
 		icon: require('../../static/user-center/menus/tuiguangma.png'),
 		type: 'code',
-		role: [11, 10, 7, 5, 6, 4, 3]
+		role: [6, 4, 3, 2],
+		showRole: [6, 4, 3, 2]
 	},
 	{
-		name: '邀请码',
+		name: '邀请码', // 仅跳转，无绑定
 		icon: require('../../static/user-center/menus/tuiguangma.png'),
 		type: 'invitationCode',
-		role: [11, 10, 7, 5, 6, 4, 3, 2]
+		role: [11, 10, 7, 5, 6, 4, 3, 2],
+		showRole: [11, 10, 7, 5]
 	},
 	{
 		name: '优惠劵',
@@ -150,7 +152,13 @@ export const myStore = [
 		name: '商品管理',
 		icon: require('../../static/user-center/menus/shangpinguanli.png'),
 		url: '/user/digital-store/goods-management/index',
-		role: [6, 4, 3]
+		role: [ 6 ]
+	},
+	{
+		name: '退款管理',
+		icon: require('../../static/user-center/menus/shangpinguanli.png'),
+		url: '/user/digital-store/refund-management/index',
+		role: [ 6 ]
 	}
 ]
 
@@ -169,10 +177,6 @@ export const marketingTools = [
 		name: '推广中心',
 		icon: require('../../static/user-center/menus/tuiguangma.png'),
 		url: '/user/promotionCenter/index'
-	},
-	{
-		name: '智能画册',
-		icon: require('../../static/user-center/menus/zhineghuace.png')
 	},
 	{
 		name: '秒杀活动',

@@ -47,11 +47,11 @@
 				<view class="unbound font-14 f-c-9">未绑定</view>
 			</view>
 
-			<view class="item" @click="$refs.WithdrawalPwdDialogRef.open()">
+			<!-- <view class="item" @click="$refs.WithdrawalPwdDialogRef.open()">
 				<view class="title font-14 f-c-3d">提现密码</view>
 				<view class="value font-14 f-c-3d">**********</view>
 				<img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
-			</view>
+				</view> -->
 
 			<!-- <view class="item">
 				<view class="title font-14 f-c-3d">解绑账号</view>

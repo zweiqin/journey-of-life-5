@@ -80,6 +80,7 @@ export default {
 		submit(tag) {
 			const data = {
 				address: this.form.accountInfo.address,
+				area: this.form.accountInfo.isConnectBranch === 'true' ? this.form.accountInfo.area : this.form.accountInfo.isConnectBranch === 'false' ? '' : '',
 				branchId: this.form.accountInfo.isConnectBranch === 'true' ? this.form.accountInfo.branchId : this.form.accountInfo.isConnectBranch === 'false' ? '' : '',
 				areaUser: this.form.accountInfo.isConnectBranch === 'true' ? this.form.accountInfo.areaUserOne : this.form.accountInfo.isConnectBranch === 'false' ? this.form.accountInfo.areaUserTwo : '',
 				userId: getUserId(),
@@ -90,9 +91,9 @@ export default {
 			} else if (this.form.accountInfo.isConnectBranch === 'true') {
 				if (!data.area) return this.$showToast('请选择分公司所属地区')
 				if (!data.branchId) return this.$showToast('请选择分公司')
-				if (!data.areaUserOne) return this.$showToast('请选择策划师所属地区')
+				if (!data.areaUser) return this.$showToast('请选择策划师所属地区')
 			} else if (this.form.accountInfo.isConnectBranch === 'false') {
-				if (!data.areaUserTwo) return this.$showToast('请选择策划师所属地区')
+				if (!data.areaUser) return this.$showToast('请选择策划师所属地区')
 			}
 			// if (!data.address) return this.$showToast('请填写详细地址')
 			if (!data.packageId) return this.$showToast('缺少套餐信息')

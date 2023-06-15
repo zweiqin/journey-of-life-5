@@ -2,12 +2,14 @@
 	<tui-lazyload-img
 		class="image-wrapper" :width="width ? width * 2 + 'rpx' : size * 2 + 'rpx'"
 		:height="height ? height * 2 + 'rpx' : size * 2 + 'rpx'" :src="src" :radius="radius"
-		:background-color="backgroundColor" mode="scaleToFill" @click="$emit('click')"
+		:background-color="backgroundColor" mode="scaleToFill" :disconnect="true"
+		@click="$emit('click')"
 	></tui-lazyload-img>
 </template>
 
 <script>
 export default {
+	name: 'BeeAvatar',
 	props: {
 		src: {
 			type: String,
@@ -42,5 +44,9 @@ export default {
 <style lang="less" scoped>
 .image-wrapper {
 	flex-shrink: 0;
+}
+
+image {
+	will-change: transform
 }
 </style>

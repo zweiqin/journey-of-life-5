@@ -156,7 +156,7 @@ export default {
 				if (currentMark) {
 					this.redForm = currentMark
 					addWrapRedReceiveApi({
-						id: currentMark.id,
+						wrapId: currentMark.id,
 						userId: getUserId()
 					}).then(() => {
 						this.showRedPackage = true

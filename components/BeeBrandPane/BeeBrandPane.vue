@@ -2,24 +2,33 @@
 	<view class="bee-brand-pane-container">
 		<view class="bee-brand-top" @click="go('/pages/store/detail/detail?brandId=' + brandInfo.id)">
 			<view class="left">
-				<BeeAvatar
-					:src="brandInfo.picUrl.includes('https') ? brandInfo.picUrl : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + brandInfo.picUrl"
-					radius="10upx"
-				></BeeAvatar>
+				<BeeAvatar :src="common.seamingImgUrl(brandInfo.picUrl)" radius="10upx"></BeeAvatar>
 				<!-- <view class="tag"> 惊喜价 </view> -->
 			</view>
 			<view class="middle">
 				<view class="brand-name hidden">{{ brandInfo.name }}</view>
 				<view class="rate">
-					<BeeIcon :size="12" :src="require('./images/star.png')"></BeeIcon>
-					<text class="rate-text">{{ brandInfo.merchantRating || '5.0' }}分</text>
-					<text class="sub-text">{{ brandInfo.brandLabel | formatTag }}</text>
-					<text class="rate-text">￥{{ brandInfo.perCapita || '0' }}/人</text>
-					<text>月售 {{ brandInfo.salesVolume || '0' }}</text>
+					<view style="display: flex;align-items: center;">
+						<BeeIcon :size="12" :src="require('./images/star.png')"></BeeIcon>
+						<text class="rate-text">{{ brandInfo.merchantRating || '5.0' }}分</text>
+						<text class="sub-text">{{ brandInfo.brandLabel | formatTag }}</text>
+						<text class="rate-text">￥{{ brandInfo.perCapita || '0' }}/人</text>
+						<text>月售 {{ brandInfo.salesVolume || '0' }}</text>
+					</view>
+					<view style="color: #777777;">{{ brandInfo.browse || 0 }}浏览量</view>
+				</view>
+				<view>
+					<view
+						v-if="brandInfo.voucherNum"
+						style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 0 4upx;border: 0.25px solid #51cc46;border-radius: 12upx;font-size: 26upx;color: #51cc46;"
+					>
+						<!-- 返消费额{{ brandInfo.voucherNum * 2 }}%价值代金券 -->
+						返代金券{{ brandInfo.voucherNum }}%
+					</view>
 				</view>
 				<BeeNavigation>
 					<view class="location-wrapper">
-						<BeeIcon :src="require('./images/location.png')" :size="14"></BeeIcon>
+						<BeeIcon style="line-height: 100%;" :src="require('./images/location.png')" :size="14"></BeeIcon>
 						<view class="detail">
 							<!-- <text class="dis-container"> {{ Math.ceil(brandInfo.distance) || 0 }} km </text> -->
 							<text class="dis-container"> {{ brandInfo.distance || 0 }} km </text>
@@ -28,13 +37,12 @@
 					</view>
 				</BeeNavigation>
 				<view class="elva">
-					<BeeAvatar :size="15"></BeeAvatar>
 					<view class="elva-text hidden">
 						{{ brandInfo.desc || '--' }}
 					</view>
 				</view>
 				<!-- <view class="welfare-wrapper">
-					<view class="welfare-item" v-for="(item, index) in templateData" :key="index">
+					<view v-for="(item, index) in templateData" :key="index" class="welfare-item">
 					<view class="tag">{{ item.type }}</view>
 					<text class="price-text">{{ item.price }}元</text>
 					<view class="tag2">{{ item.discount }}折</view>
@@ -136,8 +144,10 @@ export default {
 
 			.rate {
 				display: flex;
+				justify-content: space-between;
 				align-items: center;
-				font-size: 24upx;
+				margin-top: 8upx;
+				font-size: 26upx;
 
 				text {
 					font-size: 24upx;
@@ -152,6 +162,7 @@ export default {
 			.location-wrapper {
 				display: flex;
 				align-items: center;
+				margin-top: 8upx;
 
 				// /deep/ .icon-container {
 				//   margin-top: 6upx;
@@ -161,7 +172,7 @@ export default {
 					display: flex;
 					align-items: center;
 					background-color: #efefef;
-					vertical-align: text-bottom;
+					// vertical-align: text-bottom;
 					padding: 0 4upx;
 					border-radius: 4upx;
 					margin-left: 4upx;
@@ -174,8 +185,9 @@ export default {
 				margin: 8upx 0;
 
 				.elva-text {
-					width: 348upx;
+					// width: 348upx;
 					margin-left: 10upx;
+					font-size: 30upx;
 				}
 			}
 

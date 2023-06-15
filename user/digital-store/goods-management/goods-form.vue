@@ -329,7 +329,7 @@ export default {
 				return
 			}
 			if (
-				!/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(data.phone)
+				!/^1[3456789]\d{9}$/.test(data.phone)
 			) {
 				this.$showToast('联系电话格式错误')
 				return

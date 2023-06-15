@@ -84,7 +84,7 @@ export default {
 				return
 			}
 			if (
-				!/^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(username)
+				!/^1[3456789]\d{9}$/.test(username)
 			) {
 				uni.showToast({
 					title: '手机号格式不正确',

@@ -98,6 +98,34 @@
 				</view>
 			</view>
 		</scroll-view>
+
+		<!-- 申请退款dialog -->
+		<tui-dialog
+			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '提交', color: '#586c94' }]"
+			:show="isShowRefundDialog" title="退款原因" @click="handleClickRefundDialog"
+		>
+			<template #content>
+				<view style="max-height: 50vh;overflow-y: auto;">
+					<tui-radio-group v-model="tempRefund.reasonId" @change="(e) => { }">
+						<tui-label v-for="(part, index) in refundRadioItems" :key="index">
+							<tui-list-cell padding="16upx 26upx" style="text-align: left;">
+								<view>
+									<tui-radio :checked="false" :value="part.id" color="#07c160" border-color="#999">
+									</tui-radio>
+									<text style="margin-left: 6upx;" class="tui-text">{{ part.refundOtherReason }}</text>
+								</view>
+							</tui-list-cell>
+						</tui-label>
+					</tui-radio-group>
+				</view>
+				<view>
+					<tui-input
+						v-model="tempRefund.refundRemark" padding="26upx 0" label="其它备注"
+						placeholder="填写备注，说明退款详情"
+					></tui-input>
+				</view>
+			</template>
+		</tui-dialog>
 	</view>
 </template>
 
@@ -107,10 +135,11 @@ import {
 	getOrderListApi,
 	orderCancelApi,
 	orderDeleteApi,
-	receiveGoodsApi
+	receiveGoodsApi,
+	orderRefundApi
 } from '../../../../api/order'
 import { payOrderGoodsApi } from '../../../../api/goods'
-import { updateCancelReservationApi } from '../../../../api/user'
+import { updateCancelReservationApi, getOrderRefundsReasonApi } from '../../../../api/user'
 import { getUserId } from '../../../../utils'
 export default {
 	name: 'Reservation',
@@ -155,7 +184,14 @@ export default {
 			orderOpButtons,
 			totalPages: 0,
 			orderList: [],
-			loadingStatus: 'loading'
+			loadingStatus: 'loading',
+			isShowRefundDialog: false,
+			refundRadioItems: [],
+			tempRefund: {
+				orderId: '',
+				reasonId: '',
+				refundRemark: ''
+			}
 		}
 	},
 
@@ -249,6 +285,13 @@ export default {
 						}
 					}
 				})
+			} else if (key === 'refund') {
+				getOrderRefundsReasonApi()
+					.then((res) => {
+						this.refundRadioItems = res.data
+						this.tempRefund.orderId = goods.id
+						this.isShowRefundDialog = true
+					})
 			} else if (key === 'pay') {
 				payOrderGoodsApi({
 					orderNo: goods.orderSn,
@@ -272,6 +315,26 @@ export default {
 					document.body.removeChild(form)
 				})
 			}
+		},
+
+		// 申请退款确认
+		async handleClickRefundDialog(e) {
+			console.log(e)
+			if (e.index === 0) {
+			} else if (e.index === 1) {
+				if (!getUserId()) return
+				if (!this.tempRefund.reasonId) return this.$showToast('请选择退款原因')
+				await orderRefundApi({ ...this.tempRefund, userId: getUserId() })
+					.then((res) => {
+						this.$showToast('提交成功')
+						this.getOrderList()
+					})
+			}
+			this.tempRefund = {
+				reasonId: '',
+				refundRemark: ''
+			}
+			this.isShowRefundDialog = false
 		},
 
 		// 查看详情

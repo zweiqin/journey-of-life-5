@@ -8,9 +8,7 @@
 		<view class="navs">
 			<view style="font-weight: bold;">商城：</view>
 			<view
-				v-for="item in orderTypesMall"
-				:key="item.value"
-				class="nav-item"
+				v-for="item in orderTypesMall" :key="item.value" class="nav-item"
 				:class="{ 'nav-item-active': currentStatus === item.value && currentType === 0 }"
 				@click="handleSwitchStatus(item.value, 0)"
 			>
@@ -21,9 +19,7 @@
 		<view class="navs">
 			<view style="font-weight: bold;">本地生活：</view>
 			<view
-				v-for="item in orderTypesStore"
-				:key="item.value"
-				class="nav-item"
+				v-for="item in orderTypesStore" :key="item.value" class="nav-item"
 				:class="{ 'nav-item-active': currentStatus === item.value && currentType === 1 }"
 				@click="handleSwitchStatus(item.value, 1)"
 			>
@@ -39,11 +35,7 @@
 				</view>
 
 				<view class="goods-list" @click="handleToViewOrderDetail(item)">
-					<view
-						v-for="goods in item.goodsList"
-						:key="goods.id"
-						class="goods-item"
-					>
+					<view v-for="goods in item.goodsList" :key="goods.id" class="goods-item">
 						<image class="goods-img" :src="common.seamingImgUrl(goods.picUrl)" mode="" />
 
 						<view class="info">
@@ -60,8 +52,7 @@
 								共 {{ goods.number }} 件商品
 							</view>
 							<button
-								v-if="item.handleOption.comment && !goods.comment"
-								class="ev-btn uni-btn"
+								v-if="item.handleOption.comment && !goods.comment" class="ev-btn uni-btn"
 								@click.stop="handleOpOrder(item, 'comment', goods)"
 							>
 								去评论
@@ -78,12 +69,9 @@
 					<view class="btns">
 						<view v-for="btn in orderOpButtons" :key="btn.label">
 							<button
-								v-if="item.handleOption[btn.key] && btn.label !== '去评论'"
-								:style="{
+								v-if="item.handleOption[btn.key] && btn.label !== '去评论'" :style="{
 									background: btn.color
-								}"
-								class="uni-btn"
-								@click="handleOpOrder(item, btn.key)"
+								}" class="uni-btn" @click="handleOpOrder(item, btn.key)"
 							>
 								{{ btn.label }}
 							</button>
@@ -92,18 +80,38 @@
 				</view>
 			</view>
 
-			<uni-load-more
-				v-if="loadingStatus !== 'hidden'"
-				style="background: #fff"
-				:status="loadingStatus"
-			></uni-load-more>
+			<uni-load-more v-if="loadingStatus !== 'hidden'" style="background: #fff" :status="loadingStatus"></uni-load-more>
 		</view>
 
-		<JNoData
-			v-if="loadingStatus === 'hidden' && !orderList.length"
-			text="无购物记录"
-			type="order-shop"
-		></JNoData>
+		<JNoData v-if="loadingStatus === 'hidden' && !orderList.length" text="无购物记录" type="order-shop"></JNoData>
+
+		<!-- 申请退款dialog -->
+		<tui-dialog
+			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '提交', color: '#586c94' }]"
+			:show="isShowRefundDialog" title="退款原因" @click="handleClickRefundDialog"
+		>
+			<template #content>
+				<view style="max-height: 50vh;overflow-y: auto;">
+					<tui-radio-group v-model="tempRefund.reasonId" @change="(e) => { }">
+						<tui-label v-for="(part, index) in refundRadioItems" :key="index">
+							<tui-list-cell padding="16upx 26upx" style="text-align: left;">
+								<view>
+									<tui-radio :checked="false" :value="part.id" color="#07c160" border-color="#999">
+									</tui-radio>
+									<text style="margin-left: 6upx;" class="tui-text">{{ part.refundOtherReason }}</text>
+								</view>
+							</tui-list-cell>
+						</tui-label>
+					</tui-radio-group>
+				</view>
+				<view>
+					<tui-input
+						v-model="tempRefund.refundRemark" padding="26upx 0" label="其它备注"
+						placeholder="填写备注，说明退款详情"
+					></tui-input>
+				</view>
+			</template>
+		</tui-dialog>
 	</view>
 </template>
 
@@ -113,8 +121,10 @@ import {
 	getOrderListApi,
 	orderCancelApi,
 	orderDeleteApi,
-	receiveGoodsApi
+	receiveGoodsApi,
+	orderRefundApi
 } from '../../api/order'
+import { getOrderRefundsReasonApi } from '../../api/user'
 import { payAppointOrderApi } from '../../api/store'
 import { payOrderGoodsApi } from '../../api/goods'
 import { getUserId } from '../../utils'
@@ -154,7 +164,14 @@ export default {
 			orderOpButtons,
 			totalPages: 0,
 			orderList: [],
-			loadingStatus: 'loading'
+			loadingStatus: 'loading',
+			isShowRefundDialog: false,
+			refundRadioItems: [],
+			tempRefund: {
+				orderId: '',
+				reasonId: '',
+				refundRemark: ''
+			}
 		}
 	},
 
@@ -239,6 +256,13 @@ export default {
 						}
 					}
 				})
+			} else if (key === 'refund') {
+				getOrderRefundsReasonApi()
+					.then((res) => {
+						this.refundRadioItems = res.data
+						this.tempRefund.orderId = goods.id
+						this.isShowRefundDialog = true
+					})
 			} else if (key === 'pay') {
 				payOrderGoodsApi({
 					orderNo: goods.orderSn,
@@ -262,6 +286,26 @@ export default {
 					document.body.removeChild(form)
 				})
 			}
+		},
+
+		// 申请退款确认
+		async handleClickRefundDialog(e) {
+			console.log(e)
+			if (e.index === 0) {
+			} else if (e.index === 1) {
+				if (!getUserId()) return
+				if (!this.tempRefund.reasonId) return this.$showToast('请选择退款原因')
+				await orderRefundApi({ ...this.tempRefund, userId: getUserId() })
+					.then((res) => {
+						this.$showToast('提交成功')
+						this.getOrderList()
+					})
+			}
+			this.tempRefund = {
+				reasonId: '',
+				refundRemark: ''
+			}
+			this.isShowRefundDialog = false
 		},
 
 		// 查看详情
@@ -294,158 +338,160 @@ export default {
 
 <style lang="less" scoped>
 .orders-container {
-  font-size: 28upx;
-  color: #3d3d3d;
-  padding: 60upx 0;
+	font-size: 28upx;
+	color: #3d3d3d;
+	padding: 60upx 0;
 
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    color: #000;
-    padding: 0 32upx;
-    box-sizing: border-box;
+	.header {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		color: #000;
+		padding: 0 32upx;
+		box-sizing: border-box;
 
-    h2 {
-      font-weight: normal;
-      font-size: 32upx;
-      margin-top: -8upx;
-    }
-  }
+		h2 {
+			font-weight: normal;
+			font-size: 32upx;
+			margin-top: -8upx;
+		}
+	}
 
-  .navs {
-    display: flex;
-    justify-content: space-between;
-    margin: 34upx 0;
-    padding-bottom: 20upx;
-    padding: 0 32upx;
-    box-sizing: border-box;
+	.navs {
+		display: flex;
+		justify-content: space-between;
+		margin: 34upx 0;
+		padding-bottom: 20upx;
+		padding: 0 32upx;
+		box-sizing: border-box;
 
-    .nav-item {
-      transition: all 350ms;
-      &.nav-item-active {
-        color: #ff8f1f;
-      }
-    }
-  }
+		.nav-item {
+			transition: all 350ms;
 
-  .order-list-wrapper {
-    background-color: #f6f6f6;
-    padding-top: 10px;
-    font-size: 24upx;
+			&.nav-item-active {
+				color: #ff8f1f;
+			}
+		}
+	}
 
-    .goods-pane {
-      padding: 32upx;
-      box-sizing: border-box;
-      background-color: #fff;
-      margin-bottom: 20upx;
+	.order-list-wrapper {
+		background-color: #f6f6f6;
+		padding-top: 10px;
+		font-size: 24upx;
 
-      &:nth-of-type(:last-child) {
-        margin-bottom: 0;
-      }
+		.goods-pane {
+			padding: 32upx;
+			box-sizing: border-box;
+			background-color: #fff;
+			margin-bottom: 20upx;
 
-      .order-no-status {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-bottom: 16upx;
-        border-bottom: 1upx solid #dbdbdb;
+			&:nth-of-type(:last-child) {
+				margin-bottom: 0;
+			}
 
-        .order-status {
-          color: #f40;
-        }
-      }
+			.order-no-status {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding-bottom: 16upx;
+				border-bottom: 1upx solid #dbdbdb;
 
-      .goods-list {
-        padding: 20upx 0;
+				.order-status {
+					color: #f40;
+				}
+			}
 
-        .goods-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 30upx;
+			.goods-list {
+				padding: 20upx 0;
 
-          .info {
-            flex: 1;
-            height: 100%;
-            display: flex;
-            justify-content: space-between;
-            flex-direction: column;
+				.goods-item {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					margin-bottom: 30upx;
 
-            .name {
-              font-size: 28upx;
-              font-weight: 500;
-              width: 300upx;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-            }
+					.info {
+						flex: 1;
+						height: 100%;
+						display: flex;
+						justify-content: space-between;
+						flex-direction: column;
 
-            .good-sp-pr {
-              margin-top: 20upx;
-              .sp {
-                line-height: 1.5;
-                color: #565656;
-              }
+						.name {
+							font-size: 28upx;
+							font-weight: 500;
+							width: 300upx;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+						}
 
-              .pr {
-                font-size: 28upx;
-              }
-            }
-          }
+						.good-sp-pr {
+							margin-top: 20upx;
 
-          .goods-img {
-            width: 140upx;
-            height: 140upx;
-            object-fit: cover;
-            margin-right: 20upx;
-          }
-        }
-      }
+							.sp {
+								line-height: 1.5;
+								color: #565656;
+							}
 
-      .goods-ops {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 20upx;
-        border-top: 1upx solid #dbdbdb;
+							.pr {
+								font-size: 28upx;
+							}
+						}
+					}
 
-        .actual-price {
-          font-size: 28upx;
-          font-weight: 500;
+					.goods-img {
+						width: 140upx;
+						height: 140upx;
+						object-fit: cover;
+						margin-right: 20upx;
+					}
+				}
+			}
 
-          .number {
-            color: #f40;
-          }
-        }
+			.goods-ops {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding-top: 20upx;
+				border-top: 1upx solid #dbdbdb;
 
-        .btns {
-          display: flex;
-          align-items: center;
+				.actual-price {
+					font-size: 28upx;
+					font-weight: 500;
 
-          .uni-btn {
-            font-size: 24upx;
-            color: #fff;
-            padding: 18upx 28upx;
-            background-color: #f40;
-            white-space: nowrap;
-            margin-left: 20upx;
-            border-radius: 4upx;
-          }
-        }
-      }
-    }
+					.number {
+						color: #f40;
+					}
+				}
 
-    .ev-btn {
-      font-size: 24upx;
-      color: #fff;
-      padding: 18upx 28upx;
-      background-color: rgb(132, 195, 65);
-      white-space: nowrap;
-      margin-left: 20upx;
-      border-radius: 4upx;
-      margin-top: 20upx;
-    }
-  }
+				.btns {
+					display: flex;
+					align-items: center;
+
+					.uni-btn {
+						font-size: 24upx;
+						color: #fff;
+						padding: 18upx 28upx;
+						background-color: #f40;
+						white-space: nowrap;
+						margin-left: 20upx;
+						border-radius: 4upx;
+					}
+				}
+			}
+		}
+
+		.ev-btn {
+			font-size: 24upx;
+			color: #fff;
+			padding: 18upx 28upx;
+			background-color: rgb(132, 195, 65);
+			white-space: nowrap;
+			margin-left: 20upx;
+			border-radius: 4upx;
+			margin-top: 20upx;
+		}
+	}
 }
 </style>
