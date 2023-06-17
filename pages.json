@@ -707,6 +707,12 @@
 					}
 				},
 				{
+					"path": "otherServe/payment-completed/index",
+					"style": {
+						"navigationBarTitleText": "评论列表"
+					}
+				},
+				{
 					"path": "marketing-tools/contact-guide/share-card",
 					"style": {
 						"navigationBarTitleText": "分享名片"

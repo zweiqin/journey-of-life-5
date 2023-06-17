@@ -164,7 +164,7 @@ export default {
 			uni.navigateBack({
 				delta: 1,
 				success: (res) => {
-					uni.$emit('sendWrapMsg', { data: { wrapType: 1, wrapName: `${item.title}-${item.id}`, magicId: item.id } })
+					uni.$emit('sendWrapMsg', { data: { wrapType: 1, wrapName: `${item.title}`, magicId: item.id } })
 				}
 			})
 		},
@@ -174,7 +174,7 @@ export default {
 			uni.navigateBack({
 				delta: 1,
 				success: (res) => {
-					uni.$emit('sendWrapMsg', { data: { wrapType: 0, wrapName: `${result.data.title}-${result.data.id}`, magicId: result.data.id } })
+					uni.$emit('sendWrapMsg', { data: { wrapType: 0, wrapName: `${result.data.title}`, magicId: result.data.id } })
 				}
 			})
 		},

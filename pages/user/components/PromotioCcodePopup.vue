@@ -4,7 +4,7 @@
 			'opacity': extensionCodeUrl && userInfo && userInfo.nickName ? '1' : '0',
 			'z-index':
 				extensionCodeUrl && userInfo && userInfo.nickName ? '1' : '-1'
-		}" @click="extensionCodeUrl = ''"
+		}"
 	>
 		<view
 			class="code-wrapper" :style="{
@@ -29,12 +29,15 @@
 				<image src="/static/images/user/ju-icon-p.png" class="big-icon" />
 			</view>
 
-			<view class="images">
+			<view v-if="code" class="images">
 				<view class="zhiwen">
 					<image src="/static/images/user/zhi.png" alt="" />
 					<text>长按扫码</text>
 				</view>
-				<image class="code" :src="extensionCodeUrl" alt="" />
+				<view style="text-align: center;">
+					<image class="code" :src="extensionCodeUrl" alt="" />
+					<view style="font-size: 26upx;color: #06a6f0;" @click="handleCopyData(`https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/jump/jump?userId=${userInfo.userId}&type=bindingStore&code=${code}`)">复制链接</view>
+				</view>
 			</view>
 
 			<button class="uni-btn" @click="extensionCodeUrl = ''">取消</button>
@@ -43,6 +46,7 @@
 </template>
 
 <script>
+// import jsQR from 'jsqr'
 import { J_USER_INFO } from '../../../constant'
 import { getExtensionCodeApi } from '../../../api/user'
 import { getUserId } from '../../../utils'
@@ -80,6 +84,15 @@ export default {
 				console.log(data)
 				this.code = data.code
 				this.extensionCodeUrl = data.qrcode
+				// const array = new Uint8Array(this.extensionCodeUrl.length)
+				// for (let i = 0; i < this.extensionCodeUrl.length; i++) {
+				// 	array[i] = this.extensionCodeUrl.charCodeAt(i)
+				// }
+				// const byteArray = new Uint8Array(array)
+				// const blob = new Blob([ byteArray ], { type: 'image/png' })
+				// console.log(URL.createObjectURL(blob))
+				// console.log(jsQR(array, 100, 100))
+				// console.log(jsQR(uni.base64ToArrayBuffer(this.extensionCodeUrl), 100, 100))
 				uni.hideLoading()
 			})
 		},

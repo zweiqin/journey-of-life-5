@@ -141,7 +141,7 @@ export default {
 			const { data } = await getBrandDetailApi({
 				id: this.brandId,
 				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
-				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1],
 				userId: this.userId
 			})
 			this.brandDetail = data

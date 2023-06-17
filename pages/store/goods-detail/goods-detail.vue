@@ -150,7 +150,7 @@ export default {
 		async getMoreCityRecommend() {
 			const { data } = await getMoreCityRecommendApi({
 				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
-				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0]
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 			})
 
 			this.recommendBrandList = data.filter((item) => item.goods && item.id !== this.goodsDetail.brandId)

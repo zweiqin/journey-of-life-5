@@ -116,64 +116,6 @@ export default {
 				.then(({ data }) => {
 					console.log(data)
 					this.refundsList = data || []
-					this.refundsList = [{
-						'id': 2,
-						'orderId': 861,
-						'refundTo': 277,
-						'type': 0,
-						'brandId': 1001079,
-						'refundReson': 2,
-						'refundOtherReson': '选错了',
-						'failureReason': '系统错误：null',
-						'backMoney': 8.06,
-						'refundTradeno': null,
-						'refundRemark': '损坏了',
-						'refundTime': null,
-						'shopRejectReason': null,
-						'refundStatus': 4,
-						'createTime': '2023-06-11T08:31:12.000+0000',
-						'serviceId': null,
-						'isServiceRefund': null,
-						'updateTime': '2023-06-11T08:31:12.000+0000'
-					}, {
-						'id': 2,
-						'orderId': 861,
-						'refundTo': 277,
-						'type': 0,
-						'brandId': 1001079,
-						'refundReson': 2,
-						'refundOtherReson': '选错了',
-						'failureReason': '系统错误：null',
-						'backMoney': 8.06,
-						'refundTradeno': null,
-						'refundRemark': '损坏了',
-						'refundTime': null,
-						'shopRejectReason': null,
-						'refundStatus': 4,
-						'createTime': '2023-06-11T08:31:12.000+0000',
-						'serviceId': null,
-						'isServiceRefund': null,
-						'updateTime': '2023-06-11T08:31:12.000+0000'
-					}, {
-						'id': 2,
-						'orderId': 861,
-						'refundTo': 277,
-						'type': 0,
-						'brandId': 1001079,
-						'refundReson': 2,
-						'refundOtherReson': '选错了',
-						'failureReason': '系统错误：null',
-						'backMoney': 8.06,
-						'refundTradeno': null,
-						'refundRemark': '损坏了',
-						'refundTime': null,
-						'shopRejectReason': null,
-						'refundStatus': 4,
-						'createTime': '2023-06-11T08:31:12.000+0000',
-						'serviceId': null,
-						'isServiceRefund': null,
-						'updateTime': '2023-06-11T08:31:12.000+0000'
-					}]
 				})
 		},
 		handleCheckRefund(item, e) {

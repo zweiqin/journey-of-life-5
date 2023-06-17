@@ -93,7 +93,7 @@ export default {
 					_this.$data._query = {
 						..._this.$data._query,
 						longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
-						latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0]
+						latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 					}
 					_this._loadData()
 				}
@@ -113,7 +113,7 @@ export default {
 			// 			_this.$data._query = {
 			// 				..._this.$data._query,
 			// 				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
-			// 				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0]
+			// 				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 			// 			}
 			// 			_this._loadData()
 			// 		}

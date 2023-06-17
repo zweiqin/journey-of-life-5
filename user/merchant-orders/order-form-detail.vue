@@ -84,13 +84,6 @@
 			</view>
 		</view>
 
-		<!-- 核销相关 -->
-		<view v-if="data.userAppoint" class="apponit pane">
-			<view class="tip">请到店向商家出示该核销码</view>
-			<image class="qrcode" :src="data.userAppoint.appointUrl" mode="" />
-			<view class="code">{{ data.userAppoint.appointCode }}</view>
-		</view>
-
 		<!-- <view v-if="data" class="order-detail-footer">
 			</view> -->
 	</view>
@@ -338,89 +331,12 @@ export default {
         white-space: nowrap;
         flex-shrink: 0;
       }
-
-      .evaluate-textarea {
-        flex: 1;
-        height: 200upx;
-      }
-
-      .images {
-        .user-upload-img {
-          width: 120upx;
-          height: 120upx;
-          border-radius: 6upx;
-          object-fit: cover;
-          margin-right: 10upx;
-          margin-bottom: 10upx;
-        }
-
-        .upload-icon {
-          width: 120upx;
-          height: 120upx;
-          border-radius: 6upx;
-          background-color: #d8d8d8;
-          color: #fff;
-          font-size: 54upx;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 0 6upx 6upx 0;
-          box-sizing: border-box;
-        }
-      }
-    }
-  }
-
-  .order-detail-footer {
-    height: 100upx;
-    width: 100%;
-    position: fixed;
-    bottom: -1px;
-    left: 0;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0 40upx;
-    box-sizing: border-box;
-    background-color: #fff;
-
-    .uni-btn {
-      border: 1upx solid #3d3d3d;
-      padding: 18upx 28upx;
-      color: #3d3d3d;
-      font-size: 28upx;
-      margin-left: 30upx;
     }
   }
 
   .apponit-info {
     display: flex;
     align-items: center;
-  }
-
-  .apponit {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20upx;
-    flex-direction: column;
-    padding-bottom: 100upx;
-
-    .tip {
-      color: red;
-    }
-
-    .qrcode {
-      width: 700upx;
-      height: 700upx;
-      object-fit: cover;
-    }
-
-    .code {
-      font-size: 40upx;
-      font-weight: bold;
-      color: #ccc;
-    }
   }
 }
 </style>

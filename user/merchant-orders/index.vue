@@ -5,6 +5,15 @@
 			<h2>商家订单</h2>
 		</view>
 
+		<view style="text-align: right;">
+			<tui-button
+				type="danger" width="220rpx"
+				height="60rpx" margin="0 30upx 0 0" style="display: inline-block;border-radius: 30rpx;" @click="isShowVerificationCodeDialog = true"
+			>
+				订单核销 →
+			</tui-button>
+		</view>
+
 		<view class="navs">
 			<view
 				v-for="item in orderTypesStore" :key="item.value" class="nav-item"
@@ -53,12 +62,27 @@
 		</view>
 
 		<JNoData v-if="loadingStatus === 'hidden' && !orderList.length" text="无购物记录" type="order-shop"></JNoData>
+
+		<!-- 订单核销dialog -->
+		<tui-dialog
+			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确认核销', color: '#586c94' }]"
+			:show="isShowVerificationCodeDialog" title="订单核销" @click="handleVerificationDialog"
+		>
+			<template #content>
+				<view>
+					<tui-input
+						v-model="verificationCode" padding="26upx 0" label="核销码"
+						placeholder="请填写核销码"
+					></tui-input>
+				</view>
+			</template>
+		</tui-dialog>
 	</view>
 </template>
 
 <script>
-import { getSelectBrandOrderApi } from '../../api/user'
-import { getBrandId } from '../../utils'
+import { getSelectBrandOrderApi, updateSetHxCodeApi } from '../../api/user'
+import { getBrandId, getUserId } from '../../utils'
 export default {
 	name: 'MerchantOrders',
 	data() {
@@ -92,7 +116,9 @@ export default {
 			},
 			totalPages: 0,
 			orderList: [],
-			loadingStatus: 'loading'
+			loadingStatus: 'loading',
+			isShowVerificationCodeDialog: false,
+			verificationCode: ''
 		}
 	},
 
@@ -141,6 +167,20 @@ export default {
 					goods.id +
 					(currentGoods ? '&goodsId=' + currentGoods.id : '')
 			})
+		},
+		async handleVerificationDialog(e) {
+			console.log(e)
+			if (e.index === 0) {
+			} else if (e.index === 1) {
+				if (!getUserId()) return
+				if (!this.verificationCode) return this.$showToast('请填写核销码')
+				await updateSetHxCodeApi({ code: this.verificationCode, userId: getUserId() })
+					.then((res) => {
+						this.$showToast('核销成功', 'success')
+					})
+			}
+			this.verificationCode = ''
+			this.isShowVerificationCodeDialog = false
 		}
 	},
 

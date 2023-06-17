@@ -216,7 +216,7 @@ export default {
 				this.data = data
 				uni.hideLoading()
 				getVerificationCodeHxCodeApi({
-					url: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/jump/jump?userId=${getUserId()}&orderId=${data.orderInfo.id}&type=verification&code=`
+					url: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/jump/jump?userId=${getUserId()}&orderId=${data.orderInfo.id}&type=verification&code=${data.orderInfo.id}-`
 				}).then((res) => {
 					console.log(res)
 					if (res.errno === -1) return

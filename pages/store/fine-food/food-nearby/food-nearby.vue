@@ -118,7 +118,7 @@ export default {
 			this.$data._query = {
 				...this.$data._query,
 				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
-				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0]
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 			}
 			this._loadData()
 		}

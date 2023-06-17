@@ -7,16 +7,6 @@
 				style="width: 100vw; height: 100vh" :markers="markers" @markertap="handleReceive"
 			></map>
 
-			<view
-				ref="previewWrapperRef" class="preview-wrapper" :style="{
-					transform: showRedPackage ? 'scale(1)' : 'scale(0)'
-				}"
-			>
-				<JRedEnvelope :desc="redForm.remark" :src="redForm.imageUrl" :name="redForm.brandName" :avatar="redForm.picUrl">
-				</JRedEnvelope>
-				<button class="receive-btn" @click="handleClose">确定</button>
-			</view>
-
 			<view class="scale-container">
 				<view @click="handleScale(+1)">+</view>
 				<view @click="handleScale(-1)">-</view>
@@ -31,7 +21,32 @@
 				<tui-icon name="location" :size="25"></tui-icon>
 			</view>
 
+			<view
+				ref="previewWrapperRef" class="preview-wrapper" :style="{
+					transform: showRedPackage ? 'scale(1)' : 'scale(0)'
+				}"
+			>
+				<JRedEnvelope
+					:is-show="showRedPackage" :show-type="redEnvelopeType" :desc="redForm.remark" :src="redForm.imageUrl"
+					:name="redForm.publisherName" :avatar="redForm.picUrl"
+					@click-red="handleClickRed" @close="handleClose"
+				>
+				</JRedEnvelope>
+			</view>
+
 		<!-- <Controls :marks="allMarks" @receive="handleReceive"></Controls> -->
+		</view>
+		<view v-else-if="!showMap && !isGetLocation" style="text-align: center;">
+			<view style="margin-top: 40vh;">
+				<view><text style="color: #666666;">获取位置失败！</text></view>
+				<tui-button
+					type="gray" width="220rpx" height="64rpx" margin="10upx auto 20upx"
+					style="border-radius: 50rpx;" @click="handleReGetLocation"
+				>
+					重新定位
+				</tui-button>
+				<view style="margin-top: 44upx;font-size: 24upx;color: #bbbbbb;">注：该定位用于提供地图红包服务</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -43,17 +58,15 @@ import { delayedLoginStatus, getUserId } from '../../utils'
 
 export default {
 	name: 'RedEnvelope',
-	onLoad() {
-		// this.getRedEnvelopeList();
-		// delayedLoginStatus();
-	},
+	onLoad() { },
 
 	components: {
 		// Controls
 	},
 
-	onReady() {
-		this.getRedEnvelopeList()
+	onShow() {
+		if (!this.isChoosingLocation) this.getRedEnvelopeList()
+		this.isChoosingLocation = false
 	},
 
 	data() {
@@ -61,13 +74,14 @@ export default {
 			markers: [],
 			longitude: 0,
 			latitude: 0,
-			redForm: {
-				name: ''
-			},
+			scale: 16,
+			redForm: { },
 			allMarks: [],
-			showRedPackage: false,
 			showMap: false,
-			scale: 16
+			isGetLocation: true,
+			isChoosingLocation: false,
+			showRedPackage: false,
+			redEnvelopeType: 0
 		}
 	},
 
@@ -79,90 +93,121 @@ export default {
 	},
 
 	methods: {
-		getRedEnvelopeList() {
+		getRedEnvelopeList(isOnce) {
+			const tempTime = Date.now()
 			uni.getLocation({
 				type: 'gcj02',
 				highAccuracyExpireTime: 1500,
 				success: (result) => {
-					this.longitude = result.longitude * 1
-					this.latitude = result.latitude * 1
-					// this.longitude = 113.06092
-					// this.latitude = 22.89223
-					console.log(result)
-					getWrapRedReleaseApi({
-						longitude: result.longitude * 1,
-						latitude: result.latitude * 1
-						// longitude: 113.06092,
-						// latitude: 22.89223
-					}).then((res) => {
-						this.allMarks = res.data
-						console.log(this.allMarks)
-						const made = []
-						// #ifdef H5
-						for (const redPack of res.data) {
-							made.push({
-								id: redPack.id,
-								latitude: redPack.latitude,
-								longitude: redPack.longitude,
-								title: redPack.remark + '的红包',
-								width: 40,
-								height: 50,
-								anchor: {
-									x: 0.5,
-									y: 0.5
-								},
-								iconPath: '/static/images/index/red-pack.png'
+					uni.hideLoading()
+					if ((Date.now() - tempTime) >= 1500) {
+						console.log(this.$store.getters.obtainLocationCount)
+						if (!this.$store.getters.obtainLocationCount) {
+							this.$showToast('获取定位失败，请先选择所在位置')
+							if (this.isChoosingLocation === false) {
+								this.isChoosingLocation = true
+								setTimeout(() => {
+									uni.chooseLocation({
+										success: (res) => {
+											console.log(res)
+											this.confirmLocationWrap({
+												longitude: res.longitude,
+												latitude: res.latitude
+											})
+										},
+										fail: (e) => {
+											// console.log('aaaa', e)
+											this.isGetLocation = false
+											this.$showToast('获取定位失败！')
+										},
+										complete: (e) => {
+											// console.log('bbb', e)
+										}
+									})
+								}, 2000)
+							}
+						} else {
+							this.confirmLocationWrap({
+								longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+								latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 							})
 						}
-						// #endif
-
-						// #ifdef APP
-						for (const redPack of res.data) {
-							made.push({
-								id: redPack.id,
-								latitude: redPack.latitude,
-								longitude: redPack.longitude,
-								title: redPack.remark + '的红包',
-								width: 80,
-								height: 50,
-								anchor: {
-									x: 0.5,
-									y: 0.5
-								},
-								iconPath: '/static/images/index/red-an.png'
-							})
-						}
-						// #endif
-						this.markers = made
-						this.showMap = true
-					})
-				},
-				fail: () => {
-					uni.showToast({
-						title: '查询红包失败',
-						duration: 2000,
-						icon: 'none'
-					})
+					} else {
+						this.confirmLocationWrap(result)
+					}
 				}
 			})
 		},
 
+		confirmLocationWrap(result) {
+			this.longitude = result.longitude * 1
+			this.latitude = result.latitude * 1
+			// this.longitude = 113.06092
+			// this.latitude = 22.89223
+			// console.log(result)
+			getWrapRedReleaseApi({
+				longitude: result.longitude * 1,
+				latitude: result.latitude * 1
+				// longitude: 113.06092,
+				// latitude: 22.89223
+			}).then((res) => {
+				this.allMarks = res.data
+				console.log(this.allMarks)
+				const made = []
+				for (const redPack of res.data) {
+					made.push({
+						id: redPack.id,
+						latitude: redPack.latitude,
+						longitude: redPack.longitude,
+						title: redPack.remark + '的红包',
+						width: 45,
+						height: 45,
+						anchor: {
+							x: 0.5,
+							y: 0.5
+						},
+						iconPath: '/static/images/index/red.png'
+					})
+				}
+				this.markers = made
+				this.showMap = true
+			})
+		},
+
+		handleReGetLocation(e) {
+			uni.showLoading({
+				title: '定位中'
+			})
+			this.getRedEnvelopeList()
+		},
+
+		handleClickRed(e) {
+			this.redEnvelopeType = 1
+			addWrapRedReceiveApi({
+				wrapId: this.redForm.id,
+				userId: getUserId()
+			}).then((res) => {
+				console.log(res)
+				this.$showToast(res.data)
+				this.getRedEnvelopeList()
+			})
+		},
+
 		handleReceive(e) {
-			console.log(e)
+			// console.log(e)
 			if (!getUserId()) return
 			const { markerId } = e.detail
 			if (markerId) {
 				const currentMark = this.allMarks.find((item) => item.id == markerId)
 				if (currentMark) {
 					this.redForm = currentMark
-					addWrapRedReceiveApi({
-						wrapId: currentMark.id,
-						userId: getUserId()
-					}).then(() => {
-						this.showRedPackage = true
-						this.getRedEnvelopeList()
-					})
+					console.log(this.redForm)
+					this.redEnvelopeType = 0
+					this.showRedPackage = true
 				}
+			} else {
+				this.redForm = {}
+				this.$showToast('获取红包信息失败')
 			}
 		},
 
@@ -183,6 +228,7 @@ export default {
 
 		handleClose() {
 			this.showRedPackage = false
+			this.redEnvelopeType = 0
 			this.getRedEnvelopeList()
 		},
 
@@ -245,11 +291,11 @@ export default {
 	left: 0;
 	width: 100vw;
 	height: 100vh;
-	background-color: rgb(255, 255, 255);
+	// background-color: rgb(255, 255, 255);
 	transition: all 350ms;
-	.flex(center, center);
-	flex-direction: column;
-	padding: 40upx 40upx;
+	// .flex(center, center);
+	// flex-direction: column;
+	// padding: 40upx 40upx;
 	box-sizing: border-box;
 	transform: scale(0);
 	transition: all 350ms;
@@ -288,7 +334,7 @@ export default {
 	width: 84upx;
 	height: 148upx;
 	background-color: #fff;
-	z-index: 10000000;
+	// z-index: 10000000;
 	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
 	border-radius: 20upx;
 	display: flex;

@@ -271,24 +271,24 @@
 						<tui-button type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="go('/user/my-tools/account-book/order-data-record')">记录</tui-button>
 					</view>
 					<view
-						style="display: flex;justify-content: space-between;align-items: center;width: 100%;margin-top: 30upx;font-size: 28upx;text-align: center;"
+						style="display: flex;flex-wrap: wrap;justify-content: space-between;align-items: center;width: 100%;margin-top: 30upx;font-size: 28upx;text-align: center;"
 					>
-						<view style="max-width: 33%;">
-							<view>当前佣金</view>
-							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-								{{ typeof brandOrderIncome.commissionTotal === 'number' ? transformNumber(brandOrderIncome.commissionTotal) : '--' }}
+						<view>
+							<view>今日订单收益</view>
+							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;">
+								{{ typeof brandOrderIncome.orderAll === 'number' ? brandOrderIncome.orderAll : '--' }}
 							</view>
 						</view>
-						<view style="max-width: 33%;">
-							<view>当前代金券</view>
-							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-								{{ typeof brandOrderIncome.voucherTotal === 'number' ? transformNumber(brandOrderIncome.voucherTotal) : '--' }}
+						<view>
+							<view>今日核销订单数</view>
+							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;">
+								{{ typeof brandOrderIncome.orderToDayTotal === 'number' ? brandOrderIncome.orderToDayTotal : '--' }}
 							</view>
 						</view>
-						<view style="max-width: 33%;">
-							<view>订单数量</view>
-							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-								{{ typeof brandOrderIncome.orderTotal === 'number' ? brandOrderIncome.orderTotal : '--' }}
+						<view>
+							<view>未核销订单数</view>
+							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;">
+								{{ typeof brandOrderIncome.notWritten === 'number' ? brandOrderIncome.notWritten : '--' }}
 							</view>
 						</view>
 					</view>
@@ -492,9 +492,9 @@
 							</view>
 						</view>
 						<view>
-							<view>累计佣金</view>
+							<view>累计提现</view>
 							<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-								{{ typeof userIncome.userAccumulate === 'number' ? userIncome.userAccumulate : '--' }}
+								{{ typeof userIncome.userAccumulate === 'number' ? transformNumber(userIncome.userAccumulate) : '--' }}
 							</view>
 						</view>
 					</view>
@@ -669,7 +669,7 @@ export default {
 					console.log(data)
 					this.brandFans = data || {}
 				})
-				getBrandAccountBookApi({
+				getBrandVoucherApi({
 					brandId: getBrandId(),
 					userId: getUserId()
 				}).then(({ data }) => {

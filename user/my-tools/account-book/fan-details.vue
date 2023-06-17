@@ -14,9 +14,8 @@
 					<view>名称：{{ info.nickname || '--' }}</view>
 					<view style="margin-top: 20upx;">ID：{{ info.id || '--' }}</view>
 					<view style="margin-top: 20upx;">性别：{{ info.sex === 0 ? '男' : info.sex === 1 ? '女' : '--' }}</view>
-					<view style="margin-top: 20upx;">
-						生日：{{ info.birthday || '--' }}
-					</view>
+					<view style="margin-top: 20upx;">生日：{{ info.birthday || '--' }}</view>
+					<view style="margin-top: 20upx;">下单数量：{{ info.orderNum || '--' }}</view>
 					<view style="margin-top: 20upx;">用户代金券：{{ info.userVoucher || '--' }}</view>
 					<view v-if="userInfo.roleIds === 2" style="margin-top: 20upx;">绑定商家数：{{ info.brandNum || '--' }}</view>
 				</view>

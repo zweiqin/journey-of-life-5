@@ -4,7 +4,7 @@
 			'opacity': invitationCodeUrl && userInfo && userInfo.nickName ? '1' : '0',
 			'z-index':
 				invitationCodeUrl && userInfo && userInfo.nickName ? '1' : '-1'
-		}" @click="invitationCodeUrl = ''"
+		}"
 	>
 		<view
 			class="code-wrapper" :style="{
@@ -29,12 +29,15 @@
 				<image src="/static/images/user/ju-icon-p.png" class="big-icon" />
 			</view>
 
-			<view class="images">
+			<view v-if="code" class="images">
 				<view class="zhiwen">
 					<image src="/static/images/user/zhi.png" alt="" />
 					<text>长按扫码</text>
 				</view>
-				<image class="code" :src="invitationCodeUrl" alt="" />
+				<view style="text-align: center;">
+					<image class="code" :src="invitationCodeUrl" alt="" />
+					<view style="font-size: 26upx;color: #06a6f0;" @click="handleCopyData(`https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/jump/jump?userId=${userInfo.userId}&type=invitation&code=${code}`)">复制链接</view>
+				</view>
 			</view>
 
 			<button class="uni-btn" @click="invitationCodeUrl = ''">取消</button>

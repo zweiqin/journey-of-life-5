@@ -36,7 +36,8 @@ export default {
 				citycode: '0757'
 			},
 			detailAddress: '广东省佛山市顺德区大良街道碧水路顺德市民活动中心',
-			currentCity: uni.getStorageSync(J_CURRENT_ADDRESS) || '大良街道'
+			currentCity: uni.getStorageSync(J_CURRENT_ADDRESS) || '大良街道',
+			obtainLocationCount: 0
 		}
 	},
 
@@ -45,6 +46,7 @@ export default {
 			state.locationInfo = location.addressComponent
 			state.detailAddress = location.formatted_address
 			state.currentCity = location.addressComponent.township
+			state.obtainLocationCount = state.obtainLocationCount + 1
 			uni.setStorageSync(J_CURRENT_ADDRESS, location.addressComponent.township)
 		},
 		[CHANGE_CURRENT_CITY](state, chooseCity) {
@@ -159,6 +161,7 @@ export default {
 				// accuracy: 'high',
 				// isHighAccuracy: true,
 				success(res) {
+					// console.log(res)
 					getAdressDetailByLngLat(res.latitude, res.longitude)
 						.then((res) => {
 							if (res.status === '1') {
@@ -180,6 +183,12 @@ export default {
 							// _this.address = '定位失败'
 						})
 				}
+				// fail: (e) => {
+				// 	console.log('aaaa', e)
+				// },
+				// complete: (e) => {
+				// 	console.log('bbbb', e)
+				// }
 			})
 			// #endif
 		},

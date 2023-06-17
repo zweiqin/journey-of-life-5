@@ -97,13 +97,14 @@
 
 		<view ref="previewWrapperRef" class="preview-wrapper">
 			<JRedEnvelope
-				:desc="redForm.remark" :src="redForm.imageUrl" :name="userInfo.nickName"
-				:avatar="common.seamingImgUrl(userInfo.avatarUrl)"
+				:is-show="showRedPackage" :show-type="redEnvelopeType" :desc="redForm.remark" :src="redForm.imageUrl"
+				:name="userInfo.nickName" :avatar="common.seamingImgUrl(userInfo.avatarUrl)"
+				@click-red="redEnvelopeType = 1" @close="(showRedPackage = false) || (redEnvelopeType = 0) || closePreview()"
 			></JRedEnvelope>
-			<view class="op">
+			<!-- <view class="op">
 				<button class="btn" @click="reUploadBgi">重新上传</button>
 				<button class="btn" @click="closePreview">确认</button>
-			</view>
+				</view> -->
 		</view>
 	</view>
 </template>
@@ -204,7 +205,9 @@ export default {
 				type: '0'
 			},
 			redPackAddress: '',
-			userInfo: uni.getStorageSync(J_USER_INFO) || {}
+			userInfo: uni.getStorageSync(J_USER_INFO) || {},
+			showRedPackage: false,
+			redEnvelopeType: 0
 		}
 	},
 
@@ -242,7 +245,7 @@ export default {
 						name: 'file',
 						success: (uploadFileRes) => {
 							_this.redForm.imageUrl = _this.common.seamingImgUrl(JSON.parse(uploadFileRes.data).data.url)
-							this.$refs.previewWrapperRef.$el.style.transform = 'scale(1)'
+							// this.$refs.previewWrapperRef.$el.style.transform = 'scale(1)'
 						}
 					})
 				}
@@ -250,12 +253,11 @@ export default {
 		},
 
 		handleChooseRedPackLocation() {
-			const _this = this
 			uni.chooseLocation({
-				success(res) {
-					_this.redPackAddress = res.name
-					_this.redForm.latitude = res.latitude
-					_this.redForm.longitude = res.longitude
+				success: (res) => {
+					this.redPackAddress = res.name
+					this.redForm.latitude = res.latitude
+					this.redForm.longitude = res.longitude
 				}
 			})
 		},
@@ -332,6 +334,7 @@ export default {
 
 		// 预览红包
 		handlePreview() {
+			this.showRedPackage = true
 			this.$refs.previewWrapperRef.$el.style.transform = 'scale(1)'
 		},
 
@@ -487,11 +490,11 @@ export default {
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		background-color: rgb(255, 255, 255);
+		// background-color: rgb(255, 255, 255);
 		transition: all 350ms;
-		.flex(center, center);
-		flex-direction: column;
-		padding: 0 40upx;
+		// .flex(center, center);
+		// flex-direction: column;
+		// padding: 0 40upx;
 		box-sizing: border-box;
 		transform: scale(0);
 		transition: all 350ms;

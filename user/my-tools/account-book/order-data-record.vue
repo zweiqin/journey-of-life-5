@@ -32,36 +32,28 @@
 				</view>
 			</view>
 			<view style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;">
-				<view style="font-size: 28upx;">订单收益</view>
+				<view style="font-size: 28upx;">收益统计（今日）</view>
 				<view
 					style="display: flex;flex-wrap: wrap;justify-content: space-between;align-items: center;width: 100%;margin-top: 30upx;font-size: 28upx;text-align: center;"
 				>
 					<view>
-						<view>当前佣金</view>
-						<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;">
-							{{ typeof orderRecords.allRecords === 'number' ? orderRecords.allRecords : '--' }}
-						</view>
-					</view>
-					<view>
-						<view>累计佣金</view>
-						<view
-							style="margin-top: 10upx;font-size: 36upx;font-weight: bold;"
-						>
-							{{ typeof orderRecords.currentRecords === 'number' ? orderRecords.currentRecords : '--' }}
-						</view>
-					</view>
-					<view>
-						<view>今日佣金</view>
-						<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;">
-							{{ typeof orderRecords.expectedRecords === 'number' ? orderRecords.expectedRecords : '--' }}
-						</view>
-					</view>
-					<view>
-						<view>累计提现</view>
+						<view>订单收益</view>
 						<view
 							style="margin-top: 10upx;font-size: 36upx;font-weight: bold;"
 						>
 							{{ typeof orderRecords.toDaysRecords === 'number' ? orderRecords.toDaysRecords : '--' }}
+						</view>
+					</view>
+					<view>
+						<view>实际订单收益</view>
+						<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;">
+							{{ typeof orderRecords.realityRecords === 'number' ? orderRecords.realityRecords : '--' }}
+						</view>
+					</view>
+					<view>
+						<view>代金券支出</view>
+						<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;">
+							{{ typeof orderRecords.orderVoucherNum === 'number' ? orderRecords.orderVoucherNum : '--' }}
 						</view>
 					</view>
 				</view>
@@ -78,11 +70,11 @@
 					<view v-for="item in orderDataRecord" :key="item.id" style="padding: 24upx;">
 						<view style="font-size: 26upx;color: #999999;">
 							类型：
-							<text v-if="item.type === 1">用户余额</text>
-							<text v-else-if="item.type === 2">代金券</text>
-							<text v-else-if="item.type === 3">积分</text>
-							<text v-else-if="item.type === 4">佣金</text>
-							<text v-else-if="item.type === 5">提现</text>
+							<text v-if="item.type === 1">代金券转赠</text>
+							<text v-else-if="item.type === 2">代金券充值</text>
+							<text v-else-if="item.type === 3">订单收入</text>
+							<text v-else-if="item.type === 4">佣金收入</text>
+							<text v-else>--</text>
 						</view>
 						<view style="display: flex;justify-content: space-between;align-items: flex-end;margin-top: 12upx;">
 							<view>
@@ -113,7 +105,8 @@
 							<view>{{ item.address }}</view>
 							<view v-if="item.message">留言：{{ item.message }}</view>
 						</view>
-						<view>
+						<view style="padding: 0 20upx;">
+							<view v-if="item.orderStatusText">订单状态：{{ item.orderStatusText }}</view>
 							<view v-if="item.freightPrice">配送费用：￥{{ item.freightPrice }}</view>
 							<view v-if="item.couponPrice">优惠券减免：￥{{ item.couponPrice }}</view>
 							<view v-if="item.integralPrice">用户积分减免：￥{{ item.integralPrice }}</view>
@@ -121,8 +114,8 @@
 						</view>
 						<view style="padding: 0 20upx;">
 							<view style="display: flex;justify-content: space-between;">
-								<view style="text-align: right;">总费用：<text style="color: red;">￥{{ item.goodsPrice }}</text></view>
-								<view style="text-align: right;">订单费用：<text style="color: red;">￥{{ item.orderPrice }}</text></view>
+								<view v-if="typeof item.goodsPrice === 'number'">总费用：<text style="color: red;">￥{{ item.goodsPrice }}</text></view>
+								<view v-if="typeof item.orderPrice === 'number'">订单费用：<text style="color: red;">￥{{ item.orderPrice }}</text></view>
 							</view>
 							<view style="text-align: right;">实付费用：<text style="color: red;">￥{{ item.actualPrice }}</text></view>
 							<view style="margin-top: 12upx;padding-top: 12upx;;border-top: 1px solid #dddddd;">
