@@ -78,10 +78,10 @@ export default {
 
 	methods: {
 		// 获取团购详情
-		async getGoodsDetail(id) {
+		async getGroupBuyingDetail(id) {
 			uni.showLoading()
 			this.form.basicInfo.id = id
-			const res = await getGrouponRuleByIdApi(id)
+			const res = await getGrouponRuleByIdApi({ id })
 			uni.hideLoading()
 			if (res.errno === 0) {
 				this.form.basicInfo.goodsId = res.data.goodsId || ''
@@ -124,7 +124,7 @@ export default {
 				content: '确认提交团购规则表单？',
 				success: (res) => {
 					if (res.confirm) {
-						if (data.goods.id) {
+						if (data.id) {
 							updateGrouponRuleApi(data).then((res) => {
 								this.$showToast('修改团购规则成功')
 								setTimeout(() => {

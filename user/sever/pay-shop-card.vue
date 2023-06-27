@@ -39,7 +39,7 @@
 				</view>
 				<Goods
 					v-for="item in brand.brandCartgoods" :key="item.id" :name="item.goodsName" :price="item.price"
-					:img-url="common.seamingImgUrl(item.picUrl)" :desc="item.desc" read-only
+					:img-url="common.seamingImgUrl(item.picUrl)" :desc="item.desc" show-num-only :number="item.number"
 				></Goods>
 
 				<view v-if="brand.brandId === 1001079" class="line-pane">
@@ -97,7 +97,8 @@ export default {
 	},
 
 	onLoad(options) {
-		this.type = options.type || '' // mall商城和本地生活、reservation预约
+		this.type = options.type || 'mall' // mall商城和本地生活、reservation预约
+		this.orderType = options.orderType
 		this.getGoods()
 		this.getAddress()
 		getVoucherNumberApi({ userId: getUserId() })
@@ -116,6 +117,7 @@ export default {
 	data() {
 		return {
 			type: '',
+			orderType: '',
 			goodsList: [],
 			totalPrice: 0,
 			isNoAddress: false,
@@ -136,20 +138,31 @@ export default {
 		},
 		// 获取地址信息
 		getAddress() {
-			const _this = this
-			getAddressListApi({
-				userId: getUserId()
-			}).then(({ data }) => {
-				if (!data.length) {
-					_this.isNoAddress = true
-					return
+			if (this.type === 'mall') {
+				getAddressListApi({
+					userId: getUserId()
+				})
+					.then(({ data }) => {
+						if (!data.length) {
+							this.isNoAddress = true
+							return
+						}
+						const defaultAddress = data.find((item) => !!item.isDefault)
+						this.defaultAddress = defaultAddress || data[0]
+						if (this.defaultAddress) {
+							this.handleBuildPayCount()
+						}
+					})
+			} else if (this.type === 'reservation') {
+				this.defaultAddress = {
+					isDefault: true,
+					detailedAddress: '--',
+					name: '--',
+					mobile: '--',
+					id: 146
 				}
-				const defaultAddress = data.find((item) => !!item.isDefault)
-				_this.defaultAddress = defaultAddress || data[0]
-				if (_this.defaultAddress) {
-					this.handleBuildPayCount()
-				}
-			})
+				this.handleBuildPayCount()
+			}
 		},
 
 		// 去选择地址
@@ -200,7 +213,7 @@ export default {
 				title: '加载中'
 			})
 			const _this = this
-			payAllShopCarApi(this.getPostData()).then(({ data }) => {
+			payAllShopCarApi({ type: this.orderType, ...this.getPostData() }).then(({ data }) => {
 				_this.payOrderInfo = data
 				uni.hideLoading()
 			})

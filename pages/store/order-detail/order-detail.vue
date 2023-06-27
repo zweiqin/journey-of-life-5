@@ -80,7 +80,7 @@
 				</text>
 				<text class="p-color">￥ <text style="font-size: 48upx;" class="f-w-500">{{ orderCost.actualPrice }}</text></text>
 			</view>
-			<button class="bee-btn r-5 f-w-500 f-center" @click="handleToPay">提交订单</button>
+			<button class="bee-btn r-5 f-w-500 f-center" @click="handleToPay">{{ grouponRulesId && !grouponLinkId ? '发起团购' : grouponRulesId && grouponLinkId ? '加入团购' : '提交订单' }}</button>
 		</view>
 	</view>
 </template>
@@ -99,12 +99,16 @@ export default {
 			carId: null,
 			orderCost: {},
 			startAddress: {},
-			couponId: 0
+			couponId: 0,
+			grouponRulesId: '',
+			grouponLinkId: ''
 		}
 	},
 	onLoad(options) {
 		try {
 			options.productInfo = JSON.parse(options.productInfo)
+			this.grouponRulesId = options.rulesId || ''
+			this.grouponLinkId = options.linkId || ''
 		} catch (error) {
 		}
 		this.goodsDetail = options
@@ -187,7 +191,7 @@ export default {
 				useVoucher: false,
 				brandId: this.goodsDetail.brandId,
 				userId: this.userId,
-				grouponRulesId: '',
+				grouponRulesId: this.grouponRulesId,
 				couponId: this.couponId,
 				cartId: this.carId,
 				number: this.goodsDetail.productInfo.number
@@ -210,8 +214,8 @@ export default {
 				userId: this.userId,
 				cartId: this.carId,
 				couponId: this.couponId,
-				grouponRulesId: '',
-				grouponLinkId: '',
+				grouponRulesId: this.grouponRulesId,
+				grouponLinkId: this.grouponLinkId,
 				brandId: this.goodsDetail.brandId,
 				useVoucher: false,
 				addressId: this.startAddress.id

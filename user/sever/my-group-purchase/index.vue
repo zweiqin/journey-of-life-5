@@ -1,37 +1,61 @@
 <template>
-	<view class="orders-container">
-		<view class="header">
-			<JBack width="50" dark height="50" tabbar="/pages/user/user"></JBack>
-			<h2>我的订单</h2>
+	<view class="my-group-purchase-container">
+		<JHeader tabbar="/pages/user/user" width="50" height="50" title="我的拼团"></JHeader>
+
+		<view>
+			<tui-tabs
+				style="width: 702upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="105" :padding="24"
+				item-width="351rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
+				:tabs="[{ name: '开团' }, { name: '入团' }]" :current-tab="currentTab"
+				@change="handleSwitchTab"
+			></tui-tabs>
 		</view>
 
-		<view class="navs">
-			<view style="font-weight: bold;">商城：</view>
-			<view
-				v-for="item in orderTypesMall" :key="item.value" class="nav-item"
-				:class="{ 'nav-item-active': currentStatus === item.value && currentType === 0 }"
-				@click="handleSwitchStatus(item.value, 0)"
-			>
-				{{ item.label }}
-			</view>
-		</view>
-
-		<view class="navs">
-			<view style="font-weight: bold;">本地生活：</view>
-			<view
-				v-for="item in orderTypesStore" :key="item.value" class="nav-item"
-				:class="{ 'nav-item-active': currentStatus === item.value && currentType === 1 }"
-				@click="handleSwitchStatus(item.value, 1)"
-			>
-				{{ item.label }}
-			</view>
-		</view>
-
-		<view v-if="orderList && orderList.length" class="order-list-wrapper">
-			<view v-for="item in orderList" :key="item.id" class="goods-pane">
+		<view v-if="myGrouponList && myGrouponList.length" class="order-list-wrapper">
+			<view v-for="item in myGrouponList" :key="item.id" class="goods-pane">
 				<view class="order-no-status" @click="handleToViewOrderDetail(item)">
 					<view class="order-no">订单号:{{ item.orderSn }}</view>
 					<view class="order-status">{{ item.orderStatusText }}</view>
+				</view>
+
+				<view style="padding: 16upx 24upx 26upx;font-size: 28upx;">
+					<view>
+						<view style="display: flex;justify-content: space-between;">
+							<view>
+								<text>团购ID：</text>
+								<text>{{ item.groupon.id || '--' }}</text>
+							</view>
+							<view>
+								<text>{{ item.groupon.addTime || '--' }}</text>
+							</view>
+						</view>
+						<view style="display: flex;justify-content: space-between;">
+							<view>
+								<text>创建者：</text>
+								<text>{{ item.creator || '--' }}</text>
+							</view>
+							<view>
+								<text>{{ item.isCreator ? '本人' : '非本人' }}</text>
+							</view>
+						</view>
+						<view>
+							<text>参与人数：</text>
+							<text>{{ typeof item.joinerCount === 'number' ? item.joinerCount : '--' }}</text>
+						</view>
+						<view>
+							<text>关联订单ID：</text>
+							<text>{{ item.groupon.orderId || '--' }}</text>
+						</view>
+						<view style="display: flex;justify-content: space-between;">
+							<view>
+								<text>开团用户ID：</text>
+								<text>{{ item.groupon.creatorUserId || '--' }}</text>
+							</view>
+							<view>
+								<text>{{ item.groupon.payed ? '已支付' : '未支付' }}</text>
+							</view>
+						</view>
+					</view>
 				</view>
 
 				<view class="goods-list" @click="handleToViewOrderDetail(item)">
@@ -43,7 +67,8 @@
 
 							<view class="good-sp-pr">
 								<view class="sp">标准</view>
-								<view class="pr">￥{{ goods.price }}</view>
+								<!-- <view class="pr">￥{{ goods.price }}</view> -->
+								<view style="margin-top: 10upx;font-size: 28upx;color: #0000ff;" @click.stop="handleGrouponRules(goods.id)">查看团购规则</view>
 							</view>
 						</view>
 
@@ -79,11 +104,11 @@
 					</view>
 				</view>
 			</view>
-
-			<uni-load-more v-if="loadingStatus !== 'hidden'" style="background: #fff" :status="loadingStatus"></uni-load-more>
 		</view>
-
-		<JNoData v-if="loadingStatus === 'hidden' && !orderList.length" text="无购物记录" type="order-shop"></JNoData>
+		<LoadMore v-show="myGrouponList.length" :status="status"></LoadMore>
+		<view v-if="myGrouponList && !myGrouponList.length && loadingStatus !== 'loading'" class="no-data">
+			暂无拼团~
+		</view>
 
 		<!-- 申请退款dialog -->
 		<tui-dialog
@@ -112,108 +137,89 @@
 				</view>
 			</template>
 		</tui-dialog>
+
+		<tui-drawer mode="bottom" :visible="drawerVisible" @close="drawerVisible = false">
+			<view style="padding: 20upx;">
+				<GrouponRules title-inside :rules-data="grouponRules"></GrouponRules>
+			</view>
+		</tui-drawer>
 	</view>
 </template>
 
 <script>
-import { orderTypesMall, orderTypesStore, orderOpButtons } from './config'
+import { orderTypesMall, orderTypesStore, orderOpButtons } from '../../orderForm/config'
+import { getGrouponMyApi, getGrouponQueryApi, getOrderRefundsReasonApi } from '../../../api/user'
 import {
 	getOrderListApi,
 	orderCancelApi,
 	orderDeleteApi,
 	receiveGoodsApi,
 	orderRefundApi
-} from '../../api/order'
-import { getOrderRefundsReasonApi } from '../../api/user'
-import { payAppointOrderApi } from '../../api/store'
-import { payOrderGoodsApi } from '../../api/goods'
-import { getUserId } from '../../utils'
+} from '../../../api/order'
+import { payOrderGoodsApi } from '../../../api/goods'
+import { J_USER_INFO } from '../../../constant'
+import { getUserId } from '../../../utils'
+import GrouponRules from '../../marketing-tools/group-buying/components/GrouponRules.vue'
+
 export default {
-	name: 'OrderForm',
+	name: 'MyGroupPurchase',
+	components: { GrouponRules },
+	onLoad(options) { },
 	data() {
 		return {
-			orderTypesMall,
-			orderTypesStore: [
-				{
-					label: '待付款',
-					value: 8
-				},
-				{
-					label: '已付款',
-					value: 5
-				},
-				{
-					label: '已核销',
-					value: 6
-				},
-				{
-					label: '已过期',
-					value: 7
-				},
-				{
-					label: '已取消',
-					value: 9
-				}
-			],
-			currentStatus: 0,
-			currentType: 0,
-			query: {
+			currentTab: 0,
+			orderOpButtons,
+			myGrouponList: [],
+			grouponQuery: {
 				page: 1,
 				size: 10
 			},
-			orderOpButtons,
 			totalPages: 0,
-			orderList: [],
-			loadingStatus: 'loading',
+			status: 'none',
+			loadingStatus: 'noMore',
 			isShowRefundDialog: false,
 			refundRadioItems: [],
 			tempRefund: {
 				orderId: '',
 				reasonId: '',
 				refundRemark: ''
-			}
+			},
+			drawerVisible: false,
+			grouponRules: {}
 		}
 	},
-
-	onLoad(options) { },
-
 	onShow() {
-		this.getOrderList()
+		this.getGrouponMyList()
 	},
 
 	methods: {
-		// 获取订单信息
-		getOrderList(loadMore) {
-			uni.showLoading()
+		getGrouponMyList(isLoadmore) {
+			if (!getUserId()) return
+			this.status = 'loading'
 			this.loadingStatus = 'loading'
-			getOrderListApi({
-				userId: getUserId(),
-				showType: this.currentStatus,
-				orderType: this.currentType,
-				...this.query
-			}).then(({ data }) => {
-				if (loadMore) {
-					this.orderList.push(...data.data)
-				} else {
-					this.orderList = data.data
-				}
-				this.totalPages = data.totalPages
-				this.loadingStatus = 'hidden'
-				uni.hideLoading()
-
-				console.log(data)
-			})
+			getGrouponMyApi({ ...this.grouponQuery, showType: this.currentTab })
+				.then(({ data }) => {
+					console.log(data)
+					this.totalPages = data.totalPages
+					if (isLoadmore) {
+						this.myGrouponList.push(...data.data)
+					} else {
+						this.myGrouponList = data.data
+					}
+					this.status = 'none'
+					this.loadingStatus = 'noMore'
+				})
+				.catch(() => {
+					this.status = 'none'
+					this.loadingStatus = 'noMore'
+				})
 		},
-
-		// 切换状态
-		handleSwitchStatus(status, type) {
-			this.currentStatus = status
-			this.currentType = type
-			this.query.page = 1
-			this.query.size = 20
-			this.getOrderList()
+		handleSwitchTab(e) {
+			this.currentTab = e.index
+			this.grouponQuery.page = 1
+			this.myGrouponList = []
+			this.getGrouponMyList()
 		},
-
 		// 点击操作按钮
 		handleOpOrder(goods, key, currentGoods) {
 			if (key === 'comment') {
@@ -250,8 +256,8 @@ export default {
 									orderId: goods.id
 								})
 								.then(() => {
-									_this.query.page = 1
-									_this.getOrderList()
+									_this.grouponQuery.page = 1
+									_this.getGrouponMyList()
 								})
 						}
 					}
@@ -288,6 +294,16 @@ export default {
 			}
 		},
 
+		// 查看详情
+		handleToViewOrderDetail(goods, currentGoods) {
+			uni.navigateTo({
+				url:
+					'/user/sever/my-group-purchase/group-purchase-detail?id=' +
+					goods.id +
+					(currentGoods ? '&goodsId=' + currentGoods.id : '') + '&isJoin=false'
+			})
+		},
+
 		// 申请退款确认
 		async handleClickRefundDialog(e) {
 			console.log(e)
@@ -298,7 +314,7 @@ export default {
 				await orderRefundApi({ ...this.tempRefund, userId: getUserId() })
 					.then((res) => {
 						this.$showToast('提交成功')
-						this.getOrderList()
+						this.getGrouponMyList()
 					})
 			}
 			this.tempRefund = {
@@ -309,72 +325,54 @@ export default {
 			this.isShowRefundDialog = false
 		},
 
-		// 查看详情
-		handleToViewOrderDetail(goods, currentGoods) {
-			uni.navigateTo({
-				url:
-					'/user/orderForm/order-form-detail?id=' +
-					goods.id +
-					(currentGoods ? '&goodsId=' + currentGoods.id : '')
-			})
+		handleGrouponRules(goodsId) {
+			this.grouponRules = {}
+			getGrouponQueryApi({ goodsId })
+				.then(({ data }) => {
+					console.log(data)
+					this.grouponRules = data.data[0] || {}
+					this.drawerVisible = true
+				})
+				.catch((e) => {
+					console.log(e)
+				})
 		}
 	},
-
 	onReachBottom() {
-		if (this.orderList.length < this.query.size) {
-			this.loadingStatus = 'noMore'
+		if (this.grouponQuery.page >= this.totalPages) {
+			this.status = 'no-more'
 			return
 		}
-
-		if (this.query.page >= this.totalPages) {
-			this.loadingStatus = 'noMore'
+		if (this.grouponQuery.size > this.myGrouponList.length) {
 			return
 		}
-
-		this.query.page++
-		this.getOrderList(true)
+		this.grouponQuery.page++
+		this.getGrouponMyList(true)
 	}
 }
 </script>
 
 <style lang="less" scoped>
-.orders-container {
-	font-size: 28upx;
-	color: #3d3d3d;
-	padding: 60upx 0;
+.my-group-purchase-container {
+	min-height: 100vh;
+	padding: 40upx 24upx 140upx;
+	box-sizing: border-box;
+	background-color: #f6f6f6;
 
-	.header {
+	.no-data {
 		display: flex;
+		justify-content: center;
 		align-items: center;
-		justify-content: flex-start;
-		color: #000;
-		padding: 0 32upx;
-		box-sizing: border-box;
-
-		h2 {
-			font-weight: normal;
-			font-size: 32upx;
-			margin-top: -8upx;
-		}
+		min-height: 180upx;
+		color: #999999;
+		font-size: 36upx;
+		letter-spacing: 2px;
 	}
-
-	.navs {
-		display: flex;
-		justify-content: space-between;
-		margin: 34upx 0;
-		padding-bottom: 20upx;
-		padding: 0 32upx;
-		box-sizing: border-box;
-
-		.nav-item {
-			transition: all 350ms;
-
-			&.nav-item-active {
-				color: #ff8f1f;
-			}
-		}
+.tui-tabs-view {
+	/deep/ .tui-tabs-slider {
+		margin-left: -24upx;
 	}
-
+}
 	.order-list-wrapper {
 		background-color: #f6f6f6;
 		padding-top: 10px;

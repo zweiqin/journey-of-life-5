@@ -13,19 +13,33 @@
 
 		<!-- 黄色面板 -->
 		<view class="data-total">
-			<view v-for="item in totalVoucher" :key="item.label" class="total-item" @click="go(item.url)">
-				<view class="title">
-					<text class="text">{{ item.label }}</text>
-					<JIcon v-if="item.url" width="40" height="40" type="right-arrow"></JIcon>
+			<view class="total-item" style="min-width: 20%;border-right: 2upx solid #c3c4c4;">
+				<view class="title" style="display: flex;justify-content: center;">
+					<text class="text">余额</text>
 				</view>
+				<view class="total-value" :style="{ color: '#FA5151' }">
+					{{ allHistory.account || '-- ' }}
+					<text class="unit" :style="{ color: '#FA5151' }">元</text>
+				</view>
+			</view>
 
-				<view class="total-value" :style="{ color: item.color }">
-					{{ allHistory[item.field] }}
-					<text v-if="item.unit" class="unit" :style="{ color: item.color }">
-						{{
-							item.unit
-						}}
-					</text>
+			<view class="total-item" style="flex: 1;border-right: 2upx solid #c3c4c4;">
+				<view class="title" style="display: flex;justify-content: center;">
+					<text class="text">代金劵</text>
+				</view>
+				<view class="total-value">
+					{{ allHistory.voucherNumber }}
+				</view>
+			</view>
+
+			<view class="total-item" style="min-width: 25%;" @click="go('/user/otherServe/voucher/recharge-history')">
+				<view class="title" style="display: flex;justify-content: center;">
+					<text class="text">充值记录</text>
+					<JIcon width="40" height="40" type="right-arrow"></JIcon>
+				</view>
+				<view class="total-value">
+					{{ allHistory.rechrageHistory }}
+					<text class="unit">次</text>
 				</view>
 			</view>
 		</view>
@@ -69,7 +83,6 @@
 <script>
 import { J_USER_INFO } from '../../../constant'
 import {
-	totalVoucher,
 	reCharges,
 	transFormVoucher,
 	footerMenus
@@ -85,12 +98,11 @@ export default {
 	},
 	data() {
 		return {
-			totalVoucher,
 			reCharges,
 			transFormVoucher,
 			footerMenus,
 			allHistory: {
-				balance: 0,
+				account: 0,
 				voucherNumber: 0,
 				rechrageHistory: 0
 			},
@@ -140,7 +152,7 @@ export default {
 			}).then(({ data }) => {
 				console.log(data)
 				this.allHistory.voucherNumber = data.voucherHold
-				this.allHistory.balance = data.account
+				this.allHistory.account = data.account
 				this.allHistory.rechrageHistory = data.voucherCount
 			})
 		}
@@ -195,30 +207,33 @@ export default {
 	}
 
 	.data-total {
-		height: 212upx;
-		width: 100%;
+		display: flex;
+		// justify-content: space-between;
+		flex-wrap: nowrap;
+		height: fit-content;
+		overflow-x: auto;
+		font-size: 36upx;
 		background: linear-gradient(180deg, #fff8c7, #fffcea);
 		border-radius: 20upx;
-		.flex();
-		padding: 52upx 28upx 34upx 30upx;
+		margin: 0;
+		padding: 18upx 8upx 4upx 10upx;
 		box-sizing: border-box;
 
 		.total-item {
-			.flex();
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			flex-direction: column;
-
-			.j-icon {
-				vertical-align: -10upx;
-			}
+			padding: 20upx 20upx;
 
 			.text {
 				font-size: 28upx;
 			}
 
 			.total-value {
-				font-size: 48upx;
-				font-weight: 500;
-				letter-spacing: 3px;
+				// font-size: 48upx;
+				// font-weight: 500;
+				// letter-spacing: 3px;
 				margin-top: 10px;
 			}
 

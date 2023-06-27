@@ -6,13 +6,12 @@
 		>
 			<view class="orders-container">
 				<view>
-					<!-- <text
-						class="p-color" style="font-size: 36upx;"
-						@click="go(``)"
-						>
-						去预约
-						</text> -->
-					<tui-button type="danger" style="margin: 0 auto;" bold shape="circle" width="60%" height="64rpx" @click="go(`/user/sever/shop-car-reservation?isBack=1&brandId=${brandDetail.id || ''}&brandName=${brandDetail.name || ''}`)">
+					<!-- @click="go(`/user/sever/shop-car-reservation?isBack=1&brandId=${brandDetail.id || ''}&brandName=${brandDetail.name || ''}`)" -->
+					<tui-button
+						type="danger" style="margin: 0 auto;" bold shape="circle"
+						width="60%" height="64rpx"
+						@click="handleToReservation"
+					>
 						去预约
 					</tui-button>
 				</view>
@@ -138,7 +137,7 @@ import {
 	receiveGoodsApi,
 	orderRefundApi
 } from '../../../../api/order'
-import { payOrderGoodsApi } from '../../../../api/goods'
+import { payOrderGoodsApi, getShopCarApi } from '../../../../api/goods'
 import { updateCancelReservationApi, getOrderRefundsReasonApi } from '../../../../api/user'
 import { getUserId } from '../../../../utils'
 export default {
@@ -200,6 +199,25 @@ export default {
 	},
 
 	methods: {
+		handleToReservation() {
+			this.loadingStatus = 'loading'
+			getShopCarApi({
+				userId: getUserId(),
+				brandId: this.brandDetail.id
+			})
+				.then(({ data }) => {
+					console.log(data)
+					uni.hideLoading()
+					if (data.cartList && data.cartList.length) {
+						this.go(`/user/sever/shop-car?isBack=1&type=reservation`)
+					} else {
+						this.$showToast('请先添加该店铺的商品到购物车')
+					}
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
+		},
 		handleScrolltolower() {
 			if (this.orderList.length < this.query.size) {
 				this.loadingStatus = 'noMore'
@@ -331,6 +349,7 @@ export default {
 					})
 			}
 			this.tempRefund = {
+				orderId: '',
 				reasonId: '',
 				refundRemark: ''
 			}

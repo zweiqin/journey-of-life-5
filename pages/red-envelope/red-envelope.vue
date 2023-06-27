@@ -3,7 +3,7 @@
 		<view v-if="showMap" class="map-container">
 			<map
 				id="mapRef" :longitude="longitude" :latitude="latitude" :scale="scale"
-				show-compass show-location
+				show-compass show-location :circles="circles"
 				style="width: 100vw; height: 100vh" :markers="markers" @markertap="handleReceive"
 			></map>
 
@@ -81,7 +81,8 @@ export default {
 			isGetLocation: true,
 			isChoosingLocation: false,
 			showRedPackage: false,
-			redEnvelopeType: 0
+			redEnvelopeType: 0,
+			circles: []
 		}
 	},
 
@@ -140,6 +141,19 @@ export default {
 		},
 
 		confirmLocationWrap(result) {
+			this.circles = [ {
+				// longitude: 113.293184,
+				// latitude: 22.803391,
+				longitude: result.longitude,
+				latitude: result.latitude,
+				color: '#89a7c8',
+				// 填充颜色
+				fillColor: '#d3e5f177',
+				// 圆半径
+				radius: 500,
+				// 边
+				strokeWidth: 1
+			} ]
 			this.longitude = result.longitude * 1
 			this.latitude = result.latitude * 1
 			// this.longitude = 113.06092

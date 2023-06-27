@@ -13,6 +13,7 @@
 		<BeeBrandPane
 			v-for="item in $data._list"
 			:key="item.id"
+			:is-positioning="false"
 			:brand-info="item"
 		></BeeBrandPane>
 		<LoadMore :status="$data._status"></LoadMore>

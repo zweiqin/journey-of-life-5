@@ -9,24 +9,14 @@
 			<view class="item-wrapper">
 				<view class="add-site-title">收货人</view>
 				<view class="add-site-value">
-					<input
-						v-model="form.name"
-						type="text"
-						class="common-text"
-						placeholder="请填写收货人姓名"
-					/>
+					<input v-model="form.name" type="text" class="common-text" placeholder="请填写收货人姓名" />
 				</view>
 			</view>
 
 			<view class="item-wrapper">
 				<view class="add-site-title">手机号码</view>
 				<view class="add-site-value">
-					<input
-						v-model="form.mobile"
-						type="text"
-						class="common-text"
-						placeholder="请填写收货人电话"
-					/>
+					<input v-model="form.mobile" type="text" class="common-text" placeholder="请填写收货人电话" />
 				</view>
 			</view>
 
@@ -36,22 +26,13 @@
 					<JCity :text="area" @confirm="handleChooseCity"></JCity>
 				</view>
 
-				<JIcon
-					style="margin-top: 18upx"
-					type="fill-down-triangle"
-					width="24"
-					height="12"
-				></JIcon>
+				<JIcon style="margin-top: 18upx" type="fill-down-triangle" width="24" height="12"></JIcon>
 			</view>
 
 			<view class="item-wrapper">
 				<view class="add-site-title">详细地址</view>
 				<view class="add-site-value">
-					<textarea
-						v-model="form.address"
-						class="common-text"
-						placeholder="请填写收货人详细地址"
-					/>
+					<textarea v-model="form.address" class="common-text" placeholder="请填写收货人详细地址" />
 				</view>
 
 				<JIcon type="locale" width="26.66" height="32"></JIcon>
@@ -63,8 +44,7 @@
 				</view>
 
 				<switch
-					style="transform: scale(0.5) translateX(50%)"
-					:checked="!!form.isDefault"
+					style="transform: scale(0.5) translateX(50%)" :checked="!!form.isDefault"
 					@change="handleChangeIsDefaultAddress"
 				/>
 			</view>
@@ -166,20 +146,19 @@ export default {
 
 		// 获取地址详情
 		getAddressDetail() {
-			const _this = this
 			getAddressDetailApi({
 				userId: getUserId(),
 				id: this.editId
 			}).then(({ data }) => {
-				console.log('操了', data)
-				_this.form.name = data.name
-				_this.form.mobile = data.mobile
-				_this.form.address = data.address
-				_this.area = data.provinceName + data.cityName + data.areaName
-				_this.form.provinceId = data.provinceId
-				_this.form.cityId = data.cityId
-				_this.form.areaId = data.areaId
-				_this.form.id = data.id
+				this.form.name = data.name
+				this.form.mobile = data.mobile
+				this.form.address = data.address
+				this.area = data.provinceName + data.cityName + data.areaName
+				this.form.provinceId = data.provinceId
+				this.form.cityId = data.cityId
+				this.form.areaId = data.areaId
+				this.form.id = data.id
+				this.form.isDefault = data.isDefault
 			})
 		}
 	}
@@ -190,92 +169,92 @@ export default {
 @import "../../style/mixin.less";
 
 .add-site-container {
-  padding: 72upx 96upx 44upx 56upx;
-  box-sizing: border-box;
-  .flex(flex-start, flex-start);
-  flex-direction: column;
-  height: 100%;
+	padding: 72upx 96upx 44upx 56upx;
+	box-sizing: border-box;
+	.flex(flex-start, flex-start);
+	flex-direction: column;
+	height: 100%;
 
-  .header {
-    .flex(center, flex-start);
+	.header {
+		.flex(center, flex-start);
 
-    .j-back-container {
-      margin-top: 10upx;
-    }
+		.j-back-container {
+			margin-top: 10upx;
+		}
 
-    h2 {
-      font-size: 36upx;
-      font-weight: bold;
-      margin-left: 34upx;
-    }
-  }
+		h2 {
+			font-size: 36upx;
+			font-weight: bold;
+			margin-left: 34upx;
+		}
+	}
 
-  .add-site-content {
-    flex: 1;
-    width: 100%;
+	.add-site-content {
+		flex: 1;
+		width: 100%;
 
-    .item-wrapper {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-top: 46upx;
-      width: 100%;
+		.item-wrapper {
+			display: flex;
+			align-items: flex-start;
+			justify-content: space-between;
+			margin-top: 46upx;
+			width: 100%;
 
-      .add-site-title {
-        flex: 0 0 140upx;
-        text-align: left;
-        font-size: 28upx;
-        color: #3d3d3d;
-        font-weight: bold;
+			.add-site-title {
+				flex: 0 0 140upx;
+				text-align: left;
+				font-size: 28upx;
+				color: #3d3d3d;
+				font-weight: bold;
 
-        &.add-site-title-checked {
-          white-space: nowrap;
-          width: auto;
-        }
-      }
+				&.add-site-title-checked {
+					white-space: nowrap;
+					width: auto;
+				}
+			}
 
-      .uni-input-placeholder {
-        font-size: 28upx;
-      }
+			.uni-input-placeholder {
+				font-size: 28upx;
+			}
 
-      .common-text {
-        color: #3d3d3d;
-        font-size: 28upx;
-      }
+			.common-text {
+				color: #3d3d3d;
+				font-size: 28upx;
+			}
 
-      .add-site-value {
-        flex: 1;
-        // max-width: 340upx;
-        margin-right: 96upx;
-      }
+			.add-site-value {
+				flex: 1;
+				// max-width: 340upx;
+				margin-right: 96upx;
+			}
 
-      textarea {
-        width: 100%;
-        height: 140upx;
-      }
+			textarea {
+				width: 100%;
+				height: 140upx;
+			}
 
-      .j-city {
-        /deep/ .value {
-          font-size: 28upx;
-        }
-      }
-    }
-  }
+			.j-city {
+				/deep/ .value {
+					font-size: 28upx;
+				}
+			}
+		}
+	}
 
-  /deep/ .uni-switch-input {
-    &::before {
-      background-color: #bebebe;
-    }
-  }
+	/deep/ .uni-switch-input {
+		&::before {
+			background-color: #bebebe;
+		}
+	}
 
-  .btn {
-    width: 380upx;
-    height: 73upx;
-    .flex(center, center);
-    font-size: 32upx;
-    color: #fff;
-    background-color: #07b9b9;
-    border-radius: 100px;
-  }
+	.btn {
+		width: 380upx;
+		height: 73upx;
+		.flex(center, center);
+		font-size: 32upx;
+		color: #fff;
+		background-color: #07b9b9;
+		border-radius: 100px;
+	}
 }
 </style>

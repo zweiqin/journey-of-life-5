@@ -87,8 +87,6 @@ export default {
 			getCouponSelectlistApi({
 				userId: getUserId(),
 				brandId: this.brandId
-				// cartId: this.cartId,
-				// grouponRulesId: this.grouponRulesId
 			})
 				.then(({ data }) => {
 					console.log(data)

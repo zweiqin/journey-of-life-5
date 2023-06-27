@@ -165,9 +165,10 @@ export default {
 	},
 	methods: {
 		handleBack() {
-			uni.switchTab({
-				url: '/pages/index/index'
-			})
+			// uni.switchTab({
+			// 	url: '/pages/index/index'
+			// })
+			uni.navigateBack()
 		},
 		// handlePick(item) {
 		// 	this.currentnav = item.id

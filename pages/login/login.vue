@@ -30,7 +30,7 @@
 		</view>
 
 		<JAuthButton text="登录" class="btn" type="error" @click="handleLogin"></JAuthButton>
-		<view class="remember-password">免密码登录</view>
+		<!-- <view class="remember-password">免密码登录</view> -->
 
 		<view class="footer">
 			<image
@@ -130,12 +130,11 @@ export default {
 		async handleWXLogin() {
 			// #ifdef H5
 			const appid = 'wx603b04a561e4683e'
-			const local =
-				'https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/login/login'
+			const local = 'https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/login/login'
 			const code = getUrlCode().code
 			// console.log('获取code', code)
 			// alert('获取code', code)
-			if (code == null || code === '') {
+			if (code === null || code === undefined || code === '') {
 				window.location.href =
 					'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
 					appid +
@@ -235,6 +234,7 @@ export default {
     .item {
       position: relative;
       display: flex;
+			align-items: center;
       margin-bottom: 54upx;
 
       label {
@@ -244,13 +244,13 @@ export default {
       }
 
       .input {
-        font-size: 24upx;
+        font-size: 28upx;
         flex: 1;
-        padding-bottom: 20upx;
+        padding-bottom: 10upx;
         border-bottom: 1upx solid #ccc;
 
         input {
-          font-size: 24upx;
+          font-size: 28upx;
         }
       }
 

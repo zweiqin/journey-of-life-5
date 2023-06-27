@@ -28,17 +28,17 @@
 
 			<view class="words">
 				<view class="title">买家留言：</view>
-				<textarea id="" v-model.trim="opForm.message" placeholder="50字以内（选填）" cols="2" maxlength="50"></textarea>
+				<textarea id="" v-model.trim="opForm.message" placeholder="50字以内（选填）" maxlength="50"></textarea>
 			</view>
 
 			<view class="line">
 				<view class="title">商品金额：</view>
-				<view class="value">￥{{ calcOrderMsg.goodsTotalPrice }}</view>
+				<view class="value">￥{{ calcOrderMsg ? calcOrderMsg.goodsTotalPrice : '--' }}</view>
 			</view>
 
 			<view class="line">
 				<view class="title">运费：</view>
-				<view class="value">￥{{ calcOrderMsg.freightPrice }}</view>
+				<view class="value">￥{{ calcOrderMsg ? calcOrderMsg.freightPrice : '--' }}</view>
 			</view>
 
 			<view v-if="orderInfo.info.supportVoucher" class="line">
@@ -81,7 +81,9 @@ import { payShopCarApi } from '../../api/cart'
 import { J_ONE_PAY_GOODS, J_SELECT_ADDRESS } from '../../constant'
 export default {
 	name: 'PreOrder',
-	onLoad() {
+	onLoad(options) {
+		this.grouponRulesId = options.rulesId || ''
+		this.grouponLinkId = options.linkId || ''
 		this.getAddressList()
 		this.getOrderInfo()
 	},
@@ -101,7 +103,9 @@ export default {
 				useVoucher: false
 			},
 			calcOrderMsg: null, // 计算现在的费用
-			couponId: 0
+			couponId: 0,
+			grouponRulesId: '',
+			grouponLinkId: ''
 		}
 	},
 
@@ -175,7 +179,7 @@ export default {
 				cartId: this.cartId,
 				userId: getUserId(),
 				couponId: this.couponId,
-				grouponRulesId: '',
+				grouponRulesId: this.grouponRulesId,
 				useVoucher: this.opForm.useVoucher
 			}
 			payShopCarApi(data).then(({ data }) => {
@@ -208,8 +212,8 @@ export default {
 				cartId: this.cartId,
 				addressId: _this.defaultAddress.id,
 				couponId: this.couponId,
-				grouponRulesId: '',
-				grouponLinkId: '',
+				grouponRulesId: this.grouponRulesId,
+				grouponLinkId: this.grouponLinkId,
 				brandId: _this.orderInfo.brandId,
 				..._this.opForm
 			}
@@ -326,12 +330,13 @@ export default {
 		}
 
 		.words {
+			display: flex;
+			// min-height: 150upx;
+			// overflow-y: auto;
 			padding: 20upx;
 			box-sizing: border-box;
-			display: flex;
 			background-color: #f6f6f6;
 			border-radius: 4px;
-			height: 120upx;
 
 			.title {
 				white-space: nowrap;
@@ -340,6 +345,12 @@ export default {
 			textarea {
 				color: #696969;
 				font-size: 28upx;
+				height: fit-content;
+
+				/deep/ .uni-textarea-wrapper {
+					min-height: 120upx;
+					overflow-y: auto;
+				}
 			}
 		}
 	}

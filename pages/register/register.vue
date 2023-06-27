@@ -1,12 +1,17 @@
 <template>
 	<view class="register-container">
-		<h2>{{ pageInfo.title }}</h2>
-		<JField
-			v-for="item in registerFields" :key="item.label" v-model="formData[item.field]" :label="item.label"
-			:type="item.type" :placeholder="item.placeholder"
-		></JField>
+		<view style="padding: 30upx 20upx;color: #000000;">
+			<JHeader width="50" height="50" title="返回"></JHeader>
+		</view>
+		<view class="register-wrapper">
+			<h2>{{ pageInfo.title }}</h2>
+			<JField
+				v-for="item in registerFields" :key="item.label" v-model="formData[item.field]" :label="item.label"
+				:type="item.type" :placeholder="item.placeholder"
+			></JField>
 
-		<JAuthButton :text="pageInfo.btnTxt" @click="handleSubmit"></JAuthButton>
+			<JAuthButton :text="pageInfo.btnTxt" @click="handleSubmit"></JAuthButton>
+		</view>
 	</view>
 </template>
 
@@ -19,6 +24,7 @@ export default {
 	data() {
 		return {
 			registerFields,
+			type: '',
 			formData: {
 				mobile: '',
 				code: '',
@@ -27,6 +33,14 @@ export default {
 			},
 			pageInfo: {}
 		}
+	},
+
+	onLoad(options) {
+		this.type = options.type
+		this.pageInfo = mapText[options.type]
+		uni.setNavigationBarTitle({
+			title: this.type === 'register' ? '注册' : '重置密码'
+		})
 	},
 
 	methods: {
@@ -100,22 +114,21 @@ export default {
 				})
 			} catch (error) { }
 		}
-	},
-
-	onLoad(options) {
-		this.type = options.type
-		this.pageInfo = mapText[options.type]
-		uni.setNavigationBarTitle({
-			title: this.type === 'register' ? '注册' : '重置密码'
-		})
 	}
 }
 </script>
 
 <style lang="less" scoped>
 @import "../../style/mixin.less";
+.register-container{
+	/deep/ .j-header-container{
+		.title {
+			margin-left: 0;
+			text-align: left;
+		}
+	}
 
-.register-container {
+.register-wrapper {
 	position: relative;
 	color: #3d3d3d;
 	.flex(center, center);
@@ -143,5 +156,6 @@ export default {
 		border-radius: 20upx;
 		margin-top: 120upx;
 	}
+}
 }
 </style>

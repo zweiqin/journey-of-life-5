@@ -16,7 +16,7 @@
 		<Pane title="我的服务" :menu-data="myServe" :permission-data="myServeList" @menu-click="handleClickMenu"></Pane>
 
 		<!-- 数字化门店 -->
-		<Pane title="数字化营销门店" :menu-data="myStore" :permission-data="myStoreList" @menu-click="handleClickMenu"></Pane>
+		<Pane v-if="userInfo.roleIds !== 11 || userInfo.roleIds !== 10" title="数字化营销门店" :menu-data="myStore" :permission-data="myStoreList" @menu-click="handleClickMenu"></Pane>
 
 		<!-- 营销工具 -->
 		<Pane title="营销工具" :menu-data="marketingTools" :permission-data="marketingToolsList" @menu-click="handleClickMenu"></Pane>

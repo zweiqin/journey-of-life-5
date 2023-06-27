@@ -20,7 +20,7 @@
 		</view>
 
 		<view class="goods-list">
-			<BeeBrandPane v-for="(item, index) in brandGoodsList" :key="item.id" :brand-info="item">
+			<BeeBrandPane v-for="(item, index) in brandGoodsList" :key="item.id" :is-positioning="false" :brand-info="item">
 				<scroll-view scroll-x="true">
 					<view class="sub-menus">
 						<NewGoods v-for="part in brandGoodsList[index].goodsVoList" :key="part.id" style="margin-right: 10rpx;" :width="80" height="170rpx" :data="part" :show-tags="false" :show-detail-btn="false"></NewGoods>

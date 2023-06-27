@@ -1,580 +1,568 @@
-<!--
- * @Author: 13008300191 904947348@qq.com
- * @Date: 2022-09-17 16:42:41
- * @LastEditors: 13008300191 904947348@qq.com
- * @LastEditTime: 2022-09-20 17:01:44
- * @FilePath: \团蜂商城 - 副本\tuan-uniapp\user\digital-store\business\index.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
+<!-- * @Author: 13008300191 904947348@qq.com
+	* @Date: 2022-09-17 16:42:41
+	* @LastEditors: 13008300191 904947348@qq.com
+	* @LastEditTime: 2022-09-20 17:01:44
+	* @FilePath: \团蜂商城 - 副本\tuan-uniapp\user\digital-store\business\index.vue
+	* @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE -->
 <template>
-  <view>
-    <view class="header">
-      <img
-        src="../../../static/images/lqb/site/back.png"
-        class="back"
-        alt=""
-        @click="back"
-      />
-      <h2>业务管理</h2>
-    </view>
-    <view class="bussiness-chose">
-      <view
-        @click="changeTab(0)"
-        :class="{ active: currentTab === 0 }"
-        class="item"
-        >开发</view
-      >
-      <view
-        @click="changeTab(1)"
-        :class="{ active: currentTab === 1 }"
-        class="item"
-        >潜在</view
-      >
-      <view
-        @click="changeTab(2)"
-        :class="{ active: currentTab === 2 }"
-        class="item"
-        >VIP</view
-      >
-    </view>
-    <view class="border"></view>
-    <view class="listTetle">
-      <view class="userName">姓名</view>
-      <view class="userPhone">手机号</view>
-      <view class="userProfession">职业类型</view>
-      <view class="operation">操作</view>
-    </view>
-    <view class="listDetail" v-for="(item, index) in userlist" :key="index">
-      <view class="userNamelist">{{ item.userName }}</view>
-      <view class="userPhonelist">{{ item.userTel }}</view>
-      <view class="userProfessionlist">{{ item.professional }}</view>
-      <view class="operationDetail">
-        <view class="userUp" :data-list="item" @click="window">详情</view>
-        <view
-          class="userChange"
-          :data-list="item"
-          @click="userUp"
-          v-if="currentTab == 0"
-          >升级</view
-        >
-        <view
-          class="userChange"
-          :data-list="item"
-          @click="userUp"
-          v-if="currentTab == 1"
-          >升级</view
-        >
-      </view>
-    </view>
-    <!-- 弹窗 -->
-    <!-- 用户详情与修改 -->
-    <uni-popup ref="popup" type="center">
-      <view class="detail-window">
-        <view>
-          <!-- <view class="title">用户详情与修改</view> -->
-          <view class="title">用户详情</view>
+	<view>
+		<view class="header">
+			<img
+				src="../../../static/images/lqb/site/back.png"
+				class="back"
+				alt=""
+				@click="back"
+			/>
+			<h2>业务管理</h2>
+		</view>
+		<view class="bussiness-chose">
+			<view
+				:class="{ active: currentTab === 0 }"
+				class="item"
+				@click="changeTab(0)"
+			>
+				开发
+			</view>
+			<view
+				:class="{ active: currentTab === 1 }"
+				class="item"
+				@click="changeTab(1)"
+			>
+				潜在
+			</view>
+			<view
+				:class="{ active: currentTab === 2 }"
+				class="item"
+				@click="changeTab(2)"
+			>
+				VIP
+			</view>
+		</view>
+		<view class="border"></view>
+		<view class="listTetle">
+			<view class="userName">姓名</view>
+			<view class="userPhone">手机号</view>
+			<view class="userProfession">职业类型</view>
+			<view class="operation">操作</view>
+		</view>
+		<view v-for="(item, index) in userlist" :key="index" class="listDetail">
+			<view class="userNamelist">{{ item.userName }}</view>
+			<view class="userPhonelist">{{ item.userTel }}</view>
+			<view class="userProfessionlist">{{ item.professional }}</view>
+			<view class="operationDetail">
+				<view class="userUp" :data-list="item" @click="window">详情</view>
+				<view
+					v-if="currentTab == 0"
+					class="userChange"
+					:data-list="item"
+					@click="userUp"
+				>
+					升级
+				</view>
+				<view
+					v-if="currentTab == 1"
+					class="userChange"
+					:data-list="item"
+					@click="userUp"
+				>
+					升级
+				</view>
+			</view>
+		</view>
+		<!-- 弹窗 -->
+		<!-- 用户详情与修改 -->
+		<uni-popup ref="popup" type="center">
+			<view class="detail-window">
+				<view>
+					<!-- <view class="title">用户详情与修改</view> -->
+					<view class="title">用户详情</view>
 
-          <view class="input-title">姓名:</view
-          ><input
-            type="text"
-            disabled="ture"
-            @input="userNameinput"
-            v-model="userName"
-            class="input-detail"
-          />
-          <view class="input-title">手机号:</view
-          ><input
-            type="text"
-            disabled="ture"
-            @input="userPhoneinput"
-            v-model="userPhone"
-            class="input-detail"
-          />
-          <view class="input-title">职业类型:</view
-          ><input
-            type="text"
-            disabled="ture"
-            @input="userProfessioninput"
-            v-model="userProfession"
-            class="input-detail"
-          />
-          <view v-if="currentTab == 1">
-            <view class="input-title">爱好:</view
-            ><input
-              type="text"
-              disabled="ture"
-              @input="userLoveinput"
-              v-model="userLove"
-              class="input-detail"
-            />
-            <view class="input-title">工作地址:</view
-            ><input
-              type="text"
-              disabled="ture"
-              @input="userWorkliveinput"
-              v-model="userWorklive"
-              class="input-detail"
-            />
-          </view>
-          <view v-if="currentTab == 2">
-            <view class="input-title">爱好:</view
-            ><input
-              type="text"
-              disabled="ture"
-              @input="userLoveinput"
-              v-model="userLove"
-              class="input-detail"
-            />
-            <view class="input-title">工作地址:</view
-            ><input
-              type="text"
-              disabled="ture"
-              @input="userWorkliveinput"
-              v-model="userWorklive"
-              class="input-detail"
-            />
-            <view class="input-title">家庭住址:</view
-            ><input
-              type="text"
-              disabled="ture"
-              @input="userHomeinput"
-              v-model="userHome"
-              class="input-detail"
-            />
-            <view class="input-title">生日:</view
-            ><input
-              type="text"
-              disabled="ture"
-              @input="userBirthdayinput"
-              v-model="userBirthday"
-              class="input-detail"
-            />
-          </view>
-        </view>
-        <view class="button-background">
-          <!-- <view class="top-button" @click="submit">提交</view> -->
-          <view class="bottom-button" @click="close">取消</view>
-        </view>
-      </view>
-    </uni-popup>
-    <!-- 用户升级 -->
-    <uni-popup ref="userUp" type="center">
-      <view class="detail-window">
-        <view class="title">用户升级</view>
-        <view v-if="currentTab == 0">
-          <view class="input-title">爱好:</view
-          ><input
-            type="text"
-            @input="userLoveinput"
-            v-model="userLove"
-            class="input-detail"
-          />
-          <view class="input-title">工作地址:</view
-          ><input
-            type="text"
-            @input="userWorkliveinput"
-            v-model="userWorklive"
-            class="input-detail"
-          />
-        </view>
-        <view v-if="currentTab == 1">
-          <view class="input-title">家庭住址:</view
-          ><input
-            type="text"
-            @input="userHomeinput"
-            v-model="userHome"
-            class="input-detail"
-          />
-          <view class="input-title">生日:</view
-          ><input
-            type="text"
-            @input="userBirthdayinput"
-            v-model="userBirthday"
-            class="input-detail"
-          />
-        </view>
-        <view class="button-background">
-          <view class="top-button" @click="submituserUp">提交</view>
-          <view class="bottom-button" @click="close">取消</view>
-        </view>
-      </view>
-    </uni-popup>
-    <!-- 用户增加 -->
-    <uni-popup ref="useradd" type="center">
-      <view class="detail-window">
-        <view>
-          <view class="title">用户添加</view>
-          <view class="input-title">姓名:</view
-          ><input
-            type="text"
-            @input="userNameinput"
-            placeholder="请输入姓名"
-            class="input-detail"
-          />
-          <view class="input-title"> 选择性别:</view>
-          <view>
-            <uni-data-select
-              v-model="value"
-              :localdata="range"
-              @change="change"
-            ></uni-data-select>
-          </view>
-          <view class="input-title">手机号:</view
-          ><input
-            type="text"
-            @input="userPhoneinput"
-            placeholder="请输入手机号"
-            class="input-detail"
-          />
-          <view class="input-title">职业类型:</view
-          ><input
-            type="text"
-            @input="userProfessioninput"
-            placeholder="请输入职业类型"
-            class="input-detail"
-          />
-        </view>
-        <view class="input-title">所属业务员:</view
-        ><input
-          type="text"
-          @input="belongsSalesmaninput"
-          placeholder="请输入业务员姓名"
-          class="input-detail"
-        />
+					<view class="input-title">姓名:</view><input
+						v-model="userName"
+						type="text"
+						disabled="ture"
+						class="input-detail"
+						@input="userNameinput"
+					/>
+					<view class="input-title">手机号:</view><input
+						v-model="userPhone"
+						type="text"
+						disabled="ture"
+						class="input-detail"
+						@input="userPhoneinput"
+					/>
+					<view class="input-title">职业类型:</view><input
+						v-model="userProfession"
+						type="text"
+						disabled="ture"
+						class="input-detail"
+						@input="userProfessioninput"
+					/>
+					<view v-if="currentTab == 1">
+						<view class="input-title">爱好:</view><input
+							v-model="userLove"
+							type="text"
+							disabled="ture"
+							class="input-detail"
+							@input="userLoveinput"
+						/>
+						<view class="input-title">工作地址:</view><input
+							v-model="userWorklive"
+							type="text"
+							disabled="ture"
+							class="input-detail"
+							@input="userWorkliveinput"
+						/>
+					</view>
+					<view v-if="currentTab == 2">
+						<view class="input-title">爱好:</view><input
+							v-model="userLove"
+							type="text"
+							disabled="ture"
+							class="input-detail"
+							@input="userLoveinput"
+						/>
+						<view class="input-title">工作地址:</view><input
+							v-model="userWorklive"
+							type="text"
+							disabled="ture"
+							class="input-detail"
+							@input="userWorkliveinput"
+						/>
+						<view class="input-title">家庭住址:</view><input
+							v-model="userHome"
+							type="text"
+							disabled="ture"
+							class="input-detail"
+							@input="userHomeinput"
+						/>
+						<view class="input-title">生日:</view><input
+							v-model="userBirthday"
+							type="text"
+							disabled="ture"
+							class="input-detail"
+							@input="userBirthdayinput"
+						/>
+					</view>
+				</view>
+				<view class="button-background">
+					<!-- <view class="top-button" @click="submit">提交</view> -->
+					<view class="bottom-button" @click="close">取消</view>
+				</view>
+			</view>
+		</uni-popup>
+		<!-- 用户升级 -->
+		<uni-popup ref="userUp" type="center">
+			<view class="detail-window">
+				<view class="title">用户升级</view>
+				<view v-if="currentTab == 0">
+					<view class="input-title">爱好:</view><input
+						v-model="userLove"
+						type="text"
+						class="input-detail"
+						@input="userLoveinput"
+					/>
+					<view class="input-title">工作地址:</view><input
+						v-model="userWorklive"
+						type="text"
+						class="input-detail"
+						@input="userWorkliveinput"
+					/>
+				</view>
+				<view v-if="currentTab == 1">
+					<view class="input-title">家庭住址:</view><input
+						v-model="userHome"
+						type="text"
+						class="input-detail"
+						@input="userHomeinput"
+					/>
+					<view class="input-title">生日:</view><input
+						v-model="userBirthday"
+						type="text"
+						class="input-detail"
+						@input="userBirthdayinput"
+					/>
+				</view>
+				<view class="button-background">
+					<view class="top-button" @click="submituserUp">提交</view>
+					<view class="bottom-button" @click="close">取消</view>
+				</view>
+			</view>
+		</uni-popup>
+		<!-- 用户增加 -->
+		<uni-popup ref="useradd" type="center">
+			<view class="detail-window">
+				<view>
+					<view class="title">用户添加</view>
+					<view class="input-title">姓名:</view><input
+						type="text"
+						placeholder="请输入姓名"
+						class="input-detail"
+						@input="userNameinput"
+					/>
+					<view class="input-title"> 选择性别:</view>
+					<view>
+						<uni-data-select
+							v-model="value"
+							:localdata="range"
+							@change="change"
+						></uni-data-select>
+					</view>
+					<view class="input-title">手机号:</view><input
+						type="text"
+						placeholder="请输入手机号"
+						class="input-detail"
+						@input="userPhoneinput"
+					/>
+					<view class="input-title">职业类型:</view><input
+						type="text"
+						placeholder="请输入职业类型"
+						class="input-detail"
+						@input="userProfessioninput"
+					/>
+				</view>
+				<view class="input-title">所属业务员:</view><input
+					type="text"
+					placeholder="请输入业务员姓名"
+					class="input-detail"
+					@input="belongsSalesmaninput"
+				/>
 
-        <view class="input-title">业务员所属部门:</view
-        ><input
-          type="text"
-          @input="belongsDepartmentinput"
-          placeholder="请输入业务员所属部门"
-          class="input-detail"
-        />
+				<view class="input-title">业务员所属部门:</view><input
+					type="text"
+					placeholder="请输入业务员所属部门"
+					class="input-detail"
+					@input="belongsDepartmentinput"
+				/>
 
-        <view class="button-background">
-          <view class="top-button" @click="submitAdduser">提交</view>
-          <view class="bottom-button" @click="close">取消</view>
-        </view>
-      </view>
-    </uni-popup>
-    <view class="addimg">
-      <img
-        v-if="currentTab == 0"
-        class="img"
-        src="	
+				<view class="button-background">
+					<view class="top-button" @click="submitAdduser">提交</view>
+					<view class="bottom-button" @click="close">取消</view>
+				</view>
+			</view>
+		</uni-popup>
+		<view class="addimg">
+			<img
+				v-if="currentTab == 0"
+				class="img"
+				src="
 https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ifpelt2gfb91mkkrxy1n.png"
-        alt=""
-        @click="useradd"
-      />
-    </view>
-    <!-- 提示弹窗 -->
-    <view>
-      <uni-popup ref="windowtext" type="center">
-        <view>{{ windowtext }}</view>
-      </uni-popup>
-    </view>
-  </view>
+				alt=""
+				@click="useradd"
+			/>
+		</view>
+		<!-- 提示弹窗 -->
+		<view>
+			<uni-popup ref="windowtext" type="center">
+				<view>{{ windowtext }}</view>
+			</uni-popup>
+		</view>
+	</view>
 </template>
 
 <script>
-import { searchWuliuApi } from "../../../api/logistics";
 import {
-  upbussinessApi,
-  queryMsgSentryListApi,
-  saveMsgSentryApi,
-} from "../../../api/user";
-import { getUserId } from "../../../utils";
+	upbussinessApi,
+	queryMsgSentryListApi,
+	saveMsgSentryApi
+} from '../../../api/user'
+import { getUserId } from '../../../utils'
 export default {
-  data() {
-    return {
-      inputValue: "",
-      currentTab: 0,
-      id: "",
-      userId: "",
-      status: "5",
-      userName: "",
-      userPhone: "",
-      userProfession: "",
-      userLove: "",
-      userHome: "",
-      userWorklive: "",
-      userBirthday: "",
-      belongsSalesman: "",
-      belongsDepartment: "",
-      searchinput: "",
-      windowtext: "",
-      userlist: [],
-      value: 0,
-      range: [
-        { value: 0, text: "未知" },
-        { value: 1, text: "男士" },
-        { value: 2, text: "女士" },
-      ],
-    };
-  },
-  methods: {
-    change(e) {
-      console.log("e:", e);
-      this.userGender = e;
-      console.log("usergender", this.userGender);
-    },
-    async levelUp() {
-      const res = await upbussinessApi({
-        // id: getUserId(),
-        id: this.id,
-        status: this.status * 1 + 1,
-        hobby: this.userLove,
-        workingPlace: this.userWorklive,
-        homeAddress: this.userHome,
-        birthday: this.userBirthday,
-      });
+	data() {
+		return {
+			inputValue: '',
+			currentTab: 0,
+			id: '',
+			userId: '',
+			status: '5',
+			userName: '',
+			userPhone: '',
+			userProfession: '',
+			userLove: '',
+			userHome: '',
+			userWorklive: '',
+			userBirthday: '',
+			belongsSalesman: '',
+			belongsDepartment: '',
+			searchinput: '',
+			windowtext: '',
+			userlist: [],
+			value: 0,
+			range: [
+				{ value: 0, text: '未知' },
+				{ value: 1, text: '男士' },
+				{ value: 2, text: '女士' }
+			]
+		}
+	},
+	mounted() {
+		this.queryMsgSentryList()
+	},
+	methods: {
+		change(e) {
+			console.log('e:', e)
+			this.userGender = e
+			console.log('usergender', this.userGender)
+		},
+		async levelUp() {
+			const res = await upbussinessApi({
+				// id: getUserId(),
+				id: this.id,
+				status: this.status * 1 + 1,
+				hobby: this.userLove,
+				workingPlace: this.userWorklive,
+				homeAddress: this.userHome,
+				birthday: this.userBirthday
+			})
 
-      if (res.errno == 0) {
-        uni.showToast({
-          title: "升级成功",
-          icon: "success",
-          mask: true,
-        });
-      } else {
-        uni.showToast({
-          title: "升级成功",
-          icon: "success",
-          mask: true,
-        });
-        // uni.showToast({
-        //   title: "升级失败",
-        //   icon: "none",
-        //   mask: true,
-        // });
-      }
-      this.queryMsgSentryList();
-    },
-    async queryMsgSentryList() {
-      const res = await queryMsgSentryListApi({
-        userId: getUserId(),
-        // userId: 200,
-        status: this.status * 1,
-        // search:this.searchinput,搜索晚点搞
-      });
-      this.userlist = res;
-      console.log(res);
-      if (res.errno == 780 || res.errmsg == "该用户还不是业务员") {
-        uni.showToast({
-          title: res.errmsg,
-          icon: "none",
-          mask: true,
-        });
-        setTimeout(() => {
-          uni.switchTab({ url: "/pages/user/user" });
-        }, 2000);
-      }
-    },
-    async saveMsgSentry() {
-      const res = await saveMsgSentryApi({
-        brandUserId: getUserId(),
-        userName: this.userName,
-        userGender: this.userGender,
-        userTel: this.userPhone,
-        professional: this.userProfession,
-        belongsSalesman: this.belongsSalesman,
-        belongsDepartment: this.belongsDepartment,
-      });
-      console.log(res);
-      if (res.errno == 0) {
-        uni.showToast({
-          title: "添加成功",
-          icon: "success",
-          mask: true,
-        });
-      } else {
-        uni.showToast({
-          title: "添加失败",
-          icon: "none",
-          mask: true,
-        });
-      }
-      this.queryMsgSentryList();
-    },
+			if (res.errno == 0) {
+				uni.showToast({
+					title: '升级成功',
+					icon: 'success',
+					mask: true
+				})
+			} else {
+				uni.showToast({
+					title: '升级成功',
+					icon: 'success',
+					mask: true
+				})
+				// uni.showToast({
+				//   title: "升级失败",
+				//   icon: "none",
+				//   mask: true,
+				// });
+			}
+			this.queryMsgSentryList()
+		},
+		async queryMsgSentryList() {
+			const res = await queryMsgSentryListApi({
+				userId: getUserId(),
+				// userId: 200,
+				status: this.status * 1
+				// search:this.searchinput,搜索晚点搞
+			})
+			this.userlist = res
+			console.log(res)
+			if (res.errno == 780 || res.errmsg == '该用户还不是业务员') {
+				uni.showToast({
+					title: res.errmsg,
+					icon: 'none',
+					mask: true
+				})
+				setTimeout(() => {
+					uni.switchTab({ url: '/pages/user/user' })
+				}, 2000)
+			}
+		},
+		async saveMsgSentry() {
+			const res = await saveMsgSentryApi({
+				brandUserId: getUserId(),
+				userName: this.userName,
+				userGender: this.userGender,
+				userTel: this.userPhone,
+				professional: this.userProfession,
+				belongsSalesman: this.belongsSalesman,
+				belongsDepartment: this.belongsDepartment
+			})
+			console.log(res)
+			if (res.errno == 0) {
+				uni.showToast({
+					title: '添加成功',
+					icon: 'success',
+					mask: true
+				})
+			} else {
+				uni.showToast({
+					title: '添加失败',
+					icon: 'none',
+					mask: true
+				})
+			}
+			this.queryMsgSentryList()
+		},
 
-    userNameinput: function (event) {
-      this.userName = event.target.value;
-      console.log(event.target.value);
-    },
-    userPhoneinput: function (event) {
-      this.userPhone = event.target.value;
-      console.log(event.target.value);
-    },
-    userProfessioninput: function (event) {
-      this.userProfession = event.target.value;
-      console.log(event.target.value);
-    },
-    belongsSalesmaninput: function (event) {
-      this.belongsSalesman = event.target.value;
-      console.log(event.target.value);
-    },
-    belongsDepartmentinput: function (event) {
-      this.belongsDepartment = event.target.value;
-      console.log(event.target.value);
-    },
-    userLoveinput: function (event) {
-      this.userLove = event.target.value;
-      console.log(event.target.value);
-    },
-    userWorkliveinput: function (event) {
-      this.userWorklive = event.target.value;
-      console.log(event.target.value);
-    },
-    userLoveinput: function (event) {
-      this.userLove = event.target.value;
-      console.log(event.target.value);
-    },
-    userWorkliveinput: function (event) {
-      this.userWorklive = event.target.value;
-      console.log(event.target.value);
-    },
-    userHomeinput: function (event) {
-      this.userHome = event.target.value;
-      console.log(event.target.value);
-    },
-    open() {
-      this.$refs.popup.open();
-      this.userNameinput = "";
-      this.userPhoneinput = "";
-      this.userProfessioninput = "";
-      this.belongsSalesmaninput = "";
-      this.belongsDepartmentinput = "";
-      this.userLoveinput = "";
-      this.userWorkliveinput = "";
-      this.userLoveinput = "";
-      this.userWorkliveinput = "";
-      this.userHomeinput = "";
-    },
-    /**
+		userNameinput(event) {
+			this.userName = event.target.value
+			console.log(event.target.value)
+		},
+		userPhoneinput(event) {
+			this.userPhone = event.target.value
+			console.log(event.target.value)
+		},
+		userProfessioninput(event) {
+			this.userProfession = event.target.value
+			console.log(event.target.value)
+		},
+		belongsSalesmaninput(event) {
+			this.belongsSalesman = event.target.value
+			console.log(event.target.value)
+		},
+		belongsDepartmentinput(event) {
+			this.belongsDepartment = event.target.value
+			console.log(event.target.value)
+		},
+		userLoveinput(event) {
+			this.userLove = event.target.value
+			console.log(event.target.value)
+		},
+		userWorkliveinput(event) {
+			this.userWorklive = event.target.value
+			console.log(event.target.value)
+		},
+		userLoveinput(event) {
+			this.userLove = event.target.value
+			console.log(event.target.value)
+		},
+		userWorkliveinput(event) {
+			this.userWorklive = event.target.value
+			console.log(event.target.value)
+		},
+		userHomeinput(event) {
+			this.userHome = event.target.value
+			console.log(event.target.value)
+		},
+		open() {
+			this.$refs.popup.open()
+			this.userNameinput = ''
+			this.userPhoneinput = ''
+			this.userProfessioninput = ''
+			this.belongsSalesmaninput = ''
+			this.belongsDepartmentinput = ''
+			this.userLoveinput = ''
+			this.userWorkliveinput = ''
+			this.userLoveinput = ''
+			this.userWorkliveinput = ''
+			this.userHomeinput = ''
+		},
+
+		/**
      * 点击取消按钮触发
      * @param {Object} done
      */
-    close() {
-      // TODO 做一些其他的事情，before-close 为true的情况下，手动执行 close 才会关闭对话框
-      // ...
 
-      this.$refs.popup.close();
-      this.$refs.userUp.close();
+		close() {
+			// TODO 做一些其他的事情，before-close 为true的情况下，手动执行 close 才会关闭对话框
+			// ...
 
-      this.$refs.useradd.close();
+			this.$refs.popup.close()
+			this.$refs.userUp.close()
 
-      this.$refs.windowtext.close();
-    },
-    /**
+			this.$refs.useradd.close()
+
+			this.$refs.windowtext.close()
+		},
+
+		/**
      * 点击确认按钮触发
      * @param {Object} done
      * @param {Object} value
      */
-    confirm(value) {
-      // 输入框的值
-      console.log(value);
-      // TODO 做一些其他的事情，手动执行 close 才会关闭对话框
-      // ...
-      this.$refs.popup.close();
-    },
-    submit() {
-      console.log(this.userName);
-      console.log(this.userPhone);
-      console.log(this.userProfession);
-      console.log(this.userLove);
-      console.log(this.userHome);
-      console.log(this.userWorklive);
-      console.log(this.userBirthday);
-      this.$refs.popup.close("center");
-    },
-    submituserUp() {
-      console.log(this.userName);
-      console.log(getUserId());
-      console.log(this.status);
-      console.log(this.userPhone);
-      console.log(this.userProfession);
-      console.log(this.userLove);
-      console.log(this.userHome);
-      console.log(this.userWorklive);
-      console.log(this.userBirthday);
 
-      this.levelUp();
-      this.$refs.userUp.close("center");
-    },
-    submitAdduser() {
-      console.log(this.userName);
-      console.log(this.userPhone);
-      console.log(this.userProfession);
-      // this.levelUp()
-      if (!this.userName) {
-        this.windowtext = "姓名不能为空";
-        this.$refs.windowtext.open("center");
-      } else if (!this.userPhone) {
-        this.windowtext = "手机号不能为空";
-        this.$refs.windowtext.open("center");
-        console.log("手机号不能为空");
-      } else if (!this.userProfession) {
-        this.windowtext = "职业不能为空";
-        this.$refs.windowtext.open("center");
-        console.log("职业不能为空");
-      } else if (!this.belongsSalesman) {
-        this.windowtext = "所属业务员不能为空";
-        this.$refs.windowtext.open("center");
-        console.log("所属业务员不能为空");
-      } else if (!this.belongsDepartment) {
-        this.windowtext = "业务员部门不能为空";
-        this.$refs.windowtext.open("center");
-        console.log("业务员部门不能为空");
-      } else {
-        this.saveMsgSentry();
-      }
-      this.$refs.useradd.close("center");
-    },
-    changeTab(tab) {
-      this.currentTab = tab;
+		confirm(value) {
+			// 输入框的值
+			console.log(value)
+			// TODO 做一些其他的事情，手动执行 close 才会关闭对话框
+			// ...
+			this.$refs.popup.close()
+		},
+		submit() {
+			console.log(this.userName)
+			console.log(this.userPhone)
+			console.log(this.userProfession)
+			console.log(this.userLove)
+			console.log(this.userHome)
+			console.log(this.userWorklive)
+			console.log(this.userBirthday)
+			this.$refs.popup.close('center')
+		},
+		submituserUp() {
+			console.log(this.userName)
+			console.log(getUserId())
+			console.log(this.status)
+			console.log(this.userPhone)
+			console.log(this.userProfession)
+			console.log(this.userLove)
+			console.log(this.userHome)
+			console.log(this.userWorklive)
+			console.log(this.userBirthday)
 
-      if (tab == 0) {
-        this.status = 5;
-      } else if (tab == 1) {
-        this.status = 6;
-      } else if (tab == 2) {
-        this.status = 7;
-      }
-      this.queryMsgSentryList();
-    },
-    back() {
-      uni.switchTab({
-        url: "/pages/user/user",
-      });
-    },
-    window: function (e) {
-      this.id = e.currentTarget.dataset.list.id;
-      this.userName = e.currentTarget.dataset.list.userName;
-      this.userPhone = e.currentTarget.dataset.list.userTel;
-      this.userProfession = e.currentTarget.dataset.list.professional;
-      this.userLove = e.currentTarget.dataset.list.hobby;
-      this.userHome = e.currentTarget.dataset.list.homeAddress;
-      this.userWorklive = e.currentTarget.dataset.list.workingPlace;
-      this.userBirthday = e.currentTarget.dataset.list.birthday;
-      this.$refs.popup.open("center");
-    },
-    userUp: function (e) {
-      this.id = e.currentTarget.dataset.list.id;
-      this.userName = e.currentTarget.dataset.list.userName;
-      this.userPhone = e.currentTarget.dataset.list.userTel;
-      this.userProfession = e.currentTarget.dataset.list.userProfession;
-      this.userLove = e.currentTarget.dataset.list.userLove;
-      this.userHome = e.currentTarget.dataset.list.userHome;
-      this.userWorklive = e.currentTarget.dataset.list.userWorklive;
-      this.userBirthday = e.currentTarget.dataset.list.userBirthday;
-      this.$refs.userUp.open("center");
-    },
-    useradd: function (e) {
-      this.$refs.useradd.open("center");
-    },
-  },
-  mounted() {
-    this.queryMsgSentryList();
-  },
-};
+			this.levelUp()
+			this.$refs.userUp.close('center')
+		},
+		submitAdduser() {
+			console.log(this.userName)
+			console.log(this.userPhone)
+			console.log(this.userProfession)
+			// this.levelUp()
+			if (!this.userName) {
+				this.windowtext = '姓名不能为空'
+				this.$refs.windowtext.open('center')
+			} else if (!this.userPhone) {
+				this.windowtext = '手机号不能为空'
+				this.$refs.windowtext.open('center')
+				console.log('手机号不能为空')
+			} else if (!this.userProfession) {
+				this.windowtext = '职业不能为空'
+				this.$refs.windowtext.open('center')
+				console.log('职业不能为空')
+			} else if (!this.belongsSalesman) {
+				this.windowtext = '所属业务员不能为空'
+				this.$refs.windowtext.open('center')
+				console.log('所属业务员不能为空')
+			} else if (!this.belongsDepartment) {
+				this.windowtext = '业务员部门不能为空'
+				this.$refs.windowtext.open('center')
+				console.log('业务员部门不能为空')
+			} else {
+				this.saveMsgSentry()
+			}
+			this.$refs.useradd.close('center')
+		},
+		changeTab(tab) {
+			this.currentTab = tab
+
+			if (tab == 0) {
+				this.status = 5
+			} else if (tab == 1) {
+				this.status = 6
+			} else if (tab == 2) {
+				this.status = 7
+			}
+			this.queryMsgSentryList()
+		},
+		back() {
+			uni.switchTab({
+				url: '/pages/user/user'
+			})
+		},
+		window(e) {
+			this.id = e.currentTarget.dataset.list.id
+			this.userName = e.currentTarget.dataset.list.userName
+			this.userPhone = e.currentTarget.dataset.list.userTel
+			this.userProfession = e.currentTarget.dataset.list.professional
+			this.userLove = e.currentTarget.dataset.list.hobby
+			this.userHome = e.currentTarget.dataset.list.homeAddress
+			this.userWorklive = e.currentTarget.dataset.list.workingPlace
+			this.userBirthday = e.currentTarget.dataset.list.birthday
+			this.$refs.popup.open('center')
+		},
+		userUp(e) {
+			this.id = e.currentTarget.dataset.list.id
+			this.userName = e.currentTarget.dataset.list.userName
+			this.userPhone = e.currentTarget.dataset.list.userTel
+			this.userProfession = e.currentTarget.dataset.list.userProfession
+			this.userLove = e.currentTarget.dataset.list.userLove
+			this.userHome = e.currentTarget.dataset.list.userHome
+			this.userWorklive = e.currentTarget.dataset.list.userWorklive
+			this.userBirthday = e.currentTarget.dataset.list.userBirthday
+			this.$refs.userUp.open('center')
+		},
+		useradd(e) {
+			this.$refs.useradd.open('center')
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>

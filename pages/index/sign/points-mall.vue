@@ -21,14 +21,19 @@
 			</view>
 		</view>
 		<view class="background">
-			<view class="item" v-for="good in goods" :key="good.id">
+			<view v-for="good in goods" :key="good.id" class="item">
 				<view class="good">
 					<image :src="good.icon" mode="" />
 				</view>
 				<view class="info">
 					<view class="good-name">{{ good.name }}</view>
-					<view class="price">券后: <text style="font-size: 28upx;color: #FA5151;padding-left: 8upx;">￥{{ good.discount }}</text><text
-							style="font-size: 24upx;color: #999999;text-decoration: line-through;">￥{{ good.price }}</text></view>
+					<view class="price">
+						券后: <text style="font-size: 28upx;color: #FA5151;padding-left: 8upx;">￥{{ good.discount }}</text><text
+							style="font-size: 24upx;color: #999999;text-decoration: line-through;"
+						>
+							￥{{ good.price }}
+						</text>
+					</view>
 				</view>
 				<view class="exchange">
 					<view class="num">
@@ -45,27 +50,27 @@
 <script>
 import { goods } from './data'
 export default {
-	name: "Points-mall",
+	name: 'PointsMall',
 	props: {
 
 	},
 	data() {
 		return {
-			goods,
+			goods
 		}
 	},
+	created() { },
 	methods: {
 		handleBack() {
-			console.log(1)
-			uni.navigateTo({
-				url: '/user/my-tools/daily-attendance/index',
-				// fail:(res) => {
-				// 	console.log(res)
-				// }
-			})
-		},
-	},
-	created() { }
+			// uni.navigateTo({
+			// 	url: '/user/my-tools/daily-attendance/index',
+			// 	// fail:(res) => {
+			// 	// 	console.log(res)
+			// 	// }
+			// })
+			uni.navigateBack()
+		}
+	}
 }
 </script>
 
@@ -197,7 +202,6 @@ export default {
 					height: 142upx;
 				}
 			}
-
 
 			.info {
 				display: flex;

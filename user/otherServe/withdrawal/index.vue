@@ -21,11 +21,11 @@
 				<!-- <view class="title">提现金额</view> -->
 				<view class="inp">
 					<view class="icon">￥</view>
-					<input v-model.number="withdrawalAmount" class="input" type="number" placeholder="请输入提现金额" />
+					<input v-model.number="withdrawalAmount" class="input" type="digit" placeholder="请输入提现金额" />
 
 					<view class="error">{{ errMsg }}</view>
 					<view v-if="!errMsg" class="final-price">
-						手续费：{{ withdrawalForm.withdrawCharge || '--' }} 元
+						手续费：{{ typeof withdrawalForm.withdrawCharge === 'number' ? withdrawalForm.withdrawCharge : '--' }} 元
 					</view>
 				</view>
 
@@ -58,7 +58,7 @@ export default {
 			withdrawalForm: {
 				type: '',
 				withdrawBankId: '',
-				withdrawCharge: 0
+				withdrawCharge: ''
 			},
 			tempwithdrawBankName: '请选择提现方式',
 			bankCardList: [],

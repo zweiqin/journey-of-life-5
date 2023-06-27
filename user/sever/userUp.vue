@@ -29,7 +29,7 @@
 		</view>
 		<view style="padding: 0 38upx 140upx;">
 			<view style="font-size: 32upx;font-weight: bold;">会员升级</view>
-			<view style="display: flex;justify-content: space-between;flex-wrap: wrap;margin-top: 40upx;">
+			<view style="display: flex;justify-content: space-evenly;flex-wrap: wrap;margin-top: 40upx;">
 				<view
 					v-for="item in packageMemberList" :key="item.id"
 					style="position: relative;display: flex;flex-direction: column;justify-content: center;align-items: center;width: 30%;padding: 30upx 8upx;background-color: #fdf8e2;"

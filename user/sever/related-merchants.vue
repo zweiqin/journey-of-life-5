@@ -12,7 +12,7 @@
 
 			<view v-show="currentTab === 0">
 				<view v-if="merchantsList && merchantsList.length">
-					<BeeBrandPane v-for="item in merchantsList" :key="item.id" :brand-info="item"></BeeBrandPane>
+					<BeeBrandPane v-for="item in merchantsList" :key="item.id" :is-positioning="false" :brand-info="item"></BeeBrandPane>
 				</view>
 				<view v-else>
 					<tui-no-data>暂无数据</tui-no-data>
@@ -21,7 +21,7 @@
 
 			<view v-show="currentTab === 1">
 				<view v-if="merchantsBePendingList && merchantsBePendingList.length">
-					<BeeBrandPane v-for="item in merchantsBePendingList" :key="item.id" :brand-info="item"></BeeBrandPane>
+					<BeeBrandPane v-for="item in merchantsBePendingList" :key="item.id" :is-positioning="false" :brand-info="item"></BeeBrandPane>
 				</view>
 				<view v-else>
 					<tui-no-data>暂无数据</tui-no-data>

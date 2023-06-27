@@ -82,6 +82,10 @@
 				<view class="title">实付金额</view>
 				<view class="text" style="color: red">￥{{ data.orderInfo.actualPrice }}</view>
 			</view>
+			<view class="line">
+				<view class="title" style="min-width: 10%;">备注</view>
+				<view class="text">{{ data.orderInfo.message }}</view>
+			</view>
 		</view>
 
 		<!-- <view v-if="data" class="order-detail-footer">
@@ -285,7 +289,7 @@ export default {
 
     .line {
       display: flex;
-      align-items: center;
+      // align-items: center;
       justify-content: space-between;
       font-size: 24upx;
       padding: 10upx 0;

@@ -322,25 +322,6 @@
 					}
 				},
 				{
-					"path": "my-tools/smart-album/index",
-					"style": {
-						"navigationBarTitleText": "智能画册",
-						"onReachBottomDistance": 0
-					}
-				},
-				{
-					"path": "my-tools/smart-album/add-album",
-					"style": {
-						"navigationBarTitleText": "新建画册"
-					}
-				},
-				{
-					"path": "my-tools/smart-album/album-detail",
-					"style": {
-						"navigationBarTitleText": "画册详情"
-					}
-				},
-				{
 					"path": "my-tools/my-comment/index",
 					"style": {
 						"navigationBarTitleText": "我的评价"
@@ -380,6 +361,12 @@
 					"path": "marketing-tools/group-buying/group-buying-form",
 					"style": {
 						"navigationBarTitleText": "团购规则表单"
+					}
+				},
+				{
+					"path": "marketing-tools/group-list/index",
+					"style": {
+						"navigationBarTitleText": "团购列表"
 					}
 				},
 				{
@@ -454,15 +441,15 @@
 						"usingComponents": {}
 					}
 				},
-				{
-					"path": "subscription/subscription",
-					"style": {
-						"navigationBarTitleText": "",
-						"usingComponents": {
-							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
-						}
-					}
-				},
+				// {
+				// 	"path": "subscription/subscription",
+				// 	"style": {
+				// 		"navigationBarTitleText": "",
+				// 		"usingComponents": {
+				// 			"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
+				// 		}
+				// 	}
+				// },
 				{
 					"path": "sever/shop-car",
 					"style": {
@@ -478,6 +465,18 @@
 					}
 				},
 				{
+					"path": "sever/my-group-purchase/index",
+					"style": {
+						"navigationBarTitleText": "我的拼团"
+					}
+				},
+				{
+					"path": "sever/my-group-purchase/group-purchase-detail",
+					"style": {
+						"navigationBarTitleText": "拼团详情"
+					}
+				},
+				{
 					"path": "sever/userUp",
 					"style": {
 						"navigationBarTitleText": "会员升级"
@@ -489,6 +488,25 @@
 				// 		"navigationBarTitleText": "会员升级"
 				// 	}
 				// },
+				{
+					"path": "sever/smart-album/index",
+					"style": {
+						"navigationBarTitleText": "智能画册",
+						"onReachBottomDistance": 0
+					}
+				},
+				{
+					"path": "sever/smart-album/add-album",
+					"style": {
+						"navigationBarTitleText": "新建画册"
+					}
+				},
+				{
+					"path": "sever/smart-album/album-detail",
+					"style": {
+						"navigationBarTitleText": "画册详情"
+					}
+				},
 				{
 					"path": "sever/application-record/application-record",
 					"style": {

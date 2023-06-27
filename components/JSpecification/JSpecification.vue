@@ -7,13 +7,13 @@
 			}"
 		>
 			<view v-if="product" class="goods-info">
-				<image class="image" :src="(product && product.url) || data.info.picUrl" mode="" />
+				<image class="image" :src="common.seamingImgUrl((product && product.url) || data.info.picUrl)" mode="" />
 				<view class="info">
 					<view class="current-goods-price" style="display: flex;align-items: center;">
 						<text>￥{{ product.price }}</text>
 						<!-- v-if="data.info.voucherNum" -->
 						<text
-							style="height: 100%;padding: 6upx 12upx;background-color: #f0f0f0;color: #fa5151;border-radius: 22upx;vertical-align: middle;"
+							style="height: 100%;margin-left: 10upx;;padding: 6upx 12upx;background-color: #f0f0f0;color: #fa5151;border-radius: 22upx;vertical-align: middle;"
 						>
 							可使用{{ Math.ceil(Number(product.price)) }}代金券抵扣
 						</text>
@@ -48,6 +48,7 @@
 
 <script>
 export default {
+	name: 'JSpecification',
 	props: {
 		data: {
 			type: Object,
@@ -90,7 +91,6 @@ export default {
 					for (const sp of newVal.specificationList) {
 						this.sps[sp.name] = sp.valueList[0].value
 					}
-
 					this.getSpStr()
 					this.product = this.getProduct()
 				}
@@ -119,12 +119,10 @@ export default {
 			for (const sp in this.sps) {
 				str += this.sps[sp] + '，'
 			}
-
 			// this.spStr =
 			//   str +
 			//   this.number +
 			//   (this.data.info.unit + "").replaceAll("‘", "").replaceAll("’", "");
-
 			this.spStr = str + this.number + this.data.info.unit
 		},
 

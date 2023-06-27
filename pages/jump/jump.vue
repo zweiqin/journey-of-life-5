@@ -18,10 +18,20 @@
 				</view>
 				<view style="padding: 0 20upx;">
 					<view style="display: flex;justify-content: space-between;">
-						<view v-if="typeof orderInfo.orderInfo.goodsPrice === 'number'">总费用：<text style="color: red;">￥{{ orderInfo.orderInfo.goodsPrice }}</text></view>
-						<view v-if="typeof orderInfo.orderInfo.orderPrice === 'number'">订单费用：<text style="color: red;">￥{{ orderInfo.orderInfo.orderPrice }}</text></view>
+						<view v-if="typeof orderInfo.orderInfo.goodsPrice === 'number'">
+							总费用：<text style="color: red;">
+								￥{{ orderInfo.orderInfo.goodsPrice }}
+							</text>
+						</view>
+						<view v-if="typeof orderInfo.orderInfo.orderPrice === 'number'">
+							订单费用：<text style="color: red;">
+								￥{{ orderInfo.orderInfo.orderPrice }}
+							</text>
+						</view>
 					</view>
-					<view style="text-align: right;">实付费用：<text style="color: red;">￥{{ orderInfo.orderInfo.actualPrice }}</text></view>
+					<view style="text-align: right;">
+						实付费用：<text style="color: red;">￥{{ orderInfo.orderInfo.actualPrice }}</text>
+					</view>
 					<view style="margin-top: 12upx;padding-top: 12upx;;border-top: 1px solid #dddddd;">
 						<view style="display: flex;justify-content: space-between;font-size: 26upx;color: #999999;">
 							<text>创建时间：</text>
@@ -30,9 +40,16 @@
 					</view>
 				</view>
 			</view>
-			<view style="margin-top: 50upx;"><tui-input v-model="code" label="核销码" placeholder="请输入核销码" disabled></tui-input></view>
+			<view style="margin-top: 50upx;">
+				<tui-input v-model="code" label="核销码" placeholder="请输入核销码" disabled></tui-input>
+			</view>
 			<view>
-				<tui-button margin="20upx 0 0 auto" type="green" width="260rpx" shape="circle" @click="handleVerification()">确认核销</tui-button>
+				<tui-button
+					margin="20upx 0 0 auto" type="green" width="260rpx" shape="circle"
+					@click="handleVerification()"
+				>
+					确认核销
+				</tui-button>
 			</view>
 		</view>
 		<view v-else>

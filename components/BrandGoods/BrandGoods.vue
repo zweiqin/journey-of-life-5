@@ -3,7 +3,7 @@
 		<view style="max-height: 440upx;min-height: 120upx;overflow: hidden;">
 			<tui-lazyload-img
 				class="goods-img" mode="widthFix"
-				width="340rpx" height="auto" :src="common.seamingImgUrl(goodsData.picUrl)" @click="go('/pages/store/goods-detail/goods-detail?goodsId=' + goodsData.id)"
+				width="340rpx" height="auto" :src="common.seamingImgUrl(goodsData.picUrl)" @click="go(`/pages/store/goods-detail/goods-detail?goodsId=${goodsData.id}`)"
 			></tui-lazyload-img>
 		</view>
 
@@ -12,32 +12,56 @@
 		</view>
 
 		<view class="time">
-			<view class="wrapper" @click="go('/pages/store/goods-detail/goods-detail?goodsId=' + goodsData.id)">
+			<view class="wrapper" @click="go(`/pages/store/goods-detail/goods-detail?goodsId=${goodsData.id}`)">
 				<view class="price-wrapper">
-					<text class="price-text">￥{{ goodsData.counterPrice }}</text>
-					<text class="price-tag">4折</text>
+					<text class="price-text">￥{{ ruleId ? goodsData.counterPrice + grouponPrice : goodsData.counterPrice }}</text>
+					<text v-if="goodsData.isHot" class="price-tag">热卖</text>
 				</view>
 			</view>
 
-			<BeeIcon
-				:size="22" :src="require('../../../../static/brand/detail/add-icon.png')"
-				@click="$emit('add-car', goodsData)"
-			></BeeIcon>
+			<view v-if="ruleId">
+				<tui-button
+					type="danger" width="168rpx" height="60rpx" margin="0 10rpx 0 0"
+					style="border-radius: 50rpx;" @click="$emit('add', { ...goodsData, ruleId })"
+				>
+					发起团购
+				</tui-button>
+			</view>
+			<view v-else>
+				<BeeIcon
+					:size="22" :src="require('../../static/brand/detail/add-icon.png')"
+					@click="$emit('add', goodsData)"
+				></BeeIcon>
+			</view>
 		</view>
 
-		<view class="text_3">
-			<text>促销价共省71.2元</text>
+		<view style="display: flex;justify-content: space-between;padding: 0 10upx;;font-size: 26upx;color: #777777;">
+			<text>{{ goodsData.browse }}浏览量</text>
+			<text>销量 {{ goodsData.sales }}</text>
 		</view>
 	</view>
 </template>
 
 <script>
-import { getRandom } from '../../../../utils'
+import { getRandom } from '../../utils'
 export default {
 	props: {
 		goodsData: {
 			type: Object,
 			required: true
+		},
+
+		ruleId: {
+			type: Number,
+			default: ''
+		},
+		grouponPrice: {
+			type: Number,
+			default: 0
+		},
+		grouponMember: {
+			type: Number,
+			default: 0
 		}
 	},
 
@@ -65,7 +89,7 @@ export default {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		margin: 13upx 0;
+		margin: 10upx 0;
 
 		.wrapper {
 			.price-text {
@@ -90,26 +114,6 @@ export default {
 			background-color: #fa5151;
 			border-radius: 10upx;
 			color: #fff;
-		}
-	}
-
-	.text_3 {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-top: 10upx;
-
-		text {
-			font-size: 24upx;
-
-			&:nth-child(1) {
-				color: #777;
-				font-size: 20upx;
-			}
-
-			&:nth-child(2) {
-				color: #00b578;
-			}
 		}
 	}
 }

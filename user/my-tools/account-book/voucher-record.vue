@@ -7,13 +7,16 @@
 
 			<view v-if="voucherRecordList && voucherRecordList.length">
 				<view v-for="item in voucherRecordList" :key="item.id" style="padding: 24upx;background-color: #ffffff;">
-					<view style="font-size: 26upx;color: #999999;">
-						类型：
-						<text v-if="item.type === 1">代金券转赠</text>
-						<text v-else-if="item.type === 2">代金券充值</text>
-						<text v-else-if="item.type === 3">订单收入</text>
-						<text v-else-if="item.type === 4">佣金收入</text>
-						<text v-else>--</text>
+					<view style="display: flex;justify-content: space-between;align-items: center;font-size: 26upx;color: #999999;">
+						<view>
+							类型：
+							<text v-if="item.type === 1">代金券转赠</text>
+							<text v-else-if="item.type === 2">代金券充值</text>
+							<text v-else-if="item.type === 3">订单收入</text>
+							<text v-else-if="item.type === 4">佣金收入</text>
+							<text v-else>--</text>
+						</view>
+						<view>来源：{{ item.name || '未知' }}</view>
 					</view>
 					<view style="display: flex;justify-content: space-between;align-items: flex-end;margin-top: 12upx;">
 						<view>

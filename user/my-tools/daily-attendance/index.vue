@@ -4,7 +4,7 @@
 			<image src="../../../static/index/earn-money/back.png" mode="" @click="handleBack" />
 			<view class="points_buttom" @click="go('/pages/index/sign/points-mall')">
 				<image src="@/static/index/earn-money/jifen.png" mode="" />
-				<text>{{SignDetails.totalNum}}</text>
+				<text>{{ SignDetails.totalNum }}</text>
 				<image class="goToPointsMall" src="@/static/index/earn-money/youjiantou.png" mode="" />
 			</view>
 			<image src="@/static/index/earn-money/wenjian.png" mode="" />
@@ -14,26 +14,28 @@
 
 		<view class="middle">
 			<view class="date">
-				<view class="getMorePoints" @click="getSign"
-					v-if="weekList[lastSignIndex].flag?weekList[lastSignIndex].flag == 0:true">
+				<view
+					v-if="weekList[lastSignIndex].flag ? weekList[lastSignIndex].flag == 0 : true" class="getMorePoints"
+					@click="getSign"
+				>
 					<view class="getMorePoints_text"> 签到领积分 </view>
 				</view>
-				<view class="getMorePoints noanimation" @click="getSign" v-else>
+				<view v-else class="getMorePoints noanimation" @click="getSign">
 					<view class="getMorePoints_text"> 获取更多积分 </view>
 				</view>
 				<view class="SignIn">
 					<view class="SignIn_heade">
 						<view class="SignIn_headeText">
-							已连续签到<text>{{SignDetails.days}}</text>天，明天签到加{{SignDetails.number}}分
+							已连续签到<text>{{ SignDetails.days }}</text>天，明天签到加{{ SignDetails.number }}分
 						</view>
 						<view class="SignIn_warn">
 							<image class="goToPointsMall" src="@/static/index/earn-money/qiandao.png" mode="" />提醒我
 						</view>
 					</view>
 					<view class="SignI_Button">
-						<view v-for="(item,index) in weekList" :key="item" class="SignI_ButtonItem">
-							<view class="SignRound" :class="[{'isSignIn':item.flag == 1}]">
-								{{item.flag == 0?`+${item.integral}`:'√'}}
+						<view v-for="(item, index) in weekList" :key="item" class="SignI_ButtonItem">
+							<view class="SignRound" :class="[ { 'isSignIn': item.flag == 1 } ]">
+								{{ item.flag == 0 ? `+${item.integral}` : '√' }}
 							</view>
 							<view class="SignRound_text">
 								第{{ index + 1 }}天
@@ -51,7 +53,7 @@
 					<view class="i-left">
 						<view class="i-name">当前积分</view>
 						<view class="i-list">
-							<text>{{SignDetails.totalNum}}</text>
+							<text>{{ SignDetails.totalNum }}</text>
 							<image src="../../../static/index/sign/go.png" mode="" />
 						</view>
 					</view>
@@ -63,201 +65,205 @@
 </template>
 
 <script>
-	import Vue from "vue"
-	import {
-		addUserSignInApi,
-		getUserSignInListApi,
-		getUserSigninContinuousApi
-	} from "@/api/user"
-	import {
-		getUserId,
-		transformNumber
-	} from '@/utils'
-	// 引入的月签到组件 暂时搁置
-	// import youlanSignIn from "@/components/youlan-SignIn/youlan-SignIn.vue";
-	// import JCalendar from "@/components/j-calendar/j-calendar.vue";
-	export default {
-		name: "DailyAttendance",
-		components: {
-			// YoulanSignIn: youlanSignIn,
-			// JCalendar,
-		},
-		props: {},
-		data() {
-			return {
-				today: new Date().toISOString().slice(0, 10),
-				lastSignIndex: 0,
-				SignDetails: {},
-				weekName: ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
-				weekList: [{}],
-			};
-		},
-		computed: {
-			// 这里为已签到和未签到的天数的，因不符合需求暂时搁置，看后期如若需要再处理，不需要则删除
-			SignInDays: {
-				get() {
-					let arr = this.weekList.filter((item) => {
-						if (item.flag == 1) {
-							return item
-						}
-					})
-					return arr
-				}
-			},
-			DaysNosignin: {
-				get() {
-					let arr = this.weekList.filter((item) => {
-						if (item.flag == 1) {
-							return item
-						}
-					})
-					return arr
-				}
+import Vue from 'vue'
+import {
+	addUserSignInApi,
+	getUserSignInListApi,
+	getUserSigninContinuousApi
+} from '@/api/user'
+import {
+	getUserId,
+	transformNumber
+} from '@/utils'
+// 引入的月签到组件 暂时搁置
+// import youlanSignIn from "@/components/youlan-SignIn/youlan-SignIn.vue";
+// import JCalendar from "@/components/j-calendar/j-calendar.vue";
+export default {
+	name: 'DailyAttendance',
+	components: {
+		// YoulanSignIn: youlanSignIn,
+		// JCalendar,
+	},
+	props: {},
+	data() {
+		return {
+			today: new Date().toISOString()
+				.slice(0, 10),
+			lastSignIndex: 0,
+			SignDetails: {},
+			weekName: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
+			weekList: [ {} ]
+		}
+	},
+	computed: {
+		// 这里为已签到和未签到的天数的，因不符合需求暂时搁置，看后期如若需要再处理，不需要则删除
+		SignInDays: {
+			get() {
+				const arr = this.weekList.filter((item) => {
+					if (item.flag == 1) {
+						return item
+					}
+				})
+				return arr
 			}
 		},
-		created() {
-			this.getUserData()
-		},
-		methods: {
-			getUserData() {
-				// 获取当前连续签到日期和明天签到积分
-				getUserSigninContinuousApi({
-					userId: getUserId()
-				}).then(res => {
-					this.SignDetails = res.data
-					console.log(res.data)
-				}).catch(err => {
+		DaysNosignin: {
+			get() {
+				const arr = this.weekList.filter((item) => {
+					if (item.flag == 1) {
+						return item
+					}
+				})
+				return arr
+			}
+		}
+	},
+	created() {
+		this.getUserData()
+	},
+	methods: {
+		getUserData() {
+			// 获取当前连续签到日期和明天签到积分
+			getUserSigninContinuousApi({
+				userId: getUserId()
+			}).then((res) => {
+				this.SignDetails = res.data
+				console.log(res.data)
+			})
+				.catch((err) => {
 					console.log(err)
 				})
-				// 获取当前签到的信息，一个星期签到了多少天等等。。。。,并将这些数据整合到一个数组里面
-				getUserSignInListApi({
-					userId: getUserId()
-				}).then(res => {
-					// console.log(res.data)
-					res.data.data.forEach((item, index) => {
-						// 传统的数组方法在改变长度时Vue有时会不响应改变，因此调用这个方法来刷新 Vue.set(this.Array, index, {yourData})
-						// this.weekList[index] = {...this.weekList[index],...res.data.data[index]}
-						Vue.set(this.weekList, index, {
-							...res.data.data[index]
-						})
-					})
-					// 获取最后签到的天数的下标
-					this.lastSignIndex = function(arr) {
-						var lastIndex = -1; // 默认下标为 -1，表示未找到
-						for (var i = arr.length - 1; i >= 0; i--) {
-							if (arr[i].flag === 1) {
-								lastIndex = i;
-								break; // 找到后直接退出循环
-							}
-						}
-						return lastIndex;
-					}(this.weekList)
-					// 获取当前星期的日期
-					this.getWeekList();
-					// console.log(this.weekList)
-					// console.log(this.lastSignIndex)
-				}).catch(err => {
-					console.log(err)
-				})
-			},
-			handleBack() {
-				uni.switchTab({
-					url: "/pages/index/index",
-				});
-			},
-			updateSign(item) {
-				console.log(item);
-			},
-			refeshSignData(item) {
-				console.log(item);
-			},
-			signDate(item) {
-				console.log(item);
-			},
-			// 时间戳转日期格式
-			timestampToTime(timestamp) {
-				var date = new Date(timestamp)
-				var Y = date.getFullYear() + '-'
-				var M =
-					(date.getMonth() + 1 < 10 ?
-						'0' + (date.getMonth() + 1) :
-						date.getMonth() + 1) + '-'
-				var D = date.getDate()
-				return Y + M + D
-			},
-			timestampToEasyTime(timestamp) {
-				var date = new Date(timestamp);
-				var Y = date.getFullYear() + ".";
-				var M =
-					(date.getMonth() + 1 < 10 ? date.getMonth() + 1 : date.getMonth() + 1) +
-					".";
-				var D = date.getDate();
-				return M + D;
-			},
-			// 获取最开始签到的时间
-			getStarTimer() {
-				// console.log(this.lastSignIndex)
-				// console.log(this.lastSignIndex * 24 * 60 * 60 * 1000)
-				let startTime = new Date(new Date().getTime() - (this.lastSignIndex * 24 * 60 * 60 * 1000))
-				// startTime.setDate(); //获取AddDayCount天后的日期
-
-				var y = startTime.getFullYear();
-
-				var m = (startTime.getMonth() + 1) < 10 ? "0" + (startTime.getMonth() + 1) : (startTime.getMonth() +
-					1); //获取当前月份的日期，不足10补0
-
-				var d = startTime.getDate() < 10 ? "0" + startTime.getDate() : startTime.getDate(); //获取当前几号，不足10补0
-				return y + "-" + m + "-" + d;
-			},
-			getWeekList() {
-				let week = [];
-				for (var i = 0; i < 7; i++) {
-					let weekObj = {
-						// name: this.weekName[i],
-						date: "",
-						timeStamp: "",
-						easyDate: "",
-					};
-					week.push(weekObj);
-				}
-				let today = Number(new Date(this.getStarTimer()));
-
-				for (var right = 0; right < 7; right++) {
-					week[right].timeStamp =
-						today + (right) * 1000 * 60 * 60 * 24;
-				}
-				week.map((item) => {
-					item.date = this.timestampToTime(item.timeStamp);
-					item.easyDate = this.timestampToEasyTime(item.timeStamp);
-				});
-				week.forEach((item, index) => {
+			// 获取当前签到的信息，一个星期签到了多少天等等。。。。,并将这些数据整合到一个数组里面
+			getUserSignInListApi({
+				userId: getUserId()
+			}).then((res) => {
+				// console.log(res.data)
+				res.data.data.forEach((item, index) => {
+					// 传统的数组方法在改变长度时Vue有时会不响应改变，因此调用这个方法来刷新 Vue.set(this.Array, index, {yourData})
+					// this.weekList[index] = {...this.weekList[index],...res.data.data[index]}
 					Vue.set(this.weekList, index, {
-						...this.weekList[index],
-						...week[index]
+						...res.data.data[index]
 					})
 				})
-				console.log(week)
-				console.log(this.weekList)
-			},
-			getSign() {
-				addUserSignInApi({
-					userId: getUserId()
-				}).then(res => {
-					res.data.errno >= 0 ?
-						uni.showToast({
-							title: res.data.errmsg,
-							icon: 'success'
-						}) :
-						uni.showToast({
-							title: res.data.errmsg,
-							icon: 'error'
-						});
-						this.$forceUpdate()
+				// 获取最后签到的天数的下标
+				this.lastSignIndex = (function (arr) {
+					var lastIndex = -1 // 默认下标为 -1，表示未找到
+					for (var i = arr.length - 1; i >= 0; i--) {
+						if (arr[i].flag === 1) {
+							lastIndex = i
+							break // 找到后直接退出循环
+						}
+					}
+					return lastIndex
+				}(this.weekList))
+				// 获取当前星期的日期
+				this.getWeekList()
+				// console.log(this.weekList)
+				// console.log(this.lastSignIndex)
+			})
+				.catch((err) => {
+					console.log(err)
 				})
-				this.getUserData()
-			}
 		},
-	};
+		handleBack() {
+			// uni.switchTab({
+			// 	url: "/pages/index/index",
+			// });
+			uni.navigateBack()
+		},
+		updateSign(item) {
+			console.log(item)
+		},
+		refeshSignData(item) {
+			console.log(item)
+		},
+		signDate(item) {
+			console.log(item)
+		},
+		// 时间戳转日期格式
+		timestampToTime(timestamp) {
+			var date = new Date(timestamp)
+			var Y = date.getFullYear() + '-'
+			var M =
+				(date.getMonth() + 1 < 10
+					? '0' + (date.getMonth() + 1)
+					: date.getMonth() + 1) + '-'
+			var D = date.getDate()
+			return Y + M + D
+		},
+		timestampToEasyTime(timestamp) {
+			var date = new Date(timestamp)
+			var Y = date.getFullYear() + '.'
+			var M =
+				(date.getMonth() + 1 < 10 ? date.getMonth() + 1 : date.getMonth() + 1) +
+				'.'
+			var D = date.getDate()
+			return M + D
+		},
+		// 获取最开始签到的时间
+		getStarTimer() {
+			// console.log(this.lastSignIndex)
+			// console.log(this.lastSignIndex * 24 * 60 * 60 * 1000)
+			const startTime = new Date(new Date().getTime() - (this.lastSignIndex * 24 * 60 * 60 * 1000))
+			// startTime.setDate(); //获取AddDayCount天后的日期
+
+			var y = startTime.getFullYear()
+
+			var m = (startTime.getMonth() + 1) < 10 ? '0' + (startTime.getMonth() + 1) : startTime.getMonth() +
+				1 // 获取当前月份的日期，不足10补0
+
+			var d = startTime.getDate() < 10 ? '0' + startTime.getDate() : startTime.getDate() // 获取当前几号，不足10补0
+			return y + '-' + m + '-' + d
+		},
+		getWeekList() {
+			const week = []
+			for (var i = 0; i < 7; i++) {
+				const weekObj = {
+					// name: this.weekName[i],
+					date: '',
+					timeStamp: '',
+					easyDate: ''
+				}
+				week.push(weekObj)
+			}
+			const today = Number(new Date(this.getStarTimer()))
+
+			for (var right = 0; right < 7; right++) {
+				week[right].timeStamp =
+					today + right * 1000 * 60 * 60 * 24
+			}
+			week.map((item) => {
+				item.date = this.timestampToTime(item.timeStamp)
+				item.easyDate = this.timestampToEasyTime(item.timeStamp)
+			})
+			week.forEach((item, index) => {
+				Vue.set(this.weekList, index, {
+					...this.weekList[index],
+					...week[index]
+				})
+			})
+			console.log(week)
+			console.log(this.weekList)
+		},
+		getSign() {
+			addUserSignInApi({
+				userId: getUserId()
+			}).then((res) => {
+				res.data.errno >= 0
+					? uni.showToast({
+						title: res.data.errmsg,
+						icon: 'success'
+					})
+					: uni.showToast({
+						title: res.data.errmsg,
+						icon: 'error'
+					})
+				this.$forceUpdate()
+			})
+			this.getUserData()
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>

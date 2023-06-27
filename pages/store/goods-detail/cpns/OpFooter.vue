@@ -1,25 +1,29 @@
 <template>
-  <view class="op-footer-container">
-    <view class="total-price">
-      <text class="money-icon">￥</text>
-      <text class="total-orice">{{ totalPrice }}</text>
-      <!-- <text class="orgin-price">￥87</text>
-      <view class="discount">8.8折</view> -->
-    </view>
-    <view class="btn-wrapper">
-      <button class="bee-btn add-order">加入订单</button>
-      <button class="bee-btn pay" @click="$emit('pay')">立即购买</button>
-    </view>
-  </view>
+	<view class="op-footer-container">
+		<view class="total-price">
+			<text class="money-icon">￥</text>
+			<text class="total-orice">{{ totalPrice }}</text>
+			<!-- <text class="orgin-price">￥87</text>
+				<view class="discount">8.8折</view> -->
+		</view>
+		<view class="btn-wrapper">
+			<button class="bee-btn add-order" @click="$emit('add')">加入购物车</button>
+			<button class="bee-btn pay" @click="$emit('pay')">{{ btnText || '立即购买' }}</button>
+		</view>
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    totalPrice: {
-      type: [Number, String]
-    }
-  }
+	name: 'OpFooter',
+	props: {
+		totalPrice: {
+			type: [Number, String]
+		},
+		btnText: {
+			type: String
+		}
+	}
 }
 </script>
 

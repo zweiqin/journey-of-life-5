@@ -16,7 +16,7 @@
 						<view style="padding: 10upx 12upx;">
 							<view v-if="item.brief" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ item.brief }}</view>
 						</view>
-						<view style="display: flex;padding: 10upx 12upx;">
+						<view style="display: flex;flex-wrap: wrap;padding: 10upx 12upx;">
 							<tui-tag v-if="item.isAppoint" type="warning" padding="12rpx" margin="0 10rpx">预约商品</tui-tag>
 							<tui-tag v-if="item.isHot" type="danger" padding="12rpx" margin="0 10rpx">热卖</tui-tag>
 							<tui-tag v-if="item.isNew" type="green" padding="12rpx" margin="0 10rpx">新品</tui-tag>

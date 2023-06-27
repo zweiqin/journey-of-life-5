@@ -3,7 +3,7 @@
 		<view :class="{ fixed: scrollTop > 300 }">
 			<view class="search-header">
 				<tui-icon name="arrowleft" @click="handleBack"></tui-icon>
-				<SearchBar></SearchBar>
+				<SearchBar prevent @click="go('/pages/search-page/search-page')"></SearchBar>
 				<PhotoSearch></PhotoSearch>
 			</view>
 

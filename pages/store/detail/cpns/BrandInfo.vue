@@ -29,9 +29,7 @@
 			<view class="address-detail-info">
 				<view class="address-text">{{ brandDetail.address }}</view>
 				<view style="color: #777" class="address-text">
-					距你{{ brandDetail.distance ? (brandDetail.distance /
-						1000).toFixed(2) : 0
-					}}公里，驾车{{ brandDetail.driveTime }}分钟
+					距你{{ brandDetail.distance || 0 }}公里，驾车{{ brandDetail.driveTime }}分钟
 				</view>
 			</view>
 			<view class="op-menus">

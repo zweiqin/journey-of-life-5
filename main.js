@@ -110,6 +110,17 @@ Vue.mixin({
 			})
 		},
 
+		$copy(text, title = '复制成功') {
+			uni.setClipboardData({
+				data: text,
+				success: () => {
+					uni.showToast({
+						title
+					})
+				}
+			})
+		},
+
 		switchTab(url) {
 			if (!url) {
 				return

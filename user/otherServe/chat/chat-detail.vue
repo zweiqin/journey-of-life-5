@@ -130,7 +130,7 @@
 					<view class="tui-menu-item" @click="handlePopup('Order')">发送订单</view>
 					<view class="tui-menu-item" @click="handlePopup('Goods')">发送商品</view>
 				</tui-bubble-popup>
-				<image class="upload" src="../../../static/images/wuliu/add.png" mode="" @click="isShowBubblePopup = !isShowBubblePopup" />
+				<image class="upload" src="../../../static/images/icon/add.png" mode="" @click="isShowBubblePopup = !isShowBubblePopup" />
 			</view>
 		</view>
 		<tui-bottom-popup :show="isShowOrderPopup" @close="handleClosePopup('Order')">

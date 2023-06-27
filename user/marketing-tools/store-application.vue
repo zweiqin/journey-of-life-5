@@ -22,7 +22,7 @@
 
 <script>
 import FieldPaneSA from './components/field-pane-sa.vue'
-import { updateBrandSettleInsApi } from '../../api/user'
+import { updateBrandSettleInsApi, getSuperiorUserApi } from '../../api/user'
 import { J_USER_INFO } from '../../constant'
 import { getUserId } from '../../utils'
 // import { getAddressLongitudeAndLatitude } from '../../utils'
@@ -35,6 +35,11 @@ export default {
 	onLoad(options) {
 		// this.form.accountInfo.code = options.code || ''
 		this.packageId = options.packageId * 1
+		getSuperiorUserApi({ userId: getUserId() })
+			.then((res) => {
+				// console.log(res.data)
+				if (res.data && res.data.code) this.form.accountInfo.code = res.data.code
+			})
 	},
 	data() {
 		return {
@@ -46,10 +51,10 @@ export default {
 					placeholder: '请选择营销策划师所在区域'
 				},
 				{
-					label: '营销策划师邀请码：',
+					label: '邀请码：',
 					field: 'code',
 					type: 'inputSelect',
-					placeholder: '可用于绑定营销策划师'
+					placeholder: '可用于绑定营销策划师或分公司'
 				},
 				{
 					label: '登录账号：',

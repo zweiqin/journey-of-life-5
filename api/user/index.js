@@ -242,6 +242,9 @@ export const getRolePermissionMenuApi = (data) => RuanRequest('/rolePermission/h
 // 门店分类树
 export const getStoreTypeTreeApi = (data) => RuanRequest('/dtsStoreType/typeTree', data, 'get')
 
+// 全部门店类型（点击更多）
+export const getStoreTypeAllListApi = (data) => RuanRequest('/dtsStoreType/typeAllList', data, 'get')
+
 // 区域编码ID调用下级区域
 export const getAreaListOneApi = (data) => RuanRequest('/dtsArea/listOne', data, 'get')
 
@@ -488,6 +491,9 @@ export const getMyFansListApi = (data) => RuanRequest('/dtsUser/myFansList', dat
 // 用户的粉丝统计
 export const getMyFansStatisticsApi = (data) => RuanRequest('/dtsUser/myFansStatistics', data, 'get')
 
+// 查询用户上级数据
+export const getSuperiorUserApi = (data) => RuanRequest('/dtsUserActivityBinding/superiorUser', data, 'get')
+
 /**
  * 商家订单
  */
@@ -630,7 +636,7 @@ export const updateGrouponRuleApi = (data) => RuanRequest('/dtsGroupon/update', 
 // 删除团购规则
 export const deleteGrouponRuleApi = (data) => RuanRequest('/dtsGroupon/delete', data)
 
-// 查看加团记录
+// 查看加团记录（团购列表）
 export const getGrouponListRecordApi = (data) => RuanRequest('/dtsGroupon/listRecord', data, 'get')
 
 // 获取团购商品列表
@@ -647,3 +653,19 @@ export const getGrouponMyApi = (data) => RuanRequest('/groupon/my', data, 'get')
 
 // 查看商品所对应的团购规则
 export const getGrouponQueryApi = (data) => RuanRequest('/groupon/query', data, 'get')
+
+/**
+ * 商品分类
+ */
+
+// 商家添加商品分类
+export const addCategoryApi = (data) => RuanRequest('/dtsCategory/addCategory', data)
+
+// 查询商家商品分类
+export const getSelectCategoryApi = (data) => RuanRequest('/dtsCategory/selectCategory', data, 'get')
+
+// 修改商家商品分类
+export const updateCategoryNameApi = (data) => RuanRequest('/dtsCategory/updateCategoryName', data)
+
+// 商家查询商品类目与商品
+export const getSelectCategoryGoodsApi = (data) => RuanRequest('/dtsCategory/selectCategoryGoods', data, 'get')

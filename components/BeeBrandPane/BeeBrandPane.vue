@@ -31,8 +31,11 @@
 						<BeeIcon style="line-height: 100%;" :src="require('./images/location.png')" :size="14"></BeeIcon>
 						<view class="detail">
 							<!-- <text class="dis-container"> {{ Math.ceil(brandInfo.distance) || 0 }} km </text> -->
-							<text class="dis-container"> {{ brandInfo.distance || 0 }} km </text>
-							<BeeIcon :src="require('./images/to.png')" :size="14"></BeeIcon>
+							<text v-if="isPositioning" class="dis-container">{{ positioningText }}</text>
+							<view v-else style="display: flex;align-items: center;">
+								<text class="dis-container"> {{ brandInfo.distance || 0 }} km </text>
+								<BeeIcon :src="require('./images/to.png')" :size="14"></BeeIcon>
+							</view>
 						</view>
 					</view>
 				</BeeNavigation>
@@ -78,12 +81,40 @@ export default {
 		brandInfo: {
 			type: Object,
 			required: true
+		},
+		isPositioning: {
+			type: Boolean,
+			default: true
 		}
 	},
+
 	data() {
 		return {
-			templateData: Object.freeze(templateData)
+			templateData: Object.freeze(templateData),
+			positioningText: '定位中',
+			timer: null
 		}
+	},
+	watch: {
+		isPositioning: {
+			handler(val, oldVal) {
+				this.timer && clearInterval(this.timer)
+				if (val) {
+					this.timer = setInterval(() => {
+						if (this.positioningText.length === 9) {
+							this.positioningText = '定位中'
+						} else {
+							this.positioningText = this.positioningText + '.'
+						}
+					}, 500)
+				} else {
+				}
+			},
+			immediate: true
+		}
+	},
+	beforeDestroy() {
+		this.timer && clearInterval(this.timer)
 	}
 }
 </script>
@@ -169,8 +200,6 @@ export default {
 				// }
 
 				.detail {
-					display: flex;
-					align-items: center;
 					background-color: #efefef;
 					// vertical-align: text-bottom;
 					padding: 0 4upx;

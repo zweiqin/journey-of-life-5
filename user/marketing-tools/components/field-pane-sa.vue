@@ -138,6 +138,7 @@ export default {
 					const form = {}
 					for (const item of value) {
 						form[item.field] = this.value[item.field]
+						if (item.type === 'type' && item.field === 'brandgenre') this.getStoreTypeTree()
 					}
 					this.form = form
 				}
@@ -156,17 +157,19 @@ export default {
 	},
 
 	mounted() {
-		getStoreTypeTreeApi()
-			.then((res) => {
-				this.storeTypesArr = res.data
-				this.mapTree(this.storeTypesArr)
-			})
-			.catch(() => {
-				this.$showToast('门店类型获取失败')
-			})
 	},
 
 	methods: {
+		getStoreTypeTree() {
+			getStoreTypeTreeApi()
+				.then((res) => {
+					this.storeTypesArr = res.data
+					this.mapTree(this.storeTypesArr)
+				})
+				.catch(() => {
+					this.$showToast('门店类型获取失败')
+				})
+		},
 		mapTree(data) {
 			data.forEach((items) => {
 				items.text = items.storeName
@@ -186,7 +189,7 @@ export default {
 						this.plannerList = res.data.map((item) => ({
 							...item,
 							value: item.id,
-							text: item.nickname
+							text: `${item.nickname}（尾号${item.mobile.replace(/\s/g, '').replace(/\d+(\d{4})$/, '$1')}）${item.code}`
 						}))
 						this.isShowPlannerListSelect = true
 					})

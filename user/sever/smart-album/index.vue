@@ -135,12 +135,12 @@ export default {
 		},
 		handleCreate() {
 			uni.navigateTo({
-				url: '/user/my-tools/smart-album/add-album'
+				url: '/user/sever/smart-album/add-album'
 			})
 		},
 		handleDetail(id) {
 			uni.navigateTo({
-				url: `/user/my-tools/smart-album/album-detail?id=${id}`
+				url: `/user/sever/smart-album/album-detail?id=${id}`
 			})
 		},
 

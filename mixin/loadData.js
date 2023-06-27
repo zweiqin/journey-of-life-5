@@ -4,6 +4,7 @@ export default (options) => {
 		mapKey = { totalPages: 'totalPages', list: 'goodsList', size: 'size' },
 		beforeFn,
 		afterFn,
+		callingcb,
 		beforeReachBottomfn,
 		afterReachBottomfn,
 		dataFn
@@ -49,6 +50,7 @@ export default (options) => {
 					}
 
 					!isLoadmore && afterFn && typeof afterFn === 'function' && afterFn()
+					!isLoadmore && callingcb && cb && typeof cb === 'function' && cb()
 					isLoadmore && cb && typeof cb === 'function' && cb()
 					this.$data._status = 'none'
 				} catch (error) {

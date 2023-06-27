@@ -2,10 +2,21 @@
 	<view class="shop-car-container">
 		<view class="header">
 			<JBack :tabbar="isBack === '1' ? '' : '/pages/user/user'" style="margin-top: 10upx" width="50" height="50" dark></JBack>
-			<h2>购物车</h2>
+			<h2 v-if="type === 'mall'">购物车</h2>
+			<h2 v-else-if="type === 'reservation'">预约列表</h2>
+			<h2 v-else-if="type === 'mallAndReservation'">购物车商品</h2>
 			<button class="edit" @click="handleSwitchShopCarStatus">
 				{{ opStatus === 'EDIT' ? '编辑' : '完成' }}
 			</button>
+		</view>
+
+		<view>
+			<tui-tabs
+				style="width: 686upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="105" :padding="32"
+				item-width="343rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
+				:tabs="[{ name: '巨蜂自营' }, { name: '本地生活' }]" :current-tab="currentTab"
+				@change="handleSwitchTab"
+			></tui-tabs>
 		</view>
 
 		<view class="shop-list">
@@ -73,8 +84,7 @@
 			<JLineTitle title="热销推荐"></JLineTitle>
 			<Goods
 				v-for="item in recommentList" :id="item.id" :key="item.id" :price="item.counterPrice"
-				:name="item.name"
-				:img-url="item.picUrl"
+				:name="item.name" :img-url="item.picUrl" read-only
 			></Goods>
 		</view>
 
@@ -91,7 +101,21 @@
 			<view v-show="opStatus === 'EDIT'" class="edit-op">
 				<text class="text">合计</text>
 				<view class="totoal-price">￥{{ totalPrice }}</view>
-				<button class="uni-btn pay-btn" @click="handleToPay">结算</button>
+				<!-- <button v-if="type === 'mall'" class="uni-btn pay-btn" @click="handleToPay('mall')">结算</button>
+					<button v-else-if="type === 'reservation'" class="uni-btn pay-btn" @click="handleToPay('reservation')">去预约</button>
+					<view v-else-if="type === 'mallAndReservation'" style="display: flex;justify-content: space-between;">
+					<button class="uni-btn pay-btn" style="width: 102upx;margin-left: 16upx;" @click="handleToPay('mall')">结算</button>
+					<button class="uni-btn pay-btn" style="width: 138upx;margin-left: 16upx;" @click="handleToPay('reservation')">去预约</button>
+					</view> -->
+				<button v-if="currentTab === 0" class="uni-btn pay-btn" @click="handleToPay('mall')">结算</button>
+				<view v-else-if="currentTab === 1">
+					<button v-if="type === 'mall'" class="uni-btn pay-btn" @click="handleToPay('mall')">结算</button>
+					<button v-else-if="type === 'reservation'" class="uni-btn pay-btn" @click="handleToPay('reservation')">去预约</button>
+					<view v-else-if="type === 'mallAndReservation'" style="display: flex;justify-content: space-between;">
+						<button class="uni-btn pay-btn" style="width: 102upx;margin-left: 16upx;" @click="handleToPay('mall')">结算</button>
+						<button class="uni-btn pay-btn" style="width: 138upx;margin-left: 16upx;" @click="handleToPay('reservation')">去预约</button>
+					</view>
+				</view>
 			</view>
 
 			<!-- 完成 -->
@@ -128,8 +152,14 @@ export default {
 	},
 
 	onLoad(options) {
-		this.getShopList()
+		this.type = options.type || 'mall'
+		if (this.type === 'mall') {
+			this.currentTab = 0
+		} else if (this.type === 'mallAndReservation' || this.type === 'reservation') {
+			this.currentTab = 1
+		}
 		this.isBack = options.isBack || '0'
+		this.getShopList()
 		uni.removeStorageSync(J_SELECT_ADDRESS)
 		// this.getRecommentList();
 	},
@@ -149,6 +179,7 @@ export default {
 
 	data() {
 		return {
+			type: '',
 			opStatus: EDIT,
 			opList: [],
 			shopCarList: [],
@@ -157,7 +188,8 @@ export default {
 			isChangeNumber: false,
 			recommentList: [],
 			opGoodsList: [],
-			isBack: '0'
+			isBack: '0',
+			currentTab: 0
 		}
 	},
 
@@ -203,6 +235,11 @@ export default {
 	},
 
 	methods: {
+		handleSwitchTab(e) {
+			this.currentTab = e.index
+			this.shopCarList = []
+			this.getShopList()
+		},
 		getRecommentList(id) {
 			everyLookApi(id).then(({ data }) => {
 				this.recommentList = data.goodsList.slice(0, 10)
@@ -252,19 +289,19 @@ export default {
 		// 获取购物车列表
 		getShopList() {
 			this.loadingStatus = 'loading'
-			const _this = this
 			getShopCarListApi({
-				userId: getUserId()
+				userId: getUserId(),
+				type: this.currentTab
 			})
 				.then(({ data }) => {
-					_this.shopCarList = data.brandCartgoods
-					_this.getRecommentList(data.brandCartgoods[0].cartList[0].goodsId)
+					this.shopCarList = data.brandCartgoods
+					this.getRecommentList(data.brandCartgoods[0].cartList[0].goodsId)
 					uni.hideLoading()
-					_this.loadingStatus = 'noMore'
+					this.loadingStatus = 'noMore'
 				})
 				.catch(() => {
 					uni.hideLoading()
-					_this.loadingStatus = 'noMore'
+					this.loadingStatus = 'noMore'
 				})
 		},
 
@@ -367,7 +404,6 @@ export default {
 				// this.opList = this.allCheckStatus
 				//   ? []
 				//   : this.shopCarList.map((item) => {});
-
 				if (this.allCheckStatus) {
 					this.opList = []
 				} else {
@@ -383,26 +419,36 @@ export default {
 		},
 
 		// 去结算
-		handleToPay() {
+		handleToPay(type) {
 			uni.showLoading()
 			const op = []
 			for (const item of this.shopCarList) {
-				op.push({
-					brandId: item.brandId,
-					brandName: item.brandName,
-					brandCartgoods: item.cartList.filter((item) => item.checked)
-				})
+				if (item.cartList.filter((item) => item.checked).length) {
+					op.push({
+						brandId: item.brandId,
+						brandName: item.brandName,
+						brandCartgoods: item.cartList.filter((item) => item.checked)
+					})
+				}
 			}
 			// if (op.filter((item) => item.brandCartgoods && item.brandCartgoods.length).length > 1) {
 			// 	return this.$showToast('只能选择一家店铺的商品')
 			// }
+			if (op.length < 1) {
+				return this.$showToast('请先选择商品')
+			}
+			if (type === 'reservation') {
+				if (op.find((item) => item.brandId === 1001079)) {
+					return this.$showToast('无法预约巨蜂自营的商品')
+				}
+			}
 			uni.setStorageSync(J_TWO_PAY_GOODS, {
 				cardsInfo: op,
 				pay: this.totalPrice
 			})
 			uni.hideLoading()
 			uni.navigateTo({
-				url: '/user/sever/pay-shop-card?type=mall'
+				url: `/user/sever/pay-shop-card?type=${type}&orderType=${this.currentTab}`
 			})
 		},
 
@@ -433,4 +479,10 @@ export default {
 
 <style lang="less" scoped>
 @import './css/shop-car.less';
+
+.tui-tabs-view {
+	/deep/ .tui-tabs-slider {
+		margin-left: -32upx;
+	}
+}
 </style>

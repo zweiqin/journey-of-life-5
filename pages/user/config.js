@@ -33,11 +33,6 @@ export const myTools = [
 		name: '银行卡',
 		icon: require('../../static/user-center/menus/shenqingjilu.png'),
 		url: '/user/my-tools/bank-card/index'
-	},
-	{
-		name: '智能画册',
-		icon: require('../../static/user-center/menus/shenqingjilu.png'),
-		url: '/user/my-tools/smart-album/index'
 	}
 ]
 
@@ -48,13 +43,14 @@ export const myServe = [
 		url: '/user/merchant-orders/index'
 	},
 	{
-		name: '我的拼团',
-		icon: require('../../static/user-center/menus/wodepintuan.png')
-	},
-	{
 		name: '购物车',
 		icon: require('../../static/user-center/menus/gouwuche.png'),
 		url: '/user/sever/shop-car'
+	},
+	{
+		name: '我的拼团',
+		icon: require('../../static/user-center/menus/wodepintuan.png'),
+		url: '/user/sever/my-group-purchase/index'
 	},
 	{
 		name: '会员升级',
@@ -79,6 +75,11 @@ export const myServe = [
 		type: 'invitationCode',
 		role: [11, 10, 7, 5, 6, 4, 3, 2],
 		showRole: [11, 10, 7, 5]
+	},
+	{
+		name: '智能画册',
+		icon: require('../../static/user-center/menus/shenqingjilu.png'),
+		url: '/user/sever/smart-album/index'
 	},
 	{
 		name: '优惠劵',

@@ -12,7 +12,7 @@
 		</view>
 
 		<!-- 搜索框 -->
-		<SearchBar></SearchBar>
+		<SearchBar prevent @click="go('/pages/search-page/search-page')"></SearchBar>
 
 		<!-- 中间轮播图 -->
 		<view class="banner-wrapper">

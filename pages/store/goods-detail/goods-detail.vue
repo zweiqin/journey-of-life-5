@@ -69,7 +69,7 @@
 		<RecommendCity :data="recommendBrandList"></RecommendCity>
 
 		<!-- 底部操作栏 -->
-		<OpFooter :total-price="goodsDetail.info.retailPrice" @pay="handlePay"></OpFooter>
+		<OpFooter :btn-text="grouponRulesId && !grouponLinkId ? '发起团购' : grouponRulesId && grouponLinkId ? '加入团购' : ''" :total-price="goodsDetail.info.retailPrice" @pay="handlePay" @add="handleAdd"></OpFooter>
 
 		<JSpecification ref="specificationRef" v-model="showSpecification" :data="goodsDetail" :bottom="120"></JSpecification>
 
@@ -84,7 +84,7 @@ import OpFooter from './cpns/OpFooter.vue'
 import uParse from '../../../components/u-parse/u-parse.vue'
 import { marked } from 'marked'
 import { getMoreGoodsApi, getMoreCityRecommendApi } from '../../../api/brand'
-import { getGoodsDetailApi } from '../../../api/goods'
+import { getGoodsDetailApi, addShopCarApi } from '../../../api/goods'
 
 export default {
 	name: 'GoodsDetail',
@@ -96,12 +96,16 @@ export default {
 			recommendGoods: [],
 			recommendBrandList: [],
 			spData: [],
-			showSpecification: false
+			showSpecification: false,
+			grouponRulesId: '',
+			grouponLinkId: ''
 
 		}
 	},
 	onLoad(options) {
 		this.goodsId = options.goodsId
+		this.grouponRulesId = options.rulesId || ''
+		this.grouponLinkId = options.linkId || ''
 		this.getGoodsDetail()
 	},
 
@@ -168,7 +172,33 @@ export default {
 		async handlePay() {
 			const goodsInfo = await this.getSpacification()
 			const { name, id, picUrl, unit, brandId } = this.goodsDetail.info
-			this.go(`/pages/store/order-detail/order-detail?goodsName=${name}&goodsId=${id}&url=${picUrl}&unit=${unit}&brandId=${brandId}&productInfo=${JSON.stringify(goodsInfo)}`)
+			this.go(`/pages/store/order-detail/order-detail?rulesId=${this.grouponRulesId}&linkId=${this.grouponLinkId}&goodsName=${name}&goodsId=${id}&url=${picUrl}&unit=${unit}&brandId=${brandId}&productInfo=${JSON.stringify(goodsInfo)}`)
+		},
+
+		// 点击加入
+		async handleAdd() {
+			console.log(this.goodsDetail)
+			try {
+				// const { data } = await getGoodsDetailApi(
+				// 	this.goodsDetail.info.id,
+				// 	this.userId
+				// )
+				if (this.goodsDetail.productList[0].goodsId) {
+					await addShopCarApi({
+						'userId': this.userId,
+						'brandId': this.goodsDetail.info.brandId,
+						'goodsId': this.goodsDetail.info.id,
+						'checked': 1,
+						'number': 1,
+						'productId': this.goodsDetail.productList[0].id
+					})
+					this.$showToast('购物车添加成功')
+				} else {
+					this.$showToast('商品参数出错，无法添加！')
+				}
+			} catch (error) {
+				console.log(error)
+			}
 		},
 
 		// 获取商品规格参数

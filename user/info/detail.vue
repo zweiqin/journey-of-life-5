@@ -44,7 +44,7 @@
 			<view class="item">
 				<view class="title font-14 f-c-3d">微信账号</view>
 				<!-- <view class="unbound font-14 f-c-9" @click="handleUnboundWX">解绑</view> -->
-				<view class="unbound font-14 f-c-9">未绑定</view>
+				<view class="unbound font-14 f-c-9">{{ userInfo.openId ? '已绑定' : '未绑定' }}</view>
 			</view>
 
 			<!-- <view class="item" @click="$refs.WithdrawalPwdDialogRef.open()">

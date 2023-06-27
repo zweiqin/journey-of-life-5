@@ -18,7 +18,7 @@
 				mode=""
 			/>
 			<view class="title">红包金额</view>
-			<input v-model.number="redForm.redpackAllmonkey" type="number" placeholder="请输入红包金额" class="input-el" />
+			<input v-model.number="redForm.redpackAllmonkey" type="digit" placeholder="请输入红包金额" class="input-el" />
 			<view class="company">元</view>
 		</view>
 
@@ -274,6 +274,10 @@ export default {
 				this.redForm.redpackNumber <= 0
 			) {
 				this.$showToast('请输入正确的红包个数')
+				return
+			}
+			if (this.redForm.redpackNumber < 2) {
+				this.$showToast('红包数量至少两个哟~')
 				return
 			}
 			if (

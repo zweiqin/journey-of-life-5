@@ -8,7 +8,7 @@
 						<h1>美食</h1>
 					</view>
 				</BeeBack>
-				<SearchBar background="#fff"></SearchBar>
+				<SearchBar prevent background="#fff" @click="go('/pages/search-page/search-page')"></SearchBar>
 				<view class="control">
 					<view class="item">
 						<BeeIcon :size="24" :src="require('../../../static/brand/find-food/location.png')"></BeeIcon>
@@ -52,7 +52,7 @@
 			<view class="brand-list-wrapper">
 				<BigNameSpecials></BigNameSpecials>
 
-				<BeeBrandPane v-for="item in $data._list" :key="item.id" :brand-info="item"></BeeBrandPane>
+				<BeeBrandPane v-for="item in $data._list" :key="item.id" :is-positioning="false" :brand-info="item"></BeeBrandPane>
 				<LoadMore :status="$data._status"></LoadMore>
 			</view>
 		</view>

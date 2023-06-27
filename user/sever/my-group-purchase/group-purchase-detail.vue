@@ -3,39 +3,42 @@
 		<JHeader width="50" height="50" title="订单详情"></JHeader>
 
 		<view
-			class="view-order-status" :style="{
+			class="view-order-status" style="justify-content: space-between;" :style="{
 				'background-image': bg
 			}"
 		>
-			<JIcon width="44" height="44" type="active"></JIcon>
-			{{ data.orderInfo.orderStatusText }}
+			<view style="display: flex;align-items: center;">
+				<JIcon width="44" height="44" type="active"></JIcon>
+				{{ data.orderInfo.orderStatusText }}
+			</view>
+			<view style="padding-right: 30upx;">
+				<tui-button
+					type="warning" width="220rpx" height="60rpx" style="border-radius: 50rpx;"
+					@click="$copy(`https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/sever/my-group-purchase/group-purchase-detail?id=16&isJoin=true`, '复制链接成功，快发送给好友吧~')"
+				>
+					复制分享链接
+				</tui-button>
+			</view>
+
 		</view>
 
 		<!-- 订单信息 -->
 		<view class="order-info pane">
-			<view v-if="!data.userAppoint">
-				<view v-if="data.orderGoods.find(item => item.brandId === 1001079)" class="co-info">
-					<view class="line">
-						<JIcon width="32" height="46" class="line-icon" type="modal"></JIcon>
-						<view class="sub-title">姓名</view>
-						<view>
-							{{
-								`${data.orderInfo.consignee} ${data.orderInfo.mobile}`
-							}}
-						</view>
-					</view>
-					<view class="line">
-						<JIcon width="32" height="40" class="line-icon" type="local-black"></JIcon>
-						<view class="sub-title">地址</view>
-						<view style="color: #07b9b9">{{ data.orderInfo.address }}</view>
+			<view class="co-info">
+				<view class="line">
+					<JIcon width="32" height="46" class="line-icon" type="modal"></JIcon>
+					<view class="sub-title">姓名</view>
+					<view>
+						{{
+							`${data.orderInfo.consignee} ${data.orderInfo.mobile}`
+						}}
 					</view>
 				</view>
-			</view>
-
-			<!-- 是预约商品 -->
-			<view v-else class="apponit-info">
-				<view class="title">提货地址：{{ data.orderInfo.brandName }}</view>
-				<view class="value"></view>
+				<view class="line">
+					<JIcon width="32" height="40" class="line-icon" type="local-black"></JIcon>
+					<view class="sub-title">地址</view>
+					<view style="color: #07b9b9">{{ data.orderInfo.address }}</view>
+				</view>
 			</view>
 
 			<view class="goods-info">
@@ -49,15 +52,17 @@
 						<image :src="common.seamingImgUrl(item.picUrl)" class="goods-img" mode="" />
 						<view class="goods-info-content">
 							<view class="goods-name">{{ item.goodsName }}</view>
-							<view class="sp">{{ item.specifications | fomatSp }}</view>
-							<view class="goods-price"> ￥{{ item.price }}</view>
+							<!-- <view class="sp">{{ item.specifications | fomatSp }}</view>
+								<view class="goods-price"> ￥{{ item.price }}</view> -->
+							<view class="sp">{{ item.goodsSpecificationValues | fomatSp }}</view>
+							<view class="goods-price"> ￥{{ item.retailPrice }}</view>
 						</view>
 						<view class="goods-number">x{{ item.number }}</view>
 					</view>
 
 					<!-- 评论 -->
 					<view
-						v-if="data.orderInfo.handleOption.comment && item.id == commentGoodsId
+						v-if="data.orderInfo.handleOption.comment && item.id == commentGoodsId && isJoin === 'false'
 						" class="evaluate-info pane"
 					>
 						<view class="line">
@@ -106,9 +111,65 @@
 			<image style="width: 420upx;" mode="widthFix" :src="verificationCodeUrl" />
 		</view>
 
+		<view class="detail-info pane">
+			<view class="detail-info-title">团购信息</view>
+			<view style="padding: 16upx 24upx 26upx;font-size: 28upx;">
+				<view>
+					<view style="display: flex;justify-content: space-between;">
+						<view>
+							<text>团购ID：</text>
+							<text>{{ data.groupon.id || '--' }}</text>
+						</view>
+						<view>
+							<text>{{ data.groupon.addTime || '--' }}</text>
+						</view>
+					</view>
+					<view>
+						<text>关联订单ID：</text>
+						<text>{{ data.groupon.orderId || '--' }}</text>
+					</view>
+					<view style="display: flex;justify-content: space-between;">
+						<view>
+							<text>开团用户ID：</text>
+							<text>{{ data.groupon.creatorUserId || '--' }}</text>
+						</view>
+						<view>
+							<text>{{ data.groupon.payed ? '已支付' : '未支付' }}</text>
+						</view>
+					</view>
+				</view>
+			</view>
+			<view style="display: flex;align-items: center;">
+				<view>创建者：</view>
+				<view style="margin-left: 20upx;">
+					<JAvatar :src="common.seamingImgUrl(data.creator.avatar)" size="92" radius="50%" border="5upx solid #ffffff">
+					</JAvatar>
+				</view>
+				<view style="margin-left: 20upx;">{{ data.creator.nickname }}</view>
+			</view>
+			<view>
+				<view style="margin-bottom: 24upx;">参与者：</view>
+				<view v-if="data.joiners && data.joiners.length">
+					<view v-for="(item, index) in data.joiners" :key="index" style="display: flex;align-items: center;">
+						<view>
+							<JAvatar :src="common.seamingImgUrl(item.avatar)" size="92" radius="50%" border="5upx solid #ffffff">
+							</JAvatar>
+						</view>
+						<view style="margin-left: 20upx;">{{ item.nickname }}</view>
+					</view>
+				</view>
+				<view v-else>无</view>
+			</view>
+		</view>
+
+		<view class="detail-info pane">
+			<view class="detail-info-title">规则信息</view>
+			<GrouponRules title-inside :rules-data="data.rules"></GrouponRules>
+		</view>
+
 		<!-- 详细信息 -->
 		<view class="detail-info pane">
-			<view class="detail-info-title"> 详细信息 </view>
+			<view class="detail-info-title">详细信息</view>
 
 			<view class="line">
 				<view class="title">订单编号</view>
@@ -128,14 +189,7 @@
 			</view>
 		</view>
 
-		<!-- 核销相关 -->
-		<!-- <view v-if="data.userAppoint" class="apponit pane">
-			<view class="tip">请到店向商家出示该核销码</view>
-			<image class="qrcode" :src="common.seamingImgUrl(data.userAppoint.appointUrl)" mode="" />
-			<view class="code">{{ data.userAppoint.appointCode }}</view>
-			</view> -->
-
-		<view v-if="data" class="order-detail-footer">
+		<view v-if="data && isJoin === 'false'" class="order-detail-footer">
 			<view v-for="item in orderOpButtons" :key="item.label">
 				<button
 					v-if="data.orderInfo.handleOption[item.key]" :style="{
@@ -147,6 +201,15 @@
 					{{ item.label === "去评论" ? "发布评论" : item.label }}
 				</button>
 			</view>
+		</view>
+		<view v-if="data && isJoin === 'true'" class="order-detail-footer">
+			<tui-button
+				type="blue" width="180rpx" height="70rpx" margin="0 10rpx 0 0"
+				style="border-radius: 50rpx;"
+				@click="go(`/pages/store/goods-detail/goods-detail?goodsId=${data.rules.goodsId}&rulesId=${data.rules.id}&linkId=${data.linkGrouponId}`)"
+			>
+				加入团购
+			</tui-button>
 		</view>
 
 		<!-- 申请退款dialog -->
@@ -187,14 +250,16 @@ import {
 	// sendCommentApi
 	addCommentPostApi,
 	orderRefundApi
-} from '../../api/order'
-import { getVerificationCodeHxCodeApi, getOrderRefundsReasonApi } from '../../api/user'
-import { getUserId } from '../../utils'
-import { orderOpButtons } from './config'
-import { payOrderGoodsApi } from '../../api/goods'
+} from '../../../api/order'
+import { getVerificationCodeHxCodeApi, getOrderRefundsReasonApi, getGrouponDetailApi } from '../../../api/user'
+import { getUserId } from '../../../utils'
+import { orderOpButtons } from '../../orderForm/config'
+import { payOrderGoodsApi } from '../../../api/goods'
+import GrouponRules from '../../marketing-tools/group-buying/components/GrouponRules.vue'
 
 export default {
-	name: 'OrderFormDetail',
+	name: 'GroupPurchaseDetail',
+	components: { GrouponRules },
 
 	filters: {
 		fomatSp(value) {
@@ -225,12 +290,14 @@ export default {
 				orderId: '',
 				reasonId: '',
 				refundRemark: ''
-			}
+			},
+			isJoin: ''
 		}
 	},
 
 	onLoad(options) {
 		this.orderId = options.id
+		this.isJoin = options.isJoin || 'true'
 		this.commentGoodsId = options.goodsId
 		this.getOrderDetail()
 	},
@@ -249,24 +316,26 @@ export default {
 		// 获取订单详情
 		getOrderDetail() {
 			uni.showLoading()
-			getOrderDetailApi({
+			getGrouponDetailApi({
 				userId: getUserId(),
-				orderId: this.orderId
+				grouponId: this.orderId
 			}).then(({ data }) => {
 				this.data = data
 				uni.hideLoading()
-				getVerificationCodeHxCodeApi({
-					url: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/jump/jump?userId=${getUserId()}&orderId=${data.orderInfo.id}&type=verification&code=${data.orderInfo.id}-`
-				}).then((res) => {
-					console.log(res)
-					if (res.errno === -1) return
-					// res.data.hxCode；res.data.code；res.data.orderType：0商城1本地
-					this.verificationCode = res.data.code
-					this.verificationCodeUrl = res.data.hxCode
-				})
-					.catch((e) => {
-						uni.hideToast()
+				if (this.isJoin === 'false') {
+					getVerificationCodeHxCodeApi({
+						url: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/jump/jump?userId=${getUserId()}&orderId=${data.orderInfo.id}&type=verification&code=${data.orderInfo.id}-`
+					}).then((res) => {
+						console.log(res)
+						if (res.errno === -1) return
+						// res.data.hxCode；res.data.code；res.data.orderType：0商城1本地
+						this.verificationCode = res.data.code
+						this.verificationCodeUrl = res.data.hxCode
 					})
+						.catch((e) => {
+							uni.hideToast()
+						})
+				}
 			})
 		},
 

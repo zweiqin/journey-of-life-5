@@ -214,7 +214,6 @@ import { J_ONE_PAY_GOODS, J_USER_ID } from '../../constant'
 import {
 	getGoodsDetailApi,
 	collectionApi,
-	// getShopCarApi,
 	addShopCarApi,
 	getCarShopNumberApi,
 	goodsListApi
@@ -328,14 +327,12 @@ export default {
 		// 加入购物车
 		async addShopCar() {
 			const goodsInfo = await this.getSpacification()
-
 			const data = {
 				userId: getUserId(),
 				goodsId: this.goodsDetail.info.id,
 				number: goodsInfo.number,
 				productId: goodsInfo.product.id
 			}
-
 			const res = await addShopCarApi(data)
 			if (res.errno === 0) {
 				uni.showToast({
@@ -364,7 +361,6 @@ export default {
 				selectedProduct: goodsInfo,
 				brandId: this.goodsDetail.brand.id
 			})
-
 			uni.navigateTo({
 				url: '/pages/pre-order/pre-order'
 			})
@@ -384,7 +380,6 @@ export default {
 						}
 					}
 				})
-
 				return
 			}
 			return new Promise((resolve, reject) => {

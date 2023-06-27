@@ -3,11 +3,14 @@
 		<view class="top">
 			<view class="header">
 				<tui-icon name="arrowleft" color="#000" @click="handleBack"></tui-icon>
-				<SearchBar></SearchBar>
+				<SearchBar prevent @click="go('/pages/search-page/search-page')"></SearchBar>
 			</view>
 			<view class="bar-list">
-				<view class="bar" :class="{ active: currentbar === bar.id }" v-for="bar in bars" :key="bar.id"
-					@click="handlePick(bar)">{{ bar.name }}
+				<view
+					v-for="bar in bars" :key="bar.id" class="bar" :class="{ active: currentbar === bar.id }"
+					@click="handlePick(bar)"
+				>
+					{{ bar.name }}
 				</view>
 			</view>
 		</view>
@@ -20,7 +23,7 @@
 				<view class="right">换一批</view>
 			</view>
 			<view class="brand-list-wrapper">
-				<BeeBrandPane v-for="item in $data._list" :key="item.id" :brand-info="item"></BeeBrandPane>
+				<BeeBrandPane v-for="item in $data._list" :key="item.id" :is-positioning="false" :brand-info="item"></BeeBrandPane>
 				<LoadMore :status="$data._status"></LoadMore>
 			</view>
 		</view>
@@ -32,14 +35,14 @@ import { bars } from './data'
 import loadData from '../../../mixin/loadData'
 import { getSroreListApi } from '../../../api/store'
 export default {
-	name: "Market",
+	name: 'Market',
 	props: {
 
 	},
 	data() {
 		return {
 			bars,
-			currentbar: 1,
+			currentbar: 1
 		}
 	},
 	mixins: [
@@ -48,15 +51,13 @@ export default {
 			mapKey: {
 				list: 'brandList',
 				totalPages: 'totalPages',
-				size: 'size',
+				size: 'size'
 			},
 			dataFn(data) {
 				const ignoreBrandList = ['佛山市顺德区修江缘美食餐饮店', '测试门店呀']
-				return data.filter(item => {
-					return !ignoreBrandList.includes(item.name)
-				})
-			},
-		}),
+				return data.filter((item) => !ignoreBrandList.includes(item.name))
+			}
+		})
 	],
 	onLoad() {
 		this._loadData()
@@ -66,17 +67,17 @@ export default {
 		this._loadData()
 		uni.stopPullDownRefresh()
 	},
+	created() { },
 	methods: {
 		handlePick(bar) {
 			this.currentbar = bar.id
 		},
 		handleBack() {
 			uni.switchTab({
-				url: '/pages/index/index',
+				url: '/pages/index/index'
 			})
-		},
-	},
-	created() { }
+		}
+	}
 }
 </script>
 
