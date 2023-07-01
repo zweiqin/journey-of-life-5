@@ -219,7 +219,16 @@
 				"navigationBarTitleText": "加油"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/complain/complain",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "投诉",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"tabBar": {
 		"selectedColor": "#FA5151",
 		"color": "#777777",

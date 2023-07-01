@@ -713,3 +713,9 @@ export const deleteBrandAppointmentCategoryApi = (data) => RuanRequest('/dtsAppo
 
 // 商家可预约商品
 export const getBrandAppointmentSelectGoodsApi = (data) => RuanRequest('/dtsAppointment/selectBrandGoods', data, 'get')
+
+// 商家查询商品类目与商品
+export const getSelectCategoryGoodsApi = (data) => RuanRequest('/dtsCategory/selectCategoryGoods', data, 'get')
+
+// 投诉
+export const createComplain = (data) => RuanRequest('/dtsBrandInforms/complaint', { userId: getUserId(), ...data })

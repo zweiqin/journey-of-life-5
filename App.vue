@@ -39,7 +39,6 @@ export default {
 
 <style>
 @import "./app.css";
-
 /* 隐藏头部 */
 uni-page-head {
 	display: none;
