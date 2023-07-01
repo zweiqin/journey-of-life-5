@@ -352,6 +352,18 @@
 					}
 				},
 				{
+					"path": "marketing-tools/seckill-activity/index",
+					"style": {
+						"navigationBarTitleText": "秒杀活动"
+					}
+				},
+				{
+					"path": "marketing-tools/seckill-activity/seckill-activity-form",
+					"style": {
+						"navigationBarTitleText": "秒杀活动表单"
+					}
+				},
+				{
 					"path": "marketing-tools/group-buying/index",
 					"style": {
 						"navigationBarTitleText": "团购管理"
@@ -457,13 +469,13 @@
 						"usingComponents": {}
 					}
 				},
-				{
-					"path": "sever/shop-car-reservation",
-					"style": {
-						"navigationBarTitleText": "",
-						"usingComponents": {}
-					}
-				},
+				// {
+				// 	"path": "sever/shop-car-reservation",
+				// 	"style": {
+				// 		"navigationBarTitleText": "",
+				// 		"usingComponents": {}
+				// 	}
+				// },
 				{
 					"path": "sever/my-group-purchase/index",
 					"style": {
@@ -637,9 +649,30 @@
 					}
 				},
 				{
+					"path": "digital-store/goods-classification/index",
+					"style": {
+						"navigationBarTitleText": "商品分类",
+						"usingComponents": {}
+					}
+				},
+				{
 					"path": "digital-store/refund-management/index",
 					"style": {
 						"navigationBarTitleText": "退款管理",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "digital-store/reservation-management/index",
+					"style": {
+						"navigationBarTitleText": "预约项目管理",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "digital-store/reservation-management/reservation-form",
+					"style": {
+						"navigationBarTitleText": "预约项目表单",
 						"usingComponents": {}
 					}
 				},

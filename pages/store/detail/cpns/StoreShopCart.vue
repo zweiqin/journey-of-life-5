@@ -168,7 +168,8 @@ export default {
 			this.loadingStatus = 'loading'
 			getShopCarApi({
 				userId: getUserId(),
-				brandId: this.brandId
+				brandId: this.brandId,
+				type: 1
 			})
 				.then(({ data }) => {
 					this.shopCarList = [ { brandId: this.brandId, brandName: this.brandName, cartList: data.cartList } ]
@@ -262,7 +263,7 @@ export default {
 			})
 			uni.hideLoading()
 			uni.navigateTo({
-				url: `/user/sever/pay-shop-card?type=${type}&orderType=${this.currentTab}`
+				url: `/user/sever/pay-shop-card?orderType=${this.currentTab}&type=${type}`
 			})
 		}
 	}

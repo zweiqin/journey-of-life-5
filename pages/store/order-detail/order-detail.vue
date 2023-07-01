@@ -80,7 +80,10 @@
 				</text>
 				<text class="p-color">￥ <text style="font-size: 48upx;" class="f-w-500">{{ orderCost.actualPrice }}</text></text>
 			</view>
-			<button class="bee-btn r-5 f-w-500 f-center" @click="handleToPay">{{ grouponRulesId && !grouponLinkId ? '发起团购' : grouponRulesId && grouponLinkId ? '加入团购' : '提交订单' }}</button>
+			<button class="bee-btn r-5 f-w-500 f-center" @click="handleToPay">
+				<text v-if="orderType === '1'">{{ grouponRulesId && !grouponLinkId ? '发起团购' : grouponRulesId && grouponLinkId ? '加入团购' : '提交订单' }}</text>
+				<text v-else-if="orderType === '2'">立即预约</text>
+			</button>
 		</view>
 	</view>
 </template>
@@ -90,11 +93,13 @@ import { payShopCarApi, updateShopCarCountApi } from '../../../api/cart'
 import { submitOrderApi, payOrderGoodsApi, firstAddCar } from '../../../api/goods'
 import { getAddressListApi } from '../../../api/address'
 import { J_SELECT_ADDRESS } from '../../../constant'
+import { payFn } from '../../../utils/pay'
 
 export default {
 	name: 'OrderDetail',
 	data() {
 		return {
+			orderType: '', // 1本地2预约
 			goodsDetail: {},
 			carId: null,
 			orderCost: {},
@@ -105,12 +110,10 @@ export default {
 		}
 	},
 	onLoad(options) {
-		try {
-			options.productInfo = JSON.parse(options.productInfo)
-			this.grouponRulesId = options.rulesId || ''
-			this.grouponLinkId = options.linkId || ''
-		} catch (error) {
-		}
+		options.productInfo = JSON.parse(options.productInfo)
+		this.grouponRulesId = options.rulesId || ''
+		this.grouponLinkId = options.linkId || ''
+		this.orderType = options.orderType
 		this.goodsDetail = options
 		console.log(this.goodsDetail)
 		this.addShopCar()
@@ -147,7 +150,8 @@ export default {
 				userId: this.userId,
 				goodsId: this.goodsDetail.goodsId,
 				productId: this.goodsDetail.productInfo.product.id,
-				number: this.goodsDetail.productInfo.number
+				number: this.goodsDetail.productInfo.number,
+				type: this.orderType
 			})
 			this.carId = data
 			this.calcPrice()
@@ -221,27 +225,12 @@ export default {
 				addressId: this.startAddress.id
 			}
 			submitOrderApi(submitData).then(({ data }) => {
-				console.log(data)
 				payOrderGoodsApi({
 					orderNo: data.orderSn,
 					userId: _this.userId,
 					payType: 1
 				}).then((res) => {
-					const payData = JSON.parse(res.h5PayUrl)
-					const form = document.createElement('form')
-					form.setAttribute('action', payData.url)
-					form.setAttribute('method', 'POST')
-					const data = JSON.parse(payData.data)
-					let input
-					for (const key in data) {
-						input = document.createElement('input')
-						input.name = key
-						input.value = data[key]
-						form.appendChild(input)
-					}
-					document.body.appendChild(form)
-					form.submit()
-					document.body.removeChild(form)
+					payFn(res)
 				})
 			})
 		}

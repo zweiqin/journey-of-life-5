@@ -13,6 +13,7 @@
 						<text>￥{{ product.price }}</text>
 						<!-- v-if="data.info.voucherNum" -->
 						<text
+							v-if="showVoucherDeduction"
 							style="height: 100%;margin-left: 10upx;;padding: 6upx 12upx;background-color: #f0f0f0;color: #fa5151;border-radius: 22upx;vertical-align: middle;"
 						>
 							可使用{{ Math.ceil(Number(product.price)) }}代金券抵扣
@@ -63,6 +64,11 @@ export default {
 		bottom: {
 			type: Number,
 			required: true
+		},
+
+		showVoucherDeduction: {
+			type: Boolean,
+			default: false
 		}
 	},
 

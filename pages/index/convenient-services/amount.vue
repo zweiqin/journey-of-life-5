@@ -6,7 +6,7 @@
 				<view class="title">充值金额</view>
 				<view class="inp">
 					<view class="icon">￥</view>
-					<input class="input" v-model.number="payPrice" type="number" placeholder="请输入充值金额" />
+					<input v-model.number="payPrice" class="input" type="number" placeholder="请输入充值金额" />
 					<view class="error">{{ errMsg }}</view>
 				</view>
 				<JButton @click="handleRecharge">充值</JButton>
@@ -16,98 +16,79 @@
 </template>
 
 <script>
-import { RuanRequest, getUserId } from "../../../utils"
-import { payOrderGoodsApi } from "../../../api/goods"
+import { RuanRequest, getUserId, payFn } from '../../../utils'
+import { payOrderGoodsApi } from '../../../api/goods'
 export default {
-	name: "Amount",
+	name: 'Amount',
 	props: {
 
 	},
 	data() {
 		return {
 			payPrice: null,
-			errMsg: "",
-			youkabianhao: "",
+			errMsg: '',
+			youkabianhao: ''
 		}
 	},
+
+	watch: {
+		payPrice(value) {
+			if (value === 0) {
+				this.errMsg = '充值金额不能等于零'
+			} else if (value < 0) {
+				this.errMsg = '充值金额不能小于零'
+			} else if (
+				(value + '').includes('.') &&
+				(value + '').split('.')[1].length > 2
+			) {
+				this.errMsg = '充值金额错误'
+			} else {
+				this.errMsg = ''
+			}
+		}
+	},
+	created() { },
 	methods: {
 		back() {
 			uni.navigateTo({ url: '/pages/index/convenient-services/recharge' })
 		},
 		handleRecharge() {
 			if (this.errMsg) {
-				return;
+				return
 			}
 			if (!this.payPrice) {
-				this.$showToast("请输入充值金额");
-				return;
+				this.$showToast('请输入充值金额')
+				return
 			}
-			if(this.youkabianhao == null || this.youkabianhao == "" || this.youkabianhao == undefined){
-				this.$showToast("参数错误");
-				return;
+			if (this.youkabianhao == null || this.youkabianhao == '' || this.youkabianhao == undefined) {
+				this.$showToast('参数错误')
+				return
 			}
 			const reqData = {
-				"kahao": this.youkabianhao,
-				"amount": this.payPrice,
-			};
-			RuanRequest("/tuanyou/tygetorderinfo", reqData, "post").then(({ data }) => {
-				console.log(data);
+				'kahao': this.youkabianhao,
+				'amount': this.payPrice
+			}
+			RuanRequest('/tuanyou/tygetorderinfo', reqData, 'post').then(({ data }) => {
+				console.log(data)
 				payOrderGoodsApi({
 					orderNo: data.orderno,
 					userId: getUserId(),
 					payType: data.payType
 				}).then((res) => {
-					console.log(res);
-					const payData = JSON.parse(res.h5PayUrl);
-					const form = document.createElement("form");
-					form.setAttribute("action", payData.url);
-					form.setAttribute("method", "POST");
-					const data = JSON.parse(payData.data);
-					let input;
-					for (const key in data) {
-						input = document.createElement("input");
-						input.name = key;
-						input.value = data[key];
-						form.appendChild(input);
-					}
-			
-					document.body.appendChild(form);
-					form.submit();
-					document.body.removeChild(form);
-				});
-			});
+					payFn(res)
+				})
+			})
 		}
-	},
-	created() { },
-
-	watch: {
-		payPrice(value) {
-			if (value === 0) {
-				this.errMsg = "充值金额不能等于零";
-				return;
-			} else if (value < 0) {
-				this.errMsg = "充值金额不能小于零";
-				return;
-			} else if (
-				(value + "").includes(".") &&
-				(value + "").split(".")[1].length > 2
-			) {
-				this.errMsg = "充值金额错误";
-				return;
-			} else {
-				this.errMsg = "";
-			}
-		},
 	},
 
 	onLoad(options) {
-		console.log(options);
-		this.youkabianhao = options.kahao;
-		const { price } = options;
+		console.log(options)
+		this.youkabianhao = options.kahao
+		const { price } = options
 		if (price != -1) {
-			this.payPrice = price * 1;
+			this.payPrice = price * 1
 		}
-	},
+	}
 }
 </script>
 

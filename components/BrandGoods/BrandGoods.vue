@@ -3,7 +3,7 @@
 		<view style="max-height: 440upx;min-height: 120upx;overflow: hidden;">
 			<tui-lazyload-img
 				class="goods-img" mode="widthFix"
-				width="340rpx" height="auto" :src="common.seamingImgUrl(goodsData.picUrl)" @click="go(`/pages/store/goods-detail/goods-detail?goodsId=${goodsData.id}`)"
+				width="340rpx" height="auto" :src="common.seamingImgUrl(goodsData.picUrl)" @click="$emit('click-content', { ...goodsData, ruleId })"
 			></tui-lazyload-img>
 		</view>
 
@@ -12,7 +12,7 @@
 		</view>
 
 		<view class="time">
-			<view class="wrapper" @click="go(`/pages/store/goods-detail/goods-detail?goodsId=${goodsData.id}`)">
+			<view class="wrapper" @click="$emit('click-content', { ...goodsData, ruleId })">
 				<view class="price-wrapper">
 					<text class="price-text">￥{{ ruleId ? goodsData.counterPrice + grouponPrice : goodsData.counterPrice }}</text>
 					<text v-if="goodsData.isHot" class="price-tag">热卖</text>
@@ -30,7 +30,7 @@
 			<view v-else>
 				<BeeIcon
 					:size="22" :src="require('../../static/brand/detail/add-icon.png')"
-					@click="$emit('add', goodsData)"
+					@click="$emit('add', { ...goodsData, ruleId })"
 				></BeeIcon>
 			</view>
 		</view>

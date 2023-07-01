@@ -206,7 +206,7 @@
 			<tui-button
 				type="blue" width="180rpx" height="70rpx" margin="0 10rpx 0 0"
 				style="border-radius: 50rpx;"
-				@click="go(`/pages/store/goods-detail/goods-detail?goodsId=${data.rules.goodsId}&rulesId=${data.rules.id}&linkId=${data.linkGrouponId}`)"
+				@click="go(`/pages/store/goods-detail/goods-detail?orderType=1&goodsId=${data.rules.goodsId}&rulesId=${data.rules.id}&linkId=${data.linkGrouponId}`)"
 			>
 				加入团购
 			</tui-button>
@@ -252,7 +252,7 @@ import {
 	orderRefundApi
 } from '../../../api/order'
 import { getVerificationCodeHxCodeApi, getOrderRefundsReasonApi, getGrouponDetailApi } from '../../../api/user'
-import { getUserId } from '../../../utils'
+import { getUserId, payFn } from '../../../utils'
 import { orderOpButtons } from '../../orderForm/config'
 import { payOrderGoodsApi } from '../../../api/goods'
 import GrouponRules from '../../marketing-tools/group-buying/components/GrouponRules.vue'
@@ -413,21 +413,7 @@ export default {
 					userId: getUserId(),
 					payType: goods.isAppoint ? 6 : 1
 				}).then((res) => {
-					const payData = JSON.parse(res.h5PayUrl)
-					const form = document.createElement('form')
-					form.setAttribute('action', payData.url)
-					form.setAttribute('method', 'POST')
-					const data = JSON.parse(payData.data)
-					let input
-					for (const key in data) {
-						input = document.createElement('input')
-						input.name = key
-						input.value = data[key]
-						form.appendChild(input)
-					}
-					document.body.appendChild(form)
-					form.submit()
-					document.body.removeChild(form)
+					payFn(res)
 				})
 			} else if (key === 'comment') {
 				uni.showModal({

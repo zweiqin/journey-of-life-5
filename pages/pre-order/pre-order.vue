@@ -46,7 +46,7 @@
 
 				<view>
 					<text>代金劵持有 {{ voucherNumber }}</text>
-					<switch :disabled="!voucherNumber" style="transform: scale(0.7)" @change="handleChangeUseVoucherStatus" />
+					<switch :checked="opForm.useVoucher" disabled style="transform: scale(0.7)" @click="handleChangeUseVoucherStatus" />
 				</view>
 			</view>
 		</view>
@@ -76,7 +76,7 @@
 import { getAddressListApi } from '../../api/address'
 import { getVoucherNumberApi } from '../../api/user'
 import { firstAddCar, submitOrderApi, payOrderGoodsApi } from '../../api/goods'
-import { getUserId } from '../../utils'
+import { getUserId, payFn } from '../../utils'
 import { payShopCarApi } from '../../api/cart'
 import { J_ONE_PAY_GOODS, J_SELECT_ADDRESS } from '../../constant'
 export default {
@@ -160,9 +160,9 @@ export default {
 				goodsId: this.orderInfo.info.id,
 				productId: this.orderInfo.selectedProduct.product.id,
 				number: this.orderInfo.number,
-				useVoucher: this.isUserVoucher
+				useVoucher: this.isUserVoucher,
+				type: 0
 			}
-
 			firstAddCar(data).then(({ data }) => {
 				_this.cartId = data
 				_this.calcOrderCost()
@@ -190,8 +190,23 @@ export default {
 
 		// 是否使用代金劵
 		handleChangeUseVoucherStatus(e) {
-			this.opForm.useVoucher = e.detail.value
-			this.calcOrderCost()
+			if (this.opForm.useVoucher) {
+				this.opForm.useVoucher = false
+				this.calcOrderCost()
+			} else if (this.calcOrderMsg && this.calcOrderMsg.actualPrice) {
+				if (Number(this.calcOrderMsg.actualPrice) < Number(this.voucherNumber)) {
+					this.opForm.useVoucher = true
+					this.calcOrderCost()
+				} else {
+					this.opForm.useVoucher = false
+					return this.$showToast('代金券数量不足')
+				}
+			} else {
+				this.opForm.useVoucher = false
+				return this.$showToast('获取订单费用失败')
+			}
+			// this.opForm.useVoucher = e.detail.value
+			// this.calcOrderCost()
 		},
 
 		handleChooseCoupon(item) {
@@ -223,22 +238,7 @@ export default {
 					userId: getUserId(),
 					payType: 1
 				}).then((res) => {
-					const payData = JSON.parse(res.h5PayUrl)
-					const form = document.createElement('form')
-					form.setAttribute('action', payData.url)
-					form.setAttribute('method', 'POST')
-					const data = JSON.parse(payData.data)
-					let input
-					for (const key in data) {
-						input = document.createElement('input')
-						input.name = key
-						input.value = data[key]
-						form.appendChild(input)
-					}
-
-					document.body.appendChild(form)
-					form.submit()
-					document.body.removeChild(form)
+					payFn(res)
 				})
 			})
 		}

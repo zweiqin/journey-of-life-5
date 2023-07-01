@@ -3,49 +3,68 @@
 		<view style="max-height: 440upx;min-height: 120upx;overflow: hidden;">
 			<tui-lazyload-img
 				class="goods-img" mode="widthFix"
-				width="210rpx" height="auto" :src="common.seamingImgUrl(goodsData.picUrl)" @click="go(`/pages/store/goods-detail/goods-detail?goodsId=${goodsData.id}`)"
+				width="210rpx" height="auto" :src="common.seamingImgUrl(goodsData.picUrl)" @click="$emit('click-content', goodsData)"
 			></tui-lazyload-img>
 		</view>
 
-		<view style="flex: 1;width: 0;padding: 0 20upx;">
-			<view class="store-goods-name">
+		<view style="flex: 1;width: 0;padding: 0 20upx;font-size: 32upx;">
+			<view class="store-goods-name" @click="$emit('click-content', goodsData)">
 				{{ goodsData.name }}
 			</view>
 
-			<view style="display: flex;justify-content: space-between;padding: 14upx 0 0;font-size: 26upx;color: #777777;">
-				<text>{{ goodsData.browse }}浏览量</text>
-				<text>销量 {{ goodsData.sales }}</text>
+			<view @click="$emit('click-content', goodsData)">
+				<view v-if="showMsg" style="display: flex;justify-content: space-between;padding: 14upx 0 0;font-size: 26upx;color: #777777;">
+					<text>{{ goodsData.browse }}浏览量</text>
+					<text>销量 {{ goodsData.sales }}</text>
+				</view>
+				<view v-if="showSn">商品编号：{{ goodsData.goodsSn }}</view>
 			</view>
 
 			<view class="time">
-				<view class="wrapper" @click="go(`/pages/store/goods-detail/goods-detail?goodsId=${goodsData.id}`)">
+				<view class="wrapper" @click="$emit('click-content', goodsData)">
 					<view class="price-wrapper">
 						<text class="price-text">￥{{ goodsData.counterPrice }}</text>
-						<text v-if="goodsData.isHot" class="price-tag">热卖</text>
+						<text v-if="showTag && goodsData.isHot" class="price-tag">热卖</text>
 					</view>
 				</view>
 
 				<BeeIcon
-					:size="28" :src="require('../../../../static/brand/detail/add-icon.png')"
+					v-if="showIcon" :size="28" :src="require('../../static/brand/detail/add-icon.png')"
 					@click="$emit('add-car', goodsData)"
 				></BeeIcon>
+				<slot name="button"></slot>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-import { getRandom } from '../../../../utils'
+import { getRandom } from '../../utils'
 export default {
 	props: {
 		goodsData: {
 			type: Object,
 			required: true
+		},
+		showIcon: {
+			type: Boolean,
+			default: true
+		},
+		showTag: {
+			type: Boolean,
+			default: true
+		},
+		showMsg: {
+			type: Boolean,
+			default: true
+		},
+		showSn: {
+			type: Boolean,
+			default: false
 		}
 	},
 
 	methods: {
-		getRandom
 	}
 }
 </script>
@@ -71,6 +90,7 @@ export default {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		flex-wrap: wrap;
 		margin: 18upx 0;
 
 		.wrapper {

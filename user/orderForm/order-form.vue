@@ -125,9 +125,8 @@ import {
 	orderRefundApi
 } from '../../api/order'
 import { getOrderRefundsReasonApi } from '../../api/user'
-import { payAppointOrderApi } from '../../api/store'
 import { payOrderGoodsApi } from '../../api/goods'
-import { getUserId } from '../../utils'
+import { getUserId, payFn } from '../../utils'
 export default {
 	name: 'OrderForm',
 	data() {
@@ -200,8 +199,6 @@ export default {
 				this.totalPages = data.totalPages
 				this.loadingStatus = 'hidden'
 				uni.hideLoading()
-
-				console.log(data)
 			})
 		},
 
@@ -269,21 +266,7 @@ export default {
 					userId: getUserId(),
 					payType: goods.isAppoint ? 6 : 1
 				}).then((res) => {
-					const payData = JSON.parse(res.h5PayUrl)
-					const form = document.createElement('form')
-					form.setAttribute('action', payData.url)
-					form.setAttribute('method', 'POST')
-					const data = JSON.parse(payData.data)
-					let input
-					for (const key in data) {
-						input = document.createElement('input')
-						input.name = key
-						input.value = data[key]
-						form.appendChild(input)
-					}
-					document.body.appendChild(form)
-					form.submit()
-					document.body.removeChild(form)
+					payFn(res)
 				})
 			}
 		},

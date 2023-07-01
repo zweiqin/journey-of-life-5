@@ -655,6 +655,25 @@ export const getGrouponMyApi = (data) => RuanRequest('/groupon/my', data, 'get')
 export const getGrouponQueryApi = (data) => RuanRequest('/groupon/query', data, 'get')
 
 /**
+ * 秒杀
+ */
+
+// 活动列表
+export const getSeckillListActivitiesApi = (data) => RuanRequest('/dtsSeckill/listActivities', data)
+
+// 秒杀商品列表
+export const getSeckillListGoodsApi = (data) => RuanRequest('/dtsSeckill/listGoods', data)
+
+// 商户添加商品
+export const addSeckillGoodsApi = (data) => RuanRequest('/dtsSeckill/addGoods', data)
+
+// 秒杀
+export const buildSeckillActionApi = (data) => RuanRequest('/dtsSeckill/action', data)
+
+// 轮询生成订单结果
+export const getSeckillChkOrderStatusApi = (data) => RuanRequest('/dtsSeckill/chkOrderStatus', data, 'get')
+
+/**
  * 商品分类
  */
 
@@ -667,5 +686,30 @@ export const getSelectCategoryApi = (data) => RuanRequest('/dtsCategory/selectCa
 // 修改商家商品分类
 export const updateCategoryNameApi = (data) => RuanRequest('/dtsCategory/updateCategoryName', data)
 
-// 商家查询商品类目与商品
-export const getSelectCategoryGoodsApi = (data) => RuanRequest('/dtsCategory/selectCategoryGoods', data, 'get')
+// // 商家查询商品类目与商品
+// export const getSelectCategoryGoodsApi = (data) => RuanRequest('/dtsCategory/selectCategoryGoods', data, 'get')
+
+/**
+ * 预约系统
+ */
+
+// 门店的预约项目
+export const getBrandAppointmentCategoryApi = (data) => RuanRequest('/dtsAppointmentCategory/brandAppointment', data, 'get')
+
+// 公共预约分类查询
+export const getPublicAppointmentApi = (data) => RuanRequest('/dtsAppointmentCategory/getPublicAppointment', data, 'get')
+
+// 根据商家新建项目ID查询
+export const getBrandAppointmentIdApi = (data) => RuanRequest('/dtsAppointmentBrand/getId', data, 'get')
+
+// 商家新建预约项目
+export const addBrandAppointmentCategoryApi = (data) => RuanRequest('/dtsAppointmentCategory/addAppointment', data)
+
+// 商家修改预约项目
+export const updateBrandAppointmentCategoryApi = (data) => RuanRequest('/dtsAppointmentCategory/updateAppointment', data)
+
+// 删除预约项目
+export const deleteBrandAppointmentCategoryApi = (data) => RuanRequest('/dtsAppointmentCategory/deletedAppointment/1', data, 'delete')
+
+// 商家可预约商品
+export const getBrandAppointmentSelectGoodsApi = (data) => RuanRequest('/dtsAppointment/selectBrandGoods', data, 'get')

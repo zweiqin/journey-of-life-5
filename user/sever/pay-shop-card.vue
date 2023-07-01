@@ -46,7 +46,8 @@
 					<view class="title">是否使用代金劵</view>
 					<view class="desc" style="color: #999">
 						<label style="display: flex; align-items: center" @click="handleUserVoucher(index)">
-							<radio :checked="brand.useVoucher" /><text style="margin-left: 10px">
+							<radio class="radio-use-voucher" disabled :checked="brand.useVoucher" />
+							<text style="margin-left: 10px">
 								持有：{{ voucherNumber }}
 							</text>
 						</label>
@@ -85,10 +86,10 @@
 import Goods from '../../pages/store/goods-pane.vue'
 import { J_TWO_PAY_GOODS, J_SELECT_ADDRESS } from '../../constant'
 import { getAddressListApi } from '../../api/address'
-import { getUserId } from '../../utils'
+import { getUserId, payFn } from '../../utils'
 import { payAllShopCarApi, payAllGoodsSubmit } from '../../api/cart'
 import { getVoucherNumberApi } from '../../api/user'
-import { submitOrderApi, payOrderGoodsApi } from '../../api/goods'
+import { payOrderGoodsApi } from '../../api/goods'
 
 export default {
 	name: 'PayShopCard',
@@ -103,7 +104,7 @@ export default {
 		this.getAddress()
 		getVoucherNumberApi({ userId: getUserId() })
 			.then(({ data }) => {
-				this.voucherNumber = data[0].number
+				this.voucherNumber = data[0] ? data[0].number : ''
 			})
 	},
 
@@ -175,11 +176,27 @@ export default {
 		// 是否使用代金劵
 		handleUserVoucher(index) {
 			const currentBrand = this.goodsList[index]
-			this.$set(this.goodsList, index, {
-				...currentBrand,
-				useVoucher: !currentBrand.useVoucher
-			})
-			this.handleBuildPayCount()
+			// this.$set(this.goodsList, index, {
+			// 	...currentBrand,
+			// 	useVoucher: !currentBrand.useVoucher
+			// })
+			if (this.orderType === '0') {
+				if (this.goodsList[index].useVoucher) {
+					this.$set(this.goodsList, index, { ...currentBrand, useVoucher: !currentBrand.useVoucher })
+					this.handleBuildPayCount()
+				} else if (this.payOrderInfo && this.payOrderInfo.actualPrice) {
+					if (Number(this.payOrderInfo.actualPrice) < Number(this.voucherNumber)) {
+						this.$set(this.goodsList, index, { ...currentBrand, useVoucher: !currentBrand.useVoucher })
+						this.handleBuildPayCount()
+					} else {
+						return this.$showToast('代金券数量不足')
+					}
+				} else {
+					return this.$showToast('获取订单费用失败')
+				}
+			} else {
+				this.$showToast('该场景不能使用代金券')
+			}
 		},
 
 		handleChooseCoupon(item, index) {
@@ -202,7 +219,8 @@ export default {
 			const subData = {
 				userId: getUserId(),
 				addressId: this.defaultAddress.id,
-				cartDtoList
+				cartDtoList,
+				type: this.orderType
 			}
 			return subData
 		},
@@ -213,7 +231,7 @@ export default {
 				title: '加载中'
 			})
 			const _this = this
-			payAllShopCarApi({ type: this.orderType, ...this.getPostData() }).then(({ data }) => {
+			payAllShopCarApi(this.getPostData()).then(({ data }) => {
 				_this.payOrderInfo = data
 				uni.hideLoading()
 			})
@@ -232,21 +250,7 @@ export default {
 						userId: getUserId(),
 						payType: 1
 					}).then((res) => {
-						const payData = JSON.parse(res.h5PayUrl)
-						const form = document.createElement('form')
-						form.setAttribute('action', payData.url)
-						form.setAttribute('method', 'POST')
-						const data = JSON.parse(payData.data)
-						let input
-						for (const key in data) {
-							input = document.createElement('input')
-							input.name = key
-							input.value = data[key]
-							form.appendChild(input)
-						}
-						document.body.appendChild(form)
-						form.submit()
-						document.body.removeChild(form)
+						payFn(res)
 					})
 				})
 			} else if (this.type === 'reservation') {
@@ -336,6 +340,11 @@ export default {
 
 		.goods-pane {
 			margin-bottom: 40upx;
+		}
+		.radio-use-voucher {
+			/deep/ .uni-radio-input-disabled{
+				background-color: #ffffff;
+			}
 		}
 	}
 

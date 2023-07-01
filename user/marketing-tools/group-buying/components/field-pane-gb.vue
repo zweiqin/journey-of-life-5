@@ -42,16 +42,16 @@
 				</template>
 			</view>
 		</view>
-		<!-- 所属分类picker -->
+		<!-- 商品选择 -->
 		<tui-bottom-popup :show="isShowStoreGoodsPopup" @close="isShowStoreGoodsPopup = false">
-			<StoreGoodsList v-if="isShowStoreGoodsPopup" @send="handleSend"></StoreGoodsList>
+			<BrandGoodsList v-if="isShowStoreGoodsPopup" :brand-id="brandId" @send="handleSend"></BrandGoodsList>
 		</tui-bottom-popup>
 
 	</view>
 </template>
 
 <script>
-import { getGoodsTypeApi, getBrandGoodsListApi } from '.././../../../api/user'
+import { getGoodsTypeApi } from '.././../../../api/user'
 import { getUserId, getBrandId } from '../../../../utils'
 
 export default {
@@ -70,6 +70,7 @@ export default {
 
 	data() {
 		return {
+			brandId: getBrandId(),
 			form: { },
 			isShowStoreGoodsPopup: false
 		}
@@ -106,8 +107,8 @@ export default {
 	methods: {
 		handleSend(obj) {
 			this.isShowStoreGoodsPopup = false
-			this.form.goodsId = obj.goodsId
-			this.form.goodsName = obj.goodsName
+			this.form.goodsId = obj.id
+			this.form.goodsName = obj.name
 		},
 
 		handleInput(field, e) {

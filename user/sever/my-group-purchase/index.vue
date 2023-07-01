@@ -158,7 +158,7 @@ import {
 } from '../../../api/order'
 import { payOrderGoodsApi } from '../../../api/goods'
 import { J_USER_INFO } from '../../../constant'
-import { getUserId } from '../../../utils'
+import { getUserId, payFn } from '../../../utils'
 import GrouponRules from '../../marketing-tools/group-buying/components/GrouponRules.vue'
 
 export default {
@@ -275,21 +275,7 @@ export default {
 					userId: getUserId(),
 					payType: goods.isAppoint ? 6 : 1
 				}).then((res) => {
-					const payData = JSON.parse(res.h5PayUrl)
-					const form = document.createElement('form')
-					form.setAttribute('action', payData.url)
-					form.setAttribute('method', 'POST')
-					const data = JSON.parse(payData.data)
-					let input
-					for (const key in data) {
-						input = document.createElement('input')
-						input.name = key
-						input.value = data[key]
-						form.appendChild(input)
-					}
-					document.body.appendChild(form)
-					form.submit()
-					document.body.removeChild(form)
+					payFn(res)
 				})
 			}
 		},

@@ -11,7 +11,10 @@
 				</template>
 				<template #dropdownbox>
 					<view style="width: fit-content;box-sizing: border-box;">
-						<tui-list-view title="" color="#777" margin-top="2rpx" style="width: fit-content;min-width: 150upx;max-height: 28vh;overflow-y: auto;">
+						<tui-list-view
+							title="" color="#777" margin-top="2rpx"
+							style="width: fit-content;min-width: 150upx;max-height: 28vh;overflow-y: auto;"
+						>
 							<tui-list-cell
 								padding="20rpx 0"
 								style="width: fit-content;margin: 0 auto;border-bottom: 2upx solid #cccccc;"
@@ -77,6 +80,15 @@
 				>
 					<view style="margin: 20upx 0;color: #bbbec0;">请选择商家类型：</view>
 					<view style="display: flex;justify-content: space-between;flex-wrap: wrap;">
+						<view style="width: 100%;">
+							<view
+								style="width: fit-content;margin: 10upx 0;padding: 11upx;color: #202124;"
+								:style="{ 'border': currentTypeId === '' ? '1upx solid #4285f4' : '1upx solid #f8eddf', 'backgroundColor': currentTypeId === '' ? '#97e0fd' : '#f8eddf' }"
+								@click="handleClickType({ id: '', storeName: '全部' })"
+							>
+								全部
+							</view>
+						</view>
 						<view
 							v-for="item in storeTypeList" :key="item.id"
 							style="width: fit-content;margin: 10upx 0;padding: 11upx;color: #202124;"

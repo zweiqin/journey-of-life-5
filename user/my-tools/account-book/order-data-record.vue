@@ -102,32 +102,7 @@
 						v-for="item in orderList" :key="item.id"
 						style="margin-bottom: 25upx;padding: 20upx;background-color: #ffffff;"
 					>
-						<view style="color: #666666;">订单编号：{{ item.orderSn }}</view>
-						<view style="margin: 20upx;padding: 20upx;font-size: 26upx;background-color: #eeeeee;">
-							<view>收货人：{{ item.consignee }}-{{ item.mobile }}</view>
-							<view>{{ item.address }}</view>
-							<view v-if="item.message">留言：{{ item.message }}</view>
-						</view>
-						<view style="padding: 0 20upx;">
-							<view v-if="item.orderStatusText">订单状态：{{ item.orderStatusText }}</view>
-							<view v-if="item.freightPrice">配送费用：￥{{ item.freightPrice }}</view>
-							<view v-if="item.couponPrice">优惠券减免：￥{{ item.couponPrice }}</view>
-							<view v-if="item.integralPrice">用户积分减免：￥{{ item.integralPrice }}</view>
-							<view v-if="item.grouponPrice">团购优惠价减免：￥{{ item.grouponPrice }}</view>
-						</view>
-						<view style="padding: 0 20upx;">
-							<view style="display: flex;justify-content: space-between;">
-								<view v-if="typeof item.goodsPrice === 'number'">总费用：<text style="color: red;">￥{{ item.goodsPrice }}</text></view>
-								<view v-if="typeof item.orderPrice === 'number'">订单费用：<text style="color: red;">￥{{ item.orderPrice }}</text></view>
-							</view>
-							<view style="text-align: right;">实付费用：<text style="color: red;">￥{{ item.actualPrice }}</text></view>
-							<view style="margin-top: 12upx;padding-top: 12upx;;border-top: 1px solid #dddddd;">
-								<view style="display: flex;justify-content: space-between;font-size: 26upx;color: #999999;">
-									<text>创建时间：</text>
-									<text>{{ new Date(item.addTime).toLocaleString() }}</text>
-								</view>
-							</view>
-						</view>
+						<OrderInfo :data="item"></OrderInfo>
 					</view>
 				</view>
 				<LoadMore v-show="orderList.length" :status="status"></LoadMore>

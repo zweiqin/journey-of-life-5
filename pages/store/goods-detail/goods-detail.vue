@@ -6,7 +6,10 @@
 			<!-- <image src="https://img2.baidu.com/it/u=631516092,1411937024&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800">
 				</image> -->
 
-			<BeeSwiper height="540rpx" :list="goodsDetail.info.gallery.map(item => common.seamingImgUrl(item))" mode="aspectFit" @click="handlePreviewImg"></BeeSwiper>
+			<BeeSwiper
+				height="540rpx" :list="goodsDetail.info.gallery.map(item => common.seamingImgUrl(item))" mode="aspectFit"
+				@click="handlePreviewImg"
+			></BeeSwiper>
 
 			<view class="header-tool">
 				<BeeBack>
@@ -69,7 +72,10 @@
 		<RecommendCity :data="recommendBrandList"></RecommendCity>
 
 		<!-- 底部操作栏 -->
-		<OpFooter :btn-text="grouponRulesId && !grouponLinkId ? '发起团购' : grouponRulesId && grouponLinkId ? '加入团购' : ''" :total-price="goodsDetail.info.retailPrice" @pay="handlePay" @add="handleAdd"></OpFooter>
+		<OpFooter
+			:btn-text="orderType === '2' ? '立即预约' : grouponRulesId && !grouponLinkId ? '发起团购' : grouponRulesId && grouponLinkId ? '加入团购' : ''"
+			:total-price="goodsDetail.info.retailPrice" @pay="handlePay" @add="handleAdd"
+		></OpFooter>
 
 		<JSpecification ref="specificationRef" v-model="showSpecification" :data="goodsDetail" :bottom="120"></JSpecification>
 
@@ -91,6 +97,7 @@ export default {
 	components: { Evaluate, RecommendPane, RecommendCity, OpFooter, UParse: uParse },
 	data() {
 		return {
+			orderType: '',
 			goodsId: null,
 			goodsDetail: null,
 			recommendGoods: [],
@@ -99,13 +106,13 @@ export default {
 			showSpecification: false,
 			grouponRulesId: '',
 			grouponLinkId: ''
-
 		}
 	},
 	onLoad(options) {
 		this.goodsId = options.goodsId
 		this.grouponRulesId = options.rulesId || ''
 		this.grouponLinkId = options.linkId || ''
+		this.orderType = options.orderType
 		this.getGoodsDetail()
 	},
 
@@ -172,7 +179,7 @@ export default {
 		async handlePay() {
 			const goodsInfo = await this.getSpacification()
 			const { name, id, picUrl, unit, brandId } = this.goodsDetail.info
-			this.go(`/pages/store/order-detail/order-detail?rulesId=${this.grouponRulesId}&linkId=${this.grouponLinkId}&goodsName=${name}&goodsId=${id}&url=${picUrl}&unit=${unit}&brandId=${brandId}&productInfo=${JSON.stringify(goodsInfo)}`)
+			this.go(`/pages/store/order-detail/order-detail?orderType=${this.orderType}&rulesId=${this.grouponRulesId}&linkId=${this.grouponLinkId}&goodsName=${name}&goodsId=${id}&url=${picUrl}&unit=${unit}&brandId=${brandId}&productInfo=${JSON.stringify(goodsInfo)}`)
 		},
 
 		// 点击加入
@@ -190,7 +197,8 @@ export default {
 						'goodsId': this.goodsDetail.info.id,
 						'checked': 1,
 						'number': 1,
-						'productId': this.goodsDetail.productList[0].id
+						'productId': this.goodsDetail.productList[0].id,
+						'type': this.orderType
 					})
 					this.$showToast('购物车添加成功')
 				} else {
@@ -222,109 +230,109 @@ export default {
 
 <style lang="less" scoped>
 .goods-detail-container {
-  width: 100%;
-  min-height: 100vh;
-  background-color: #f6f6f6;
-  padding-bottom: 100upx;
+	width: 100%;
+	min-height: 100vh;
+	background-color: #f6f6f6;
+	padding-bottom: 100upx;
 
-  .top-image-wrapper {
-    position: relative;
-    width: 100%;
-    height: 540upx;
+	.top-image-wrapper {
+		position: relative;
+		width: 100%;
+		height: 540upx;
 
-    image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+		image {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
 
-    .header-tool {
-      top: 30upx;
-      position: absolute;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      padding-right: 60upx;
-      padding-left: 18upx;
-      box-sizing: border-box;
-    }
-  }
+		.header-tool {
+			top: 30upx;
+			position: absolute;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			padding-right: 60upx;
+			padding-left: 18upx;
+			box-sizing: border-box;
+		}
+	}
 
-  .goods-pane {
-    padding: 34upx 44upx;
-    background-color: #fff;
-    box-sizing: border-box;
+	.goods-pane {
+		padding: 34upx 44upx;
+		background-color: #fff;
+		box-sizing: border-box;
 
-    .goods-name {
-      font-size: 40upx;
-      font-weight: bold;
-    }
+		.goods-name {
+			font-size: 40upx;
+			font-weight: bold;
+		}
 
-    .price-wrapper {
-      display: flex;
-      align-items: center;
+		.price-wrapper {
+			display: flex;
+			align-items: center;
 
-      .icon {
-        color: #FA5151;
-        font-size: 28upx;
-        font-weight: 500;
-      }
+			.icon {
+				color: #FA5151;
+				font-size: 28upx;
+				font-weight: 500;
+			}
 
-      .current-price {
-        position: relative;
-        top: -4upx;
-        font-size: 48upx;
-        color: #FA5151;
-        font-weight: 500;
-      }
+			.current-price {
+				position: relative;
+				top: -4upx;
+				font-size: 48upx;
+				color: #FA5151;
+				font-weight: 500;
+			}
 
-      .old-price {
-        color: #777;
-        font-size: 24upx;
-        text-decoration: line-through;
-        margin: 0 12upx 0 8upx;
-      }
+			.old-price {
+				color: #777;
+				font-size: 24upx;
+				text-decoration: line-through;
+				margin: 0 12upx 0 8upx;
+			}
 
-      .tag {
-        background-color: #FCDBDB;
-        font-size: 20upx;
-        line-height: 1.5;
-        color: red;
-        padding: 2upx 8upx;
-      }
-    }
+			.tag {
+				background-color: #FCDBDB;
+				font-size: 20upx;
+				line-height: 1.5;
+				color: red;
+				padding: 2upx 8upx;
+			}
+		}
 
-    .item {
-      display: flex;
-      align-items: center;
-      color: #999999;
-      font-size: 24upx;
-      margin-top: 8upx;
+		.item {
+			display: flex;
+			align-items: center;
+			color: #999999;
+			font-size: 24upx;
+			margin-top: 8upx;
 
-      .item-title {
-        margin-right: 12upx;
-        flex-shrink: 0;
-      }
+			.item-title {
+				margin-right: 12upx;
+				flex-shrink: 0;
+			}
 
-      .salse-number {
-        margin-left: 140upx;
-      }
-    }
-  }
+			.salse-number {
+				margin-left: 140upx;
+			}
+		}
+	}
 
-  .other-container {
-    padding: 0 20upx;
-    box-sizing: border-box;
+	.other-container {
+		padding: 0 20upx;
+		box-sizing: border-box;
 
-    /deep/ .pane-wrapper {
-      padding: 32upx 24upx;
-      box-sizing: border-box;
-      background-color: #fff;
-      border-radius: 20upx;
-      margin-top: 30upx;
-    }
-  }
+		/deep/ .pane-wrapper {
+			padding: 32upx 24upx;
+			box-sizing: border-box;
+			background-color: #fff;
+			border-radius: 20upx;
+			margin-top: 30upx;
+		}
+	}
 
 }
 

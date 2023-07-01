@@ -2,9 +2,7 @@
 	<view class="shop-car-container">
 		<view class="header">
 			<JBack :tabbar="isBack === '1' ? '' : '/pages/user/user'" style="margin-top: 10upx" width="50" height="50" dark></JBack>
-			<h2 v-if="type === 'mall'">购物车</h2>
-			<h2 v-else-if="type === 'reservation'">预约列表</h2>
-			<h2 v-else-if="type === 'mallAndReservation'">购物车商品</h2>
+			<h2>购物车</h2>
 			<button class="edit" @click="handleSwitchShopCarStatus">
 				{{ opStatus === 'EDIT' ? '编辑' : '完成' }}
 			</button>
@@ -13,8 +11,8 @@
 		<view>
 			<tui-tabs
 				style="width: 686upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="105" :padding="32"
-				item-width="343rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
-				:tabs="[{ name: '巨蜂自营' }, { name: '本地生活' }]" :current-tab="currentTab"
+				item-width="229rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
+				:tabs="[{ name: '巨蜂自营' }, { name: '本地生活' }, { name: '预约' }]" :current-tab="currentTab"
 				@change="handleSwitchTab"
 			></tui-tabs>
 		</view>
@@ -84,7 +82,7 @@
 			<JLineTitle title="热销推荐"></JLineTitle>
 			<Goods
 				v-for="item in recommentList" :id="item.id" :key="item.id" :price="item.counterPrice"
-				:name="item.name" :img-url="item.picUrl" read-only
+				:name="item.name" :img-url="common.seamingImgUrl(item.picUrl)" read-only
 			></Goods>
 		</view>
 
@@ -101,21 +99,9 @@
 			<view v-show="opStatus === 'EDIT'" class="edit-op">
 				<text class="text">合计</text>
 				<view class="totoal-price">￥{{ totalPrice }}</view>
-				<!-- <button v-if="type === 'mall'" class="uni-btn pay-btn" @click="handleToPay('mall')">结算</button>
-					<button v-else-if="type === 'reservation'" class="uni-btn pay-btn" @click="handleToPay('reservation')">去预约</button>
-					<view v-else-if="type === 'mallAndReservation'" style="display: flex;justify-content: space-between;">
-					<button class="uni-btn pay-btn" style="width: 102upx;margin-left: 16upx;" @click="handleToPay('mall')">结算</button>
-					<button class="uni-btn pay-btn" style="width: 138upx;margin-left: 16upx;" @click="handleToPay('reservation')">去预约</button>
-					</view> -->
 				<button v-if="currentTab === 0" class="uni-btn pay-btn" @click="handleToPay('mall')">结算</button>
-				<view v-else-if="currentTab === 1">
-					<button v-if="type === 'mall'" class="uni-btn pay-btn" @click="handleToPay('mall')">结算</button>
-					<button v-else-if="type === 'reservation'" class="uni-btn pay-btn" @click="handleToPay('reservation')">去预约</button>
-					<view v-else-if="type === 'mallAndReservation'" style="display: flex;justify-content: space-between;">
-						<button class="uni-btn pay-btn" style="width: 102upx;margin-left: 16upx;" @click="handleToPay('mall')">结算</button>
-						<button class="uni-btn pay-btn" style="width: 138upx;margin-left: 16upx;" @click="handleToPay('reservation')">去预约</button>
-					</view>
-				</view>
+				<button v-else-if="currentTab === 1" class="uni-btn pay-btn" @click="handleToPay('mall')">结算</button>
+				<button v-else-if="currentTab === 2" class="uni-btn pay-btn" @click="handleToPay('reservation')">结算</button>
 			</view>
 
 			<!-- 完成 -->
@@ -128,7 +114,6 @@
 </template>
 
 <script>
-import RecommendGoods from '../../components/recommend-goods'
 import Goods from '../..//pages/store/goods-pane'
 import {
 	getShopCarListApi,
@@ -147,21 +132,18 @@ const CONFIRM = 'CONFIRM'
 export default {
 	name: 'ShopCar',
 	components: {
-		RecommendGoods,
 		Goods
 	},
 
 	onLoad(options) {
-		this.type = options.type || 'mall'
-		if (this.type === 'mall') {
-			this.currentTab = 0
-		} else if (this.type === 'mallAndReservation' || this.type === 'reservation') {
-			this.currentTab = 1
-		}
+		this.currentTab = options.orderType * 1 || 0
 		this.isBack = options.isBack || '0'
-		this.getShopList()
 		uni.removeStorageSync(J_SELECT_ADDRESS)
 		// this.getRecommentList();
+	},
+
+	onShow(options) {
+		this.getShopList()
 	},
 
 	filters: {
@@ -179,7 +161,6 @@ export default {
 
 	data() {
 		return {
-			type: '',
 			opStatus: EDIT,
 			opList: [],
 			shopCarList: [],
@@ -448,7 +429,7 @@ export default {
 			})
 			uni.hideLoading()
 			uni.navigateTo({
-				url: `/user/sever/pay-shop-card?type=${type}&orderType=${this.currentTab}`
+				url: `/user/sever/pay-shop-card?orderType=${this.currentTab}&type=${type}`
 			})
 		},
 

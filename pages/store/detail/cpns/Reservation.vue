@@ -1,9 +1,6 @@
 <template>
-	<view style="background-color: #f6f6f6;">
-		<scroll-view
-			refresher-background="#3f3d3d" scroll-y="true" style="max-height: 85vh;min-height: 400rpx;"
-			@scrolltolower="handleScrolltolower"
-		>
+	<view>
+		<scroll-view refresher-background="#3f3d3d" scroll-y="true" style="max-height: 85vh;min-height: 400rpx;">
 			<view class="orders-container">
 				<view>
 					<!-- @click="go(`/user/sever/shop-car-reservation?isBack=1&brandId=${brandDetail.id || ''}&brandName=${brandDetail.name || ''}`)" -->
@@ -15,66 +12,39 @@
 						去预约
 					</tui-button>
 				</view>
-				<view class="navs">
-					<view style="font-weight: bold;">本地生活：</view>
-					<view
-						v-for="item in orderTypesStore" :key="item.value" class="nav-item"
-						:class="{ 'nav-item-active': currentStatus === item.value && currentType === 1 }"
-						@click="handleSwitchStatus(item.value, 1)"
-					>
-						{{ item.label }}
-					</view>
-				</view>
 
-				<view v-if="orderList && orderList.length" class="order-list-wrapper">
-					<view v-for="item in orderList" :key="item.id" class="goods-pane">
-						<view class="order-no-status" @click="handleToViewOrderDetail(item)">
-							<view class="order-no">预约号:{{ item.orderSn }}</view>
-							<view class="order-status">{{ item.orderStatusText }}</view>
-						</view>
-
-						<view class="goods-list" @click="handleToViewOrderDetail(item)">
-							<view v-for="goods in item.goodsList" :key="goods.id" class="goods-item">
-								<image class="goods-img" :src="common.seamingImgUrl(goods.picUrl)" mode="" />
-
-								<view class="info">
-									<view class="name">{{ goods.goodsName }}</view>
-
-									<view class="good-sp-pr">
-										<view class="sp">标准</view>
-										<view class="pr">￥{{ goods.price }}</view>
-									</view>
-								</view>
-
-								<view>
-									<view class="number" style="text-align: right">
-										共 {{ goods.number }} 件商品
-									</view>
-									<button
-										v-if="item.handleOption.comment && !goods.comment" class="ev-btn uni-btn"
-										@click.stop="handleOpOrder(item, 'comment', goods)"
-									>
-										去评论
-									</button>
-								</view>
+				<view v-if="appointmentList && appointmentList.length" style="font-size: 28upx;">
+					<view v-if="appointmentList && appointmentList.length" style="display: flex;box-sizing: border-box;">
+						<view style="padding-bottom: 20upx;;background-color: #f3f3f3;">
+							<view
+								v-for="item in appointmentList" :key="item.serverNameOne"
+								style="max-width: 140upx;padding: 20upx 36upx;word-break: break-all;box-sizing: border-box;"
+								:style="{ backgroundColor: item.id === currentTab ? '#ffffff' : 'transparent' }"
+								@click="handleClickAppointment(item)"
+							>
+								{{ item.name }}
 							</view>
 						</view>
-
-						<view class="goods-ops">
-							<view class="actual-price">
-								实付：<text class="number">￥{{ item.actualPrice }}</text>
-							</view>
-
-							<view class="btns">
-								<view v-for="btn in orderOpButtons" :key="btn.label">
-									<button
-										v-if="item.handleOption[btn.key] && btn.label !== '去评论'" :style="{
-											background: btn.color
-										}" class="uni-btn" @click="handleOpOrder(item, btn.key)"
+						<view style="flex: 1;padding: 20upx;">
+							<view v-if="currentGoods && currentGoods.length">
+								<view v-for="item in currentGoods" :key="item.id">
+									<StoreGoods
+										:goods-data="item" :show-icon="false" :show-tag="false"
+										@click-content="(e) => go(`/pages/store/goods-detail/goods-detail?orderType=2&goodsId=${e.id}`)"
 									>
-										{{ btn.label }}
-									</button>
+										<template #button>
+											<tui-button
+												type="warning" width="120rpx" height="50rpx" shape="circle"
+												@click="$refs.refJSpecificationScreen.open(item.id)"
+											>
+												选择
+											</tui-button>
+										</template>
+									</StoreGoods>
 								</view>
+							</view>
+							<view v-else style="margin: 40upx 0;text-align: center;">
+								暂无商品~
 							</view>
 						</view>
 					</view>
@@ -85,9 +55,9 @@
 					></uni-load-more>
 				</view>
 
-				<view v-if="loadingStatus === 'hidden' && !orderList.length" class="c-no-data f-center">
+				<view v-if="loadingStatus === 'hidden' && !appointmentList.length" class="no-data f-center">
 					<view>
-						<text>暂无预约</text>
+						<text>商家暂无预约项目</text>
 					</view>
 					<BeeAvatar
 						radius="0upx" :width="179" :height="156"
@@ -98,47 +68,13 @@
 			</view>
 		</scroll-view>
 
-		<!-- 申请退款dialog -->
-		<tui-dialog
-			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '提交', color: '#586c94' }]"
-			:show="isShowRefundDialog" title="退款原因" @click="handleClickRefundDialog"
-		>
-			<template #content>
-				<view style="max-height: 50vh;overflow-y: auto;">
-					<tui-radio-group v-model="tempRefund.reasonId" @change="(e) => { }">
-						<tui-label v-for="(part, index) in refundRadioItems" :key="index">
-							<tui-list-cell padding="16upx 26upx" style="text-align: left;">
-								<view>
-									<tui-radio :checked="false" :value="part.id" color="#07c160" border-color="#999">
-									</tui-radio>
-									<text style="margin-left: 6upx;" class="tui-text">{{ part.refundOtherReason }}</text>
-								</view>
-							</tui-list-cell>
-						</tui-label>
-					</tui-radio-group>
-				</view>
-				<view>
-					<tui-input
-						v-model="tempRefund.refundRemark" padding="26upx 0" label="其它备注"
-						placeholder="填写备注，说明退款详情"
-					></tui-input>
-				</view>
-			</template>
-		</tui-dialog>
+		<JSpecificationScreen ref="refJSpecificationScreen" order-type="2"></JSpecificationScreen>
 	</view>
 </template>
 
 <script>
-import { orderOpButtons } from '../../../../user/orderForm/config'
-import {
-	getOrderListApi,
-	orderCancelApi,
-	orderDeleteApi,
-	receiveGoodsApi,
-	orderRefundApi
-} from '../../../../api/order'
-import { payOrderGoodsApi, getShopCarApi } from '../../../../api/goods'
-import { updateCancelReservationApi, getOrderRefundsReasonApi } from '../../../../api/user'
+import { getShopCarApi } from '../../../../api/goods'
+import { getBrandAppointmentCategoryApi, getBrandAppointmentSelectGoodsApi } from '../../../../api/user'
 import { getUserId } from '../../../../utils'
 export default {
 	name: 'Reservation',
@@ -152,64 +88,30 @@ export default {
 	},
 	data() {
 		return {
-			orderTypesStore: [
-				{
-					label: '待付款',
-					value: 8
-				},
-				{
-					label: '已付款',
-					value: 5
-				},
-				{
-					label: '已核销',
-					value: 6
-				},
-				{
-					label: '已过期',
-					value: 7
-				},
-				{
-					label: '已取消',
-					value: 9
-				}
-			],
-			currentStatus: 8,
-			currentType: 1,
-			query: {
-				page: 1,
-				size: 10
-			},
-			orderOpButtons,
-			totalPages: 0,
-			orderList: [],
+			appointmentList: [],
 			loadingStatus: 'loading',
-			isShowRefundDialog: false,
-			refundRadioItems: [],
-			tempRefund: {
-				orderId: '',
-				reasonId: '',
-				refundRemark: ''
-			}
+			currentTab: '',
+			currentGoods: []
 		}
 	},
 
 	created() {
-		this.getOrderList()
+		this.getAppointmentList()
 	},
 
 	methods: {
 		handleToReservation() {
-			this.loadingStatus = 'loading'
+			uni.showLoading()
 			getShopCarApi({
 				userId: getUserId(),
-				brandId: this.brandDetail.id
+				brandId: this.brandDetail.id,
+				type: 2
 			})
 				.then(({ data }) => {
 					console.log(data)
 					uni.hideLoading()
 					if (data.cartList && data.cartList.length) {
-						this.go(`/user/sever/shop-car?isBack=1&type=reservation`)
+						this.go(`/user/sever/shop-car?isBack=1&orderType=2`)
 					} else {
 						this.$showToast('请先添加该店铺的商品到购物车')
 					}
@@ -218,151 +120,27 @@ export default {
 					uni.hideLoading()
 				})
 		},
-		handleScrolltolower() {
-			if (this.orderList.length < this.query.size) {
-				this.loadingStatus = 'noMore'
-				return
-			}
-			if (this.query.page >= this.totalPages) {
-				this.loadingStatus = 'noMore'
-				return
-			}
-			this.query.page++
-			this.getOrderList(true)
-		},
-		// 获取预约信息
-		getOrderList(loadMore) {
+		getAppointmentList() {
 			uni.showLoading()
 			this.loadingStatus = 'loading'
-			getOrderListApi({
-				userId: getUserId(),
-				showType: this.currentStatus,
-				orderType: this.currentType,
-				...this.query
+			getBrandAppointmentCategoryApi({
+				brandId: this.brandDetail.id
 			}).then(({ data }) => {
-				if (loadMore) {
-					this.orderList.push(...data.data)
-				} else {
-					this.orderList = data.data
-				}
-				this.totalPages = data.totalPages
+				this.appointmentList = data || []
+				this.appointmentList && this.appointmentList.length && (this.currentTab = this.appointmentList[0].id) && this.handleClickAppointment({ id: this.currentTab })
 				this.loadingStatus = 'hidden'
 				uni.hideLoading()
 			})
 		},
-
-		// 切换状态
-		handleSwitchStatus(status, type) {
-			this.currentStatus = status
-			this.currentType = type
-			this.query.page = 1
-			this.query.size = 20
-			this.getOrderList()
-		},
-
-		// 点击操作按钮
-		handleOpOrder(goods, key, currentGoods) {
-			if (key === 'comment') {
-				this.handleToViewOrderDetail(goods, currentGoods)
-				return
-			}
-			const mapMethods = {
-				cancel: {
-					text: '确定要取消当前预约吗？',
-					// api: orderCancelApi
-					api: updateCancelReservationApi
-				},
-				delete: {
-					text: '确定要删除当前预约吗？',
-					api: orderDeleteApi
-				},
-				confirm: {
-					text: '确定要收货吗？',
-					api: receiveGoodsApi
-				}
-			}
-			const _this = this
-			if (
-				goods.handleOption[key] &&
-				['cancel', 'delete', 'confirm'].includes(key)
-			) {
-				uni.showModal({
-					title: '提示',
-					content: mapMethods[key].text,
-					success(res) {
-						if (res.confirm) {
-							mapMethods[key]
-								.api({
-									userId: getUserId(),
-									orderId: goods.id
-								})
-								.then(() => {
-									_this.query.page = 1
-									_this.getOrderList()
-								})
-						}
-					}
-				})
-			} else if (key === 'refund') {
-				getOrderRefundsReasonApi()
-					.then((res) => {
-						this.refundRadioItems = res.data
-						this.tempRefund.orderId = goods.id
-						this.isShowRefundDialog = true
-					})
-			} else if (key === 'pay') {
-				payOrderGoodsApi({
-					orderNo: goods.orderSn,
-					userId: getUserId(),
-					payType: goods.isAppoint ? 6 : 1
-				}).then((res) => {
-					const payData = JSON.parse(res.h5PayUrl)
-					const form = document.createElement('form')
-					form.setAttribute('action', payData.url)
-					form.setAttribute('method', 'POST')
-					const data = JSON.parse(payData.data)
-					let input
-					for (const key in data) {
-						input = document.createElement('input')
-						input.name = key
-						input.value = data[key]
-						form.appendChild(input)
-					}
-					document.body.appendChild(form)
-					form.submit()
-					document.body.removeChild(form)
-				})
-			}
-		},
-
-		// 申请退款确认
-		async handleClickRefundDialog(e) {
-			console.log(e)
-			if (e.index === 0) {
-			} else if (e.index === 1) {
-				if (!getUserId()) return
-				if (!this.tempRefund.reasonId) return this.$showToast('请选择退款原因')
-				await orderRefundApi({ ...this.tempRefund, userId: getUserId() })
-					.then((res) => {
-						this.$showToast('提交成功')
-						this.getOrderList()
-					})
-			}
-			this.tempRefund = {
-				orderId: '',
-				reasonId: '',
-				refundRemark: ''
-			}
-			this.isShowRefundDialog = false
-		},
-
-		// 查看详情
-		handleToViewOrderDetail(goods, currentGoods) {
-			uni.navigateTo({
-				url:
-					'/user/orderForm/order-form-detail?id=' +
-					goods.id +
-					(currentGoods ? '&goodsId=' + currentGoods.id : '')
+		handleClickAppointment(e) {
+			this.currentTab = e.id
+			this.currentGoods = []
+			uni.showLoading()
+			getBrandAppointmentSelectGoodsApi({
+				appointmentId: e.id
+			}).then(({ data }) => {
+				this.currentGoods = data || []
+				uni.hideLoading()
 			})
 		}
 	}
@@ -370,165 +148,18 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '~@/style/mixin.less';
-
 .orders-container {
-	font-size: 28upx;
+	// font-size: 28upx;
 	color: #3d3d3d;
 	padding: 10upx 0 60upx;
-	margin: 0 16upx;
+	// margin: 0 16upx;
 	background-color: #ffffff;
 
-	.header {
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		color: #000;
-		padding: 0 32upx;
-		box-sizing: border-box;
-
-		h2 {
-			font-weight: normal;
-			font-size: 32upx;
-			margin-top: -8upx;
-		}
-	}
-
-	.navs {
-		display: flex;
-		justify-content: space-between;
-		margin: 14upx 0 0;
-		padding-bottom: 20upx;
-		padding: 0 32upx;
-		box-sizing: border-box;
-
-		.nav-item {
-			transition: all 350ms;
-
-			&.nav-item-active {
-				color: #ff8f1f;
-			}
-		}
-	}
-
-	.order-list-wrapper {
-		background-color: #f6f6f6;
-		padding-top: 10px;
-		font-size: 24upx;
-
-		.goods-pane {
-			padding: 32upx;
-			box-sizing: border-box;
-			background-color: #fff;
-			margin-bottom: 20upx;
-
-			&:nth-of-type(:last-child) {
-				margin-bottom: 0;
-			}
-
-			.order-no-status {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				padding-bottom: 16upx;
-				border-bottom: 1upx solid #dbdbdb;
-
-				.order-status {
-					color: #f40;
-				}
-			}
-
-			.goods-list {
-				padding: 20upx 0;
-
-				.goods-item {
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-					margin-bottom: 30upx;
-
-					.info {
-						flex: 1;
-						height: 100%;
-						display: flex;
-						justify-content: space-between;
-						flex-direction: column;
-
-						.name {
-							font-size: 28upx;
-							font-weight: 500;
-							width: 300upx;
-							overflow: hidden;
-							text-overflow: ellipsis;
-							white-space: nowrap;
-						}
-
-						.good-sp-pr {
-							margin-top: 20upx;
-
-							.sp {
-								line-height: 1.5;
-								color: #565656;
-							}
-
-							.pr {
-								font-size: 28upx;
-							}
-						}
-					}
-
-					.goods-img {
-						width: 140upx;
-						height: 140upx;
-						object-fit: cover;
-						margin-right: 20upx;
-					}
-				}
-			}
-
-			.goods-ops {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				padding-top: 20upx;
-				border-top: 1upx solid #dbdbdb;
-
-				.actual-price {
-					font-size: 28upx;
-					font-weight: 500;
-
-					.number {
-						color: #f40;
-					}
-				}
-
-				.btns {
-					display: flex;
-					align-items: center;
-
-					.uni-btn {
-						font-size: 24upx;
-						color: #fff;
-						padding: 18upx 28upx;
-						background-color: #f40;
-						white-space: nowrap;
-						margin-left: 20upx;
-						border-radius: 4upx;
-					}
-				}
-			}
-		}
-
-		.ev-btn {
-			font-size: 24upx;
-			color: #fff;
-			padding: 18upx 28upx;
-			background-color: rgb(132, 195, 65);
-			white-space: nowrap;
-			margin-left: 20upx;
-			border-radius: 4upx;
-			margin-top: 20upx;
-		}
+	.no-data {
+		min-height: 200upx;
+		color: #ccc;
+		padding: 20upx 0;
+		flex-direction: column;
 	}
 }
 </style>

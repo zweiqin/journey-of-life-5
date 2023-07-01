@@ -89,13 +89,12 @@ import {
 	upgradeOrderAddOrderApi,
 	upgradeDoesItExistApi
 } from '../../api/user'
-import { getUserId, updateToken } from '../../utils'
+import { getUserId, updateToken, payFn } from '../../utils'
 import {
 	J_USER_INFO,
 	J_PAY_TYPE
 } from '../../constant'
 import { payOrderGoodsApi } from '../../api/goods'
-import { payFn } from '../../utils/pay'
 
 export default {
 	name: 'UserUp',

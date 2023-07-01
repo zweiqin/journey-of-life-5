@@ -73,7 +73,7 @@
 								</view>
 							</view>
 							<tui-bottom-popup :show="isShowStoreGoodsPopup" @close="isShowStoreGoodsPopup = false">
-								<StoreGoodsList v-if="isShowStoreGoodsPopup" @send="handleSend"></StoreGoodsList>
+								<BrandGoodsList v-if="isShowStoreGoodsPopup" :brand-id="brandId" @send="handleSend"></BrandGoodsList>
 							</tui-bottom-popup>
 						</view>
 					</template>
@@ -263,7 +263,7 @@
 </template>
 
 <script>
-import { getGoodsTypeApi, getBrandGoodsListApi } from '.././../../../api/user'
+import { getGoodsTypeApi } from '.././../../../api/user'
 import { getUserId, getBrandId } from '../../../../utils'
 
 export default {
@@ -282,6 +282,7 @@ export default {
 
 	data() {
 		return {
+			brandId: getBrandId(),
 			form: {},
 			isShowPicker: false,
 			categoryArr: [],
@@ -366,12 +367,12 @@ export default {
 		handleSend(obj) {
 			this.isShowStoreGoodsPopup = false
 			if (!this.form.goodsValueTwo) {
-				this.form.goodsValueTwo = [ obj.goodsId ]
-				this.goodsValueTwoName = obj.goodsName
+				this.form.goodsValueTwo = [ obj.id ]
+				this.goodsValueTwoName = obj.name
 			} else {
-				if (this.form.goodsValueTwo.includes(obj.goodsId)) return this.$showToast('不能选择重复商品')
-				this.form.goodsValueTwo = this.form.goodsValueTwo.push(obj.goodsId)
-				this.goodsValueTwoName = this.goodsValueTwoName + ',' + obj.goodsName
+				if (this.form.goodsValueTwo.includes(obj.id)) return this.$showToast('不能选择重复商品')
+				this.form.goodsValueTwo = this.form.goodsValueTwo.push(obj.id)
+				this.goodsValueTwoName = this.goodsValueTwoName + ',' + obj.name
 			}
 			console.log(obj, this.form.goodsValueTwo, this.goodsValueTwoName)
 		},

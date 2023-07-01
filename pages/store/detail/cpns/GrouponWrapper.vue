@@ -9,14 +9,18 @@
 					<template #left="{ entity }">
 						<BrandGoods
 							:rule-id="entity.rule_id" :groupon-price="entity.groupon_price"
-							:groupon-member="entity.groupon_member" :goods-data="entity.goods" @add="(e) => go(`/pages/store/goods-detail/goods-detail?goodsId=${e.id}&rulesId=${e.rulesId}`)"
+							:groupon-member="entity.groupon_member" :goods-data="entity.goods"
+							@click-content="(e) => go(`/pages/store/goods-detail/goods-detail?orderType=1&goodsId=${e.id}&rulesId=${e.rulesId}`)"
+							@add="(e) => go(`/pages/store/goods-detail/goods-detail?orderType=1&goodsId=${e.id}&rulesId=${e.rulesId}`)"
 						>
 						</BrandGoods>
 					</template>
 					<template #right="{ entity }">
 						<BrandGoods
 							:rule-id="entity.rule_id" :groupon-price="entity.groupon_price"
-							:groupon-member="entity.groupon_member" :goods-data="entity.goods" @add="(e) => go(`/pages/store/goods-detail/goods-detail?goodsId=${e.id}&rulesId=${e.rulesId}`)"
+							:groupon-member="entity.groupon_member" :goods-data="entity.goods"
+							@click-content="(e) => go(`/pages/store/goods-detail/goods-detail?orderType=1&goodsId=${e.id}&rulesId=${e.rulesId}`)"
+							@add="(e) => go(`/pages/store/goods-detail/goods-detail?orderType=1&goodsId=${e.id}&rulesId=${e.rulesId}`)"
 						>
 						</BrandGoods>
 					</template>

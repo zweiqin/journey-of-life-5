@@ -189,7 +189,7 @@ import {
 	orderRefundApi
 } from '../../api/order'
 import { getVerificationCodeHxCodeApi, getOrderRefundsReasonApi } from '../../api/user'
-import { getUserId } from '../../utils'
+import { getUserId, payFn } from '../../utils'
 import { orderOpButtons } from './config'
 import { payOrderGoodsApi } from '../../api/goods'
 
@@ -344,21 +344,7 @@ export default {
 					userId: getUserId(),
 					payType: goods.isAppoint ? 6 : 1
 				}).then((res) => {
-					const payData = JSON.parse(res.h5PayUrl)
-					const form = document.createElement('form')
-					form.setAttribute('action', payData.url)
-					form.setAttribute('method', 'POST')
-					const data = JSON.parse(payData.data)
-					let input
-					for (const key in data) {
-						input = document.createElement('input')
-						input.name = key
-						input.value = data[key]
-						form.appendChild(input)
-					}
-					document.body.appendChild(form)
-					form.submit()
-					document.body.removeChild(form)
+					payFn(res)
 				})
 			} else if (key === 'comment') {
 				uni.showModal({

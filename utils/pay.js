@@ -7,19 +7,32 @@ export const payFn = (res, type, order) => {
 		JF_ORDER_NO: order,
 		TL_ORDER_NO: res.orderNo
 	})
-	const payData = JSON.parse(res.h5PayUrl)
-	const form = document.createElement('form')
-	form.setAttribute('action', payData.url)
-	form.setAttribute('method', 'POST')
-	const data = JSON.parse(payData.data)
-	let input
-	for (const key in data) {
-		input = document.createElement('input')
-		input.name = key
-		input.value = data[key]
-		form.appendChild(input)
+	if (res.errno === -1) {
+		uni.showToast({
+			title: res.errmsg,
+			duration: 2000,
+			icon: 'error'
+		})
 	}
-	document.body.appendChild(form)
-	form.submit()
-	document.body.removeChild(form)
+	if (res.errno === 0) {
+		uni.redirectTo({
+			url: '/user/otherServe/payment-completed/index'
+		})
+	} else {
+		const payData = JSON.parse(res.h5PayUrl)
+		const form = document.createElement('form')
+		form.setAttribute('action', payData.url)
+		form.setAttribute('method', 'POST')
+		const data = JSON.parse(payData.data)
+		let input
+		for (const key in data) {
+			input = document.createElement('input')
+			input.name = key
+			input.value = data[key]
+			form.appendChild(input)
+		}
+		document.body.appendChild(form)
+		form.submit()
+		document.body.removeChild(form)
+	}
 }

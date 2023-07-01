@@ -156,9 +156,21 @@ export const myStore = [
 		role: [ 6 ]
 	},
 	{
+		name: '商品分类',
+		icon: require('../../static/user-center/menus/shangpinguanli.png'),
+		url: '/user/digital-store/goods-classification/index',
+		role: [ 6 ]
+	},
+	{
 		name: '退款管理',
 		icon: require('../../static/user-center/menus/shangpinguanli.png'),
 		url: '/user/digital-store/refund-management/index',
+		role: [ 6 ]
+	},
+	{
+		name: '预约管理',
+		icon: require('../../static/user-center/menus/shangpinguanli.png'),
+		url: '/user/digital-store/reservation-management/index',
 		role: [ 6 ]
 	}
 ]
@@ -181,12 +193,19 @@ export const marketingTools = [
 	},
 	{
 		name: '秒杀活动',
-		icon: require('../../static/user-center/menus/maioshahuodong.png')
+		icon: require('../../static/user-center/menus/maioshahuodong.png'),
+		url: '/user/marketing-tools/seckill-activity/index'
 	},
 	{
 		name: '团购管理',
 		icon: require('../../static/user-center/menus/shenqingjilu.png'),
 		url: '/user/marketing-tools/group-buying/index',
+		role: [ 6 ]
+	},
+	{
+		name: '团购列表',
+		icon: require('../../static/user-center/menus/shenqingjilu.png'),
+		url: '/user/marketing-tools/group-list/index',
 		role: [ 6 ]
 	},
 	{

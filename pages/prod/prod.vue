@@ -199,7 +199,7 @@
 			</view>
 		</view>
 
-		<JSpecification ref="specificationRef" v-model="showSpecification" :data="goodsDetail" :bottom="100"></JSpecification>
+		<JSpecification ref="specificationRef" v-model="showSpecification" show-voucher-deduction :data="goodsDetail" :bottom="100"></JSpecification>
 	</view>
 </template>
 
@@ -331,7 +331,8 @@ export default {
 				userId: getUserId(),
 				goodsId: this.goodsDetail.info.id,
 				number: goodsInfo.number,
-				productId: goodsInfo.product.id
+				productId: goodsInfo.product.id,
+				type: 0
 			}
 			const res = await addShopCarApi(data)
 			if (res.errno === 0) {

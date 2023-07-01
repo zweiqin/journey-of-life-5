@@ -1,117 +1,111 @@
 <template>
-  <view class="recharge-page">
-    <JBack dark width="50" height="50"></JBack>
-    <view class="main">
-      <view class="recharge-wrapper">
-        <view class="title">充值金额</view>
-        <view class="inp">
-          <view class="icon">￥</view>
-          <input
-            class="input"
-            v-model.number="payPrice"
-            type="number"
-            placeholder="请输入充值金额"
-          />
+	<view class="recharge-page">
+		<JBack dark width="50" height="50"></JBack>
+		<view class="main">
+			<view class="recharge-wrapper">
+				<view class="title">充值金额</view>
+				<view class="inp">
+					<view class="icon">￥</view>
+					<input
+						v-model.number="payPrice"
+						class="input"
+						type="number"
+						placeholder="请输入充值金额"
+					/>
 
-          <view class="error">{{ errMsg }}</view>
-          <view v-if="!errMsg" class="final-price"
-            >充值获得：{{ finalPrice }} 代金劵</view
-          >
-        </view>
+					<view class="error">{{ errMsg }}</view>
+					<view v-if="!errMsg" class="final-price">
+						充值获得：{{ finalPrice }} 代金劵
+					</view>
+				</view>
 
-        <JButton @click="handleRecharge">充值</JButton>
-      </view>
-    </view>
-  </view>
+				<JButton @click="handleRecharge">充值</JButton>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
-import { getVoucherConfigApi, rechargePrePayApi } from "../../../api/user";
-import { payOrderGoodsApi } from "../../../api/goods";
-import { getUserId } from "../../../utils";
-import { payFn } from "../../../utils/pay";
-import { J_PAY_TYPE } from "../../../constant";
+import { getVoucherConfigApi, rechargePrePayApi } from '../../../api/user'
+import { payOrderGoodsApi } from '../../../api/goods'
+import { getUserId } from '../../../utils'
+import { payFn } from '../../../utils/pay'
+import { J_PAY_TYPE } from '../../../constant'
 
 export default {
-  onLoad(options) {
-    const { price } = options;
-    if (price != -1) {
-      this.payPrice = price * 1;
-    }
-    this.getVoucherConfig();
-  },
+	onLoad(options) {
+		const { price } = options
+		if (price != -1) {
+			this.payPrice = price * 1
+		}
+		this.getVoucherConfig()
+	},
 
-  data() {
-    return {
-      payPrice: null,
-      errMsg: "",
-      voucherConfig: {},
-    };
-  },
+	data() {
+		return {
+			payPrice: null,
+			errMsg: '',
+			voucherConfig: {}
+		}
+	},
 
-  methods: {
-    handleRecharge() {
-      if (this.errMsg) {
-        return;
-      }
+	computed: {
+		finalPrice() {
+			return this.payPrice * this.voucherConfig.ratio
+		}
+	},
 
-      if (!this.payPrice) {
-        this.$showToast("请输入充值金额");
-        return;
-      }
+	watch: {
+		payPrice(value) {
+			if (value === 0) {
+				this.errMsg = '充值金额不能等于零'
+			} else if (value < 0) {
+				this.errMsg = '充值金额不能小于零'
+			} else if (
+				(value + '').includes('.') &&
+				(value + '').split('.')[1].length > 2
+			) {
+				this.errMsg = '充值金额错误'
+			} else {
+				this.errMsg = ''
+			}
+		}
+	},
 
-      rechargePrePayApi({
-        voucherNum: this.finalPrice,
-        payGrade: this.payPrice,
-        voucherId: this.voucherConfig.id,
-        userId: getUserId(),
-      }).then(({ data }) => {
-        payOrderGoodsApi({
-          orderNo: data.payOrderID,
-          userId: getUserId(),
-          payType: 2,
-        }).then((res) => {
-          payFn(res, J_PAY_TYPE.VOUCHER.value, data.payOrderID);
-        });
-      });
+	methods: {
+		handleRecharge() {
+			if (this.errMsg) {
+				return
+			}
+			if (!this.payPrice) {
+				this.$showToast('请输入充值金额')
+				return
+			}
+			rechargePrePayApi({
+				voucherNum: this.finalPrice,
+				payGrade: this.payPrice,
+				voucherId: this.voucherConfig.id,
+				userId: getUserId()
+			}).then(({ data }) => {
+				payOrderGoodsApi({
+					orderNo: data.payOrderID,
+					userId: getUserId(),
+					payType: 2
+				}).then((res) => {
+					payFn(res, J_PAY_TYPE.VOUCHER.value, data.payOrderID)
+				})
+			})
+			// this.go("/pages/pay-result/pay-result");
+		},
 
-      // this.go("/pages/pay-result/pay-result");
-    },
-
-    // 获取代金卷配置
-    getVoucherConfig() {
-      getVoucherConfigApi().then(({ data }) => {
-        this.voucherConfig = data[0];
-      });
-    },
-  },
-
-  watch: {
-    payPrice(value) {
-      if (value === 0) {
-        this.errMsg = "充值金额不能等于零";
-        return;
-      } else if (value < 0) {
-        this.errMsg = "充值金额不能小于零";
-        return;
-      } else if (
-        (value + "").includes(".") &&
-        (value + "").split(".")[1].length > 2
-      ) {
-        this.errMsg = "充值金额错误";
-        return;
-      } else {
-        this.errMsg = "";
-      }
-    },
-  },
-
-  computed: {
-    finalPrice() {
-      return this.payPrice * this.voucherConfig.ratio;
-    },
-  },
-};
+		// 获取代金卷配置
+		getVoucherConfig() {
+			getVoucherConfigApi().then(({ data }) => {
+				this.voucherConfig = data[0]
+			})
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>
