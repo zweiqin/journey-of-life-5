@@ -269,6 +269,7 @@ export default {
 				this.form.imgs[field].push(imgUrl)
 			}
 			this.$forceUpdate()
+			console.log(this.form.imgs[this.uploadFields[0].field])
 		},
 
 		// 点击提交按钮

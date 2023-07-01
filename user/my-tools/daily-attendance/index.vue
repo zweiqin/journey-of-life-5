@@ -169,7 +169,9 @@ export default {
 			// uni.switchTab({
 			// 	url: "/pages/index/index",
 			// });
-			uni.navigateBack()
+			uni.switchTab({
+				url: "/pages/user/user"
+			})
 		},
 		updateSign(item) {
 			console.log(item)

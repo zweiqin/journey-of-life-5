@@ -669,3 +669,11 @@ export const updateCategoryNameApi = (data) => RuanRequest('/dtsCategory/updateC
 
 // 商家查询商品类目与商品
 export const getSelectCategoryGoodsApi = (data) => RuanRequest('/dtsCategory/selectCategoryGoods', data, 'get')
+
+// 投诉
+export const createComplain = (data) => RuanRequest('/dtsBrandInforms/complaint', { userId:getUserId(), ...data })
+// const request = base_url => {
+//   return function (url, data = {}, method = 'post', cb) {
+	
+// const requestLang = base_url => {
+//   return function (url, data = {}, method = 'post', cb) {

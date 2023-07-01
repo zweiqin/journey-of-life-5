@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { getBrandGoodsBrandApi, createGoodsBrandApi, updateGoodsBrandApi } from '../../../api/user'
+import { getBrandGoodsBrandApi, createGoodsBrandApi, updateGoodsBrandApi } from '@/api/user'
 import { J_USER_INFO } from '../../../constant'
 import { getUserId, getBrandId } from '../../../utils'
 

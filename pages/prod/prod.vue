@@ -16,7 +16,7 @@
 
 				<view>
 					<image src="../../static/images/detail/brand.png" mode="" @click="$showToast('功能未开放', 'none')" />
-					<image src="../../static/images/detail/share.png" mode="" @click="$showToast('功能未开放', 'none')" />
+					<image src="../../static/images/detail/share.png" mode="" @click="isMoreFunction = true" />
 				</view>
 			</view>
 
@@ -198,12 +198,13 @@
 				<button class="uni-btn" @click="fastBuy">立即购买</button>
 			</view>
 		</view>
-
+		<MoreFunctions v-if="isMoreFunction" :goodsId="goodsDetail.info.id" @clossMore="_clossMore"></MoreFunctions>
 		<JSpecification ref="specificationRef" v-model="showSpecification" :data="goodsDetail" :bottom="100"></JSpecification>
 	</view>
 </template>
 
 <script>
+import MoreFunctions from "@/components/MoreFunctions/MoreFunctions.vue"
 import Carousel from '../../components/carousel'
 import { subInfoConfig, goodsInfoConfig } from './config'
 import uParse from '../../components/u-parse/u-parse.vue'
@@ -230,6 +231,7 @@ export default {
 	},
 	data() {
 		return {
+			isMoreFunction: false,
 			subInfoConfig,
 			goodsInfoConfig,
 			goodsDetail: null,
@@ -514,6 +516,9 @@ export default {
 					})
 					break
 			}
+		},
+		_clossMore() {
+			this.isMoreFunction = false;
 		}
 	},
 
