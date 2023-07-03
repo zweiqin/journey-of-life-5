@@ -4,7 +4,11 @@
 			<image src="./image/fanhui.png" mode="" @click="handleBack" />
 			<span>投诉记录</span>
 		</view>
-		<view class="complaintList">
+		<view v-if="isDataNone" class="noneData">
+			<image src="./image/noData.png" mode=""></image>
+			<text>暂时没有投诉记录哦...</text>
+		</view>
+		<view class="complaintList" v-else>
 			<view class="complaintItem"  v-for="(item,index) in ComplainList">
 				<image class="backUrl" :src="isSuucess(item.finalHandleStatus)" mode=""></image>
 				<p class="brandName">店家名字：{{ item.brandName }}</p>
@@ -38,6 +42,7 @@
 	export default {
 		data() {
 			return {
+				isDataNone: false,
 				ComplainList: null,
 			}
 		},
@@ -56,6 +61,10 @@
 		created() {
 			getComplainList().then(res => {
 				this.ComplainList = res.data
+				if(!res.data || res.data.length <= 0) {
+					this.isDataNone = true
+					console.log(this.isDataNone)
+				}
 			})
 		}
 	}
@@ -87,6 +96,14 @@
 				font-weight: 550;
 				font-size: 40rpx;
 			}
+		}
+		.noneData {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			font-size: 40rpx;
+			font-weight: 600;
 		}
 		.complaintList {
 			width: 100vw;
