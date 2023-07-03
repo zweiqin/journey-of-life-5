@@ -778,7 +778,16 @@
 						"navigationBarTitleText": "分享名片"
 					}
 				}
-			]
+			    ,{
+                    "path" : "complaintRecord/complaintRecord",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 		},
 		// {
 		// 	"root": "goods",

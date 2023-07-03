@@ -33,6 +33,11 @@ export const myTools = [
 		name: '银行卡',
 		icon: require('../../static/user-center/menus/shenqingjilu.png'),
 		url: '/user/my-tools/bank-card/index'
+	},
+	{
+		name: '投诉记录',
+		icon: require('../../static/user-center/menus/shenqingjilu.png'),
+		url: '/user/complaintRecord/complaintRecord'
 	}
 ]
 

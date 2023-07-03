@@ -719,3 +719,9 @@ export const getSelectCategoryGoodsApi = (data) => RuanRequest('/dtsCategory/sel
 
 // 投诉
 export const createComplain = (data) => RuanRequest('/dtsBrandInforms/complaint', { userId: getUserId(), ...data })
+
+// 投诉列表
+export const getComplainList = (data) => RuanRequest('/dtsBrandInforms/selectComplaint', { userId: getUserId(), ...data }, "get")
+
+// 查询商品分类 
+export const getCategory = (data) => RuanRequest('/dtsCategory/selectCategory', { userId: getUserId(), ...data }, "get")

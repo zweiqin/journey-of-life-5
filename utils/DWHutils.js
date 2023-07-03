@@ -123,7 +123,6 @@ export const getBrandId = () => {
 				}
 			}
 		})
-
 		return
 	}
 	return brandId
