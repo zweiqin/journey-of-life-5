@@ -218,17 +218,15 @@
 			"style": {
 				"navigationBarTitleText": "加油"
 			}
+		},
+		{
+			"path": "pages/complain/complain",
+			"style": {
+				"navigationBarTitleText": "投诉",
+				"enablePullDownRefresh": false
+			}
 		}
-	    ,{
-            "path" : "pages/complain/complain",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "投诉",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"tabBar": {
 		"selectedColor": "#FA5151",
 		"color": "#777777",
@@ -388,6 +386,24 @@
 					"path": "marketing-tools/group-list/index",
 					"style": {
 						"navigationBarTitleText": "团购列表"
+					}
+				},
+				{
+					"path": "marketing-tools/raffle-management/index",
+					"style": {
+						"navigationBarTitleText": "抽奖管理"
+					}
+				},
+				{
+					"path": "marketing-tools/raffle-management/raffle-prize-form",
+					"style": {
+						"navigationBarTitleText": "奖品表单"
+					}
+				},
+				{
+					"path": "marketing-tools/raffle-management/prize-allocation-form",
+					"style": {
+						"navigationBarTitleText": "奖品配置表单"
 					}
 				},
 				{
@@ -777,17 +793,15 @@
 					"style": {
 						"navigationBarTitleText": "分享名片"
 					}
+				},
+				{
+					"path": "complaintRecord/complaintRecord",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
 				}
-			    ,{
-                    "path" : "complaintRecord/complaintRecord",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-            ]
+			]
 		},
 		// {
 		// 	"root": "goods",

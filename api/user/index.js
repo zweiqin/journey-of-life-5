@@ -717,11 +717,44 @@ export const getBrandAppointmentSelectGoodsApi = (data) => RuanRequest('/dtsAppo
 // 商家查询商品类目与商品
 export const getSelectCategoryGoodsApi = (data) => RuanRequest('/dtsCategory/selectCategoryGoods', data, 'get')
 
+/**
+ * 投诉
+ */
+
 // 投诉
 export const createComplain = (data) => RuanRequest('/dtsBrandInforms/complaint', { userId: getUserId(), ...data })
 
 // 投诉列表
-export const getComplainList = (data) => RuanRequest('/dtsBrandInforms/selectComplaint', { userId: getUserId(), ...data }, "get")
+export const getComplainList = (data) => RuanRequest('/dtsBrandInforms/selectComplaint', { userId: getUserId(), ...data }, 'get')
 
-// 查询商品分类 
-export const getCategory = (data) => RuanRequest('/dtsCategory/selectCategory', { userId: getUserId(), ...data }, "get")
+/**
+ * 抽奖
+ */
+
+// 商家奖品列表
+export const getPrizeLotteryDrawListApi = (data) => RuanRequest('/dtsPointsLuckDrawPrize/lotteryDrawList', data, 'get')
+
+// 添加奖品
+export const addPrizeLotteryDrawApi = (data) => RuanRequest('/dtsPointsLuckDrawPrize/addLotteryDraw', data)
+
+// 根据ID查奖品详情
+export const getPrizeLotteryDrawSelectApi = (data) => RuanRequest('/dtsPointsLuckDrawPrize/selectLotteryDraw', data, 'get')
+
+// 修改奖品
+export const updatePrizeLotteryDrawApi = (data) => RuanRequest('/dtsPointsLuckDrawPrize/updateLotteryDraw', data)
+
+// 删除奖品
+export const deletePrizeLotteryDrawApi = (data) => RuanRequest(`/dtsPointsLuckDrawPrize/deleteLotteryDraw/${data.id}`, data, 'delete')
+
+// 奖品概率限制配置
+export const addPrizeConfigurationApi = (data) => RuanRequest('/dtsPointsLuckDrawPrize/configuration', data)
+
+// 查看概率奖品限制配置
+export const getPrizeSelectConfigurationApi = (data) => RuanRequest('/dtsPointsLuckDrawProbability/selectConfiguration', data, 'get')
+
+// 修改奖品概率限制配置
+export const updatePrizeConfigurationApi = (data) => RuanRequest('/dtsPointsLuckDrawPrize/updateConfiguration', data)
+
+// 积分抽奖
+export const getPrizeLotteryDrawApi = (data) => RuanRequest('/dtsPointsLuckDrawPrize/lotteryDraw', data, 'get')
+

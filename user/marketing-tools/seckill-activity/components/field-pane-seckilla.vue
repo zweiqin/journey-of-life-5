@@ -3,31 +3,32 @@
 		<view class="title">{{ title }}</view>
 		<view v-for="item in fields" :key="item.label">
 			<view v-if="item.field === 'id'"></view>
-			<view v-else-if="item.field === 'gooIds'" class="item">
+			<view v-else-if="item.field === 'goods'" class="item">
 				<view style="display: flex;justify-content: space-between;align-items: center;">
 					<view class="input-wrapper">关联商品：</view>
 					<view>
 						<tui-button
 							type="danger" width="120rpx"
-							height="50rpx" margin="0 10rpx 0 0" style="border-radius: 50rpx;" @click="isShowStoreGoodsPopup = true"
+							height="50rpx" margin="0 10rpx 0 0" style="border-radius: 50rpx;" @click="handleGoodsRelateShow"
 						>
 							添加
 						</tui-button>
 					</view>
 				</view>
 				<view>
-					<tui-table v-if="form.goodsObj && form.goodsObj.length">
+					<tui-table v-if="form.goods && form.goods.length">
 						<tui-tr>
 							<tui-td
-								v-for="(part, index) in [{ title: '商品ID', key: 'id' }, { title: '商品名称', key: 'name' }, { title: '操作', key: 'operate' }]"
+								v-for="(part, index) in [{ title: '商品ID', key: 'id' }, { title: '库存', key: 'name' }, { title: '秒杀价', key: 'name' }, { title: '操作', key: 'operate' }]"
 								:key="index" bold :span="8"
 							>
 								{{ part.title }}
 							</tui-td>
 						</tui-tr>
-						<tui-tr v-for="(part, index) in form.goodsObj" :key="index">
-							<tui-td :span="8">{{ part.id }}</tui-td>
-							<tui-td :span="8">{{ part.name }}</tui-td>
+						<tui-tr v-for="(part, index) in form.goods" :key="index">
+							<tui-td :span="8">{{ part.goodsId }}</tui-td>
+							<tui-td :span="8">{{ part.stock }}</tui-td>
+							<tui-td :span="8">{{ part.seckillPrice }}</tui-td>
 							<tui-td :span="8">
 								<tui-button
 									type="blue" width="120rpx" height="50rpx" margin="0 10rpx 0 0"
@@ -56,34 +57,54 @@
 							:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
 						/>
 
-						<textarea
-							v-if="item.type === 'textarea'" :value="form[item.field]" class="textarea"
-							:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
-						></textarea>
+						<view v-if="item.type === 'time' && item.field === 'startTime'" style="flex: 1;">
+							<input
+								:value="form[item.field]" class="input" :disabled="true" type="text"
+								:placeholder="item.placeholder" @click="$refs.dateTimeTradeS[0].show()"
+								@input="handleInput(item.field, $event)"
+							/>
+							<tui-datetime
+								ref="dateTimeTradeS" :type="7" radius
+								@confirm="handleInput(item.field, $event)"
+							></tui-datetime>
+						</view>
 
-						<view
-							v-if="item.type === 'picker' && item.field === 'pid'" style="flex: 1" :style="{
-								color: form.pid ? '' : '#999'
-							}" @click="isShowPicker = true"
-						>
-							{{ pidName || form.pid ? `已选 ID：${form.pid}` : "请选择所属分类" }}
+						<view v-if="item.type === 'time' && item.field === 'endTime'" style="flex: 1;">
+							<input
+								:value="form[item.field]" class="input" :disabled="true" type="text"
+								:placeholder="item.placeholder" @click="$refs.dateTimeTradeE[0].show()"
+								@input="handleInput(item.field, $event)"
+							/>
+							<tui-datetime
+								ref="dateTimeTradeE" :type="7" radius
+								@confirm="handleInput(item.field, $event)"
+							></tui-datetime>
 						</view>
 
 					</view>
 				</template>
 			</view>
 		</view>
-		<!-- 所属分类picker -->
-		<tui-picker
-			:show="isShowPicker" layer="2" :picker-data="pidArr" @hide="isShowPicker = false"
-			@change="handleInput('pid', $event)"
-		>
-		</tui-picker>
 
 		<!-- 商品选择 -->
 		<tui-bottom-popup :show="isShowStoreGoodsPopup" @close="isShowStoreGoodsPopup = false">
 			<BrandGoodsList v-if="isShowStoreGoodsPopup" :brand-id="brandId" @send="handleSend"></BrandGoodsList>
 		</tui-bottom-popup>
+
+		<tui-dialog
+			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
+			:show="goodsRelateVisiable" title="设置关联商品" @click="handleClickGoodsRelateDialog"
+		>
+			<template #content>
+				<tui-input
+					v-model="tempGoodsName" disabled label="商品" placeholder="请选择商品"
+					clearable
+					@click="isShowStoreGoodsPopup = true"
+				></tui-input>
+				<tui-input v-model="goodsRelateForm.stock" type="number" label="库存" placeholder="请输入库存" clearable></tui-input>
+				<tui-input v-model="goodsRelateForm.seckillPrice" type="number" label="秒杀价" placeholder="请输入秒杀价" clearable></tui-input>
+			</template>
+		</tui-dialog>
 
 	</view>
 </template>
@@ -93,7 +114,7 @@ import { getPublicAppointmentApi } from '.././../../../api/user'
 import { getUserId, getBrandId } from '../../../../utils'
 
 export default {
-	name: 'FieldPaneGF',
+	name: 'FieldPaneSeckillA',
 	props: {
 		fields: {
 			type: Array,
@@ -111,9 +132,13 @@ export default {
 			form: {},
 			isShowPicker: false,
 			brandId: getBrandId(),
-			isShowStoreGoodsPopup: false,
 			pidName: '',
-			pidArr: []
+			pidArr: [],
+			// 关联商品
+			isShowStoreGoodsPopup: false,
+			tempGoodsName: '',
+			goodsRelateVisiable: false,
+			goodsRelateForm: { goodsId: '', stock: '', seckillPrice: '' }
 		}
 	},
 
@@ -174,16 +199,30 @@ export default {
 			})
 		},
 
-		// 关联商品相关
-		handleGoodDelete(row, index) {
-			this.form.goodsObj.splice(index, 1)
-			this.form.gooIds.splice(index, 1)
+		// 关联商品
+		handleGoodsRelateShow() {
+			this.goodsRelateForm = { goodsId: '', stock: '', seckillPrice: '' }
+			this.goodsRelateVisiable = true
+		},
+		handleClickGoodsRelateDialog(e) {
+			if (e.index === 0) {
+				this.goodsRelateVisiable = false
+			} else if (e.index === 1) {
+				if (!this.goodsRelateForm.goodsId) return this.$showToast('请选择商品')
+				if (!this.goodsRelateForm.stock) return this.$showToast('请填写库存')
+				if (!this.goodsRelateForm.seckillPrice) return this.$showToast('请填写秒杀价')
+				this.form.goods.push(this.goodsRelateForm)
+				this.goodsRelateVisiable = false
+			}
 		},
 		handleSend(obj) {
-			if (this.form.goodsObj.find((item) => item.id === obj.id)) return this.$showToast('不能选择重复商品类型')
+			if (this.form.goods.find((item) => item.goodsId === obj.id)) return this.$showToast('不能选择重复商品')
+			this.goodsRelateForm.goodsId = obj.id
+			this.tempGoodsName = obj.name
 			this.isShowStoreGoodsPopup = false
-			this.form.goodsObj.push({ id: obj.id, name: obj.name })
-			this.form.gooIds.push(obj.id)
+		},
+		handleGoodDelete(row, index) {
+			this.form.goods.splice(index, 1)
 		},
 
 		handleInput(field, e) {

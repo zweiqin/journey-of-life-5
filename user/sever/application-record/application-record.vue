@@ -45,8 +45,8 @@
 					</template>
 					<template #footer>
 						<view style="display: flex;justify-content: space-between;padding: 0 20rpx 20rpx;">
-							<tui-button v-if="item.type === 0 && item.status === 2" type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="handleApplicationPay(item)">去支付</tui-button>
-							<tui-button v-if="item.type === 1 && item.status === 2" type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="handleApplicationPay(item)">去支付</tui-button>
+							<tui-button v-if="item.type === 0 && (item.status === 2 || item.status === 3 || item.status === 6)" type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="handleApplicationPay(item)">去支付</tui-button>
+							<tui-button v-if="item.type === 1 && (item.status === 2 || item.status === 3 || item.status === 6)" type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="handleApplicationPay(item)">去支付</tui-button>
 						</view>
 					</template>
 				</tui-card>

@@ -54,13 +54,9 @@
 
 			<Reservation v-if="currentMenu === 3" :brand-detail="brandDetail"></Reservation>
 
-			<view v-show="currentMenu === 4" class="no-data f-center">
-				暂无会员
-			</view>
+			<Seckill v-if="currentMenu === 4" :brand-detail="brandDetail"></Seckill>
 
-			<view v-show="currentMenu === 5" class="no-data f-center">
-				暂无抽奖
-			</view>
+			<Raffle v-if="currentMenu === 5" :brand-detail="brandDetail"></Raffle>
 
 		</view>
 
@@ -104,6 +100,8 @@ import AppraisePane from './cpns/AppraisePane.vue'
 import GrouponWrapper from './cpns/GrouponWrapper.vue'
 import CouponList from './cpns/CouponList.vue'
 import Reservation from './cpns/Reservation.vue'
+import Seckill from './cpns/Seckill.vue'
+import Raffle from './cpns/Raffle.vue'
 import showModel from '../../../mixin/showModel'
 import { getUserId, navigationAddress } from '../../../utils'
 
@@ -116,7 +114,9 @@ export default {
 		// RecommendList,
 		GrouponWrapper,
 		CouponList,
-		Reservation
+		Reservation,
+		Seckill,
+		Raffle
 	},
 
 	mixins: [loadData({ api: goodsListApi }), showModel()],

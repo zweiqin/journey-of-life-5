@@ -83,7 +83,7 @@ export default {
 			query: {
 				page: 1,
 				size: 20,
-				isNew: true,
+				// isNew: true,
 				order: 'asc',
 				categoryId: 100101312,
 				sort: 'retail_price'

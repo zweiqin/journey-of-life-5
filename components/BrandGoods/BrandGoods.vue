@@ -14,7 +14,13 @@
 		<view class="time">
 			<view class="wrapper" @click="$emit('click-content', { ...goodsData, ruleId })">
 				<view class="price-wrapper">
-					<text class="price-text">￥{{ ruleId ? goodsData.counterPrice + grouponPrice : goodsData.counterPrice }}</text>
+					<text class="price-text">
+						￥
+						<text v-if="ruleId">{{ goodsData.counterPrice - grouponPrice }}</text>
+						<text v-else-if="seckillGoodId">{{ seckillPrice }}</text>
+						<text v-else>{{ goodsData.counterPrice }}</text>
+						{{ ruleId ? goodsData.counterPrice + grouponPrice : goodsData.counterPrice }}
+					</text>
 					<text v-if="goodsData.isHot" class="price-tag">热卖</text>
 				</view>
 			</view>
@@ -25,6 +31,15 @@
 					style="border-radius: 50rpx;" @click="$emit('add', { ...goodsData, ruleId })"
 				>
 					发起团购
+				</tui-button>
+			</view>
+
+			<view v-else-if="seckillGoodId">
+				<tui-button
+					type="danger" width="168rpx" height="60rpx" margin="0 10rpx 0 0"
+					style="border-radius: 50rpx;" @click="$emit('add', { ...goodsData, seckillGoodId })"
+				>
+					秒杀
 				</tui-button>
 			</view>
 			<view v-else>
@@ -60,6 +75,15 @@ export default {
 			default: 0
 		},
 		grouponMember: {
+			type: Number,
+			default: 0
+		},
+
+		seckillGoodId: {
+			type: Number,
+			default: ''
+		},
+		seckillPrice: {
 			type: Number,
 			default: 0
 		}

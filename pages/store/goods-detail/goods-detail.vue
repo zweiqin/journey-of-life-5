@@ -73,6 +73,7 @@
 
 		<!-- 底部操作栏 -->
 		<OpFooter
+			v-if="orderType"
 			:btn-text="orderType === '2' ? '立即预约' : grouponRulesId && !grouponLinkId ? '发起团购' : grouponRulesId && grouponLinkId ? '加入团购' : ''"
 			:total-price="goodsDetail.info.retailPrice" @pay="handlePay" @add="handleAdd"
 		></OpFooter>
@@ -112,7 +113,7 @@ export default {
 		this.goodsId = options.goodsId
 		this.grouponRulesId = options.rulesId || ''
 		this.grouponLinkId = options.linkId || ''
-		this.orderType = options.orderType
+		this.orderType = options.orderType || ''
 		this.getGoodsDetail()
 	},
 

@@ -55,13 +55,24 @@
 							</view>
 						</view>
 						<view>
-							<tui-button
-								type="danger" width="240rpx" height="64rpx" margin="0 10rpx 0 0"
-								style="border-radius: 14rpx;"
-								@click="addShopCar"
-							>
-								+ 加入购物车
-							</tui-button>
+							<view v-if="!showSelectBtn">
+								<tui-button
+									type="danger" width="240rpx" height="64rpx" margin="0 10rpx 0 0"
+									style="border-radius: 14rpx;"
+									@click="addShopCar"
+								>
+									+ 加入购物车
+								</tui-button>
+							</view>
+							<view v-else>
+								<tui-button
+									type="danger" width="240rpx" height="64rpx" margin="0 10rpx 0 0"
+									style="border-radius: 14rpx;"
+									@click="handleClickBtn"
+								>
+									{{ btnText }}
+								</tui-button>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -83,7 +94,15 @@ export default {
 		// },
 		orderType: {
 			type: [Number, String],
-			required: true
+			default: ''
+		},
+		showSelectBtn: {
+			type: Boolean,
+			default: false
+		},
+		btnText: {
+			type: String,
+			default: '选择'
 		}
 	},
 
@@ -190,6 +209,36 @@ export default {
 				}
 			} else {
 				this.$data._isShowTuiModel = true
+			}
+		},
+
+		// 选择
+		handleClickBtn() {
+			if (this.showSpecification) {
+				const tempGoodsInfo = {
+					number: this.number,
+					product: this.product,
+					spStr: this.spStr
+				}
+				if (tempGoodsInfo.number > tempGoodsInfo.product.number) {
+					this.$showToast('该货品库存为' + tempGoodsInfo.product.number)
+					return
+				}
+				if (tempGoodsInfo.product.goodsId) {
+					this.$emit('select', {
+						'brandId': this.goodsDetail.info.brandId,
+						'goodsId': this.goodsDetail.info.id,
+						'productId': tempGoodsInfo.product.id,
+						'number': tempGoodsInfo.number,
+						'name': this.goodsDetail.info.name,
+						'spStr': tempGoodsInfo.spStr
+					})
+					this.showSpecification = false
+				} else {
+					this.ttoast('商品参数出错，无法添加！')
+				}
+			} else {
+				this.$showToast('请先开启规格弹窗显示')
 			}
 		},
 

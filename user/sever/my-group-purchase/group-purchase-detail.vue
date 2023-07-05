@@ -14,7 +14,7 @@
 			<view style="padding-right: 30upx;">
 				<tui-button
 					type="warning" width="220rpx" height="60rpx" style="border-radius: 50rpx;"
-					@click="$copy(`https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/sever/my-group-purchase/group-purchase-detail?id=16&isJoin=true`, '复制链接成功，快发送给好友吧~')"
+					@click="$copy(`https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/sever/my-group-purchase/group-purchase-detail?id=${data.groupon.id}&isJoin=true`, '复制链接成功，快发送给好友吧~')"
 				>
 					复制分享链接
 				</tui-button>
@@ -401,7 +401,7 @@ export default {
 					}
 				})
 			} else if (key === 'refund') {
-				getOrderRefundsReasonApi()
+				getOrderRefundsReasonApi({ type: 0 })
 					.then((res) => {
 						this.refundRadioItems = res.data
 						this.tempRefund.orderId = goods.id

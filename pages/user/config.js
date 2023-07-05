@@ -214,6 +214,12 @@ export const marketingTools = [
 		role: [ 6 ]
 	},
 	{
+		name: '抽奖管理',
+		icon: require('../../static/user-center/menus/shenqingjilu.png'),
+		url: '/user/marketing-tools/raffle-management/index',
+		role: [ 6 ]
+	},
+	{
 		name: '区域代理',
 		icon: require('../../static/user-center/menus/quyudaili.png'),
 		url: '/user/sever/regional-agent'
