@@ -7,7 +7,7 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 
-import { LTRequest, getUserId, RuanRequest } from '../../utils'
+import { LTRequest, getUserId, RuanRequest, getBrandId } from '../../utils'
 
 // 更新用户信息
 export const updateUserInfoApi = (data) => RuanRequest('/user/update', data)
@@ -678,13 +678,13 @@ export const getSeckillChkOrderStatusApi = (data) => RuanRequest('/dtsSeckill/ch
  */
 
 // 商家添加商品分类
-export const addCategoryApi = (data) => RuanRequest('/dtsCategory/addCategory', data)
+export const addCategoryApi = (data) => RuanRequest('/dtsCategory/addCategory', {brandId: getBrandId(),...data})
 
 // 查询商家商品分类
 export const getSelectCategoryApi = (data) => RuanRequest('/dtsCategory/selectCategory', data, 'get')
 
 // 修改商家商品分类
-export const updateCategoryNameApi = (data) => RuanRequest('/dtsCategory/updateCategoryName', data)
+export const updateCategoryNameApi = (data) => RuanRequest('/dtsCategory/updateCategoryName', {brandId: getBrandId(),...data})
 
 // // 商家查询商品类目与商品
 // export const getSelectCategoryGoodsApi = (data) => RuanRequest('/dtsCategory/selectCategoryGoods', data, 'get')
@@ -724,4 +724,4 @@ export const createComplain = (data) => RuanRequest('/dtsBrandInforms/complaint'
 export const getComplainList = (data) => RuanRequest('/dtsBrandInforms/selectComplaint', { userId: getUserId(), ...data }, "get")
 
 // 查询商品分类 
-export const getCategory = (data) => RuanRequest('/dtsCategory/selectCategory', { userId: getUserId(), ...data }, "get")
+export const getCategory = (data) => RuanRequest('/dtsCategory/selectCategory', { brandId: getBrandId(), ...data }, "get")

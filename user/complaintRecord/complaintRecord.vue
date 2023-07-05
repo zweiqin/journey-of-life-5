@@ -9,7 +9,7 @@
 			<text>暂时没有投诉记录哦...</text>
 		</view>
 		<view class="complaintList" v-else>
-			<view class="complaintItem"  v-for="(item,index) in ComplainList">
+			<view class="complaintItem" :key="item" v-for="(item,index) in ComplainList">
 				<image class="backUrl" :src="isSuucess(item.finalHandleStatus)" mode=""></image>
 				<p class="brandName">店家名字：{{ item.brandName }}</p>
 				<view class="CommodityInfo">
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-	import { getComplainList, getCategory } from '@/api/user'
+	import { getComplainList } from '@/api/user'
 	export default {
 		data() {
 			return {
@@ -63,7 +63,6 @@
 				this.ComplainList = res.data
 				if(!res.data || res.data.length <= 0) {
 					this.isDataNone = true
-					console.log(this.isDataNone)
 				}
 			})
 		}
