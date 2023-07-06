@@ -1,5 +1,5 @@
-export const reCharges = [30, 50, 100, 200, 300, 500, 1000, 2000]
-export const transFormVoucher = [10, 20, 30, 50, 100, 300, 500, 1000]
+export const reCharges = [50, 100, 200, 1000, 2000 ]
+export const transFormVoucher = [50, 100, 200, 1000, 2000 ]
 export const footerMenus = [
 	{
 		label: '我的代金劵',

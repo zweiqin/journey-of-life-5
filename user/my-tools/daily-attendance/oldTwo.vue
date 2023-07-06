@@ -15,7 +15,7 @@
 		<view class="middle">
 			<view class="date">
 				<view
-					v-if="!todaySignL" class="getMorePoints"
+					v-if="weekList[lastSignIndex].flag ? weekList[lastSignIndex].flag == 0 : true" class="getMorePoints"
 					@click="getSign"
 				>
 					<view class="getMorePoints_text"> 签到领积分 </view>
@@ -33,7 +33,7 @@
 						</view>
 					</view>
 					<view class="SignI_Button">
-						<view v-for="(item, index) in weekList" :key="item.timeStamp" class="SignI_ButtonItem">
+						<view v-for="(item, index) in weekList" :key="item" class="SignI_ButtonItem">
 							<view class="SignRound" :class="[ { 'isSignIn': item.flag == 1 } ]">
 								{{ item.flag == 0 ? `+${item.integral}` : '√' }}
 							</view>
@@ -69,8 +69,7 @@ import Vue from 'vue'
 import {
 	addUserSignInApi,
 	getUserSignInListApi,
-	getUserSigninContinuousApi,
-	geUserSign
+	getUserSigninContinuousApi
 } from '@/api/user'
 import {
 	getUserId,
@@ -88,9 +87,6 @@ export default {
 	props: {},
 	data() {
 		return {
-			timerNumber: "",
-			todays: "",
-			todaySignL: false,
 			today: new Date().toISOString()
 				.slice(0, 10),
 			lastSignIndex: 0,
@@ -123,30 +119,9 @@ export default {
 		}
 	},
 	created() {
-		this.timerNumber = new Date().getTime() - (this.lastSignIndex * 24 * 60 * 60 * 1000)
-		this.getTodaySign()
 		this.getUserData()
 	},
 	methods: {
-		getTodaySign() {
-			const startTime = new Date(this.timerNumber)
-			// startTime.setDate(); //获取AddDayCount天后的日期
-			// console.log(startTime)
-			var y = startTime.getFullYear()
-			var m = (startTime.getMonth() + 1) < 10 ? '0' + (startTime.getMonth() + 1) : startTime.getMonth() +
-				1 // 获取当前月份的日期，不足10补0
-			var d = startTime.getDate() < 10 ? '0' + startTime.getDate() : startTime.getDate() // 获取当前几号，不足10补0
-			this.todays = y + '-' + m + '-' + d;
-			let today = y + m + d
-			// console.log(this.todays)
-			// console.log(today)
-			geUserSign({ startDate:today, endDate:today }).then(res => {
-				res.data > 0 ? this.todaySignL = true : this.todaySignL = false
-				// console.log(this.todaySignL)
-			}).catch(err => {
-				console.log(err)
-			})
-		},
 		getUserData() {
 			// 获取当前连续签到日期和明天签到积分
 			getUserSigninContinuousApi({
@@ -228,20 +203,20 @@ export default {
 			return M + D
 		},
 		// 获取最开始签到的时间
-		// getStarTimer() {
-		// 	// console.log(this.lastSignIndex)
-		// 	// console.log(this.lastSignIndex * 24 * 60 * 60 * 1000)
-		// 	const startTime = new Date(new Date().getTime() - (this.lastSignIndex * 24 * 60 * 60 * 1000))
-		// 	// startTime.setDate(); //获取AddDayCount天后的日期
+		getStarTimer() {
+			// console.log(this.lastSignIndex)
+			// console.log(this.lastSignIndex * 24 * 60 * 60 * 1000)
+			const startTime = new Date(new Date().getTime() - (this.lastSignIndex * 24 * 60 * 60 * 1000))
+			// startTime.setDate(); //获取AddDayCount天后的日期
 
-		// 	var y = startTime.getFullYear()
+			var y = startTime.getFullYear()
 
-		// 	var m = (startTime.getMonth() + 1) < 10 ? '0' + (startTime.getMonth() + 1) : startTime.getMonth() +
-		// 		1 // 获取当前月份的日期，不足10补0
+			var m = (startTime.getMonth() + 1) < 10 ? '0' + (startTime.getMonth() + 1) : startTime.getMonth() +
+				1 // 获取当前月份的日期，不足10补0
 
-		// 	var d = startTime.getDate() < 10 ? '0' + startTime.getDate() : startTime.getDate() // 获取当前几号，不足10补0
-		// 	return y + '-' + m + '-' + d
-		// },
+			var d = startTime.getDate() < 10 ? '0' + startTime.getDate() : startTime.getDate() // 获取当前几号，不足10补0
+			return y + '-' + m + '-' + d
+		},
 		getWeekList() {
 			const week = []
 			for (var i = 0; i < 7; i++) {
@@ -253,7 +228,7 @@ export default {
 				}
 				week.push(weekObj)
 			}
-			const today = Number(new Date(this.todays))
+			const today = Number(new Date(this.getStarTimer()))
 
 			for (var right = 0; right < 7; right++) {
 				week[right].timeStamp =
@@ -269,22 +244,25 @@ export default {
 					...week[index]
 				})
 			})
-			// console.log(week)
-			// console.log(this.weekList)
+			console.log(week)
+			console.log(this.weekList)
 		},
 		getSign() {
 			addUserSignInApi({
 				userId: getUserId()
 			}).then((res) => {
-				uni.showToast({
-					title: res.data.errmsg,
-					icon: 'success'
-				})
+				res.data.errno >= 0
+					? uni.showToast({
+						title: res.data.errmsg,
+						icon: 'success'
+					})
+					: uni.showToast({
+						title: res.data.errmsg,
+						icon: 'error'
+					})
 				this.$forceUpdate()
-			}).finally(() => {
-				this.getTodaySign()
-				this.getUserData()
 			})
+			this.getUserData()
 		}
 	}
 }

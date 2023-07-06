@@ -591,18 +591,37 @@ export const getCommentListApi = (data) => RuanRequest('/comment/list', data, 'g
 // 用户的评价列表
 export const getUserCommentApi = (data) => RuanRequest('/dtsComment/userComment', data, 'get')
 
+
+
 /**
  * 签到
  */
 
 // 用户签到接口
-export const addUserSignInApi = (data) => RuanRequest('/dtsUserSignin/userSignIn', data, 'get')
+export const addUserSignInApi = (data) => RuanRequest(`/checkin/${getUserId()}`, data)
 
 // 用户签到列表
 export const getUserSignInListApi = (data) => RuanRequest('/dtsUserSignin/userSignInList', data, 'get')
 
 // 连续签到天数与每天积分
 export const getUserSigninContinuousApi = (data) => RuanRequest('/dtsUserSignin/continuous', data, 'get')
+
+// 判断用户在某一区间的签到次数，可用于判定今日是否签到
+export const geUserSign = (data) => RuanRequest(`/checkin/${getUserId()}`,data, 'get')
+
+// 获取用户连续签到天数
+export const getSignCount = (data) => RuanRequest(`/checkin/continuousdays/${getUserId()}`, data, 'get')
+
+// 获取连续签到积分以及奖品
+export const getSignPrize = (data) => RuanRequest('/checkin/prizeList', data, 'get')
+
+// // 用户签到列表
+// export const getUserSignInListApi = (data) => RuanRequest('/dtsUserSignin/userSignInList', data, 'get')
+
+// // 连续签到天数与每天积分
+// export const getUserSigninContinuousApi = (data) => RuanRequest('/dtsUserSignin/continuous', data, 'get')
+
+
 
 /**
  * 订单退款

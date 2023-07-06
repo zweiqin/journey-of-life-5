@@ -4,10 +4,10 @@
 		<UserInfo ref="userInfoRef"></UserInfo>
 
 		<!-- 账户余额 -->
-		<Pane v-if="isLogin()" title="账户余额">
+		<!-- <Pane v-if="isLogin()" title="账户余额">
 			<text slot="title" class="balance-text">￥{{ userInfo.account || 0 }}</text>
 			<button slot="right" class="bee-btn" @click="go('/user/otherServe/withdrawal/index?type=0')">去提现</button>
-		</Pane>
+		</Pane> -->
 
 		<!-- 我的服务 -->
 		<Pane title="我的工具" :menu-data="myTools" :permission-data="myToolsList" @menu-click="handleClickMenu"></Pane>
@@ -197,7 +197,8 @@ export default {
 	position: relative;
 	width: 100%;
 	min-height: 100vh;
-	background: linear-gradient(180deg, #FFE5CC 5%, #FFF9F0 16%, #F6F6F6 23%);
+	background: linear-gradient(180deg, rgba(255,247,193,0.64) 0%, rgba(216,216,216,0.20) 10%, #F6F6F6 43%);
+	// background: linear-gradient(180deg, #FFE5CC 5%, #FFF9F0 16%, #F6F6F6 23%);
 	padding: 30upx 30upx 130upx;
 	box-sizing: border-box;
 

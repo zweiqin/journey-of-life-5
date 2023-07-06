@@ -35,7 +35,6 @@ export default {
 				uni.switchTab({
 					url: this.tabbar
 				})
-
 				return
 			}
 

@@ -123,7 +123,7 @@
 			flex-direction: column;
 			align-items: center;
 			position: fixed;
-			top: 1050rpx;
+			bottom: 0rpx;
 			left: 0;
 			width: 100vw;
 			border-top-left-radius: 50rpx;

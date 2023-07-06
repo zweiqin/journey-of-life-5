@@ -96,7 +96,7 @@ export default {
 	width: 100%;
 	box-sizing: border-box;
 	background-color: #fff;
-	border-radius: 10upx;
+	border-radius: 20rpx;
 	margin-top: 24upx;
 
 	.title-wrapper {
@@ -109,9 +109,10 @@ export default {
 			align-items: center;
 
 			h3 {
-				color: #000000;
-				font-weight: 500;
-				font-size: 28upx;
+				font-size: 28rpx;
+				font-weight: bold;
+				line-height: 51rpx;
+				color: #3D3D3D;
 			}
 		}
 	}
@@ -140,6 +141,11 @@ export default {
 
 			text {
 				font-size: 24upx;
+			}
+			.menu-name {
+				font-size: 20rpx;
+				line-height: 51rpx;
+				color: #3D3D3D;
 			}
 		}
 	}

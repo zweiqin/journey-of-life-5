@@ -8,6 +8,9 @@
 		>
 			{{ title }}
 		</view>
+		<view class="footerFn">
+			<slot name="ftFn"></slot>
+		</view>
 	</view>
 </template>
 
@@ -19,7 +22,6 @@ export default {
 			type: Boolean,
 			default: true
 		},
-
 		title: {
 			type: String,
 			required: true
@@ -32,6 +34,10 @@ export default {
 @import "../../style/mixin.less";
 
 .j-header-container {
+	position: relative;
+	// display: flex;
+	// justify-content: space-between;
+	
 	.flex(center, center);
 
 	.title {
@@ -42,6 +48,10 @@ export default {
 		flex: 1;
 		text-align: center;
 		margin-left: -50upx;
+	}
+	.footerFn {
+		position: absolute;
+		right: 0rpx;
 	}
 }
 </style>

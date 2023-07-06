@@ -13,7 +13,7 @@
 			</view>
 
 			<view class="send" @click="handleToSendRedEnvelope">
-				<image src="../../static/images/index/red.png" mode="" />
+				<image src="@/static/images/index/red.png" mode="" />
 				<text>发红包</text>
 			</view>
 
@@ -370,25 +370,32 @@ export default {
 
 .send {
 	position: fixed;
-	top: 40%;
-	right: 40upx;
-	width: 84upx;
+	bottom: 220rpx;
+	right: 50%;
+	transform:translateX(50%);
+	width: 193rpx;
+	height: 193rpx;
 	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
-	height: 128upx;
-	background-color: #fff;
-	border-radius: 20upx;
+	background: rgba(255, 204, 102, 0.8);
+	border-radius: 50%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	flex-direction: column;
 
 	text {
-		font-size: 24upx;
+		margin-top: 22rpx;
+		font-size: 36rpx;
+		font-weight: 900;
+		line-height: 17rpx;
+		color: #FFFFFF;
 	}
 
 	image {
-		width: 60upx;
-		height: 60upx;
+		margin-top: -18rpx;
+		transform: rotate(35deg);
+		width: 70.33rpx;
+		height: 78.17rpx;
 	}
 }
 
