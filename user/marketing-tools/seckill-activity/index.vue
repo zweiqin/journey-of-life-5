@@ -121,7 +121,7 @@ export default {
 		handleShowSeckillGoods(item) {
 			this.seckillGoodsArr = []
 			uni.showLoading()
-			getSeckillListGoodsApi({ brandId: getBrandId(), id: item.id })
+			getSeckillListGoodsApi({ brandId: getBrandId(), secKillId: item.id })
 				.then(({ data }) => {
 					this.isShowSeckillGoodsPopup = true
 					this.seckillGoodsArr = data.data || []

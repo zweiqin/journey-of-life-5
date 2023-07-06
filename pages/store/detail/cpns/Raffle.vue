@@ -29,7 +29,7 @@
 		</view>
 		<LoadMore v-show="grouponList.length" :status="status"></LoadMore>
 		<view v-if="grouponList && !grouponList.length && loadingStatus !== 'loading'" class="no-data">
-			该店铺暂无团购商品~
+			该店铺暂无抽奖活动~
 		</view>
 	</view>
 </template>
@@ -37,7 +37,7 @@
 <script>
 import { getGrouponListGoodsApi } from '../../../../api/user'
 export default {
-	name: 'GrouponWrapper',
+	name: 'Raffle',
 	props: {
 		brandDetail: {
 			type: Object,

@@ -171,6 +171,7 @@ export default {
 			orderOpButtons,
 			myGrouponList: [],
 			grouponQuery: {
+				userId: getUserId(),
 				page: 1,
 				size: 10
 			},
@@ -253,7 +254,7 @@ export default {
 							mapMethods[key]
 								.api({
 									userId: getUserId(),
-									orderId: goods.id
+									orderId: goods.orderId
 								})
 								.then(() => {
 									_this.grouponQuery.page = 1
@@ -263,10 +264,10 @@ export default {
 					}
 				})
 			} else if (key === 'refund') {
-				getOrderRefundsReasonApi()
+				getOrderRefundsReasonApi({ type: 0 })
 					.then((res) => {
 						this.refundRadioItems = res.data
-						this.tempRefund.orderId = goods.id
+						this.tempRefund.orderId = goods.orderId
 						this.isShowRefundDialog = true
 					})
 			} else if (key === 'pay') {

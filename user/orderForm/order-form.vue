@@ -254,7 +254,7 @@ export default {
 					}
 				})
 			} else if (key === 'refund') {
-				getOrderRefundsReasonApi()
+				getOrderRefundsReasonApi({ type: 0 })
 					.then((res) => {
 						this.refundRadioItems = res.data
 						this.tempRefund.orderId = goods.id
