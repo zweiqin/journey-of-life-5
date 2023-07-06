@@ -40,7 +40,8 @@ export default {
 			// console.log(J_USER_INFO,uni.getStorageSync(J_USER_INFO))
 			this.$store.dispatch('customerService/createChat', {
 				// chatName: `${item.displayName}与${uni.getStorageSync(J_USER_INFO).nickName}的聊天`,
-				chatName: `客服与${uni.getStorageSync(J_USER_INFO).nickName}的聊天`,
+				// chatName: `客服与${uni.getStorageSync(J_USER_INFO).nickName}的聊天`,
+				chatName: item.displayName,
 				friendId: item.friendId,
 				friendUserType: 'ADMIN'
 			})

@@ -209,10 +209,10 @@ export default {
 	},
 	methods: {
 		timestampToTime,
-		onOpenInfo() {
-			console.log('onOpenInfo连接成功')
-		},
-		onMessageInfo(evt) {
+		// onOpenInfo() {
+		// 	console.log('onOpenInfo连接成功')
+		// },
+		onMessage(evt) {
 			const dataAll = JSON.parse(evt.data)
 			const data = JSON.parse(dataAll.message)
 			this.groupMessages.push(data)
@@ -220,31 +220,30 @@ export default {
 			this.scrollToBottom()
 			if (data.message.fromUser.id === this.userInfo.userId) return
 		},
-		onErrorInfo(errMsg) {
-			console.log('onErrorInfo出错了')
-			// uni.showLoading({
-			// 	title: '断线了，正在重新连接......',
-			// 	mask: true
-			// })
-			uni.showToast({
-				title: 'ErrorInfo出错了' + errMsg,
-				icon: 'none',
-				duration: 2000
-			})
-		},
-		onCloseInfo() {
-			console.log('onCloseInfo关闭了')
-			setTimeout(() => {
-				this.$store.dispatch('customerService/joinCustomerServiceChat', {
-					ref: this,
-					wsHandleInfo: uni.connectSocket({
-						url: `${BASE_WS_API}/APP/${getUserId()}`,
-						complete: () => { }
-					}),
-					wsHandle: ''
-				})
-			}, 2000)
-		},
+		// onErrorInfo(errMsg) {
+		// 	console.log('onErrorInfo出错了')
+		// 	// uni.showLoading({
+		// 	// 	title: '断线了，正在重新连接......',
+		// 	// 	mask: true
+		// 	// })
+		// 	uni.showToast({
+		// 		title: 'ErrorInfo出错了' + errMsg,
+		// 		icon: 'none',
+		// 		duration: 2000
+		// 	})
+		// },
+		// onCloseInfo() {
+		// 	console.log('onCloseInfo关闭了')
+		// 	setTimeout(() => {
+		// 		this.$store.dispatch('customerService/xxx', {
+		// 			ref: this,
+		// 			wsHandleInfo: uni.connectSocket({
+		// 				url: `${BASE_WS_API}/APP/${getUserId()}`,
+		// 				complete: () => { }
+		// 			})
+		// 		})
+		// 	}, 2000)
+		// },
 
 		onOpen() {
 			console.log('onOpen连接成功')
@@ -277,34 +276,6 @@ export default {
 					} ])
 				this.scrollToBottom()
 			})
-		},
-		onMessage(evt) {
-			console.log('onMessage收到消息', evt)
-		},
-		onError(errMsg) {
-			console.log('onError出错了')
-			// uni.showLoading({
-			// 	title: '断线了，正在重新连接......',
-			// 	mask: true
-			// })
-			uni.showToast({
-				title: 'Error出错了' + errMsg,
-				icon: 'none',
-				duration: 2000
-			})
-		},
-		onClose() {
-			console.log('onClose关闭了')
-			setTimeout(() => {
-				this.$store.dispatch('customerService/joinCustomerServiceChat', {
-					ref: this,
-					wsHandleInfo: '',
-					wsHandle: uni.connectSocket({
-						url: `${BASE_WS_API}/APP/${getUserId()}?chat=${this.chat}`,
-						complete: () => { }
-					})
-				})
-			}, 2000)
 		},
 
 		send(sendMsg) {
