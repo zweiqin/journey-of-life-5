@@ -18,14 +18,7 @@ export default {
 		// }
 	},
 	onLaunch() {
-		console.log(this.$store.getters)
-		this.$store.dispatch('customerService/joinCustomerServiceChat', {
-			// ref: this,
-			// wsHandle: uni.connectSocket({
-			// 	url: `${BASE_WS_API}/${getUserId()}`,
-			// 	complete: () => { }
-			// })
-		})
+		this.connectSocket()
 	},
 	globalData: { },
 	data() {
@@ -46,6 +39,17 @@ export default {
 	},
 
 	methods: {
+		connectSocket() {
+			if (this.isLogin()) {
+				this.$store.dispatch('customerService/joinCustomerServiceChat', {
+					ref: this,
+					wsHandle: uni.connectSocket({
+						url: `${BASE_WS_API}/${getUserId()}`,
+						complete: () => { }
+					})
+				})
+			}
+		},
 		onOpen() {
 			console.log('onOpen连接成功')
 		},
@@ -68,24 +72,26 @@ export default {
 			// 	title: '断线了，正在重新连接......',
 			// 	mask: true
 			// })
-			uni.showToast({
-				title: 'Error出错了' + errMsg,
-				icon: 'none',
-				duration: 2000
-			})
+			// uni.showToast({
+			// 	title: 'Error出错了' + errMsg,
+			// 	icon: 'none',
+			// 	duration: 2000
+			// })
 		},
 		onClose() {
 			console.log('onClose关闭了')
 			this.timer && clearTimeout(this.timer)
-			this.timer = setTimeout(() => {
-				this.$store.dispatch('customerService/joinCustomerServiceChat', {
-					ref: '',
-					wsHandle: uni.connectSocket({
-						url: `${BASE_WS_API}/${getUserId()}`,
-						complete: () => { }
+			if (this.isLogin()) {
+				this.timer = setTimeout(() => {
+					this.$store.dispatch('customerService/joinCustomerServiceChat', {
+						ref: '',
+						wsHandle: uni.connectSocket({
+							url: `${BASE_WS_API}/${getUserId()}`,
+							complete: () => { }
+						})
 					})
-				})
-			}, 2000)
+				}, 2000)
+			}
 		}
 
 	}

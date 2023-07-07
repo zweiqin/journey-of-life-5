@@ -2,7 +2,7 @@
 	<view class="login-container">
 		<view class="register" @click="go('/pages/register/register?type=register')">注册</view>
 		<image
-			class="logo" src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/8lgf13vjcr9stft2tvt5.png"
+			class="logo" :src="common.seamingImgUrl('8lgf13vjcr9stft2tvt5.png')"
 			mode=""
 		/>
 
@@ -21,8 +21,8 @@
 				</view>
 				<image
 					class="hidden-passwod" :src="isShowPwd
-						? 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1035vvc88rxf5768exul.png'
-						: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ivr6snx5152prfpssx3j.png'
+						? common.seamingImgUrl('1035vvc88rxf5768exul.png')
+						: common.seamingImgUrl('ivr6snx5152prfpssx3j.png')
 					" mode="" @click="isShowPwd = !isShowPwd"
 				/>
 				<view class="forget-password" @click="go('/pages/register/register?type=forgetPwd')">（找回密码）</view>
@@ -105,6 +105,7 @@ export default {
 				uni.setStorageSync(J_USER_ID, res.data.userInfo.userId)
 				uni.setStorageSync(J_BRAND_ID, res.data.userInfo.brandId)
 				uni.setStorageSync(J_TOKEN_EXPIRE, new Date(res.data.tokenExpire).getTime())
+				this.$parent.$root.connectSocket()
 				this.$showToast('登录成功', 'success')
 				setTimeout(() => {
 					if (uni.getStorageSync(J_NEW_BIND_TYPE)) {
@@ -130,7 +131,7 @@ export default {
 		async handleWXLogin() {
 			// #ifdef H5
 			const appid = 'wx603b04a561e4683e'
-			const local = 'https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/login/login'
+			const local = 'https://h5.jfcmei.com/#/pages/login/login'
 			const code = getUrlCode().code
 			// console.log('获取code', code)
 			// alert('获取code', code)
@@ -148,6 +149,7 @@ export default {
 				uni.setStorageSync(J_USER_ID, data.userInfo.userId)
 				uni.setStorageSync(J_USER_INFO, data.userInfo)
 				uni.setStorageSync(J_USER_TOKEN, data.token)
+				this.$parent.$root.connectSocket()
 				// ofxYi6eg9rdj8qZx3rwSecysgePo
 				if (!data.status) {
 					uni.navigateTo({

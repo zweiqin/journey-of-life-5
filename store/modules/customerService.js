@@ -1,4 +1,4 @@
-import { queryCustomer, createChat, queryChatList, queryChatMessage, queryChatMessageBack } from '../../api/customerService'
+import { queryCustomer, createChat, queryChatList, queryChatMessage, queryChatMessageBack, addChatMessage } from '../../api/customerService'
 import { CHANGE_CUSTOMER_SERVICE_INFO, CHANGE_WS_INFO, CHANGE_WSINFO_INFO, CHANGE_CHAT_LIST, CHANGE_ON_FN } from './type'
 import { getUserId } from '../../utils'
 // import { USER_INFO } from '../../../constant' // uni.getStorageSync(USER_INFO)
@@ -82,7 +82,7 @@ export default {
 			const tempInfo = {
 				letter: '我的客服',
 				data: data.map((item) => ({
-					friendId: item.id,
+					friendId: item.userId,
 					displayName: item.name,
 					avatar: item.url
 				}))
@@ -146,41 +146,46 @@ export default {
 			try {
 				uni.showLoading()
 				const res = await queryChatMessage(data)
-				// const res = { data: { items: [ {
-				// 	'chatId': 17,
-				// 	'sendUserId': 8,
-				// 	'message': '{"event":"","message":{"id":1677311426451,"status":"succeed","type":"text","sendTime":1677311426451,"content":"开屎聊天","toContactId":17,"fileSize":0,"fileName":"","fromUser":{"id":8,"displayName":"Tuanfeng","avatar":"https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zp7zbhidobolzr8z4b90.png"},"isGroup":true}}',
-				// 	'userType': 'ADMIN',
-				// 	'addTime': '2023-02-25 15:50:26',
-				// 	'username': 'Tuanfeng',
-				// 	'avatar': 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/zp7zbhidobolzr8z4b90.png'
-				// } ] } }
-				// 本测试用户是\"id\":537,\"displayName\":\"13888888888\
-				return res.data.items || []
+				return res.data || []
 			} catch (error) {
 				uni.showToast({
 					title: '获取历史消息失败',
 					icon: 'none'
 				})
+				return Promise.reject()
 			} finally {
 				uni.hideLoading()
 			}
 		},
 
-		// 查消息（往后查）
-		async queryChatMessageBack({ dispatch, rootState }, data) {
+		// 发消息对象存储
+		async addChatMessage({ dispatch, rootState }, data) {
 			try {
-				uni.showLoading()
-				const res = await queryChatMessageBack(data)
-				return res.data.items || []
+				const res = await addChatMessage(data)
 			} catch (error) {
 				uni.showToast({
-					title: '获取历史消息失败',
+					title: '发送消息失败',
 					icon: 'none'
 				})
+				return Promise.reject()
 			} finally {
-				uni.hideLoading()
 			}
 		}
+
+		// // 查消息（往后查）
+		// async queryChatMessageBack({ dispatch, rootState }, data) {
+		// 	try {
+		// 		uni.showLoading()
+		// 		const res = await queryChatMessageBack(data)
+		// 		return res.data.items || []
+		// 	} catch (error) {
+		// 		uni.showToast({
+		// 			title: '获取历史消息失败',
+		// 			icon: 'none'
+		// 		})
+		// 	} finally {
+		// 		uni.hideLoading()
+		// 	}
+		// }
 	}
 }

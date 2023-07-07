@@ -205,7 +205,7 @@ export default {
 				]
 			}],
 			imgInfo: {},
-			qrcodeUrl: 'https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/sever/smart-album/album-detail?id=',
+			qrcodeUrl: 'https://h5.jfcmei.com/#/user/sever/smart-album/album-detail?id=',
 			shareCode: ''
 		}
 	},
@@ -261,7 +261,7 @@ export default {
 		// 		title: `${this.imgInfo.userName}分享的图册`,
 		// 		imgUrl: this.imgInfo.bookFace,
 		// 		desc: `${this.imgInfo.atlasType}-${this.imgInfo.atlasName}`,
-		// 		link: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/sever/smart-album/album-detail?id=${this.id}`
+		// 		link: `https://h5.jfcmei.com/#/user/sever/smart-album/album-detail?id=${this.id}`
 		// 	})
 		// },
 
@@ -274,7 +274,7 @@ export default {
 						data: {
 							title: `${this.imgInfo.userName}分享的图册`,
 							desc: `${this.imgInfo.atlasType}-${this.imgInfo.atlasName}`,
-							link: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/sever/smart-album/album-detail?id=${this.id}`,
+							link: `https://h5.jfcmei.com/#/user/sever/smart-album/album-detail?id=${this.id}`,
 							imageUrl: this.imgInfo.bookFace
 						},
 						successCb: () => { }
@@ -292,7 +292,7 @@ export default {
 					data: {
 						title: `${this.imgInfo.userName}分享的图册`,
 						desc: `${this.imgInfo.atlasType}-${this.imgInfo.atlasName}`,
-						link: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/sever/smart-album/album-detail?id=${this.id}`,
+						link: `https://h5.jfcmei.com/#/user/sever/smart-album/album-detail?id=${this.id}`,
 						imageUrl: this.imgInfo.bookFace
 					},
 					successCb: () => { uni.showToast({ title: '分享成功', icon: 'success', duration: 2000 }); this.popupShow = false },
@@ -306,7 +306,7 @@ export default {
 						data: {
 							title: `${this.imgInfo.userName}分享的图册`,
 							desc: `${this.imgInfo.atlasType}-${this.imgInfo.atlasName}`,
-							link: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/sever/smart-album/album-detail?id=${this.id}`,
+							link: `https://h5.jfcmei.com/#/user/sever/smart-album/album-detail?id=${this.id}`,
 							imageUrl: this.imgInfo.bookFace
 						},
 						successCb: () => { }
@@ -324,7 +324,7 @@ export default {
 					data: {
 						title: `${this.imgInfo.userName}分享的图册`,
 						desc: `${this.imgInfo.atlasType}-${this.imgInfo.atlasName}`,
-						link: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/sever/smart-album/album-detail?id=${this.id}`,
+						link: `https://h5.jfcmei.com/#/user/sever/smart-album/album-detail?id=${this.id}`,
 						imageUrl: this.imgInfo.bookFace
 					},
 					successCb: () => { uni.showToast({ title: '分享成功', icon: 'success', duration: 2000 }); this.popupShow = false },
@@ -333,7 +333,7 @@ export default {
 				// #endif
 			} else if (obj.icon === 'link') {
 				uni.setClipboardData({
-					data: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/sever/smart-album/album-detail?id=${this.id}`,
+					data: `https://h5.jfcmei.com/#/user/sever/smart-album/album-detail?id=${this.id}`,
 					success() {
 						uni.showToast({
 							title: '复制成功',

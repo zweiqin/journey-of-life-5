@@ -591,8 +591,6 @@ export const getCommentListApi = (data) => RuanRequest('/comment/list', data, 'g
 // 用户的评价列表
 export const getUserCommentApi = (data) => RuanRequest('/dtsComment/userComment', data, 'get')
 
-
-
 /**
  * 签到
  */
@@ -607,7 +605,7 @@ export const getUserSignInListApi = (data) => RuanRequest('/dtsUserSignin/userSi
 export const getUserSigninContinuousApi = (data) => RuanRequest('/dtsUserSignin/continuous', data, 'get')
 
 // 判断用户在某一区间的签到次数，可用于判定今日是否签到
-export const geUserSign = (data) => RuanRequest(`/checkin/${getUserId()}`,data, 'get')
+export const geUserSign = (data) => RuanRequest(`/checkin/${getUserId()}`, data, 'get')
 
 // 获取用户连续签到天数
 export const getSignCount = (data) => RuanRequest(`/checkin/continuousdays/${getUserId()}`, data, 'get')
@@ -620,8 +618,6 @@ export const getSignPrize = (data) => RuanRequest('/checkin/prizeList', data, 'g
 
 // // 连续签到天数与每天积分
 // export const getUserSigninContinuousApi = (data) => RuanRequest('/dtsUserSignin/continuous', data, 'get')
-
-
 
 /**
  * 订单退款
@@ -735,6 +731,12 @@ export const getBrandAppointmentSelectGoodsApi = (data) => RuanRequest('/dtsAppo
 
 // 商家查询商品类目与商品
 export const getSelectCategoryGoodsApi = (data) => RuanRequest('/dtsCategory/selectCategoryGoods', data, 'get')
+
+// 清除预约的购物车
+export const deleteCleanUpCartApi = (data) => RuanRequest('/dtsAppointment/cleanUpCart', data, 'get')
+
+// 用户提交预约
+export const addSubmitAppointmentApi = (data) => RuanRequest('/dtsAppointment/submitAppointment', data)
 
 /**
  * 投诉

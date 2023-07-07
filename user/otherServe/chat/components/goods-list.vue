@@ -6,6 +6,15 @@
 				: '#fff'
 		}"
 	>
+		<view style="width: 100%;display: flex;justify-content: center;">
+			<tui-tabs
+				style="width: 686upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="105" :padding="32"
+				item-width="229rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
+				:tabs="[{ name: '巨蜂自营' }, { name: '本地生活' }, { name: '预约' }]" :current-tab="currentTab"
+				@change="handleSwitchTab"
+			></tui-tabs>
+		</view>
+
 		<scroll-view v-if="shopCarInfo.brandCartgoods.length" class="scroll-wrapper" scroll-y="true">
 			<view v-for="data in shopCarInfo.brandCartgoods" v-if="data" :key="data.brandId" class="goods-pane">
 				<view class="brand">
@@ -15,7 +24,7 @@
 					<view class="goods-list">
 						<view v-for="goods in data.cartList" :key="goods.id" class="item">
 							<view class="goods-info">
-								<image class="goods-image" :src="goods.picUrl"></image>
+								<image class="goods-image" :src="common.seamingImgUrl(goods.picUrl)"></image>
 
 								<view class="goods-wrapper">
 									<navigator url="">
@@ -46,22 +55,45 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import {
+	getShopCarListApi
+} from '../../../../api/cart'
+import { getUserId } from '../../../../utils'
 export default {
 	components: {},
 	data() {
 		return {
+			shopCarInfo: { brandCartgoods: [] },
+			currentTab: 0
 		}
 	},
-	computed: {
-		...mapGetters([ 'shopCarInfo' ]),
-		...mapGetters(['currentMode', 'deleteList'])
-	},
+	computed: {},
 	created() {
-		this.$store.dispatch('shopCar/getShopCarList')
-		console.log(this.shopCarInfo)
+		this.getShopList()
 	},
 	methods: {
+		handleSwitchTab(e) {
+			this.currentTab = e.index
+			this.shopCarInfo = { brandCartgoods: [] }
+			this.getShopList()
+		},
+		// 获取购物车列表
+		getShopList() {
+			this.loadingStatus = 'loading'
+			getShopCarListApi({
+				userId: getUserId(),
+				type: this.currentTab
+			})
+				.then(({ data }) => {
+					this.shopCarInfo = data.brandCartgoods ? data : { brandCartgoods: [] }
+					uni.hideLoading()
+					this.loadingStatus = 'noMore'
+				})
+				.catch(() => {
+					uni.hideLoading()
+					this.loadingStatus = 'noMore'
+				})
+		},
 		// 点击操作按钮
 		handleOpGoods(goods) {
 			console.log(goods)
@@ -78,6 +110,12 @@ export default {
 	box-sizing: border-box;
 	padding: 10upx;
 	// background-color: #fff;
+
+	.tui-tabs-view {
+		/deep/ .tui-tabs-slider {
+			margin-left: -32upx;
+		}
+	}
 
 	.scroll-wrapper {
 		height: calc(100vh - 240upx);

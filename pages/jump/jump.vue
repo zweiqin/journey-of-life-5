@@ -191,7 +191,7 @@ export default {
 					})
 			}
 			// else if (this.type === 'bindingPlanner') {
-			// 	// http://localhost:8989/JFShop_Uni_H5/#/pages/jump/jump?userId=277&type=bindingPlanner&code=JFFPLXER
+			// 	// http://localhost:8989/#/pages/jump/jump?userId=277&type=bindingPlanner&code=JFFPLXER
 			// 	if (this.userInfo.roleIds === 10) {
 			// 		// this.go(`/user/xxx?code=${this.code}`)
 			// 		uni.redirectTo({

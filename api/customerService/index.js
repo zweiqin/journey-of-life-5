@@ -42,4 +42,4 @@ export const queryChatMessage = (data) => RuanRequest('/messageList/getMessageDe
  * @returns
  */
 
-export const addChatMessage = (data) => RuanRequest('/messageList/addMessage', data, 'get')
+export const addChatMessage = (data) => RuanRequest('/messageList/addMessage', data, 'post')

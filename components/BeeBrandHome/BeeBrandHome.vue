@@ -1,68 +1,68 @@
 <template>
-  <view
-    class="bee-brand-home-container"
-    @click="go('/pages/store/detail/detail?brandId=' + brandInfo.id)"
-    v-if="brandInfo"
-  >
-    <swiper class="swiper" autoplay>
-      <swiper-item>
-        <tui-lazyload-img
-          width="706rpx"
-          radius="20rpx 20rpx 0 0"
-          height="250rpx"
-          src="https://img0.baidu.com/it/u=1287724578,945344928&fm=253&fmt=auto&app=138&f=JPEG?w=585&h=392"
-        ></tui-lazyload-img>
-      </swiper-item>
-    </swiper>
+	<view
+		v-if="brandInfo"
+		class="bee-brand-home-container"
+		@click="go('/pages/store/detail/detail?brandId=' + brandInfo.id)"
+	>
+		<swiper class="swiper" autoplay>
+			<swiper-item>
+				<tui-lazyload-img
+					width="706rpx"
+					radius="20rpx 20rpx 0 0"
+					height="250rpx"
+					src="https://img0.baidu.com/it/u=1287724578,945344928&fm=253&fmt=auto&app=138&f=JPEG?w=585&h=392"
+				></tui-lazyload-img>
+			</swiper-item>
+		</swiper>
 
-    <view class="brand-info">
-      <BeeAvatar :src="brandInfo.picUrl.includes('http') ? brandInfo.picUrl : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + brandInfo.picUrl" :size="80" radius="20rpx"></BeeAvatar>
-      <view class="brand-info-detail">
-        <view class="info-1">
-          <view class="brand-name">{{ brandInfo.name }}</view>
+		<view class="brand-info">
+			<BeeAvatar :src="common.seamingImgUrl(brandInfo.picUrl)" :size="80" radius="20rpx"></BeeAvatar>
+			<view class="brand-info-detail">
+				<view class="info-1">
+					<view class="brand-name">{{ brandInfo.name }}</view>
 
-          <button class="bee-btn">进入门店</button>
-        </view>
+					<button class="bee-btn">进入门店</button>
+				</view>
 
-        <view class="tags">
-          <view class="tag">
-            <BeeIcon
-              class="icon"
-              :src="require('./image/zan.png')"
-              width="43.4rpx"
-              height="44rpx"
-            ></BeeIcon>
-            <text>好评推荐</text>
-          </view>
+				<view class="tags">
+					<view class="tag">
+						<BeeIcon
+							class="icon"
+							:src="require('./image/zan.png')"
+							width="43.4rpx"
+							height="44rpx"
+						></BeeIcon>
+						<text>好评推荐</text>
+					</view>
 
-          <view class="tag">
-            <BeeIcon
-              width="43.4rpx"
-              height="44rpx"
-              class="icon"
-              :src="require('./image/pinzhi.png')"
-            ></BeeIcon>
-            <text>品质保证</text>
-          </view>
-        </view>
+					<view class="tag">
+						<BeeIcon
+							width="43.4rpx"
+							height="44rpx"
+							class="icon"
+							:src="require('./image/pinzhi.png')"
+						></BeeIcon>
+						<text>品质保证</text>
+					</view>
+				</view>
 
-        <view class="info-2">
-          <text>367人访问</text>
-          <text>13人关注</text>
-        </view>
-      </view>
-    </view>
-  </view>
+				<view class="info-2">
+					<text>367人访问</text>
+					<text>13人关注</text>
+				</view>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    brandInfo: {
-      type: Object,
-      required: true,
-    },
-  },
+	props: {
+		brandInfo: {
+			type: Object,
+			required: true
+		}
+	}
 }
 </script>
 

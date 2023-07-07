@@ -1,68 +1,68 @@
 <template>
-  <view class="conversion-pane-container">
-    <img
-      class="avatar"
-      :src="
-        info.userAvatar ||
-        'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/spams4e3lnv3pce4ztzk.webp'
-      "
-      alt=""
-    />
+	<view class="conversion-pane-container">
+		<img
+			class="avatar"
+			:src="
+				info.userAvatar ||
+					common.seamingImgUrl('spams4e3lnv3pce4ztzk.webp')
+			"
+			alt=""
+		/>
 
-    <view class="info">
-      <view class="item">
-        <view class="name"> {{ info.userName }}</view>
-        <view class="phone text">电话：{{ info.userTel || "暂无" }}</view>
-        <view class="text s-text">创建时间: {{ info.createTime }}</view></view
-      >
+		<view class="info">
+			<view class="item">
+				<view class="name"> {{ info.userName }}</view>
+				<view class="phone text">电话：{{ info.userTel || "暂无" }}</view>
+				<view class="text s-text">创建时间: {{ info.createTime }}</view>
+			</view>
 
-      <view class="item">
-        <view class="phone text">购买时间：{{ info.updateTime }}</view>
-        <view class="phone text">购买次数：{{ info.buyCount }}</view>
-        <view class="text select">活动方案</view>
-      </view>
-    </view>
-  </view>
+			<view class="item">
+				<view class="phone text">购买时间：{{ info.updateTime }}</view>
+				<view class="phone text">购买次数：{{ info.buyCount }}</view>
+				<view class="text select">活动方案</view>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    info: Object,
-  },
+	props: {
+		info: Object
+	},
 
-  methods: {
-    handleIsVisit() {
-      uni.showActionSheet({
-        title: "是否回访",
-        itemList: ["未回访", "已回访"],
-        success: function (res) {
-          console.log("选中了第" + (res.tapIndex + 1) + "个按钮");
-        },
-      });
-    },
+	methods: {
+		handleIsVisit() {
+			uni.showActionSheet({
+				title: '是否回访',
+				itemList: ['未回访', '已回访'],
+				success(res) {
+					console.log('选中了第' + (res.tapIndex + 1) + '个按钮')
+				}
+			})
+		},
 
-    handleIsSwitch() {
-      uni.showActionSheet({
-        title: "是否转化",
-        itemList: ["未转化", "已转化"],
-        success: function (res) {
-          console.log("选中了第" + (res.tapIndex + 1) + "个按钮");
-        },
-      });
-    },
+		handleIsSwitch() {
+			uni.showActionSheet({
+				title: '是否转化',
+				itemList: ['未转化', '已转化'],
+				success(res) {
+					console.log('选中了第' + (res.tapIndex + 1) + '个按钮')
+				}
+			})
+		},
 
-    handleChooseWords() {
-      uni.showActionSheet({
-        title: "请选择转化话术",
-        itemList: ["我是来救你的", "没我你的店就倒闭了"],
-        success: function (res) {
-          console.log("选中了第" + (res.tapIndex + 1) + "个按钮");
-        },
-      });
-    },
-  },
-};
+		handleChooseWords() {
+			uni.showActionSheet({
+				title: '请选择转化话术',
+				itemList: ['我是来救你的', '没我你的店就倒闭了'],
+				success(res) {
+					console.log('选中了第' + (res.tapIndex + 1) + '个按钮')
+				}
+			})
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>
@@ -99,7 +99,7 @@ export default {
       content: "";
       position: absolute;
       display: block;
-      background: url("https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2gaw2khlvr5tm9to6aik.png")
+      background: url("https://adminapi.jfcmei.com/admin/storage/fetch/2gaw2khlvr5tm9to6aik.png")
         no-repeat;
       background-size: cover;
       right: -2px;

@@ -88,7 +88,7 @@
 				<image v-else class="iamge-background" :src="redForm.imageUrl" mode="" />
 			</view>
 			<image
-				v-show="redForm.imageUrl" class="delete-icon" src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ghggvke7uc134gbv71gh.png"
+				v-show="redForm.imageUrl" class="delete-icon" :src="common.seamingImgUrl('ghggvke7uc134gbv71gh.png')"
 				mode="" @click="removeBackground"
 			/>
 		</view>
@@ -240,7 +240,7 @@ export default {
 				count: 1,
 				success: (chooseImageRes) => {
 					uni.uploadFile({
-						url: 'https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload',
+						url: 'https://appapi.jfcmei.com/wx/storage/upload',
 						filePath: chooseImageRes.tempFiles[0].path,
 						name: 'file',
 						success: (uploadFileRes) => {

@@ -1,198 +1,212 @@
 <template>
-  <view class="marketing-portrait-container" v-if="info">
-    <view class="header">
-      <img
-        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1676ilbo4t26udpy067z.png"
-        class="back"
-        alt=""
-        @click="back"
-      />
+	<view v-if="info" class="marketing-portrait-container">
+		<view class="header">
+			<img
+				:src="common.seamingImgUrl('1676ilbo4t26udpy067z.png')"
+				class="back"
+				alt=""
+				@click="back"
+			/>
 
-      <h2>营销画像</h2>
-    </view>
+			<h2>营销画像</h2>
+		</view>
 
-    <!-- 数据预览-->
-    <view class="data-portrait-content item">
-      <view class="title"> 数据预览 </view>
-      <view class="body">
-        <view class="item">
-          <img
-            class="icon"
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/c8zi8jghhi26dhee70ds.png"
-            alt=""
-          />
-          <view class="sub-title">导入数</view>
-          <view class="value">{{ info.importCount || 0 }}</view>
-        </view>
+		<!-- 数据预览 -->
+		<view class="data-portrait-content item">
+			<view class="title"> 数据预览 </view>
+			<view class="body">
+				<view class="item">
+					<img
+						class="icon"
+						:src="common.seamingImgUrl('c8zi8jghhi26dhee70ds.png')"
+						alt=""
+					/>
+					<view class="sub-title">导入数</view>
+					<view class="value">{{ info.importCount || 0 }}</view>
+				</view>
 
-        <view class="item">
-          <img
-            class="icon"
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/vckqdfi5hm8kak5vwf4z.png"
-            alt=""
-          />
-          <view class="sub-title">访问数</view>
-          <view class="value">{{ info.visitCount || 0 }}</view>
-        </view>
+				<view class="item">
+					<img
+						class="icon"
+						:src="common.seamingImgUrl('vckqdfi5hm8kak5vwf4z.png')"
+						alt=""
+					/>
+					<view class="sub-title">访问数</view>
+					<view class="value">{{ info.visitCount || 0 }}</view>
+				</view>
 
-        <view class="item">
-          <img
-            class="icon"
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/aklzbzv1jpw60dhctw2k.png"
-            alt=""
-          />
-          <view class="sub-title">新增数</view>
-          <view class="value">{{ info.insertCount || 0 }}</view>
-        </view>
+				<view class="item">
+					<img
+						class="icon"
+						:src="common.seamingImgUrl('aklzbzv1jpw60dhctw2k.png')"
+						alt=""
+					/>
+					<view class="sub-title">新增数</view>
+					<view class="value">{{ info.insertCount || 0 }}</view>
+				</view>
 
-        <view class="item">
-          <img
-            class="icon"
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/n3lcw07jdsk5cmn2wovo.png"
-            alt=""
-          />
-          <view class="sub-title">消费数</view>
-          <view class="value">{{ info.consumeCount || 0 }}</view>
-        </view>
-      </view>
-    </view>
+				<view class="item">
+					<img
+						class="icon"
+						:src="common.seamingImgUrl('n3lcw07jdsk5cmn2wovo.png')"
+						alt=""
+					/>
+					<view class="sub-title">消费数</view>
+					<view class="value">{{ info.consumeCount || 0 }}</view>
+				</view>
+			</view>
+		</view>
 
-    <!-- 用户画像分析 -->
-    <view class="user-portrait-analysis item">
-      <view class="title"> 用户画像分析 </view>
-      <view class="body">
-        <view class="item">
-          <img
-            class="icon"
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/do2noi0ljm3kl3u93a1z.png"
-            alt=""
-          />
-          <view class="sub-title">{{
-            fomartNumber(info.manCount * 100) + "%" || "0%"
-          }}</view>
-          <view class="value">男性</view>
-        </view>
+		<!-- 用户画像分析 -->
+		<view class="user-portrait-analysis item">
+			<view class="title"> 用户画像分析 </view>
+			<view class="body">
+				<view class="item">
+					<img
+						class="icon"
+						:src="common.seamingImgUrl('do2noi0ljm3kl3u93a1z.png')"
+						alt=""
+					/>
+					<view class="sub-title">
+						{{
+							fomartNumber(info.manCount * 100) + "%" || "0%"
+						}}
+					</view>
+					<view class="value">男性</view>
+				</view>
 
-        <view class="item">
-          <img
-            class="icon"
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/m38xyx13s4mv5sxrethp.png"
-            alt=""
-          />
-          <view class="sub-title">{{
-            fomartNumber(info.womanCount * 100) + "%" || "0%"
-          }}</view>
-          <view class="value">女性</view>
-        </view>
+				<view class="item">
+					<img
+						class="icon"
+						:src="common.seamingImgUrl('m38xyx13s4mv5sxrethp.png')"
+						alt=""
+					/>
+					<view class="sub-title">
+						{{
+							fomartNumber(info.womanCount * 100) + "%" || "0%"
+						}}
+					</view>
+					<view class="value">女性</view>
+				</view>
 
-        <view class="item">
-          <img
-            class="icon"
-            src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/tl5f6cdio4uj4nthg24i.png"
-            alt=""
-          />
-          <view class="sub-title">{{
-            fomartNumber(info.unknownCount * 100) + "%" || "0%"
-          }}</view>
-          <view class="value">未知</view>
-        </view>
-      </view>
-    </view>
+				<view class="item">
+					<img
+						class="icon"
+						:src="common.seamingImgUrl('tl5f6cdio4uj4nthg24i.png')"
+						alt=""
+					/>
+					<view class="sub-title">
+						{{
+							fomartNumber(info.unknownCount * 100) + "%" || "0%"
+						}}
+					</view>
+					<view class="value">未知</view>
+				</view>
+			</view>
+		</view>
 
-    <!-- 用户画像分析 -->
-    <view class="in-store-analysis item">
-      <view class="title"> 每日进店分析 </view>
-      <view class="body">
-        <!-- <A></A> -->
-        {{ info.dayNumber || 0 }}
-      </view>
-    </view>
+		<!-- 用户画像分析 -->
+		<view class="in-store-analysis item">
+			<view class="title"> 每日进店分析 </view>
+			<view class="body">
+				<!-- <A></A> -->
+				{{ info.dayNumber || 0 }}
+			</view>
+		</view>
 
-    <!-- 用户分析 -->
-    <view class="user-analysis item">
-      <view class="title"> 用户分析 </view>
-      <view class="body">
-        <view class="item">
-          <view class="wrapper">
-            <text class="text">未消费</text>
-            <text class="text">{{
-              fomartNumber(info.statusCount.count1 || 0) * 100 + "%"
-            }}</text>
-          </view>
-        </view>
+		<!-- 用户分析 -->
+		<view class="user-analysis item">
+			<view class="title"> 用户分析 </view>
+			<view class="body">
+				<view class="item">
+					<view class="wrapper">
+						<text class="text">未消费</text>
+						<text class="text">
+							{{
+								fomartNumber(info.statusCount.count1 || 0) * 100 + "%"
+							}}
+						</text>
+					</view>
+				</view>
 
-        <view class="item">
-          <view class="wrapper">
-            <text class="text">一次性消费</text>
-            <text class="text">{{
-              fomartNumber(info.statusCount.count2 || 0) * 100 + "%"
-            }}</text>
-          </view>
-        </view>
+				<view class="item">
+					<view class="wrapper">
+						<text class="text">一次性消费</text>
+						<text class="text">
+							{{
+								fomartNumber(info.statusCount.count2 || 0) * 100 + "%"
+							}}
+						</text>
+					</view>
+				</view>
 
-        <view class="item">
-          <view class="wrapper">
-            <text class="text">二次性消费</text>
-            <text class="text">{{
-              fomartNumber((info.statusCount.count3 || 0) * 100) + "%"
-            }}</text>
-          </view>
-        </view>
+				<view class="item">
+					<view class="wrapper">
+						<text class="text">二次性消费</text>
+						<text class="text">
+							{{
+								fomartNumber((info.statusCount.count3 || 0) * 100) + "%"
+							}}
+						</text>
+					</view>
+				</view>
 
-        <view class="item">
-          <view class="wrapper">
-            <text class="text">三次及以上消费</text>
-            <text class="text">{{
-              fomartNumber((info.statusCount.count4 || 0) * 100) + "%"
-            }}</text>
-          </view>
-        </view>
-      </view>
-    </view>
-  </view>
+				<view class="item">
+					<view class="wrapper">
+						<text class="text">三次及以上消费</text>
+						<text class="text">
+							{{
+								fomartNumber((info.statusCount.count4 || 0) * 100) + "%"
+							}}
+						</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
-import { getMarketingPortraitDataApi } from "../../api/user";
-import { fomartNumber } from "../../utils";
+import { getMarketingPortraitDataApi } from '../../api/user'
+import { fomartNumber } from '../../utils'
 
 export default {
-  mounted() {
-    this.getData();
-  },
-  data() {
-    return {
-      info: null,
-    };
-  },
-  methods: {
-    back() {
-      uni.switchTab({
-        url: "/pages/user/user",
-      });
-    },
-    fomartNumber,
+	data() {
+		return {
+			info: null
+		}
+	},
+	mounted() {
+		this.getData()
+	},
+	methods: {
+		back() {
+			uni.switchTab({
+				url: '/pages/user/user'
+			})
+		},
+		fomartNumber,
 
-    async getData() {
-      const res = await getMarketingPortraitDataApi();
-      if (res.errno === 0) {
-        this.info = res.data;
-      } else {
-        uni.showToast({
-          title: "您还不是业务员",
-          duration: 1500,
-          icon: "none",
-        });
+		async getData() {
+			const res = await getMarketingPortraitDataApi()
+			if (res.errno === 0) {
+				this.info = res.data
+			} else {
+				uni.showToast({
+					title: '您还不是业务员',
+					duration: 1500,
+					icon: 'none'
+				})
 
-        setTimeout(() => {
-          uni.switchTab({
-            url: "/pages/user/user",
-          });
-        }, 2000);
-      }
-    },
-  },
-};
+				setTimeout(() => {
+					uni.switchTab({
+						url: '/pages/user/user'
+					})
+				}, 2000)
+			}
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>

@@ -23,8 +23,8 @@
 				class="hidden-passwod"
 				:src="
 					isShowPwd
-						? 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1035vvc88rxf5768exul.png'
-						: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/ivr6snx5152prfpssx3j.png'
+						? common.seamingImgUrl('1035vvc88rxf5768exul.png')
+						: common.seamingImgUrl('ivr6snx5152prfpssx3j.png')
 				"
 				mode=""
 				@click="handleShowPwd"

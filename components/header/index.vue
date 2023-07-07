@@ -1,39 +1,39 @@
 <template>
-  <view class="header-container">
-    <img
-      @click="back"
-      class="back"
-      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/qt4o7j0jglkweyicy1fw.png"
-      alt=""
-    />
-    <view>{{ title }}</view>
-  </view>
+	<view class="header-container">
+		<img
+			class="back"
+			:src="common.seamingImgUrl('qt4o7j0jglkweyicy1fw.png')"
+			alt=""
+			@click="back"
+		/>
+		<view>{{ title }}</view>
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    title: {
-      type: String,
-      required: true,
-    },
+	props: {
+		title: {
+			type: String,
+			required: true
+		},
 
-    redirect: String,
-  },
-  methods: {
-    back() {
-      if (this.redirect) {
-        uni.switchTab({
-          url: this.redirect,
-        });
+		redirect: String
+	},
+	methods: {
+		back() {
+			if (this.redirect) {
+				uni.switchTab({
+					url: this.redirect
+				})
 
-        return;
-      }
+				return
+			}
 
-      uni.navigateBack();
-    },
-  },
-};
+			uni.navigateBack()
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>

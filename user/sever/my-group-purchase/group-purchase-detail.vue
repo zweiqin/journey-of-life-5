@@ -14,7 +14,7 @@
 			<view style="padding-right: 30upx;">
 				<tui-button
 					type="warning" width="220rpx" height="60rpx" style="border-radius: 50rpx;"
-					@click="$copy(`https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/user/sever/my-group-purchase/group-purchase-detail?id=${data.groupon.id}&isJoin=true`, '复制链接成功，快发送给好友吧~')"
+					@click="$copy(`https://h5.jfcmei.com/#/user/sever/my-group-purchase/group-purchase-detail?id=${data.groupon.id}&isJoin=true`, '复制链接成功，快发送给好友吧~')"
 				>
 					复制分享链接
 				</tui-button>
@@ -324,7 +324,7 @@ export default {
 				uni.hideLoading()
 				if (this.isJoin === 'false') {
 					getVerificationCodeHxCodeApi({
-						url: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/jump/jump?userId=${getUserId()}&orderId=${data.orderInfo.id}&type=verification&code=${data.orderInfo.id}-`
+						url: `https://h5.jfcmei.com/#/pages/jump/jump?userId=${getUserId()}&orderId=${data.orderInfo.id}&type=verification&code=${data.orderInfo.id}-`
 					}).then((res) => {
 						console.log(res)
 						if (res.errno === -1) return
@@ -345,7 +345,7 @@ export default {
 			uni.chooseImage({
 				success: (chooseImageRes) => {
 					uni.uploadFile({
-						url: 'https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload',
+						url: 'https://appapi.jfcmei.com/wx/storage/upload',
 						filePath: chooseImageRes.tempFiles[0].path,
 						name: 'file',
 						success: (uploadFileRes) => {

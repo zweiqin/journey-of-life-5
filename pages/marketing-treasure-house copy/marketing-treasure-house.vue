@@ -120,7 +120,7 @@ export default {
 		position: absolute;
 		top: 0;
 		left: 0;
-		background: url("https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/2rlfz31333yt1dzs9wiv.png") no-repeat;
+		background: url("https://adminapi.jfcmei.com/admin/storage/fetch/2rlfz31333yt1dzs9wiv.png") no-repeat;
 		height: 700upx;
 		width: 100%;
 	}
