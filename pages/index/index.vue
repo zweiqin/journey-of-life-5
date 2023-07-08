@@ -29,16 +29,17 @@
 		<view class="goods-list">
 			<view class="pane">
 				<!-- <GoodsFilter :scrollTop="scrollTop"></GoodsFilter> -->
-
-				<view class="menus-wrapper">
-					<view
-						v-for="item in menus" :key="item.id" class="item"
-						:class="{ active: currentFilterMenuId === item.id }" @click="handleChooseMenu(item)"
-					>
-						<BeeIcon :size="40" :src="item.icon"></BeeIcon>
-						<text>{{ item.name }}</text>
+				<scroll-view scroll-x="true" >
+					<view class="menus-wrapper">
+						<view
+							v-for="item in menus" :key="item.id" class="item"
+							:class="{ active: currentFilterMenuId === item.id }" @click="handleChooseMenu(item)"
+						>
+							<BeeIcon :size="40" :src="item.icon"></BeeIcon>
+							<text>{{ item.name }}</text>
+						</view>
 					</view>
-				</view>
+				</scroll-view>
 
 				<scroll-view scroll-x="true">
 					<view class="sub-menus">
@@ -115,8 +116,73 @@ export default {
 				},
 				{
 					name: '家电',
-					icon: require('../../static/index/shop//el.png'),
+					icon: require('../../static/index/shop/el.png'),
 					id: 100101466
+				},
+				{
+					name: '功能家具',
+					icon: require('../../static/index/shop/gongnengjiaju.png'),
+					id: 100101685
+				},
+				{
+					name: '户外庭院',
+					icon: require('../../static/index/shop/huwaitingyuan.png'),
+					id: 100101676
+				},
+				{
+					name: '全屋组合',
+					icon: require('../../static/index/shop/quanwuzuhe.png'),
+					id: 100101668
+				},
+				{
+					name: '饰品专区',
+					icon: require('../../static/index/shop/shipingzhuanqu.png'),
+					id: 100101662
+				},
+				{
+					name: '书房家具',
+					icon: require('../../static/index/shop/shufangjiaju.png'),
+					id: 100101651
+				},
+				{
+					name: '壁画专区',
+					icon: require('../../static/index/shop/bihuazhuanqu.png'),
+					id: 100101643
+				},
+				{
+					name: '红木家具',
+					icon: require('../../static/index/shop/hongmujiaju.png'),
+					id: 100101638
+				},
+				{
+					name: '灯饰专区',
+					icon: require('../../static/index/shop/dengshizhuanqu.png'),
+					id: 100101627
+				},
+				{
+					name: '办公家具',
+					icon: require('../../static/index/shop/bangongjiaju.png'),
+					id: 100101614
+				},
+				{
+					name: '儿童专区',
+					icon: require('../../static/index/shop/ertongzhuanqu.png'),
+					id: 100101604
+				},
+				{
+					name: '餐厅家具',
+					icon: require('../../static/index/shop/cantingjiaju.png'),
+					id: 100101595
+				},
+				{
+					name: '卧室家具',
+					icon: require('../../static/index/shop/woshijiaju.png'),
+					id: 100101582
+				},
+				{
+					name: '客厅家具',
+					icon: require('../../static/index/shop/ketingjiaju.png'),
+					id: 100101559
 				}
 			]),
 			currentMenu: null,

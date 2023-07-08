@@ -1,22 +1,21 @@
 <template>
 	<view class="brand-detail-container">
-		<!-- 顶部的导航按钮 -->
-		<view class="navgation_top">
-			<view class="imgbg">
-				<image src="./image/fanhui.png" mode=""></image>
-			</view>
-			<view class="fnButton">
-				<view class="imgbg">
-					<image src="./image/aixin.png" mode=""></image>
-				</view>
-				<view class="imgbg">
-					<image src="./image/more.png" mode=""></image>
-				</view>
-				<view class="imgbg">
-					<image src="./image/spCar.png" mode=""></image>
-				</view>
-			</view>
-		</view>
+		 	<view class="navgation_top" :style="{ backgroundColor: 'rgba(255, 255, 255, ' + navOpacity + ')'}" :class="isNavGaFixed?'isFixed':'isAbsolute'">
+		 		<view class="imgbg">
+		 			<image src="./image/fanhui.png" mode=""></image>
+		 		</view>
+		 		<view class="fnButton">
+		 			<view class="imgbg">
+		 				<image src="./image/aixin.png" mode=""></image>
+		 			</view>
+		 			<view class="imgbg">
+		 				<image src="./image/more.png" mode=""></image>
+		 			</view>
+		 			<view class="imgbg">
+		 				<image src="./image/spCar.png" mode=""></image>
+		 			</view>
+		 		</view>
+		 	</view>
 		<!-- 轮播图 -->
 		<swiper class="swiper" :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000">
 			<swiper-item>
@@ -43,21 +42,44 @@
 					</view>
 				</navGationBar>
 			</view>
-			<TabBar></TabBar>
+			<TabBar :isFixed="isTabFixed"></TabBar>
 		</view>
 	</view>
 </template>
 
 <script>
+	import tuiSticky from "@/components/thorui/tui-sticky/tui-sticky.vue"  // 吸顶组件
 	import InformationBar from "./components/InformationBar.vue";
 	import navGationBar from "./components/NavigationBar.vue";
 	import TabBar from "./components/TabBar.vue"
 	export default {
 		name: 'Detail',
+		data() {
+			return {
+				isNavGaFixed: false,
+				isTabFixed: false, // tab切换栏是否固定定位
+				navOpacity: 0,  // 控制导航栏透明度
+			}
+		},
 		components: {
+			tuiSticky,
 			InformationBar,
 			navGationBar,
 			TabBar
+		},
+		onPageScroll(obj) {
+			console.log(obj)
+			if(obj.scrollTop >= 34) {
+				this.navOpacity = obj.scrollTop / 200
+				this.isNavGaFixed = true
+			}else {
+				this.isNavGaFixed = false
+			}
+			if(obj.scrollTop >= 412) {
+				this.isTabFixed = true
+			}else {
+				this.isTabFixed = false
+			}
 		}
 	}
 </script>
@@ -69,14 +91,21 @@
 		height: auto;
 		margin: 0;
 		padding: 0;
+		.isFixed {
+			position: fixed;
+			top: 0;
+			left: 0;
+		}
+		.isAbsolute {
+			position: absolute;
+			top: 70rpx;
+		}
 		.navgation_top {
 			box-sizing: border-box;
-			margin-top: 72rpx;
-			padding: 0rpx 40rpx;
+			// margin-top: 72rpx;
+			padding: 15rpx 40rpx;
 			width: 100vw;
 			z-index: 3;
-			position: absolute;
-			top: 10rpx;
 			display: flex;
 			justify-content: space-between;
 			image {
