@@ -137,7 +137,7 @@
 			},
 			//字体大小
 			size: {
-				type: Number,
+				type: [Number,String],
 				default: 28
 			},
 			//选中后 是否加粗 ，未选中则无效
