@@ -256,7 +256,7 @@ export default {
 				this.data = data
 				uni.hideLoading()
 				getVerificationCodeHxCodeApi({
-					url: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/jump/jump?userId=${getUserId()}&orderId=${data.orderInfo.id}&type=verification&code=${data.orderInfo.id}-`
+					url: `https://h5.jfcmei.com/#/pages/jump/jump?userId=${getUserId()}&orderId=${data.orderInfo.id}&type=verification&code=${data.orderInfo.id}-`
 				}).then((res) => {
 					console.log(res)
 					if (res.errno === -1) return
@@ -276,7 +276,7 @@ export default {
 			uni.chooseImage({
 				success: (chooseImageRes) => {
 					uni.uploadFile({
-						url: 'https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload',
+						url: 'https://appapi.jfcmei.com/wx/storage/upload',
 						filePath: chooseImageRes.tempFiles[0].path,
 						name: 'file',
 						success: (uploadFileRes) => {

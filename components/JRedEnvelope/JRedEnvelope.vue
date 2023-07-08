@@ -21,7 +21,7 @@
 							<view style="display: flex;">
 								<JAvatar
 									:size="82"
-									:src="avatar || 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/fal17oak8m6t4ytoo1lh.webp'"
+									:src="avatar || common.seamingImgUrl('fal17oak8m6t4ytoo1lh.webp')"
 								>
 								</JAvatar>
 								<view style="flex: 1;margin-left: 28upx;color: #FFFFFF;">
@@ -32,7 +32,7 @@
 								</view>
 							</view>
 							<view style="margin-top: 20upx;border: 2upx solid #FFFFFF;border-radius: 28upx;overflow: hidden;">
-								<!-- https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/6es7jzqcs3atdn7qyhxg.png -->
+								<!-- common.seamingImgUrl('6es7jzqcs3atdn7qyhxg.png') -->
 								<image
 									mode="widthFix" :src="src || '../../static/images/index/red-pic.png'"
 									style="min-width: 450upx;max-width: 550upx;max-height: 50vh;vertical-align: middle;"

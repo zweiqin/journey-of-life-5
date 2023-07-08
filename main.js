@@ -10,16 +10,16 @@ import globalMixin from './mixin/global'
 Vue.mixin({
 	data() {
 		return {
-			baseUrl: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/',
+			baseUrl: 'https://adminapi.jfcmei.com/admin/storage/fetch/',
 			lazyLoadingMode: 'skeleton-2',
 			common: {
 				// 拼接展示图片url
 				// splicingImgUrl() {
-				// 	return 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/'
+				// 	return 'https://adminapi.jfcmei.com/admin/storage/fetch/'
 				// },
 				seamingImgUrl(url) {
 					if (!url) return ''
-					return url.startsWith('https://') ? url : 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' + url
+					return url.startsWith('https://') ? url : 'https://adminapi.jfcmei.com/admin/storage/fetch/' + url
 				},
 				explainMembership(roleIds) {
 					let roleName

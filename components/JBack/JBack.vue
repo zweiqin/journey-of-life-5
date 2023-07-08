@@ -5,8 +5,8 @@
 				width: width * 1 + 'upx',
 				height: height * 1 + 'upx'
 			}" :src="dark
-				? 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/qt4o7j0jglkweyicy1fw.png'
-				: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/eo1rayuh8vu1qtnbdj0l.png'
+				? common.seamingImgUrl('qt4o7j0jglkweyicy1fw.png')
+				: common.seamingImgUrl('eo1rayuh8vu1qtnbdj0l.png')
 			" mode="" @click="handleBack"
 		/>
 	</view>

@@ -5,11 +5,7 @@
 	>
 		<tui-lazyload-img
 			width="100%" :height="height" mode="scaleToFill" radius="20rpx 20rpx 0 0"
-			:src="data.picUrl.includes('http')
-				? data.picUrl
-				: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' +
-					data.picUrl
-			"
+			:src="common.seamingImgUrl(data.picUrl)"
 		></tui-lazyload-img>
 
 		<view class="goods-info">

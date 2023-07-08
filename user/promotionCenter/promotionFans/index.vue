@@ -1,54 +1,54 @@
 <template>
-  <view class="promotionFans">
-    <view class="fansDetail">
-      <image
-        src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/c3lf6qrk8xetm971qsux.jpg "
-        mode="scaleToFill"
-        class="fansImg"
-      />
-      <view class="fansInformation">
-        <view class="top">
-          <view class="information">
-            <view class="fansName">张飞</view>
-            <view class="fansId">123</view></view
-          >
-          <view class="payNumber">支付订单数：11</view>
-        </view>
-        <view class="bottom">
-          <view class="fansTime">2022-04-19 15:03:54</view>
-          <view class="fansPayNumber"
-            >支付订单总额： <text class="fansMoney">￥217911.00</text>
-          </view>
-        </view>
-      </view>
-    </view>
-  </view>
+	<view class="promotionFans">
+		<view class="fansDetail">
+			<image
+				:src="common.seamingImgUrl('c3lf6qrk8xetm971qsux.jpg')"
+				mode="scaleToFill"
+				class="fansImg"
+			/>
+			<view class="fansInformation">
+				<view class="top">
+					<view class="information">
+						<view class="fansName">张飞</view>
+						<view class="fansId">123</view>
+					</view>
+					<view class="payNumber">支付订单数：11</view>
+				</view>
+				<view class="bottom">
+					<view class="fansTime">2022-04-19 15:03:54</view>
+					<view class="fansPayNumber">
+						支付订单总额： <text class="fansMoney">￥217911.00</text>
+					</view>
+				</view>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
 export default {
-  name: "promotionFans",
-  props: {},
-  data() {
-    return {};
-  },
-  computed: {},
-  methods: {},
-  watch: {},
+	name: 'PromotionFans',
+	props: {},
+	data() {
+		return {}
+	},
+	computed: {},
+	watch: {},
 
-  // 组件周期函数--监听组件挂载完毕
-  mounted() {},
-  // 组件周期函数--监听组件数据更新之前
-  beforeUpdate() {},
-  // 组件周期函数--监听组件数据更新之后
-  updated() {},
-  // 组件周期函数--监听组件激活(显示)
-  activated() {},
-  // 组件周期函数--监听组件停用(隐藏)
-  deactivated() {},
-  // 组件周期函数--监听组件销毁之前
-  beforeDestroy() {},
-};
+	// 组件周期函数--监听组件挂载完毕
+	mounted() {},
+	// 组件周期函数--监听组件数据更新之前
+	beforeUpdate() {},
+	// 组件周期函数--监听组件数据更新之后
+	updated() {},
+	// 组件周期函数--监听组件激活(显示)
+	activated() {},
+	// 组件周期函数--监听组件停用(隐藏)
+	deactivated() {},
+	// 组件周期函数--监听组件销毁之前
+	beforeDestroy() {},
+	methods: {}
+}
 </script>
 
 <style lang="less" scoped>

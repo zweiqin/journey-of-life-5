@@ -2,7 +2,10 @@
 // import { whoami } from './api/auth'
 // import { J_USER_ID, J_BRAND_ID, J_USER_INFO, J_USER_TOKEN, J_TOKEN_EXPIRE } from './constant'
 // var http = require('./utils/http.js')
-import { updateToken } from './utils'
+import { updateToken, getUserId } from './utils'
+import {
+	BASE_WS_API
+} from './config'
 export default {
 	name: 'App',
 	onShow() {
@@ -14,25 +17,83 @@ export default {
 		// 	http.mpAuthLogin()
 		// }
 	},
+	onLaunch() {
+		this.connectSocket()
+	},
 	globalData: { },
 	data() {
 		return {
-			scene: ''
+			scene: '',
+			timer: ''
 		}
 	},
 	mounted() {
 		// #ifdef H5
 		this.$store.dispatch('location/getCurrentLocation', (res) => {})
 		// #endif
-
 		// #ifdef APP
 		// #endif
-
 		updateToken()
 		const launchOptions = uni.getLaunchOptionsSync()
 		this.scene = launchOptions.scene
 	},
+
 	methods: {
+		connectSocket() {
+			if (this.isLogin()) {
+				this.$store.dispatch('customerService/joinCustomerServiceChat', {
+					ref: this,
+					wsHandle: uni.connectSocket({
+						url: `${BASE_WS_API}/${getUserId()}`,
+						complete: () => { }
+					})
+				})
+			}
+		},
+		onOpen() {
+			console.log('onOpen连接成功')
+		},
+		onMessage(evt) {
+			console.log('onMessage收到消息', evt)
+			// const data = JSON.parse(evt.data)
+			// console.log(data)
+			// if (data.status == 10400) {
+			// 	uni.showToast({
+			// 		title: '网络不给力，请检查网络连接',
+			// 		icon: 'none'
+			// 	}) // 弹出提示框
+			// } else if (data.status == 13140) {
+			// 	this.$store.dispatch('customerService/getChatList')
+			// }
+		},
+		onError(errMsg) {
+			console.log('onError出错了')
+			// uni.showLoading({
+			// 	title: '断线了，正在重新连接......',
+			// 	mask: true
+			// })
+			// uni.showToast({
+			// 	title: 'Error出错了' + errMsg,
+			// 	icon: 'none',
+			// 	duration: 2000
+			// })
+		},
+		onClose() {
+			console.log('onClose关闭了')
+			this.timer && clearTimeout(this.timer)
+			if (this.isLogin()) {
+				this.timer = setTimeout(() => {
+					this.$store.dispatch('customerService/joinCustomerServiceChat', {
+						ref: '',
+						wsHandle: uni.connectSocket({
+							url: `${BASE_WS_API}/${getUserId()}`,
+							complete: () => { }
+						})
+					})
+				}, 2000)
+			}
+		}
+
 	}
 }
 </script>

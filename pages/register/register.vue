@@ -139,7 +139,7 @@ export default {
 	&::after {
 		content: "";
 		display: block;
-		background: url("https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/720ysa3uh3ynjg10htcv.png") no-repeat;
+		background: url("https://adminapi.jfcmei.com/admin/storage/fetch/720ysa3uh3ynjg10htcv.png") no-repeat;
 		background-size: cover;
 		width: 172%;
 		height: 200upx;

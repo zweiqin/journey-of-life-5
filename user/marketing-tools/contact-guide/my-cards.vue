@@ -1,213 +1,211 @@
 <template>
-  <view class="my-card">
-    <view
-      ref="backgroundImgRef"
-      class="my-card-background"
-      :style="{
-        background: currentBackgroundColor,
-      }"
-    >
-    </view>
-    <view class="main">
-      <view class="my-card-header">
-        <JBack></JBack>
-        <h2>名片夹</h2>
-      </view>
+	<view class="my-card">
+		<view
+			ref="backgroundImgRef"
+			class="my-card-background"
+			:style="{
+				background: currentBackgroundColor
+			}"
+		>
+		</view>
+		<view class="main">
+			<view class="my-card-header">
+				<JBack></JBack>
+				<h2>名片夹</h2>
+			</view>
 
-      <view class="card-info animate__animated animate__swing">
-        <view class="title">总名片数</view>
-        <view class="card-number">{{ totalNameCardNumber }}</view>
-      </view>
+			<view class="card-info animate__animated animate__swing">
+				<view class="title">总名片数</view>
+				<view class="card-number">{{ totalNameCardNumber }}</view>
+			</view>
 
-      <view class="my-card-change" @click="changeBackgroundColor">
-        更换背景
-      </view>
+			<view class="my-card-change" @click="changeBackgroundColor">
+				更换背景
+			</view>
 
-      <view class="card-list" v-for="(item, index) in data" :key="index">
-        <view class="create-card-time">{{ index }}</view>
-        <view
-          class="card-wrapper"
-          @click="handleViewNameCard(nameCard)"
-          v-for="nameCard in item"
-          :key="nameCard.id"
-        >
-          <image class="avatar" :src="nameCard.headPic" mode="" />
+			<view v-for="(item, index) in data" :key="index" class="card-list">
+				<view class="create-card-time">{{ index }}</view>
+				<view
+					v-for="nameCard in item"
+					:key="nameCard.id"
+					class="card-wrapper"
+					@click="handleViewNameCard(nameCard)"
+				>
+					<image class="avatar" :src="nameCard.headPic" mode="" />
 
-          <view class="detail-info">
-            <view class="name-wrapper">
-              <view class="name">{{ nameCard.name }}</view>
-              <JIcon
-                width="36"
-                height="36"
-                type="share"
-              ></JIcon>
-            </view>
+					<view class="detail-info">
+						<view class="name-wrapper">
+							<view class="name">{{ nameCard.name }}</view>
+							<JIcon
+								width="36"
+								height="36"
+								type="share"
+							></JIcon>
+						</view>
 
-            <view class="text text1">{{ nameCard.position }}</view>
-            <view class="text">{{ nameCard.business }}</view>
-          </view>
-        </view>
-      </view>
-      <JNoData
-        v-if="JSON.stringify(data) === '{}'"
-        type="namecard"
-        width="300"
-        text="未添加名片"
-      ></JNoData>
-    </view>
+						<view class="text text1">{{ nameCard.position }}</view>
+						<view class="text">{{ nameCard.business }}</view>
+					</view>
+				</view>
+			</view>
+			<JNoData
+				v-if="JSON.stringify(data) === '{}'"
+				type="namecard"
+				width="300"
+				text="未添加名片"
+			></JNoData>
+		</view>
 
-    <view class="my-card-footer">
-      <button
-        class="uni-btn build"
-        @click="go('/user/marketing-tools/contact-guide/create-namezcard')"
-      >
-        新建名片
-      </button>
-    </view>
+		<view class="my-card-footer">
+			<button
+				class="uni-btn build"
+				@click="go('/user/marketing-tools/contact-guide/create-namezcard')"
+			>
+				新建名片
+			</button>
+		</view>
 
-    <JPopup v-model="backgroundChangeVisble">
-      <view class="change-background">
-        <view class="change-background-header">
-          <view class="title">更换背景色</view>
-          <JIcon
-            @click="closePopup"
-            width="36"
-            height="36"
-            type="close"
-          ></JIcon>
-        </view>
+		<JPopup v-model="backgroundChangeVisble">
+			<view class="change-background">
+				<view class="change-background-header">
+					<view class="title">更换背景色</view>
+					<JIcon
+						width="36"
+						height="36"
+						type="close"
+						@click="closePopup"
+					></JIcon>
+				</view>
 
-        <view class="color-selector">
-          <view class="color-wrapper">
-            <view class="title">当前</view>
-            <view class="colors">
-              <view class="color-item" style="background: #183869"></view>
-            </view>
-          </view>
+				<view class="color-selector">
+					<view class="color-wrapper">
+						<view class="title">当前</view>
+						<view class="colors">
+							<view class="color-item" style="background: #183869"></view>
+						</view>
+					</view>
 
-          <view class="color-wrapper">
-            <view class="title">替换</view>
-            <view class="colors">
-              <view
-                v-for="item in restColoes"
-                :key="item"
-                :style="{
-                  background: item,
-                }"
-                @click="handleChooseItem(item)"
-                class="color-item"
-                :class="{
-                  active: currentChooseColor === item,
-                }"
-                style="background: #183869"
-              ></view>
-            </view>
-          </view>
+					<view class="color-wrapper">
+						<view class="title">替换</view>
+						<view class="colors">
+							<view
+								v-for="item in restColoes"
+								:key="item"
+								:style="{
+									background: item
+								}"
+								class="color-item"
+								:class="{
+									active: currentChooseColor === item
+								}"
+								style="background: #183869"
+								@click="handleChooseItem(item)"
+							></view>
+						</view>
+					</view>
 
-          <view class="selector-footer">
-            <button class="uni-btn selector-cancel" @click="closePopup">
-              取消
-            </button>
-            <button
-              class="uni-btn selector-confirm"
-              @click="handleConfirmBackground"
-            >
-              确定
-            </button>
-          </view>
-        </view>
-      </view>
-    </JPopup>
-  </view>
+					<view class="selector-footer">
+						<button class="uni-btn selector-cancel" @click="closePopup">
+							取消
+						</button>
+						<button
+							class="uni-btn selector-confirm"
+							@click="handleConfirmBackground"
+						>
+							确定
+						</button>
+					</view>
+				</view>
+			</view>
+		</JPopup>
+	</view>
 </template>
 
 <script>
-import { getRestColor } from "./config";
-import { getNameCardList, changeNameCardBgApi } from "../../../api/user";
-import { domToImage, getUserId } from "../../../utils";
+import { getRestColor } from './config'
+import { getNameCardList, changeNameCardBgApi } from '../../../api/user'
+import { domToImage, getUserId } from '../../../utils'
 
 export default {
-  data() {
-    return {
-      backgroundChangeVisble: false,
-      currentChooseColor: "",
-      currentBackgroundColor: "",
-      data: [],
-      totalNameCardNumber: 0,
-    };
-  },
+	data() {
+		return {
+			backgroundChangeVisble: false,
+			currentChooseColor: '',
+			currentBackgroundColor: '',
+			data: [],
+			totalNameCardNumber: 0
+		}
+	},
 
-  onShow() {
-    this.getNameCardList();
-  },
+	onShow() {
+		this.getNameCardList()
+	},
 
-  methods: {
-    // 获取名片列表
-    getNameCardList() {
-      const _this = this;
-      getNameCardList({
-        userId: getUserId(),
-        page: 1,
-        limit: 30,
-      }).then(({ data }) => {
-        const finalData = {};
-        _this.totalNameCardNumber = data.brandList.length;
+	computed: {
+		restColoes() {
+			return getRestColor('#183869')
+		}
+	},
 
-        for (const nameCard of data.brandList) {
-          const addTime = nameCard.addTime.split(" ")[0];
-          if (!finalData[addTime]) {
-            finalData[addTime] = [nameCard];
-          } else {
-            finalData[addTime].push(nameCard);
-          }
-        }
+	methods: {
+		// 获取名片列表
+		getNameCardList() {
+			const _this = this
+			getNameCardList({
+				userId: getUserId(),
+				page: 1,
+				limit: 30
+			}).then(({ data }) => {
+				const finalData = {}
+				_this.totalNameCardNumber = data.brandList.length
 
-        _this.data = finalData;
-      });
-    },
+				for (const nameCard of data.brandList) {
+					const addTime = nameCard.addTime.split(' ')[0]
+					if (!finalData[addTime]) {
+						finalData[addTime] = [ nameCard ]
+					} else {
+						finalData[addTime].push(nameCard)
+					}
+				}
 
-    // 更换背景
-    changeBackgroundColor() {
-      this.backgroundChangeVisble = true;
-    },
+				_this.data = finalData
+			})
+		},
 
-    // 关闭popup
-    closePopup() {
-      this.backgroundChangeVisble = false;
-      this.currentChooseColor = "";
-    },
+		// 更换背景
+		changeBackgroundColor() {
+			this.backgroundChangeVisble = true
+		},
 
-    // 选择当前颜色值
-    handleChooseItem(color) {
-      this.currentChooseColor = color;
-    },
+		// 关闭popup
+		closePopup() {
+			this.backgroundChangeVisble = false
+			this.currentChooseColor = ''
+		},
 
-    // 确定选择该颜色值
-    handleConfirmBackground() {
-      const _this = this;
-      changeNameCardBgApi({
-        userId: getUserId(),
-        bgColor: _this.currentChooseColor,
-      }).then(() => {
-        _this.currentBackgroundColor = _this.currentChooseColor;
-        _this.closePopup();
-      });
-    },
+		// 选择当前颜色值
+		handleChooseItem(color) {
+			this.currentChooseColor = color
+		},
 
-    // 去看详情
-    handleViewNameCard(info) {
-      this.go(
-        "/user/marketing-tools/contact-guide/name-card-detail?id=" + info.id
-      );
-    },
-  },
+		// 确定选择该颜色值
+		handleConfirmBackground() {
+			const _this = this
+			changeNameCardBgApi({
+				userId: getUserId(),
+				bgColor: _this.currentChooseColor
+			}).then(() => {
+				_this.currentBackgroundColor = _this.currentChooseColor
+				_this.closePopup()
+			})
+		},
 
-  computed: {
-    restColoes() {
-      return getRestColor("#183869");
-    },
-  },
-};
+		// 去看详情
+		handleViewNameCard(info) {
+			this.go('/user/marketing-tools/contact-guide/name-card-detail?id=' + info.id)
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>
@@ -406,7 +404,7 @@ export default {
               bottom: 6upx;
               width: 32upx;
               height: 32upx;
-              background: url("https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0kut8emy01lkcxd0gvxg.png")
+              background: url("https://adminapi.jfcmei.com/admin/storage/fetch/0kut8emy01lkcxd0gvxg.png")
                 no-repeat;
               background-size: cover;
             }

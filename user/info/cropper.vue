@@ -34,7 +34,7 @@ export default {
 				title: '图片上传中...'
 			})
 			uni.uploadFile({
-				url: 'https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload',
+				url: 'https://appapi.jfcmei.com/wx/storage/upload',
 				filePath: e.url,
 				name: 'file',
 				success: async (uploadFileRes) => {

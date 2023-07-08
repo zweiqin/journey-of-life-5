@@ -1,74 +1,74 @@
 <template>
-  <div class="goods" @click="handeViewDetail">
-    <img
-      class="img"
-      :src="
-        url ||
-        'https://img2.baidu.com/it/u=1766258309,950066704&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=305'
-      "
-      alt=""
-    />
+	<div class="goods" @click="handeViewDetail">
+		<img
+			class="img"
+			:src="
+				url ||
+					'https://img2.baidu.com/it/u=1766258309,950066704&fm=253&fmt=auto&app=138&f=JPEG?w=499&h=305'
+			"
+			alt=""
+		/>
 
-    <view class="body">
-      <view class="name">{{ desc || "GLOSTAD" }} </view>
-      <!-- <view class="name">{{ sname || "二人沙发" }} </view> -->
-      <view class="tags">
-        <view class="tag">品牌老店</view>
-        <view class="tag">官方体验店</view>
-      </view>
-      <view class="info">
-        <view class="left">
-          <text class="icon">{{ name }}</text>
-        </view>
+		<view class="body">
+			<view class="name">{{ desc || "GLOSTAD" }} </view>
+			<!-- <view class="name">{{ sname || "二人沙发" }} </view> -->
+			<view class="tags">
+				<view class="tag">品牌老店</view>
+				<view class="tag">官方体验店</view>
+			</view>
+			<view class="info">
+				<view class="left">
+					<text class="icon">{{ name }}</text>
+				</view>
 
-        <view class="right">
-          <view style="color: #3d3d3d"
-            ><image
-              style="
+				<view class="right">
+					<view style="color: #3d3d3d">
+						<image
+							style="
                 width: 28upx;
                 height: 24upx;
                 margin-right: 10upx;
                 color: #3d3d3d;
               "
-              src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1035vvc88rxf5768exul.png"
-              mode=""
-            />
-            {{ getRandom(100, 1000) }}
-          </view>
-        </view>
-      </view>
-    </view>
-  </div>
+							:src="common.seamingImgUrl('1035vvc88rxf5768exul.png')"
+							mode=""
+						/>
+						{{ getRandom(100, 1000) }}
+					</view>
+				</view>
+			</view>
+		</view>
+	</div>
 </template>
 
 <script>
-import { getRandom } from "../../utils";
+import { getRandom } from '../../utils'
 
 export default {
-  props: {
-    desc: String,
-    sname: String,
-    price: [String, Number],
-    payNumber: String,
-    url: String,
-    id: [Number, String],
-    name: String,
-  },
+	props: {
+		desc: String,
+		sname: String,
+		price: [String, Number],
+		payNumber: String,
+		url: String,
+		id: [Number, String],
+		name: String
+	},
 
-  methods: {
-    handeViewDetail() {
-      if (!this.id) {
-        return;
-      }
+	methods: {
+		handeViewDetail() {
+			if (!this.id) {
+				return
+			}
 
-      uni.navigateTo({
-        url: `/store/store-detail?storeId=${this.id}`,
-      });
-    },
+			uni.navigateTo({
+				url: `/store/store-detail?storeId=${this.id}`
+			})
+		},
 
-    getRandom,
-  },
-};
+		getRandom
+	}
+}
 </script>
 
 <style lang="less" scoped>

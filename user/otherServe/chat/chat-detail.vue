@@ -4,7 +4,8 @@
 		<view class="header-container">
 			<view class="kefu-conatiner">
 				<image class="back-icon" src="../../../static/images/store/chevron-states.png" mode="" @click="handleBack" />
-				<image class="avatar" src="/static/logo.png" mode="" />
+				<!-- <image class="avatar" src="/static/logo.png" mode="" /> -->
+				<image class="avatar" :src="avatar" mode="" />
 				<text class="kefu-name">{{ name }}</text>
 			</view>
 			<!-- <view class="tip">回复中...</view> -->
@@ -27,7 +28,7 @@
 						</view>
 						</view> -->
 					<view class="message-slot">
-						<view v-if="item.message.isGroup === true">
+						<view v-if="item.message.isGroup === false">
 							<view class="time-wrapper">
 								<text class="time">
 									{{ timestampToTime(item.message.sendTime) }}
@@ -139,6 +140,7 @@
 		<tui-bottom-popup :show="isShowGoodsPopup" @close="handleClosePopup('Goods')">
 			<GoodsList v-if="isShowGoodsPopup" @send="handleSend"></GoodsList>
 		</tui-bottom-popup>
+		<tui-toast ref="toast"></tui-toast>
 	</view>
 </template>
 
@@ -165,6 +167,7 @@ export default {
 			words: '',
 			chat: '',
 			name: '',
+			avatar: '',
 			userInfo: uni.getStorageSync(J_USER_INFO),
 			groupMessages: [],
 			scrollTop: '',
@@ -176,143 +179,163 @@ export default {
 	onLoad(options) {
 		this.chat = options.chat
 		this.name = options.name
-		if (this.chat) {
+		this.avatar = options.avatar
+		this.$store.dispatch('customerService/queryChatMessage', {
+			foUserId: getUserId(),
+			toUserId: this.chat
+		}).then((res) => {
+			console.log(res)
+			const tempDate = Date.now()
+			this.groupMessages = res.map((item) => ({
+				event: '',
+				message: {
+					id: item.sendTime,
+					status: 'succeed',
+					type: item.msgType,
+					sendTime: item.sendTime,
+					content: item.contentText,
+					toContactId: item.toUserId,
+					fileSize: 0,
+					fileName: '',
+					fromUser: {
+						id: item.fromUserId,
+						displayName: item.fromUserName,
+						avatar: item.fromAvatarImage
+					},
+					isGroup: false
+				}
+			})).concat([ {
+				event: '',
+				message: {
+					id: tempDate,
+					status: 'succeed',
+					type: 'text',
+					sendTime: tempDate,
+					content: '您好，请问有什么能够帮到您？',
+					toContactId: getUserId(),
+					fileSize: 0,
+					fileName: '',
+					fromUser: {
+						id: this.chat,
+						displayName: '客服',
+						avatar: '/static/logo.png'
+					},
+					isGroup: false
+				}
+			} ])
+			this.scrollToBottom()
 			this.$store.dispatch('customerService/joinCustomerServiceChat', {
 				ref: this,
-				// wsHandle: new WebSocket(`${BASE_WS_API}/APP/${getUserId()}?chat=${this.chat}`),
-				wsHandleInfo: uni.connectSocket({
-					url: `${BASE_WS_API}/APP/${getUserId()}`,
-					// data() {
-					// 	return {
-					// 		x: '',
-					// 		y: ''
-					// 	}
-					// },
-					// header: {
-					// 	'content-type': 'application/json'
-					// },
-					// protocols: [ 'protocol1' ],
-					// method: 'GET',
-					complete: () => { }
-				}),
-				wsHandle: uni.connectSocket({
-					url: `${BASE_WS_API}/APP/${getUserId()}?chat=${this.chat}`,
-					complete: () => { }
-				})
+				wsHandle: ''
 			})
-		}
-		// console.log(this.chat, `${BASE_WS_API}/APP/${getUserId()}?chat=${this.chat}`)
+		})
 	},
 	beforeDestroy() {
-		this.$store.getters.wsHandle.close()
-		this.$store.getters.wsHandleInfo.close()
+		this.$store.dispatch('customerService/joinCustomerServiceChat', {
+			ref: this.$parent.$root,
+			wsHandle: ''
+		})
+		// this.$store.getters.wsHandle.close()
+		// this.$store.getters.wsHandleInfo.close()
 	},
 	methods: {
 		timestampToTime,
-		onOpenInfo() {
-			console.log('onOpenInfo连接成功')
-		},
-		onMessageInfo(evt) {
-			const dataAll = JSON.parse(evt.data)
-			const data = JSON.parse(dataAll.message)
-			this.groupMessages.push(data)
+		// onOpenInfo() {
+		// 	console.log('onOpenInfo连接成功')
+		// },
+		onMessage(evt) {
+			const data = JSON.parse(evt.data)
 			console.log(data)
-			this.scrollToBottom()
-			if (data.message.fromUser.id === this.userInfo.userId) return
+			if (data.status == 10400) {
+				uni.showToast({
+					title: '网络不给力，请检查网络连接',
+					icon: 'none'
+				}) // 弹出提示框
+			} else if (data.status == 13140) {
+				// if (data.message.fromUser.id === this.userInfo.userId) return
+				const tempData = {
+					event: '',
+					message: {
+						id: data.sendTime,
+						status: 'succeed',
+						type: data.msgType,
+						sendTime: data.sendTime,
+						content: data.contentText,
+						toContactId: Number(data.toUserId),
+						fileSize: 0,
+						fileName: '',
+						fromUser: {
+							id: Number(data.fromUserId),
+							displayName: data.fromUserName,
+							avatar: data.fromAvatarImage
+						},
+						isGroup: false
+					}
+				}
+				this.groupMessages.push(tempData)
+				console.log(data)
+				this.scrollToBottom()
+			}
 		},
-		onErrorInfo(errMsg) {
-			console.log('onErrorInfo出错了')
-			// uni.showLoading({
-			// 	title: '断线了，正在重新连接......',
-			// 	mask: true
-			// })
-			uni.showToast({
-				title: 'ErrorInfo出错了' + errMsg,
-				icon: 'none',
-				duration: 2000
-			})
-		},
-		onCloseInfo() {
-			console.log('onCloseInfo关闭了')
-			setTimeout(() => {
-				this.$store.dispatch('customerService/joinCustomerServiceChat', {
-					ref: this,
-					wsHandleInfo: uni.connectSocket({
-						url: `${BASE_WS_API}/APP/${getUserId()}`,
-						complete: () => { }
-					}),
-					wsHandle: ''
-				})
-			}, 2000)
-		},
+		// onErrorInfo(errMsg) {
+		// 	console.log('onErrorInfo出错了')
+		// 	// uni.showLoading({
+		// 	// 	title: '断线了，正在重新连接......',
+		// 	// 	mask: true
+		// 	// })
+		// 	uni.showToast({
+		// 		title: 'ErrorInfo出错了' + errMsg,
+		// 		icon: 'none',
+		// 		duration: 2000
+		// 	})
+		// },
+		// onCloseInfo() {
+		// 	console.log('onCloseInfo关闭了')
+		// 	setTimeout(() => {
+		// 		this.$store.dispatch('customerService/xxx', {
+		// 			ref: this,
+		// 			wsHandleInfo: uni.connectSocket({
+		// 				url: `${BASE_WS_API}/APP/${getUserId()}`,
+		// 				complete: () => { }
+		// 			})
+		// 		})
+		// 	}, 2000)
+		// },
 
 		onOpen() {
 			console.log('onOpen连接成功')
-			this.$store.dispatch('customerService/queryChatMessage', {
-				chatId: this.chat,
-				limit: 30,
-				endTime: '',
-				order: 'desc'
-			}).then((res) => {
-				const tempDate = Date.now()
-				this.groupMessages = res.map((item) => JSON.parse(item.message)).reverse()
-					.concat([ {
-						event: '',
-						message: {
-							id: tempDate,
-							status: 'succeed',
-							type: 'text',
-							sendTime: tempDate,
-							content: '您好，请问有什么能够帮到您？',
-							toContactId: getUserId(),
-							fileSize: 0,
-							fileName: '',
-							fromUser: {
-								id: this.chat,
-								displayName: '客服',
-								avatar: '/static/logo.png'
-							},
-							isGroup: true
-						}
-					} ])
-				this.scrollToBottom()
-			})
-		},
-		onMessage(evt) {
-			console.log('onMessage收到消息', evt)
-		},
-		onError(errMsg) {
-			console.log('onError出错了')
-			// uni.showLoading({
-			// 	title: '断线了，正在重新连接......',
-			// 	mask: true
-			// })
-			uni.showToast({
-				title: 'Error出错了' + errMsg,
-				icon: 'none',
-				duration: 2000
-			})
-		},
-		onClose() {
-			console.log('onClose关闭了')
-			setTimeout(() => {
-				this.$store.dispatch('customerService/joinCustomerServiceChat', {
-					ref: this,
-					wsHandleInfo: '',
-					wsHandle: uni.connectSocket({
-						url: `${BASE_WS_API}/APP/${getUserId()}?chat=${this.chat}`,
-						complete: () => { }
-					})
-				})
-			}, 2000)
 		},
 
 		send(sendMsg) {
 			if (typeof sendMsg === 'string') {
 				// send(sendMsg)
 			} else if (typeof sendMsg === 'object') {
-				const messages = JSON.stringify(sendMsg)
-				this.$store.getters.wsHandle.send({ data: messages })
+				this.$store.getters.wsHandle.send({
+					data: JSON.stringify(sendMsg),
+					success: () => {
+						const tempData = {
+							event: '',
+							message: {
+								id: sendMsg.data.sendTime,
+								status: 'succeed',
+								type: sendMsg.data.msgType,
+								sendTime: sendMsg.data.sendTime,
+								content: sendMsg.data.contentText,
+								toContactId: sendMsg.data.toUserId,
+								fileSize: 0,
+								fileName: '',
+								fromUser: {
+									id: sendMsg.data.fromUserId,
+									displayName: sendMsg.data.fromUserName,
+									avatar: sendMsg.data.fromAvatarImage
+								},
+								isGroup: false
+							}
+						}
+						this.groupMessages.push(tempData)
+						this.scrollToBottom()
+					}
+				})
 			}
 		},
 
@@ -327,26 +350,58 @@ export default {
 				})
 			}
 			const tempDate = Date.now()
-			this.send({
-				event: '',
-				message: {
-					id: tempDate,
-					status: 'succeed',
-					type: 'text',
+			// this.send({
+			// 	event: '',
+			// 	message: {
+			// 		id: tempDate,
+			// 		status: 'succeed',
+			// 		type: 'text',
+			// 		sendTime: tempDate,
+			// 		content: this.words,
+			// 		toContactId: this.chat,
+			// 		fileSize: 0,
+			// 		fileName: '',
+			// 		fromUser: {
+			// 			id: this.userInfo.userId,
+			// 			displayName: this.userInfo.nickName,
+			// 			avatar: this.userInfo.avatarUrl
+			// 		},
+			// 		isGroup: true
+			// 	}
+			// })
+			this.$store.dispatch('customerService/addChatMessage', {
+				userId: this.userInfo.userId,
+				messageDetails: {
+					contentText: this.words,
+					fromAvatarImage: this.userInfo.avatarUrl,
+					fromUserName: this.userInfo.nickName,
+					fromUserId: this.userInfo.userId,
 					sendTime: tempDate,
-					content: this.words,
-					toContactId: this.chat,
-					fileSize: 0,
-					fileName: '',
-					fromUser: {
-						id: this.userInfo.userId,
-						displayName: this.userInfo.nickName,
-						avatar: this.userInfo.avatarUrl
-					},
-					isGroup: true
+					toUserId: this.chat,
+					toUsername: '',
+					toAvatarImage: '',
+					msgType: 'text',
+					exp: ''
 				}
+			}).then((res) => {
+				this.send({
+					status: 13140,
+					message: '发送消息',
+					data: {
+						contentText: this.words,
+						fromAvatarImage: this.userInfo.avatarUrl,
+						fromUserName: this.userInfo.nickName,
+						fromUserId: this.userInfo.userId,
+						sendTime: tempDate,
+						toUserId: this.chat,
+						toUsername: '',
+						toAvatarImage: '',
+						msgType: 'text',
+						exp: ''
+					}
+				})
+				this.words = ''
 			})
-			this.words = ''
 		},
 
 		// 点击选择图片
@@ -359,7 +414,7 @@ export default {
 					})
 					const tempFilePaths = chooseImageRes.tempFilePaths
 					uni.uploadFile({
-						url: 'https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload', // 仅为示例，非真实的接口地址
+						url: 'https://appapi.jfcmei.com/wx/storage/upload', // 仅为示例，非真实的接口地址
 						filePath: tempFilePaths[0],
 						name: 'file',
 						formData: {
@@ -369,29 +424,61 @@ export default {
 							console.log(uploadFileRes, uploadFileRes.data)
 							const messageUrl = JSON.parse(uploadFileRes.data).data.url
 							const tempDate = Date.now()
-							this.send({
-								event: '',
-								message: {
-									id: tempDate,
-									status: 'succeed',
-									type: 'image',
+							// this.send({
+							// 	event: '',
+							// 	message: {
+							// 		id: tempDate,
+							// 		status: 'succeed',
+							// 		type: 'image',
+							// 		sendTime: tempDate,
+							// 		content: messageUrl,
+							// 		toContactId: this.chat,
+							// 		fileSize: 0,
+							// 		fileName: '',
+							// 		fromUser: {
+							// 			id: this.userInfo.userId,
+							// 			displayName: this.userInfo.nickName,
+							// 			avatar: this.userInfo.avatarUrl
+							// 		},
+							// 		isGroup: true
+							// 	}
+							// })
+							this.$store.dispatch('customerService/addChatMessage', {
+								userId: this.userInfo.userId,
+								messageDetails: {
+									contentText: messageUrl,
+									fromAvatarImage: this.userInfo.avatarUrl,
+									fromUserName: this.userInfo.nickName,
+									fromUserId: this.userInfo.userId,
 									sendTime: tempDate,
-									content: messageUrl,
-									toContactId: this.chat,
-									fileSize: 0,
-									fileName: '',
-									fromUser: {
-										id: this.userInfo.userId,
-										displayName: this.userInfo.nickName,
-										avatar: this.userInfo.avatarUrl
-									},
-									isGroup: true
+									toUserId: this.chat,
+									toUsername: '',
+									toAvatarImage: '',
+									msgType: 'image',
+									exp: ''
 								}
+							}).then((res) => {
+								this.send({
+									status: 13140,
+									message: '发送消息',
+									data: {
+										contentText: messageUrl,
+										fromAvatarImage: this.userInfo.avatarUrl,
+										fromUserName: this.userInfo.nickName,
+										fromUserId: this.userInfo.userId,
+										sendTime: tempDate,
+										toUserId: this.chat,
+										toUsername: '',
+										toAvatarImage: '',
+										msgType: 'image',
+										exp: ''
+									}
+								})
+								uni.showToast({
+									title: '图片上传成功'
+								})
+								uni.hideLoading()
 							})
-							uni.showToast({
-								title: '图片上传成功'
-							})
-							uni.hideLoading()
 						},
 						fail: () => {
 							uni.hideLoading()
@@ -423,24 +510,60 @@ export default {
 			this.isShowGoodsPopup = false
 			this.isShowOrderPopup = false
 			const tempDate = Date.now()
-			this.send({
-				event: '',
-				message: {
-					id: tempDate,
-					status: 'succeed',
-					type: obj.meaning,
+			this.$store.dispatch('customerService/addChatMessage', {
+				userId: this.userInfo.userId,
+				messageDetails: {
+					contentText: obj.msg,
+					fromAvatarImage: this.userInfo.avatarUrl,
+					fromUserName: this.userInfo.nickName,
+					fromUserId: this.userInfo.userId,
 					sendTime: tempDate,
-					content: obj.msg,
-					toContactId: this.chat,
-					fileSize: 0,
-					fileName: '',
-					fromUser: {
-						id: this.userInfo.userId,
-						displayName: this.userInfo.nickName,
-						avatar: this.userInfo.avatarUrl
-					},
-					isGroup: true
+					toUserId: this.chat,
+					toUsername: '',
+					toAvatarImage: '',
+					msgType: obj.meaning,
+					exp: ''
 				}
+			}).then((res) => {
+				// this.send({
+				// 	event: '',
+				// 	message: {
+				// 		id: tempDate,
+				// 		status: 'succeed',
+				// 		type: obj.meaning,
+				// 		sendTime: tempDate,
+				// 		content: obj.msg,
+				// 		toContactId: this.chat,
+				// 		fileSize: 0,
+				// 		fileName: '',
+				// 		fromUser: {
+				// 			id: this.userInfo.userId,
+				// 			displayName: this.userInfo.nickName,
+				// 			avatar: this.userInfo.avatarUrl
+				// 		},
+				// 		isGroup: true
+				// 	}
+				// })
+				this.send({
+					status: 13140,
+					message: '发送消息',
+					data: {
+						contentText: obj.msg,
+						fromAvatarImage: this.userInfo.avatarUrl,
+						fromUserName: this.userInfo.nickName,
+						fromUserId: this.userInfo.userId,
+						sendTime: tempDate,
+						toUserId: this.chat,
+						toUsername: '',
+						toAvatarImage: '',
+						msgType: obj.meaning,
+						exp: ''
+					}
+				})
+				uni.showToast({
+					title: '图片上传成功'
+				})
+				uni.hideLoading()
 			})
 		},
 
@@ -457,19 +580,19 @@ export default {
 		},
 
 		handleRefresherrefresh(e) {
-			this.isRefresherTriggered = true
-			// console.log(e, timestampToTime(this.groupMessages[0].message.sendTime))
-			this.$store.dispatch('customerService/queryChatMessageBack', {
-				chatId: this.chat,
-				limit: 10,
-				endTime: timestampToTime(this.groupMessages[0].message.sendTime)
-				// order: 'desc'
-			}).then((res) => {
-				// console.log(res)
-				if (res.length === 0) uni.showToast({ title: '没有更多消息了', icon: 'none' })
-				this.groupMessages = res.map((item) => JSON.parse(item.message)).concat(this.groupMessages)
-				this.isRefresherTriggered = false
-			})
+			// this.isRefresherTriggered = true
+			// // console.log(e, timestampToTime(this.groupMessages[0].message.sendTime))
+			// this.$store.dispatch('customerService/queryChatMessageBack', {
+			// 	chatId: this.chat,
+			// 	limit: 10,
+			// 	endTime: timestampToTime(this.groupMessages[0].message.sendTime)
+			// 	// order: 'desc'
+			// }).then((res) => {
+			// 	// console.log(res)
+			// 	if (res.length === 0) uni.showToast({ title: '没有更多消息了', icon: 'none' })
+			// 	this.groupMessages = res.map((item) => JSON.parse(item.message)).concat(this.groupMessages)
+			// 	this.isRefresherTriggered = false
+			// })
 		},
 		// onPageScroll(e) {
 		// 	console.log(e, 1)
@@ -494,7 +617,6 @@ export default {
 			// console.log(index)
 			const imgsArray = []
 			imgsArray[0] = index
-
 			uni.previewImage({
 				urls: imgsArray,
 				current: 0

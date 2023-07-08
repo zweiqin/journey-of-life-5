@@ -105,7 +105,7 @@ export default {
 				this.$showToast('缺少秒杀活动结束时间')
 				return
 			}
-			if (!data.gooIds || !data.gooIds.length) {
+			if (!data.goods || !data.goods.length) {
 				this.$showToast('缺少关联商品')
 				return
 			}

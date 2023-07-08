@@ -1,95 +1,94 @@
 <template>
-  <view class="j-goods-container" @click="handleToViewGoodsDetail">
-    <!-- <image @load="handleLoadingImg" class="img" :src="data.picUrl" alt="" /> -->
-    <easy-loadimage
-      :loading-mode="lazyLoadingMode"
-      class="img"
-      :scroll-top="scrollTop"
-      :image-src="picUrl"
-    ></easy-loadimage>
+	<view class="j-goods-container" @click="handleToViewGoodsDetail">
+		<!-- <image @load="handleLoadingImg" class="img" :src="data.picUrl" alt="" /> -->
+		<easy-loadimage
+			:loading-mode="lazyLoadingMode"
+			class="img"
+			:scroll-top="scrollTop"
+			:image-src="picUrl"
+		></easy-loadimage>
 
-    <!-- <fast-lazy-load class="img" src="data.picUrl"></fast-lazy-load> -->
+		<!-- <fast-lazy-load class="img" src="data.picUrl"></fast-lazy-load> -->
 
-    <view class="info">
-      <view class="name">{{ data.name }}</view>
-      <view class="tags">
-        <view class="tag">七天无理由退货</view>
-        <view class="tag">品牌正品</view>
-      </view>
+		<view class="info">
+			<view class="name">{{ data.name }}</view>
+			<view class="tags">
+				<view class="tag">七天无理由退货</view>
+				<view class="tag">品牌正品</view>
+			</view>
 
-      <view class="op">
-        <view class="j-goods-price">￥{{ data.counterPrice }}</view>
-        <view ref="numbersRef" class="numbers">
-          <view class="item" @click="changeNumber(-1)">-</view>
-          <view class="currentNumber">{{ goodsNumber }}</view>
-          <view class="item" @click="changeNumber(1)">+</view>
-        </view>
+			<view class="op">
+				<view class="j-goods-price">￥{{ data.counterPrice }}</view>
+				<view ref="numbersRef" class="numbers">
+					<view class="item" @click="changeNumber(-1)">-</view>
+					<view class="currentNumber">{{ goodsNumber }}</view>
+					<view class="item" @click="changeNumber(1)">+</view>
+				</view>
 
-        <button ref="addCarRef" class="add-car" @click="handleAddCar">
-          查看详情
-        </button>
-      </view>
-    </view>
-  </view>
+				<button ref="addCarRef" class="add-car" @click="handleAddCar">
+					查看详情
+				</button>
+			</view>
+		</view>
+	</view>
 </template>
+
 <script>
 export default {
-  props: {
-    data: {
-      type: Object,
-      required: true,
-    },
-    scrollTop: [Number, String],
-  },
-  data() {
-    return {
-      goodsNumber: 1,
-      picUrl: "",
-    };
-  },
-  methods: {
-    handleAddCar() {
-      return
-      this.$refs.addCarRef.$el.style.flex = "0";
-      this.$refs.numbersRef.$el.style.opacity = "1";
-      if (!this.goodsNumber) {
-        this.goodsNumber = 1;
-      }
-    },
-    getHttpPicUrl() {
-      if (this.data.picUrl.includes("https")) {
-        this.picUrl = this.data.picUrl;
-      } else {
-        this.picUrl =
-          "https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/" +
-          this.data.picUrl;
-      }
-    },
+	props: {
+		data: {
+			type: Object,
+			required: true
+		},
+		scrollTop: [Number, String]
+	},
+	data() {
+		return {
+			goodsNumber: 1,
+			picUrl: ''
+		}
+	},
+	mounted() {
+		this.getHttpPicUrl()
+	},
+	methods: {
+		handleAddCar() {
+			return
+			this.$refs.addCarRef.$el.style.flex = '0'
+			this.$refs.numbersRef.$el.style.opacity = '1'
+			if (!this.goodsNumber) {
+				this.goodsNumber = 1
+			}
+		},
+		getHttpPicUrl() {
+			if (this.data.picUrl.includes('https')) {
+				this.picUrl = this.data.picUrl
+			} else {
+				this.picUrl = this.common.seamingImgUrl(this.data.picUrl)
+			}
+		},
 
-    changeNumber(number) {
-      this.goodsNumber = number + this.goodsNumber;
-      if (this.goodsNumber <= 0) {
-        this.$refs.addCarRef.$el.style.flex = "";
-        this.$refs.numbersRef.$el.style.opacity = "0";
-        this.goodsNumber = 0;
-      }
-    },
+		changeNumber(number) {
+			this.goodsNumber = number + this.goodsNumber
+			if (this.goodsNumber <= 0) {
+				this.$refs.addCarRef.$el.style.flex = ''
+				this.$refs.numbersRef.$el.style.opacity = '0'
+				this.goodsNumber = 0
+			}
+		},
 
-    // 点击查看详情
-    handleToViewGoodsDetail() {
-      uni.navigateTo({
-        url: "/pages/prod/prod?goodsId=" + this.data.id,
-      });
-    },
+		// 点击查看详情
+		handleToViewGoodsDetail() {
+			uni.navigateTo({
+				url: '/pages/prod/prod?goodsId=' + this.data.id
+			})
+		},
 
-    handleLoadingImg() {
-      console.log("加载成功");
-    },
-  },
-  mounted() {
-    this.getHttpPicUrl();
-  },
-};
+		handleLoadingImg() {
+			console.log('加载成功')
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>

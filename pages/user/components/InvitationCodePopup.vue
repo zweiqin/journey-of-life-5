@@ -36,7 +36,7 @@
 				</view>
 				<view style="text-align: center;">
 					<image class="code" :src="invitationCodeUrl" alt="" />
-					<view style="font-size: 26upx;color: #06a6f0;" @click="handleCopyData(`https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/jump/jump?userId=${userInfo.userId}&type=invitation&code=${code}`)">复制链接</view>
+					<view style="font-size: 26upx;color: #06a6f0;" @click="handleCopyData(`https://h5.jfcmei.com/#/pages/jump/jump?userId=${userInfo.userId}&type=invitation&code=${code}`)">复制链接</view>
 				</view>
 			</view>
 
@@ -65,7 +65,7 @@ export default {
 			uni.showLoading({
 				title: '加载中'
 			})
-			const tempUrl = `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/jump/jump?userId=${getUserId()}&type=invitation&code=`
+			const tempUrl = `https://h5.jfcmei.com/#/pages/jump/jump?userId=${getUserId()}&type=invitation&code=`
 			getQrCodeByH5Api({
 				url: tempUrl
 			}).then(({ data }) => {

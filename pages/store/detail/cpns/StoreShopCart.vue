@@ -17,31 +17,9 @@
 										v-show="opStatus === 'EDIT'" class="icon" :type="item.checked ? 'active-choose' : 'active-default'"
 										@click="handleChangeGoodsStatus(item, index, store)"
 									></JIcon>
-									<JAvatar radius="10" :size="120" :src="common.seamingImgUrl(item.picUrl)"></JAvatar>
 
-									<view class="goods-pane-right">
-										<view class="goods-pane-name">{{ item.goodsName.trim() }} </view>
-										<view class="goods-pane-desc-content">
-											<text class="goods-pane-desc">
-												{{
-													item.specifications | getDesc
-												}}
-											</text>
-										</view>
-										<view class="goods-pane-footer">
-											<text class="goods-pane-price">￥{{ item.price }}</text>
+									<ShopCarGoods ref="refShopCarGoods" :goods="item" :store="store" @success="getShopList"></ShopCarGoods>
 
-											<view class="ops">
-												<text class="item" @click="handleChangeNumber(-1, item, index, store)">
-													-
-												</text>
-												<text class="item">{{ item.number }}</text>
-												<text class="item" @click="handleChangeNumber(+1, item, index, store)">
-													+
-												</text>
-											</view>
-										</view>
-									</view>
 								</view>
 							</view>
 						</view>
@@ -74,15 +52,11 @@
 
 <script>
 import {
-	getShopCarListApi,
-	changeShopCarStatusApi,
-	updateShopCarCountApi,
-	deleteShopCarGoodsApi,
-	addCollectionsApi
+	changeShopCarStatusApi
 } from '../../../../api/cart'
-import { everyLookApi, getShopCarApi } from '../../../../api/goods'
+import { getShopCarApi } from '../../../../api/goods'
 import { getUserId, fomartNumber } from '../../../../utils'
-import { J_TWO_PAY_GOODS, J_SELECT_ADDRESS } from '../../../../constant'
+import { J_TWO_PAY_GOODS } from '../../../../constant'
 
 const EDIT = 'EDIT'
 
@@ -147,7 +121,6 @@ export default {
 
 	created() {
 		this.getShopList()
-		// uni.removeStorageSync(J_SELECT_ADDRESS)
 	},
 
 	methods: {
@@ -180,57 +153,6 @@ export default {
 					uni.hideLoading()
 					this.loadingStatus = 'noMore'
 				})
-		},
-
-		// 购物车数量的添加
-		handleChangeNumber(number, goods, index, store) {
-			if (this.isChangeNumber) {
-				this.$showToast('操作太快啦~')
-				return
-			}
-			const _this = this
-			this.isChangeNumber = true
-			if (number === -1 && goods.number === 1) {
-				uni.showModal({
-					title: '提示',
-					content: '是否将该商品移出购物车？',
-					success(res) {
-						if (res.confirm) {
-							_this.deleteGoods([ goods.productId ], store)
-						}
-					}
-				})
-				_this.isChangeNumber = false
-			} else {
-				uni.showLoading()
-				updateShopCarCountApi({
-					userId: getUserId(),
-					goodsId: goods.goodsId,
-					productId: goods.productId,
-					number: goods.number + number,
-					id: goods.id
-				})
-					.then(() => {
-						_this.getShopList()
-						_this.isChangeNumber = false
-						uni.hideLoading()
-					})
-					.catch(() => {
-						this.$showToast('数量修改失败')
-						_this.isChangeNumber = false
-						uni.hideLoading()
-					})
-			}
-		},
-
-		// 删除购物车的商品
-		deleteGoods(productIds) {
-			deleteShopCarGoodsApi({
-				productIds,
-				userId: getUserId()
-			}).then(() => {
-				this.getShopList()
-			})
 		},
 
 		// 去结算

@@ -26,7 +26,7 @@
 							<BrandGoods
 								:goods-data="entity.originGoods" :seckill-good-id="entity.id" :seckill-price="entity.price"
 								@click-content="(e) => go(`/pages/store/goods-detail/goods-detail?goodsId=${e.id}`)"
-								@add="(e) => currentSeckillGoodId = e.seckillGoodId && $refs.refJSpecificationScreen.open(e.id)"
+								@add="(e) => (currentSeckillGoodId = entity.id) && $refs.refJSpecificationScreen.open(e.id)"
 							>
 							</BrandGoods>
 						</template>
@@ -34,7 +34,7 @@
 							<BrandGoods
 								:goods-data="entity.originGoods" :seckill-good-id="entity.id" :seckill-price="entity.price"
 								@click-content="(e) => go(`/pages/store/goods-detail/goods-detail?goodsId=${e.id}`)"
-								@add="(e) => currentSeckillGoodId = e.seckillGoodId && $refs.refJSpecificationScreen.open(e.id)"
+								@add="(e) => (currentSeckillGoodId = entity.id) && $refs.refJSpecificationScreen.open(e.id)"
 							>
 							</BrandGoods>
 						</template>
@@ -97,7 +97,7 @@ export default {
 					.substring(0, 10)} 00:00:00` })
 				.then(({ data }) => {
 					console.log(data)
-					this.seckillList = data.data
+					this.seckillList = data
 					this.seckillList && this.seckillList.length && (this.currentSeckill = this.seckillList[0].id) && this.handleClickSeckill({ id: this.currentSeckill })
 					this.status = 'none'
 					this.loadingStatus = 'noMore'

@@ -1,58 +1,59 @@
 <template>
-  <view
-    class="coupon-item-container"
-    :style="{
-      background: expire ? '#999' : '',
-    }"
-  >
-    <view class="main">
-      <view
-        class="item count-info"
-        :style="{
-          color: expire ? '#999' : '',
-        }"
-      >
-        <view class="count"><text class="count-icon">￥</text>100</view>
-        <view class="count-desc">满100元可用</view>
-      </view>
-      <view class="item detail-info">
-        <view class="coupon-effect">
-          <view class="tag" :class="{ expire: expire }">巨蜂商城券</view>
-          <view
-            class="tag-desc"
-            :style="{
-              color: expire ? '#999' : '',
-            }"
-            >仅可在巨蜂商城使用</view
-          >
-        </view>
+	<view
+		class="coupon-item-container"
+		:style="{
+			background: expire ? '#999' : ''
+		}"
+	>
+		<view class="main">
+			<view
+				class="item count-info"
+				:style="{
+					color: expire ? '#999' : ''
+				}"
+			>
+				<view class="count"><text class="count-icon">￥</text>100</view>
+				<view class="count-desc">满100元可用</view>
+			</view>
+			<view class="item detail-info">
+				<view class="coupon-effect">
+					<view class="tag" :class="{ expire }">巨蜂商城券</view>
+					<view
+						class="tag-desc"
+						:style="{
+							color: expire ? '#999' : ''
+						}"
+					>
+						仅可在巨蜂商城使用
+					</view>
+				</view>
 
-        <view class="effect-time"> 有效期：2022-10-01至2022-10-07 </view>
+				<view class="effect-time"> 有效期：2022-10-01至2022-10-07 </view>
 
-        <view class="uni-btn-wrapper"
-          ><button
-            class="uni-btn"
-            :style="{
-              background: expire ? '#999' : '',
-            }"
-          >
-            去使用
-          </button></view
-        >
-      </view>
-    </view>
-  </view>
+				<view class="uni-btn-wrapper">
+					<button
+						class="uni-btn"
+						:style="{
+							background: expire ? '#999' : ''
+						}"
+					>
+						去使用
+					</button>
+				</view>
+			</view>
+		</view>
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    expire: {
-      type: Boolean,
-      default: false,
-    },
-  },
-};
+	props: {
+		expire: {
+			type: Boolean,
+			default: false
+		}
+	}
+}
 </script>
 
 <style lang="scss" scoped>
@@ -124,13 +125,13 @@ export default {
           width: 160upx;
           color: #fff;
           height: 46upx;
-          background: url("https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/l5mmb5d6bgu4c8364eyz.png")
+          background: url("https://adminapi.jfcmei.com/admin/storage/fetch/l5mmb5d6bgu4c8364eyz.png")
             no-repeat;
           background-size: cover;
           margin-right: 30upx;
 
           &.expire {
-            background: url("https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/lwn3ryxbxh64oz5zpan5.png")
+            background: url("https://adminapi.jfcmei.com/admin/storage/fetch/lwn3ryxbxh64oz5zpan5.png")
               no-repeat;
             background-size: cover;
           }

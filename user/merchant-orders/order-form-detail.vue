@@ -152,23 +152,6 @@ export default {
 				console.log(data)
 			})
 			uni.hideLoading()
-		},
-
-		// 上传图片
-		handleUploadImg() {
-			const _this = this
-			uni.chooseImage({
-				success: (chooseImageRes) => {
-					uni.uploadFile({
-						url: 'https://www.tuanfengkeji.cn:9527/jf-app-api/wx/storage/upload',
-						filePath: chooseImageRes.tempFiles[0].path,
-						name: 'file',
-						success: (uploadFileRes) => {
-							_this.evForm.picUrls.push(JSON.parse(uploadFileRes.data).data.url)
-						}
-					})
-				}
-			})
 		}
 	}
 }

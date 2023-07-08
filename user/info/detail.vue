@@ -7,11 +7,7 @@
 
 		<view class="avatar-container">
 			<img
-				:src="userInfo.avatarUrl.includes('http')
-					? userInfo.avatarUrl
-					: 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/' +
-						userInfo.avatarUrl
-				" alt="" class="avatar"
+				:src="common.seamingImgUrl(userInfo.avatarUrl)" alt="" class="avatar"
 			/>
 			<view class="change-btn font-14" @click="handleChangeAvatar">更换头像</view>
 		</view>
@@ -139,7 +135,7 @@ export default {
 		}
 	},
 
-	mounted() {
+	onLoad() {
 		this.userInfo = uni.getStorageSync(J_USER_INFO)
 		this.nickName = this.userInfo.nickName
 	},

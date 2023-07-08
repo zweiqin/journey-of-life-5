@@ -1,28 +1,28 @@
 <template>
-  <view class="ranking-list-container">
-    <JBack tabbar="/pages/index/index" class="back"></JBack>
-    <image
-      class="top-img"
-      src="https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/0dnypqvolpvvfd6t02xb.png"
-      mode=""
-    />
+	<view class="ranking-list-container">
+		<JBack tabbar="/pages/index/index" class="back"></JBack>
+		<image
+			class="top-img"
+			:src="common.seamingImgUrl('0dnypqvolpvvfd6t02xb.png')"
+			mode=""
+		/>
 
-    <view style="padding: 0 40upx">
-      <RankingPane></RankingPane>
-      <RankingPane></RankingPane>
-      <RankingPane></RankingPane>
-    </view>
-  </view>
+		<view style="padding: 0 40upx">
+			<RankingPane></RankingPane>
+			<RankingPane></RankingPane>
+			<RankingPane></RankingPane>
+		</view>
+	</view>
 </template>
 
 <script>
-import RankingPane from "./components/ranking-pane.vue";
+import RankingPane from './components/ranking-pane.vue'
 
 export default {
-  components: {
-    RankingPane,
-  },
-};
+	components: {
+		RankingPane
+	}
+}
 </script>
 
 <style lang="less" scoped>

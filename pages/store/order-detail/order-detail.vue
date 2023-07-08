@@ -85,6 +85,7 @@
 				<text v-else-if="orderType === '2'">立即预约</text>
 			</button>
 		</view>
+		<tui-toast ref="toast"></tui-toast>
 	</view>
 </template>
 

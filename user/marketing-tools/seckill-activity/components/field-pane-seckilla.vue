@@ -231,8 +231,10 @@ export default {
 				if (e.value[1] === 0) return this.$showToast('不能选择一级预约项目')
 				this.form[field] = e.value[1]
 				this.pidName = e.text.join('-')
-			} else {
+			} else if (field === 'name') {
 				this.form[field] = e.detail.value
+			} else if (field === 'startTime' || field === 'endTime') {
+				this.form[field] = e.result
 			}
 		}
 	}

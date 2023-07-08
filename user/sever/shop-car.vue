@@ -1,7 +1,8 @@
 <template>
 	<view class="shop-car-container">
 		<view class="header">
-			<JBack :tabbar="isBack === '1' ? '' : '/pages/user/user'" style="margin-top: 10upx" width="50" height="50" dark></JBack>
+			<JBack :tabbar="isBack === '1' ? '' : '/pages/user/user'" style="margin-top: 10upx" width="50" height="50" dark>
+			</JBack>
 			<h2>购物车</h2>
 			<button class="edit" @click="handleSwitchShopCarStatus">
 				{{ opStatus === 'EDIT' ? '编辑' : '完成' }}
@@ -36,31 +37,9 @@
 								: 'active-default'
 							" @click="handleOp(item)"
 						></JIcon>
-						<JAvatar radius="10" :size="120" :src="common.seamingImgUrl(item.picUrl)"></JAvatar>
 
-						<view class="goods-pane-right">
-							<view class="goods-pane-name">{{ item.goodsName.trim() }} </view>
-							<view class="goods-pane-desc-content">
-								<text class="goods-pane-desc">
-									{{
-										item.specifications | getDesc
-									}}
-								</text>
-							</view>
-							<view class="goods-pane-footer">
-								<text class="goods-pane-price">￥{{ item.price }}</text>
+						<ShopCarGoods ref="refShopCarGoods" :goods="item" :store="store" @success="getShopList"></ShopCarGoods>
 
-								<view class="ops">
-									<text class="item" @click="handleChangeNumber(-1, item, index, store)">
-										-
-									</text>
-									<text class="item">{{ item.number }}</text>
-									<text class="item" @click="handleChangeNumber(+1, item, index, store)">
-										+
-									</text>
-								</view>
-							</view>
-						</view>
 					</view>
 				</view>
 			</view>
@@ -82,7 +61,8 @@
 			<JLineTitle title="热销推荐"></JLineTitle>
 			<Goods
 				v-for="item in recommentList" :id="item.id" :key="item.id" :price="item.counterPrice"
-				:name="item.name" :img-url="common.seamingImgUrl(item.picUrl)" read-only
+				:name="item.name"
+				:img-url="common.seamingImgUrl(item.picUrl)" read-only
 			></Goods>
 		</view>
 
@@ -114,12 +94,10 @@
 </template>
 
 <script>
-import Goods from '../..//pages/store/goods-pane'
+import Goods from '../../pages/store/goods-pane'
 import {
 	getShopCarListApi,
 	changeShopCarStatusApi,
-	updateShopCarCountApi,
-	deleteShopCarGoodsApi,
 	addCollectionsApi
 } from '../../api/cart'
 import { everyLookApi } from '../../api/goods'
@@ -146,19 +124,6 @@ export default {
 		this.getShopList()
 	},
 
-	filters: {
-		getDesc(specifications) {
-			if (!specifications || !specifications.length) {
-				return ''
-			}
-			let str = ''
-			for (const item of specifications) {
-				str += item + ' '
-			}
-			return str
-		}
-	},
-
 	data() {
 		return {
 			opStatus: EDIT,
@@ -166,7 +131,6 @@ export default {
 			shopCarList: [],
 			carTotalInfo: [],
 			loadingStatus: 'noMore',
-			isChangeNumber: false,
 			recommentList: [],
 			opGoodsList: [],
 			isBack: '0',
@@ -286,68 +250,16 @@ export default {
 				})
 		},
 
-		// 购物车数量的添加
-		handleChangeNumber(number, goods, index, store) {
-			if (this.isChangeNumber) {
-				this.$showToast('操作太快啦~')
-				return
-			}
-			const _this = this
-			this.isChangeNumber = true
-			if (number === -1 && goods.number === 1) {
-				uni.showModal({
-					title: '提示',
-					content: '是否将该商品移出购物车？',
-					success(res) {
-						if (res.confirm) {
-							_this.deleteGoods([ goods.productId ], store)
-						}
-					}
-				})
-				_this.isChangeNumber = false
-			} else {
-				uni.showLoading()
-				updateShopCarCountApi({
-					userId: getUserId(),
-					goodsId: goods.goodsId,
-					productId: goods.productId,
-					number: goods.number + number,
-					id: goods.id
-				})
-					.then(() => {
-						_this.getShopList()
-						_this.isChangeNumber = false
-						uni.hideLoading()
-					})
-					.catch(() => {
-						this.$showToast('数量修改失败')
-						_this.isChangeNumber = false
-						uni.hideLoading()
-					})
-			}
-		},
-
 		// 点击删除按钮
 		removeShopCarGoods() {
-			const _this = this
 			uni.showModal({
 				title: '提示',
 				content: '是否删除当前选中的商品？',
 				success(res) {
 					if (res.confirm) {
-						_this.deleteGoods(_this.opList)
+						this.$refs.refShopCarGoods.deleteGoods(this.opList)
 					}
 				}
-			})
-		},
-
-		// 删除购物车的商品
-		deleteGoods(productIds) {
-			deleteShopCarGoodsApi({
-				productIds,
-				userId: getUserId()
-			}).then(() => {
-				this.getShopList()
 			})
 		},
 

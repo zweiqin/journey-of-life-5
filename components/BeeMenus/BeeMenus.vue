@@ -7,7 +7,7 @@
 					@click="$emit('click', item)"
 				>
 					<BeeIcon
-						:src="item[picUrl] || 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1yjzs7kydjhax41329lf.png'"
+						:src="item[picUrl] || common.seamingImgUrl('1yjzs7kydjhax41329lf.png')"
 						:size="40"
 					></BeeIcon>
 					<text>{{ item[name] }}</text>
@@ -19,7 +19,7 @@
 					@click="$emit('click', item)"
 				>
 					<BeeIcon
-						:src="item[picUrl] || 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1yjzs7kydjhax41329lf.png'"
+						:src="item[picUrl] || common.seamingImgUrl('1yjzs7kydjhax41329lf.png')"
 						:size="40"
 					></BeeIcon>
 					<text>{{ item[name] }}</text>
@@ -39,7 +39,7 @@
 				@click="$emit('click', item)"
 			>
 				<BeeIcon
-					:src="item[picUrl] || 'https://www.tuanfengkeji.cn:9527/jf-admin-api/admin/storage/fetch/1yjzs7kydjhax41329lf.png'"
+					:src="item[picUrl] || common.seamingImgUrl('1yjzs7kydjhax41329lf.png')"
 					:size="40"
 				></BeeIcon>
 				<text>{{ item[name] }}</text>

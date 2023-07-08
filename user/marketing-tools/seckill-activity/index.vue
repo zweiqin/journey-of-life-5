@@ -109,7 +109,7 @@ export default {
 			getSeckillListActivitiesApi({ brandId: getBrandId(), startTime: '2022-02-22 22:22:22', endTime: '2222-02-22 22:22:22' })
 				.then(({ data }) => {
 					console.log(data)
-					this.seckillList = data.data
+					this.seckillList = data
 					this.status = 'none'
 					this.loadingStatus = 'noMore'
 				})

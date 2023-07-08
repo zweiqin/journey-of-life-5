@@ -7,18 +7,18 @@
 		<view v-if="chatListData.length" class="message-list">
 			<view
 				v-for="item in chatListData" :key="item.chatId" class="item"
-				@click="go(`/user/otherServe/chat/chat-detail?chat=${item.chatId}&name=${item.name}`)"
+				@click="go(`/user/otherServe/chat/chat-detail?chat=${item.toUserId}&name=${item.toUsername}&avatar=${item.toAvatarImage}`)"
 			>
-				<image class="avatar" src="/static/logo.png" mode="" />
+				<image class="avatar" :src="item.toAvatarImage" mode="" />
 				<view class="chat-wrapper">
 					<view class="name-time">
-						<text class="name">{{ item.name }}</text>
+						<text class="name">{{ item.toUsername }}</text>
 						<text class="time">
-							<!-- 2022-01-01 10：89 -->
+							{{ new Date(item.sendTime).toLocaleString() }}
 						</text>
 					</view>
 					<view class="last-message">
-						<!-- 按喇叭啦叼臭泥坏哈计算列宽没那就和苏埃u是你哈就是 -->
+						{{ item.contentText }}
 					</view>
 				</view>
 			</view>
@@ -31,12 +31,43 @@
 import {
 	mapGetters
 } from 'vuex'
+import {
+	BASE_WS_API
+} from '../../../config'
+import {
+	getUserId,
+	timestampToTime
+} from '../../../utils'
 export default {
+	name: 'Chat',
+	data() {
+		return {
+		}
+	},
 	computed: {
 		...mapGetters([ 'chatListData' ])
 	},
+	onLoad() {
+	},
 	onShow() {
+		this.$store.getters.wsHandle.onMessage(this.onMessage)
+		this.$store.dispatch('customerService/joinCustomerServiceChat', {
+			ref: this,
+			wsHandle: ''
+		})
+		// console.log('顺序2', '快的话可能顺序1.5会出现ws已连接调用onopen的情况', this.$root)
 		this.$store.dispatch('customerService/getChatList')
+	},
+	beforeDestroy() {
+		// console.log('chat销毁', this.$root, this.$parent.$root)
+		this.$store.dispatch('customerService/joinCustomerServiceChat', {
+			ref: this.$parent.$root,
+			wsHandle: ''
+		})
+		// this.$store.getters.wsHandle.onOpen(() => {})
+		// this.$store.getters.wsHandle.onMessage(() => {})
+		// this.$store.getters.wsHandle.onClose(() => {})
+		// this.$store.getters.wsHandle.onError(() => {})
 	},
 	methods: {
 		handleBack() {
@@ -44,7 +75,40 @@ export default {
 			// uni.switchTab({
 			// 	url: '/pages/user/user'
 			// })
+		},
+
+		onMessage(evt) {
+			// console.log('onMessage收到消息', evt)
+			const data = JSON.parse(evt.data)
+			console.log(data)
+			// {
+			// 	"data": {
+			// 			"fromUserName": "dmag9",
+			// 			"toAvatarImage": "/profile/upload/2021/10/28/088d4925-7411-4447-90d8-3239eaee68f2.gif",
+			// 			"msgType": "text",
+			// 			"fromUserId": 277,
+			// 			"toUsername": "elzy3",
+			// 			"contentText": "第三方代发",
+			// 			"fromAvatarImage": "/profile/upload/2021/10/28/088d4925-7411-4447-90d8-3239eaee68f2.gif",
+			// 			"exp": "",
+			// 			"toUserId": "439",
+			// 			"sendTime": 1688009361581
+			// 	},
+			// 	"fromUserId": "277",
+			// 	"message": "发送消息",
+			// 	"status": 13140,
+			// 	"sendTime": 1688628204456
+			// }
+			if (data.status == 10400) {
+				uni.showToast({
+					title: '网络不给力，请检查网络连接',
+					icon: 'none'
+				}) // 弹出提示框
+			} else if (data.status == 13140) {
+				this.$store.dispatch('customerService/getChatList')
+			}
 		}
+
 	}
 }
 </script>
