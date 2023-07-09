@@ -37,7 +37,7 @@
 												type="warning" width="120rpx" height="50rpx" shape="circle"
 												@click="$refs.refJSpecificationScreen.open(item.id)"
 											>
-												选择
+												预约
 											</tui-button>
 										</template>
 									</StoreGoods>
@@ -68,7 +68,7 @@
 			</view>
 		</scroll-view>
 
-		<JSpecificationScreen ref="refJSpecificationScreen" order-type="2"></JSpecificationScreen>
+		<JSpecificationScreen ref="refJSpecificationScreen" show-select-btn btn-text="去预约" @select="handleReservation"></JSpecificationScreen>
 	</view>
 </template>
 
@@ -76,6 +76,7 @@
 import { getShopCarApi } from '../../../../api/goods'
 import { getBrandAppointmentCategoryApi, getBrandAppointmentSelectGoodsApi } from '../../../../api/user'
 import { getUserId } from '../../../../utils'
+import { J_RESERVATION_PAY_GOODS } from '../../../../constant'
 export default {
 	name: 'Reservation',
 	props: {
@@ -119,6 +120,28 @@ export default {
 				.catch(() => {
 					uni.hideLoading()
 				})
+		},
+		handleReservation(e) {
+			uni.setStorageSync(J_RESERVATION_PAY_GOODS, {
+				cardsInfo: [ {
+					brandCartgoods: [ {
+						brandId: e.brandId,
+						goodsId: e.goodsId,
+						goodsName: e.goodsName,
+						goodsSn: e.goodsSn,
+						number: e.number,
+						picUrl: e.picUrl,
+						productId: e.productId,
+						price: e.price,
+						specifications: e.specifications,
+						brandName: e.brandName
+					} ],
+					brandId: e.brandId,
+					brandName: e.brandName
+				} ],
+				pay: e.pay
+			})
+			this.go('/user/otherServe/pay-reservation/index')
 		},
 		getAppointmentList() {
 			uni.showLoading()

@@ -7,7 +7,7 @@
 					@click="$emit('click', item)"
 				>
 					<BeeIcon
-						:src="item[picUrl] || common.seamingImgUrl('1yjzs7kydjhax41329lf.png')"
+						:src="item[picUrl] ? common.seamingImgUrl(item[picUrl]) : common.seamingImgUrl('1yjzs7kydjhax41329lf.png')"
 						:size="40"
 					></BeeIcon>
 					<text>{{ item[name] }}</text>
@@ -19,7 +19,7 @@
 					@click="$emit('click', item)"
 				>
 					<BeeIcon
-						:src="item[picUrl] || common.seamingImgUrl('1yjzs7kydjhax41329lf.png')"
+						:src="item[picUrl] ? common.seamingImgUrl(item[picUrl]) : common.seamingImgUrl('1yjzs7kydjhax41329lf.png')"
 						:size="40"
 					></BeeIcon>
 					<text>{{ item[name] }}</text>
@@ -39,7 +39,7 @@
 				@click="$emit('click', item)"
 			>
 				<BeeIcon
-					:src="item[picUrl] || common.seamingImgUrl('1yjzs7kydjhax41329lf.png')"
+					:src="item[picUrl] ? common.seamingImgUrl(item[picUrl]) : common.seamingImgUrl('1yjzs7kydjhax41329lf.png')"
 					:size="40"
 				></BeeIcon>
 				<text>{{ item[name] }}</text>

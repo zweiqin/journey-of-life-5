@@ -120,7 +120,6 @@ export default {
 			type: '',
 			orderType: '',
 			goodsList: [],
-			totalPrice: 0,
 			isNoAddress: false,
 			defaultAddress: '',
 			brandId: null,
@@ -134,8 +133,6 @@ export default {
 		getGoods() {
 			const payGoodsInfo = uni.getStorageSync(J_TWO_PAY_GOODS) || {}
 			this.goodsList = payGoodsInfo.cardsInfo.filter((item) => item.brandCartgoods && item.brandCartgoods.length).map((item) => ({ ...item, couponId: -1 }))
-			console.log(this.goodsList)
-			this.totalPrice = payGoodsInfo.pay
 		},
 		// 获取地址信息
 		getAddress() {

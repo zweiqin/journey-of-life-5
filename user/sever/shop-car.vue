@@ -97,6 +97,7 @@
 import Goods from '../../pages/store/goods-pane'
 import {
 	getShopCarListApi,
+	deleteShopCarGoodsApi,
 	changeShopCarStatusApi,
 	addCollectionsApi
 } from '../../api/cart'
@@ -255,9 +256,14 @@ export default {
 			uni.showModal({
 				title: '提示',
 				content: '是否删除当前选中的商品？',
-				success(res) {
+				success: (res) => {
 					if (res.confirm) {
-						this.$refs.refShopCarGoods.deleteGoods(this.opList)
+						deleteShopCarGoodsApi({
+							productIds: this.opList,
+							userId: getUserId()
+						}).then(() => {
+							this.getShopList()
+						})
 					}
 				}
 			})

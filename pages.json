@@ -789,6 +789,12 @@
 					}
 				},
 				{
+					"path": "otherServe/pay-reservation/index",
+					"style": {
+						"navigationBarTitleText": "提交预约"
+					}
+				},
+				{
 					"path": "marketing-tools/contact-guide/share-card",
 					"style": {
 						"navigationBarTitleText": "分享名片"

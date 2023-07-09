@@ -212,7 +212,7 @@ export default {
 			uni.removeStorage({ key: 'J_ONE_PAY_GOODS' })
 			uni.removeStorage({ key: 'J_SELECT_ADDRESS' })
 			uni.removeStorage({ key: 'J_TWO_PAY_GOODS' })
-			uni.removeStorage({ key: 'J_APPONIT_GOODS' })
+			uni.removeStorage({ key: 'J_RESERVATION_PAY_GOODS' })
 			uni.removeStorage({ key: 'J_NEW_BIND_TYPE' })
 			uni.removeStorage({ key: 'J_NEW_BIND_CODE' })
 			uni.removeStorage({ key: 'J_NEW_BIND_ID' })

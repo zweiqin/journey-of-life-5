@@ -61,7 +61,7 @@
 									style="border-radius: 14rpx;"
 									@click="addShopCar"
 								>
-									+ 加入购物车
+									{{ btnText || '+ 加入购物车' }}
 								</tui-button>
 							</view>
 							<view v-else>
@@ -92,6 +92,9 @@ export default {
 		// 	type: [Number, String],
 		// 	required: true
 		// },
+		data: {
+			type: Object
+		},
 		orderType: {
 			type: [Number, String],
 			default: ''
@@ -100,9 +103,13 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		showSuccessToast: {
+			type: Boolean,
+			default: true
+		},
 		btnText: {
 			type: String,
-			default: '选择'
+			default: ''
 		}
 	},
 
@@ -136,11 +143,17 @@ export default {
 			this.sps = {}
 			this.spStr = '请选择商品规格'
 			this.product = null
-			const { data } = await getGoodsDetailApi(
-				// goodsInfo.id,
-				goodsId,
-				getUserId()
-			)
+			let data
+			if (this.data && this.data.info) {
+				data = this.data
+			} else {
+				const res = await getGoodsDetailApi(
+					// goodsInfo.id,
+					goodsId,
+					getUserId()
+				)
+				data = res.data
+			}
 			uni.hideLoading()
 			this.goodsDetail = data
 			console.log(data)
@@ -176,7 +189,7 @@ export default {
 								'productId': tempGoodsInfo.product.id,
 								'type': this.orderType
 							})
-							this.ttoast('购物车添加成功')
+							if (this.showSuccessToast) this.ttoast('购物车添加成功')
 							this.showSpecification = false
 							this.$emit('success')
 						} else {
@@ -228,14 +241,20 @@ export default {
 					this.$emit('select', {
 						'brandId': this.goodsDetail.info.brandId,
 						'goodsId': this.goodsDetail.info.id,
-						'productId': tempGoodsInfo.product.id,
 						'number': tempGoodsInfo.number,
-						'name': this.goodsDetail.info.name,
-						'spStr': tempGoodsInfo.spStr
+						'productId': tempGoodsInfo.product.id,
+						'brandName': this.goodsDetail.brand.name,
+						'goodsName': this.goodsDetail.info.name,
+						'goodsSn': this.goodsDetail.info.goodsSn,
+						'price': tempGoodsInfo.product.price,
+						'picUrl': tempGoodsInfo.product.url,
+						'specifications': tempGoodsInfo.product.specifications,
+						'spStr': tempGoodsInfo.spStr,
+						'pay': tempGoodsInfo.product.price * tempGoodsInfo.number
 					})
 					this.showSpecification = false
 				} else {
-					this.ttoast('商品参数出错，无法添加！')
+					this.ttoast('商品参数出错！')
 				}
 			} else {
 				this.$showToast('请先开启规格弹窗显示')
