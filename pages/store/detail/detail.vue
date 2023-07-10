@@ -9,6 +9,9 @@
 					<text>分享</text>
 					<BeeIcon :src="require('../../../static/brand/detail/share.png')" :size="24"></BeeIcon>
 				</view>
+				<view class="gotoNew" style="color: white; font-size: 28rpx;" @click="go(`/pages/store/detail/newdetail?brandId=${brandId}`)">
+					新页面！
+				</view>
 			</BeeWxShare>
 		</view>
 		<view class="main-area">
@@ -136,6 +139,7 @@ export default {
 	onLoad(options) {
 		this.brandId = options.brandId
 		this.getBrandDetail()
+		console.log(this.$data)
 		this.$data._query.brandId = this.brandId
 		// this._loadData()
 	},
