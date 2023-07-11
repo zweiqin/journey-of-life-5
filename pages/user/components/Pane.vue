@@ -68,6 +68,7 @@ export default {
 					}
 				}
 			})
+			console.log(haveMenuData)
 			return haveMenuData
 			// const haveMenuCopyData = JSON.parse(JSON.stringify(this.menuData))
 			// const intRow = Math.floor(this.menuData.length / this.colum)

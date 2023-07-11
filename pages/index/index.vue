@@ -105,9 +105,19 @@ export default {
 					id: 1001002
 				},
 				{
-					name: '家具用品',
-					icon: require('../../static/index/shop/jiaju.png'),
-					id: 1001011
+					name: '餐厅家具',
+					icon: require('../../static/index/shop/cantingjiaju.png'),
+					id: 100101595
+				},
+				{
+					name: '卧室家具',
+					icon: require('../../static/index/shop/woshijiaju.png'),
+					id: 100101582
+				},
+				{
+					name: '客厅家具',
+					icon: require('../../static/index/shop/ketingjiaju.png'),
+					id: 100101559
 				},
 				{
 					name: '箱包首饰',
@@ -168,21 +178,6 @@ export default {
 					name: '儿童专区',
 					icon: require('../../static/index/shop/ertongzhuanqu.png'),
 					id: 100101604
-				},
-				{
-					name: '餐厅家具',
-					icon: require('../../static/index/shop/cantingjiaju.png'),
-					id: 100101595
-				},
-				{
-					name: '卧室家具',
-					icon: require('../../static/index/shop/woshijiaju.png'),
-					id: 100101582
-				},
-				{
-					name: '客厅家具',
-					icon: require('../../static/index/shop/ketingjiaju.png'),
-					id: 100101559
 				}
 			]),
 			currentMenu: null,
