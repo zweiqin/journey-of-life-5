@@ -8,7 +8,7 @@
 
 		<view class="goods-pane-right">
 			<view class="goods-pane-name">
-				{{ name || "BILLY 毕利 / OXBERG 奥克伯家具餐桌奥克伯家具餐桌奥克伯家具餐桌" }}
+				{{ name || "--" }}
 			</view>
 			<view v-if="desc" class="goods-pane-desc-content">
 				<text class="goods-pane-desc">{{ desc }}</text>
@@ -42,6 +42,7 @@ export default {
 	props: {
 		name: String,
 		price: [String, Number],
+		orderType: [String, Number],
 		imgUrl: String,
 		desc: String,
 		number: Number,
@@ -73,9 +74,15 @@ export default {
 		},
 
 		handleToView() {
-			uni.navigateTo({
-				url: '/pages/prod/prod?goodsId=' + this.id
-			})
+			if (this.orderType == 0) {
+				uni.navigateTo({
+					url: '/pages/prod/prod?goodsId=' + this.id
+				})
+			} else if ((this.orderType == 1) || (this.orderType == 2)) {
+				uni.navigateTo({
+					url: `/pages/store/goods-detail/goods-detail?orderType=1&goodsId=${this.id}`
+				})
+			}
 		}
 	}
 }

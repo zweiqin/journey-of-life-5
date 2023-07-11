@@ -42,13 +42,14 @@
 					></JAvatar>
 					<view style="margin-top: 4upx;font-size: 26upx;font-weight: bold;color: #424890;">{{ item.title }}</view>
 					<view style="margin-top: 18upx;font-weight: bold;color: #FF9900;">
-						<text style="font-size: 26upx;">￥</text><text
-							style="font-size: 48upx;"
-						>
+						<text style="font-size: 26upx;">￥</text><text style="font-size: 48upx;">
 							{{ item.amount }}
 						</text>
 					</view>
-					<view v-if="item.id === selectedPackageId" style="position: absolute;right: 0;bottom: 0;padding: 5upx;border-radius: 100% 0 0;background-color: #ff9900;">
+					<view
+						v-if="item.id === selectedPackageId"
+						style="position: absolute;right: 0;bottom: 0;padding: 5upx;border-radius: 100% 0 0;background-color: #ff9900;"
+					>
 						<tui-icon name="check" color="#FFFFFF" size="38" unit="upx"></tui-icon>
 					</view>
 				</view>
@@ -58,7 +59,10 @@
 				<view>会员升级权益</view>
 				<view v-if="selectedPackageId" style="margin-top: 32upx;overflow-x: auto;">
 					<view style="display: flex;">
-						<view v-for="item in (packageMemberList.find(i => i.id === selectedPackageId) || {}).packageServices || []" :key="item.id" style="margin-right: 32upx;text-align: center;">
+						<view
+							v-for="item in (packageMemberList.find(i => i.id === selectedPackageId) || {}).packageServices || []"
+							:key="item.id" style="margin-right: 32upx;text-align: center;"
+						>
 							<JAvatar :src="common.seamingImgUrl(item.iconUrl)" size="58"></JAvatar>
 							<view style="white-space: nowrap;">{{ item.title }}</view>
 						</view>
@@ -68,12 +72,12 @@
 			</view>
 		</view>
 
-		<view style="position: fixed;bottom: 0;width: 100vw;padding: 30upx;background-color: #ffffff;;box-sizing: border-box;">
+		<view
+			style="position: fixed;bottom: 0;width: 100vw;padding: 30upx;background-color: #ffffff;;box-sizing: border-box;"
+		>
 			<tui-button type="warning" width="100%" height="80upx" @click="handleMemberUpgrade">
 				<text v-if="selectedPackageId" style="padding-right: 16upx;">
-					<text style="font-size: 26upx;">￥</text><text
-						style="font-size: 42upx;font-weight: bold;"
-					>
+					<text style="font-size: 26upx;">￥</text><text style="font-size: 42upx;font-weight: bold;">
 						{{ (packageMemberList.find(i => i.id === selectedPackageId) || {}).amount }}
 					</text>
 				</text>
@@ -176,7 +180,8 @@ export default {
 					} else {
 						return this.$showToast('未查询到申请记录')
 					}
-				} else if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 6) {
+				// } else if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 6) {
+				} else if ((this.userInfo.roleIds === 10 || this.userInfo.roleIds === 5 || this.userInfo.roleIds === 4 || this.userInfo.roleIds === 3 || this.userInfo.roleIds === 2) && selectedPackage.roleIds === 6) {
 					if (result) return this.$showToast('已提交申请，请等待审核！')
 					this.go(`/user/marketing-tools/store-application?packageId=${this.selectedPackageId}`)
 				} else if (this.userInfo.roleIds === 7 && selectedPackage.roleIds === 6) {

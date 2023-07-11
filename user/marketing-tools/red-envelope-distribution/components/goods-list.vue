@@ -20,7 +20,7 @@
 									</text>
 								</view>
 								<view class="goods-pane-footer">
-									<text class="goods-pane-price">￥{{ item.retailPrice }}</text>
+									<text class="goods-pane-price">￥{{ item.counterPrice }}</text>
 									<view class="ops">
 										<tui-button type="warning" width="120rpx" height="50rpx" shape="circle" @click="handleChooseGoods(item)">选择</tui-button>
 									</view>

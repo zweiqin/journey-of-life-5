@@ -196,30 +196,6 @@
 			}
 		},
 		{
-			"path": "pages/index/convenient-services/service-oil",
-			"style": {
-				"navigationBarTitleText": "加油"
-			}
-		},
-		{
-			"path": "pages/index/convenient-services/recharge",
-			"style": {
-				"navigationBarTitleText": "充值"
-			}
-		},
-		{
-			"path": "pages/index/convenient-services/amount",
-			"style": {
-				"navigationBarTitleText": "充值"
-			}
-		},
-		{
-			"path": "pages/index/convenient-services/tuanyouh5",
-			"style": {
-				"navigationBarTitleText": "加油"
-			}
-		},
-		{
 			"path": "pages/complain/complain",
 			"style": {
 				"navigationBarTitleText": "投诉",
@@ -551,9 +527,9 @@
 					}
 				},
 				{
-					"path": "sever/fan-list",
+					"path": "sever/user-pool",
 					"style": {
-						"navigationBarTitleText": "粉丝列表"
+						"navigationBarTitleText": "用户池"
 					}
 				},
 				{
@@ -921,12 +897,42 @@
 			]
 		},
 		{
-			"root": "pages/index",
+			"root": "pages/index/convenient-services",
 			"pages": [
 				{
-					"path": "convenient-services/convenient-services",
+					"path": "convenient-services",
 					"style": {
 						"navigationBarTitleText": "便民服务"
+					}
+				},
+				{
+					"path": "service-oil",
+					"style": {
+						"navigationBarTitleText": "加油"
+					}
+				},
+				{
+					"path": "recharge",
+					"style": {
+						"navigationBarTitleText": "充值"
+					}
+				},
+				{
+					"path": "amount",
+					"style": {
+						"navigationBarTitleText": "充值"
+					}
+				},
+				{
+					"path": "tuanyouh5",
+					"style": {
+						"navigationBarTitleText": "加油"
+					}
+				},
+				{
+					"path": "kuai-di/index",
+					"style": {
+						"navigationBarTitleText": "快递"
 					}
 				}
 			]

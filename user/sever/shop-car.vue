@@ -10,11 +10,11 @@
 		</view>
 
 		<view>
+			<!-- item-width="229rpx"  [{ name: '巨蜂自营' }, { name: '本地生活' }, { name: '预约' }] -->
 			<tui-tabs
 				style="width: 686upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="105" :padding="32"
-				item-width="229rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
-				:tabs="[{ name: '巨蜂自营' }, { name: '本地生活' }, { name: '预约' }]" :current-tab="currentTab"
-				@change="handleSwitchTab"
+				item-width="343rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
+				:tabs="[{ name: '巨蜂自营' }, { name: '本地生活' }]" :current-tab="currentTab" @change="handleSwitchTab"
 			></tui-tabs>
 		</view>
 
@@ -62,7 +62,7 @@
 			<Goods
 				v-for="item in recommentList" :id="item.id" :key="item.id" :price="item.counterPrice"
 				:name="item.name"
-				:img-url="common.seamingImgUrl(item.picUrl)" read-only
+				:order-type="currentTab" :img-url="common.seamingImgUrl(item.picUrl)" read-only
 			></Goods>
 		</view>
 

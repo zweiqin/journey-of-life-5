@@ -1,11 +1,11 @@
 <template>
-	<view class="fan-list-container">
+	<view class="user-pool-container">
 		<view style="padding: 30upx 20upx;color: #000000;">
-			<JHeader width="50" height="50" title="粉丝列表"></JHeader>
+			<JHeader width="50" height="50" title="用户池"></JHeader>
 		</view>
-		<view class="fan-list">
+		<view class="user-pool">
 
-			<view v-for="(item, index) in fanList" :key="item.id" class="" style="padding: 20upx 30upx;">
+			<view v-for="(item, index) in userPoolList" :key="item.id" class="" style="padding: 20upx 30upx;">
 				<view style="display: flex;align-items: center;padding: 20upx 30upx;background-color: #fff;">
 					<JAvatar
 						:src="item.avatar" size="92" radius="50%"
@@ -29,27 +29,27 @@ import { getBrandUserFansListApi } from '../../api/user'
 import { getUserId, getBrandId } from '../../utils'
 
 export default {
-	name: 'FanList',
+	name: 'UserPool',
 	components: {},
 	data() {
 		return {
-			fanList: []
+			userPoolList: []
 		}
 	},
 	onLoad() {
-		this.getFanList()
+		this.getUserPoolList()
 	},
 	mounted() {
 	},
 	methods: {
-		getFanList() {
+		getUserPoolList() {
 			uni.showLoading({
 				title: '加载中'
 			})
 			getBrandUserFansListApi({ userId: getUserId() })
 				.then(({ data }) => {
 					console.log(data)
-					this.fanList = data
+					this.userPoolList = data
 					uni.hideLoading()
 				})
 		}
@@ -60,7 +60,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.fan-list-container {
+.user-pool-container {
 	min-height: 100vh;
 	width: 100%;
 	background: #f6f6f6;

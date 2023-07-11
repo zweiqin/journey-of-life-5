@@ -29,7 +29,7 @@ export const navigationAddress = (destination) => {
 export const getAdressDetailByLngLat = (lat, lng) => new Promise((resolve, reject) => {
 	// #ifdef H5
 	jsonp('https://restapi.amap.com/v3/geocode/regeo', {
-		key: 'fcd4b7ee70f357abeffaef7b43d364b3',
+		key: '5773f02930998e41b0de1d4e1bdbcaa9',
 		location: `${lng},${lat}`
 	})
 		.then((res) => {
@@ -45,7 +45,7 @@ export const getAdressDetailByLngLat = (lat, lng) => new Promise((resolve, rejec
 	uni.request({
 		url: 'https://restapi.amap.com/v3/geocode/regeo',
 		data: {
-			key: 'fcd4b7ee70f357abeffaef7b43d364b3',
+			key: '5773f02930998e41b0de1d4e1bdbcaa9',
 			location: `${lng},${lat}`
 		},
 		header: {},
@@ -63,7 +63,7 @@ export const getAdressDetailByLngLat = (lat, lng) => new Promise((resolve, rejec
 export const getLngLatByAddress = (address) => new Promise((resolve, reject) => {
 	// #ifdef H5
 	jsonp('https://restapi.amap.com/v3/geocode/geo', {
-		key: 'fcd4b7ee70f357abeffaef7b43d364b3',
+		key: '5773f02930998e41b0de1d4e1bdbcaa9',
 		address
 	})
 		.then((res) => {
@@ -78,7 +78,7 @@ export const getLngLatByAddress = (address) => new Promise((resolve, reject) => 
 	uni.request({
 		url: 'https://restapi.amap.com/v3/geocode/geo',
 		data: {
-			key: 'fcd4b7ee70f357abeffaef7b43d364b3',
+			key: '5773f02930998e41b0de1d4e1bdbcaa9',
 			address
 		},
 		header: {},

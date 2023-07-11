@@ -67,7 +67,7 @@ export default {
 		},
 
 		ruleId: {
-			type: Number,
+			type: [Number, String],
 			default: ''
 		},
 		grouponPrice: {

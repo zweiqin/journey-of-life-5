@@ -56,19 +56,27 @@
 
 		<tui-bottom-popup :show="isShowSeckillGoodsPopup" @close="isShowSeckillGoodsPopup = false">
 			<view style="height: 100%;padding: 20upx;overflow-y: auto;box-sizing: border-box;">
-				<tui-table v-if="seckillGoodsArr && seckillGoodsArr.length">
-					<tui-tr>
+				<tui-table v-if="seckillGoodsArr && seckillGoodsArr.length" style="overflow-x: auto;width: 100%;">
+					<tui-tr style="width: 780rpx;display: block;">
 						<tui-td
-							v-for="(part, index) in [{ title: '商品ID', key: 'goodsId' }, { title: '库存', key: 'stock' }, { title: '秒杀价', key: 'price' }]"
-							:key="index" bold :span="8"
+							v-for="(part, index) in [{ title: '商品ID', key: 'goodsId' }, { title: '库存', key: 'stock' }, { title: '秒杀价', key: 'price' }, { title: '商品名称', key: 'name' }, { title: '商品编号', key: 'goodsSn' }, { title: '商品图片', key: 'picUrl' }]"
+							:key="index" bold :span="8" width="130rpx"
 						>
 							{{ part.title }}
 						</tui-td>
 					</tui-tr>
-					<tui-tr v-for="(part, index) in seckillGoodsArr" :key="index">
-						<tui-td :span="8">{{ part.goodsId }}</tui-td>
-						<tui-td :span="8">{{ part.stock }}</tui-td>
-						<tui-td :span="8">{{ part.price }}</tui-td>
+					<tui-tr v-for="(part, index) in seckillGoodsArr" :key="index" style="width: 780rpx;display: block;">
+						<tui-td width="130rpx" :span="8">{{ part.goodsId }}</tui-td>
+						<tui-td width="130rpx" :span="8">{{ part.stock }}</tui-td>
+						<tui-td width="130rpx" :span="8">{{ part.price }}</tui-td>
+						<tui-td width="130rpx" :span="8">{{ part.originGoods.name }}</tui-td>
+						<tui-td width="130rpx" :span="8">{{ part.originGoods.goodsSn }}</tui-td>
+						<tui-td width="130rpx" :span="8">
+							<view v-if="part.originGoods.picUrl">
+								<BeeAvatar radius="10" :size="120" :src="common.seamingImgUrl(part.originGoods.picUrl)"></BeeAvatar>
+							</view>
+							<view v-else>--</view>
+						</tui-td>
 					</tui-tr>
 				</tui-table>
 				<view v-else class="no-data">
@@ -124,7 +132,7 @@ export default {
 			getSeckillListGoodsApi({ brandId: getBrandId(), secKillId: item.id })
 				.then(({ data }) => {
 					this.isShowSeckillGoodsPopup = true
-					this.seckillGoodsArr = data.data || []
+					this.seckillGoodsArr = data || []
 					uni.hideLoading()
 				})
 				.catch(() => {

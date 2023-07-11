@@ -2,16 +2,15 @@
 	<view>
 		<scroll-view refresher-background="#3f3d3d" scroll-y="true" style="max-height: 85vh;min-height: 400rpx;">
 			<view class="orders-container">
-				<view>
-					<!-- @click="go(`/user/sever/shop-car-reservation?isBack=1&brandId=${brandDetail.id || ''}&brandName=${brandDetail.name || ''}`)" -->
+				<!-- <view>
 					<tui-button
-						type="danger" style="margin: 0 auto;" bold shape="circle"
-						width="60%" height="64rpx"
-						@click="handleToReservation"
+					type="danger" style="margin: 0 auto;" bold shape="circle"
+					width="60%" height="64rpx"
+					@click="handleToReservation"
 					>
-						去预约
+					去预约
 					</tui-button>
-				</view>
+					</view> -->
 
 				<view v-if="appointmentList && appointmentList.length" style="font-size: 28upx;">
 					<view v-if="appointmentList && appointmentList.length" style="display: flex;box-sizing: border-box;">

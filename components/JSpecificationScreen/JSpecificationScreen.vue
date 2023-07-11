@@ -39,7 +39,7 @@
 				<view style="display: flex;justify-content: space-between;align-items: center;margin-top: 20upx;">
 					<view>数量</view>
 					<view>
-						<uni-number-box v-model="number" :min="1"></uni-number-box>
+						<uni-number-box v-model="number" :min="1" :max="maxNumber"></uni-number-box>
 					</view>
 				</view>
 				<view style="position: sticky;bottom: 0;margin-top: 40upx;padding-bottom: 20upx;background-color: #ffffff;">
@@ -98,6 +98,10 @@ export default {
 		orderType: {
 			type: [Number, String],
 			default: ''
+		},
+		maxNumber: {
+			type: Number,
+			default: 100
 		},
 		showSelectBtn: {
 			type: Boolean,

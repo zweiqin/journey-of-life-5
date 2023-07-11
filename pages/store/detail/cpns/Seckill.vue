@@ -16,7 +16,7 @@
 					</view>
 				</view>
 			</view>
-			<view v-if="currentGoods && currentGoods.length">
+			<view v-if="currentGoods && currentGoods.length" style="margin-top: 20upx;">
 				<scroll-view
 					refresher-background="#3f3d3d" scroll-y="true" style="max-height: 85vh;min-height: 400rpx;"
 					@scrolltolower="handleScrolltolower"
@@ -50,7 +50,7 @@
 			该店铺暂无秒杀活动~
 		</view>
 
-		<JSpecificationScreen ref="refJSpecificationScreen" show-select-btn btn-text="秒杀" @select="handleSeckill"></JSpecificationScreen>
+		<JSpecificationScreen ref="refJSpecificationScreen" :max-number="1" show-select-btn btn-text="秒杀" @select="handleSeckill"></JSpecificationScreen>
 	</view>
 </template>
 

@@ -92,6 +92,7 @@ import uParse from '../../../components/u-parse/u-parse.vue'
 import { marked } from 'marked'
 import { getMoreGoodsApi, getMoreCityRecommendApi } from '../../../api/brand'
 import { getGoodsDetailApi, addShopCarApi } from '../../../api/goods'
+import { J_RESERVATION_PAY_GOODS } from '../../../constant'
 
 export default {
 	name: 'GoodsDetail',
@@ -180,7 +181,31 @@ export default {
 		async handlePay() {
 			const goodsInfo = await this.getSpacification()
 			const { name, id, picUrl, unit, brandId } = this.goodsDetail.info
-			this.go(`/pages/store/order-detail/order-detail?orderType=${this.orderType}&rulesId=${this.grouponRulesId}&linkId=${this.grouponLinkId}&goodsName=${name}&goodsId=${id}&url=${picUrl}&unit=${unit}&brandId=${brandId}&productInfo=${JSON.stringify(goodsInfo)}`)
+			if ((this.orderType == 0) || (this.orderType == 1)) {
+				this.go(`/pages/store/order-detail/order-detail?orderType=${this.orderType}&rulesId=${this.grouponRulesId}&linkId=${this.grouponLinkId}&goodsName=${name}&goodsId=${id}&url=${picUrl}&unit=${unit}&brandId=${brandId}&productInfo=${JSON.stringify(goodsInfo)}`)
+			} else if (this.orderType == 2) {
+				if (!this.goodsDetail || !this.goodsDetail.info || !this.goodsDetail.brand) return this.$showToast('缺少商品信息')
+				uni.setStorageSync(J_RESERVATION_PAY_GOODS, {
+					cardsInfo: [ {
+						brandCartgoods: [ {
+							brandId: this.goodsDetail.brand.id,
+							goodsId: goodsInfo.product.goodsId,
+							goodsName: this.goodsDetail.info.name,
+							goodsSn: this.goodsDetail.info.goodsSn,
+							number: goodsInfo.number,
+							picUrl: goodsInfo.product.url,
+							productId: goodsInfo.product.id,
+							price: goodsInfo.product.price,
+							specifications: goodsInfo.product.price.specifications,
+							brandName: this.goodsDetail.brand.name
+						} ],
+						brandId: this.goodsDetail.brand.id,
+						brandName: this.goodsDetail.brand.name
+					} ],
+					pay: goodsInfo.product.price * goodsInfo.number
+				})
+				this.go('/user/otherServe/pay-reservation/index')
+			}
 		},
 
 		// 点击加入

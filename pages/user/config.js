@@ -113,9 +113,9 @@ export const myServe = [
 		url: '/user/sever/application-record/application-record'
 	},
 	{
-		name: '粉丝列表',
+		name: '用户池',
 		icon: require('../../static/user-center/menus/shenqingjilu.png'),
-		url: '/user/sever/fan-list'
+		url: '/user/sever/user-pool'
 	},
 	{
 		name: '粉丝统计',

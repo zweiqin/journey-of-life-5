@@ -18,12 +18,12 @@
 					<view style="color: #777777;">{{ brandInfo.browse || 0 }}浏览量</view>
 				</view>
 				<view>
+					<!-- v-if="brandInfo.voucherNum" -->
 					<view
-						v-if="brandInfo.voucherNum"
-						style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 0 4upx;border: 0.25px solid #51cc46;border-radius: 12upx;font-size: 26upx;color: #51cc46;"
+						style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 4upx 8upx;border: 0.25px solid #51cc46;border-radius: 12upx;font-size: 28upx;color: #51cc46;"
 					>
 						<!-- 返消费额{{ brandInfo.voucherNum * 2 }}%价值代金券 -->
-						返代金券{{ brandInfo.voucherNum }}%
+						补贴{{ brandInfo.voucherNum * 2 || 0 }}%
 					</view>
 				</view>
 				<BeeNavigation>

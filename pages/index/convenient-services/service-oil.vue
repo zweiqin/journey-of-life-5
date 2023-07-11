@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { items, coupons, tests, tests1 } from './data'
+import { coupons, tests, tests1 } from './data'
 import { RuanRequest, getUserId } from '../../../utils'
 export default {
 	name: 'PhoneBill',
@@ -56,7 +56,6 @@ export default {
 	},
 	data() {
 		return {
-			items,
 			coupons,
 			tests,
 			tests1,

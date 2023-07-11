@@ -221,7 +221,7 @@ export const getAddressLongitudeAndLatitude = (address) => new Promise((resolve,
 export const getAdressDetailByLngLat = (lat, lng) => new Promise((resolve, reject) => {
 	// #ifdef H5
 	jsonp('https://restapi.amap.com/v3/geocode/regeo', {
-		key: 'fcd4b7ee70f357abeffaef7b43d364b3',
+		key: '5773f02930998e41b0de1d4e1bdbcaa9',
 		location: `${lng},${lat}`
 	})
 		.then((res) => {
@@ -236,7 +236,7 @@ export const getAdressDetailByLngLat = (lat, lng) => new Promise((resolve, rejec
 	uni.request({
 		url: 'https://restapi.amap.com/v3/geocode/regeo', // 仅为示例，并非真实接口地址。
 		data: {
-			key: 'fcd4b7ee70f357abeffaef7b43d364b3',
+			key: '5773f02930998e41b0de1d4e1bdbcaa9',
 			location: `${lng},${lat}`
 		},
 		header: {},

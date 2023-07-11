@@ -49,12 +49,46 @@
 </template>
 
 <script>
-import { items, coupons } from './data'
+import { coupons } from './data'
 import showModel from '../../../mixin/showModel'
 export default {
 	data() {
 		return {
-			items,
+			items: [
+				// {
+				// 	name: '充话费',
+				// 	id: 1,
+				// 	icon: require('../../../static/index/item1.png'),
+
+				// },
+				// {
+				// 	name: '充燃气',
+				// 	id: 2,
+				// 	icon: require('../../../static/index/item2.png'),
+				// },
+				{
+					name: '加油',
+					id: 3,
+					icon: require('../../../static/index/item3.png'),
+					url: '/pages/index/convenient-services/service-oil'
+				},
+				// {
+				// 	name: '特价票',
+				// 	id: 4,
+				// 	icon: require('../../../static/index/item4.png'),
+				// },
+				// {
+				// 	name: '防疫礼包',
+				// 	id: 5,
+				// 	icon: require('../../../static/index/item5.png'),
+				// }
+				{
+					name: '寄快递',
+					id: 6,
+					icon: require('../../../static/index/item2.png'),
+					url: '/pages/index/convenient-services/kuai-di/index'
+				}
+			],
 			coupons
 		}
 	},

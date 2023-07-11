@@ -18,7 +18,7 @@
 					<view class="order-status">{{ item.orderStatusText }}</view>
 				</view>
 
-				<view style="padding: 16upx 24upx 26upx;font-size: 28upx;">
+				<view style="padding: 16upx 24upx 26upx;font-size: 28upx;" @click="handleToViewOrderDetail(item)">
 					<view>
 						<view style="display: flex;justify-content: space-between;">
 							<view>
@@ -190,7 +190,7 @@ export default {
 		}
 	},
 	onShow() {
-		this.getGrouponMyList()
+		// this.getGrouponMyList()
 	},
 
 	methods: {
@@ -317,7 +317,7 @@ export default {
 			getGrouponQueryApi({ goodsId })
 				.then(({ data }) => {
 					console.log(data)
-					this.grouponRules = data.data[0] || {}
+					this.grouponRules = data[0] || {}
 					this.drawerVisible = true
 				})
 				.catch((e) => {

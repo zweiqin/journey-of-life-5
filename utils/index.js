@@ -1,8 +1,6 @@
 export {
 	GyRequest as request,
-	RuanRequest,
-	LTRequest,
-	HXRequest
+	RuanRequest
 } from './DWHRequest'
 export { request2 } from './request'
 

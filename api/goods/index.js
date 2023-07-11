@@ -1,4 +1,4 @@
-import { getUserId, LTRequest, RuanRequest } from '../../utils'
+import { getUserId, RuanRequest } from '../../utils'
 
 /**
  * @description 查询商品详情
@@ -61,9 +61,9 @@ export const submitOrderApi = (data) => RuanRequest('/order/submit', data)
 // 快速添加购物车
 export const firstAddCar = (data) => RuanRequest('/cart/fastadd', data)
 
-export const payOrderGoodsApi = (data) => LTRequest('/api/syb/orderPayH5', data)
+export const payOrderGoodsApi = (data) => RuanRequest('/api/syb/orderPayH5', data)
 
-export const getPayOrderResultApi = (data) => LTRequest('/api/syb/getIsPaySucceed', data, 'get')
+export const getPayOrderResultApi = (data) => RuanRequest('/api/syb/getIsPaySucceed', data, 'get')
 
 // 获取预约商品详情
 export const getApponitGoodsDetailApi = (goodsId) => RuanRequest(

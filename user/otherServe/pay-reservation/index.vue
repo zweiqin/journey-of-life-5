@@ -10,22 +10,24 @@
 		<view style="margin-top: 20upx;padding: 28upx 38upx;background-color: #ffffff;border-radius: 28upx;">
 			<view style="display: flex;align-items: center;">
 				<view>
-					<BeeAvatar
-						:size="40" radius="10upx"
-						:src="common.seamingImgUrl(brandInfo.picUrl)"
-					></BeeAvatar>
+					<BeeAvatar :size="40" radius="10upx" :src="common.seamingImgUrl(brandInfo.picUrl)"></BeeAvatar>
 				</view>
 				<view style="flex: 1;width: 0;margin-left: 18upx;">
 					<view style="font-size: 34upx;font-weight: bold;">{{ brandInfo.name }}</view>
-					<view style="font-size: 26upx;color: #767676;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ brandInfo.address }}</view>
+					<view style="font-size: 26upx;color: #767676;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+						{{ brandInfo.address }}
+					</view>
 				</view>
 			</view>
-			<view style="height: 3upx;margin-top: 8upx;;background: linear-gradient(270deg, #FFFFFF 0%, #D8D8D8 52%, #FFFFFF 100%);"></view>
+			<view
+				style="height: 3upx;margin-top: 8upx;;background: linear-gradient(270deg, #FFFFFF 0%, #D8D8D8 52%, #FFFFFF 100%);"
+			>
+			</view>
 			<view style="margin-top: 20upx;">
-				<view v-for="store in shopCarList" :key="store.id">
+				<view v-for="(store, index) in shopCarList" :key="store.brandId">
 					<view>
 						<view
-							v-for="(item, index) in store.cartList" :key="item.productId"
+							v-for="(item, i) in store.cartList" :key="item.productId"
 							style="display: flex;justify-content: space-between;align-items: center;padding-bottom: 10upx;margin-bottom: 10upx;border-bottom: 2upx solid #d6d4d4;"
 						>
 							<ShopCarGoods ref="refShopCarGoods" :goods="item" :store="store" @success="getShopList"></ShopCarGoods>
@@ -34,6 +36,10 @@
 							</view>
 						</view>
 					</view>
+					<CouponUse
+						v-if="goodsList && goodsList.length" :brand-id="store.brandId"
+						@choose="handleChooseCoupon($event, index)"
+					></CouponUse>
 				</view>
 			</view>
 			<view style="margin-top: 40upx;">
@@ -51,14 +57,49 @@
 			</view>
 		</view>
 
-		<view style="margin-top: 20upx;">
-			<view>预约信息填写</view>
+		<view style="margin-top: 20upx;padding: 28upx 38upx;background-color: #ffffff;border-radius: 28upx;">
+			<view style="padding-bottom: 20upx;;border-bottom: 1upx dashed #000000;font-size: 30upx;font-weight: bold;">预约信息填写</view>
+			<view>
+				<tui-input v-model="form.contacts" padding="26rpx 6rpx" label="联系人：" placeholder="请输入联系人姓名" clearable></tui-input>
+				<tui-input
+					v-model="form.phone" padding="26rpx 6rpx" label="联系电话：" placeholder="请输入联系电话"
+					type="number"
+					clearable
+				></tui-input>
+
+				<view style="padding: 26rpx 6rpx">
+					<text>人数：</text>
+					<tui-numberbox
+						:value="form.quantity" :step="1" :min="1" :max="999"
+						@change="handleInput('quantity', $event)"
+					></tui-numberbox>
+					<text>位</text>
+				</view>
+
+				<view>
+					<tui-input
+						padding="26rpx 6rpx" label="到店时间：" placeholder="请选择到店时间" disabled
+						:value="form.arrivalTime"
+						@click="$refs.dateTimeTradeS.show()"
+					></tui-input>
+					<tui-datetime
+						ref="dateTimeTradeS" :type="7" radius
+						@confirm="handleInput('arrivalTime', $event)"
+					></tui-datetime>
+				</view>
+
+				<view>
+					<tui-textarea
+						v-model="form.remarks" :border-top="false" :border-bottom="false" background-color="#f6f6f6"
+						padding="26rpx 20rpx" flex-start label="备注：" placeholder="请输入备注"
+					></tui-textarea>
+				</view>
+
+			</view>
 		</view>
 
-		<view class="footer">
-			<button class="uni-btn pay-btn" @click="handleToPay">
-				<text>确认预约</text>
-			</button>
+		<view class="footer" style="margin-top: 26upx;padding: 0 20upx;">
+			<tui-button type="warning" height="84upx" @click="handleToPay">提交预约</tui-button>
 		</view>
 
 		<JSpecificationScreen
@@ -91,6 +132,15 @@ export default {
 			goodsDetail: null,
 			goodsId: null,
 			shopCarList: [],
+
+			form: {
+				contacts: '',
+				phone: '',
+				quantity: 1,
+				arrivalTime: '',
+				coupon: '',
+				remarks: ''
+			},
 
 			defaultAddress: {
 				isDefault: true,
@@ -240,15 +290,31 @@ export default {
 		},
 		// 支付
 		handleToPay() {
-			if (!this.goodsList.length) {
-				this.$showToast('请选择预约商品')
-				return
-			}
+			if (!this.goodsList.length) return this.$showToast('请选择预约商品')
+			if (!this.form.contacts) return this.$showToast('请输入联系人姓名')
+			if (!this.form.phone) return this.$showToast('请输入联系电话')
+			if (!this.form.quantity) return this.$showToast('请输入人数')
+			if (!this.form.arrivalTime) return this.$showToast('请选择到店时间')
+			if (!this.form.remarks) return this.$showToast('请输入备注')
+			if (!this.brandInfo.id) return this.$showToast('缺少商家信息')
 			if (!this.defaultAddress || !this.defaultAddress.id) {
 				this.$showToast('缺少地址')
 				return
 			}
-			addSubmitAppointmentApi(this.getPostData()).then(({ data }) => {
+			const allOrderVo = this.getPostData()
+			addSubmitAppointmentApi({
+				appointmentVo: {
+					brandId: this.brandInfo.id,
+					userId: getUserId(),
+					contacts: this.form.contacts,
+					phone: this.form.phone,
+					quantity: this.form.quantity,
+					arrivalTime: this.form.arrivalTime,
+					coupon: allOrderVo.cartDtoList && allOrderVo.cartDtoList.length ? allOrderVo.cartDtoList[0].couponId : -1,
+					remarks: this.form.remarks
+				},
+				allOrderVo
+			}).then(({ data }) => {
 				this.$showToast('预约成功')
 				setTimeout(() => {
 					uni.redirectTo({
@@ -256,6 +322,15 @@ export default {
 					})
 				}, 2000)
 			})
+		},
+
+		handleInput(field, e) {
+			console.log(field, e)
+			if (field === 'quantity') {
+				this.form[field] = e.value
+			} else if (field === 'arrivalTime') {
+				this.form[field] = e.result
+			}
 		}
 	}
 }
