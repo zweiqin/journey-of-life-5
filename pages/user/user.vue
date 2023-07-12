@@ -74,9 +74,12 @@ export default {
 		}
 	},
 
-	onLoad() {},
+	onLoad() {
+		
+	},
 
 	onShow() {
+		console.log(this.myTools, this.myServe, this.myStore, this.marketingTools)
 		this.$forceUpdate()
 		this.userInfo = uni.getStorageSync(J_USER_INFO)
 		this.$nextTick(() => {

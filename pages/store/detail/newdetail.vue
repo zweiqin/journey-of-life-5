@@ -307,7 +307,7 @@
 				>button {
 					float: left;
 					margin-top: 10rpx;
-					margin-right: 15rpx;
+					margin-right: 12rpx;
 					min-width: 120rpx;
 					font-size: 28rpx;
 					height: 60rpx;

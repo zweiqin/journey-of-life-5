@@ -14,7 +14,10 @@
 		<view class="menu-wrapper">
 			<view class="row-wrapper">
 				<view v-for="menu in renderMenu" :key="menu.name" class="item" @click="$emit('menu-click', menu)">
-					<BeeIcon v-if="menu.iconUrl" :size="32" :src="common.seamingImgUrl(menu.iconUrl)"></BeeIcon>
+					<img class="icons" v-if="menu.iconUrl" :src="common.seamingImgUrl(menu.iconUrl)" alt="">
+					<!-- 使用uniapp内置image组件渲染会经过很多的解析，在图片过大的情况下解析的过程会很长，造成很长时间的空白期 -->
+					<!-- <image class="icons" v-if="menu.iconUrl" :src="common.seamingImgUrl(menu.iconUrl)" mode=""></image> -->
+					<!-- <BeeIcon v-if="menu.iconUrl" :size="32" :src="common.seamingImgUrl(menu.iconUrl)"></BeeIcon> -->
 					<image v-else style="width: 64upx; height: 64upx"> </image>
 					<text class="menu-name">{{ menu.name }}</text>
 				</view>
@@ -46,6 +49,9 @@ export default {
 			default: 4
 		}
 	},
+	beforeMount() {
+		// console.log(this.menuData)
+	},
 	data() {
 		return {
 			userInfo: {}
@@ -58,16 +64,20 @@ export default {
 				return []
 			}
 			const haveMenuData = []
-			this.menuData.forEach((item) => {
-				const tempIconObj = this.permissionData.find((i) => i.iconName === item.name)
-				if (tempIconObj) {
-					if (!item.showRole) {
-						haveMenuData.push({ ...item, iconUrl: tempIconObj.iconUrl })
-					} else if (item.showRole && item.showRole.includes(this.userInfo.roleIds)) {
-						haveMenuData.push({ ...item, iconUrl: tempIconObj.iconUrl })
+			try{
+				this.menuData.forEach((item) => {
+					const tempIconObj = this.permissionData.find((i) => i.iconName === item.name)
+					if (tempIconObj) {
+						if (!item.showRole) {
+							haveMenuData.push({ ...item, iconUrl: tempIconObj.iconUrl })
+						} else if (item.showRole && item.showRole.includes(this.userInfo.roleIds)) {
+							haveMenuData.push({ ...item, iconUrl: tempIconObj.iconUrl })
+						}
 					}
-				}
-			})
+				})
+			}catch(e){
+				console.log(e)
+			}
 			console.log(haveMenuData)
 			return haveMenuData
 			// const haveMenuCopyData = JSON.parse(JSON.stringify(this.menuData))
@@ -92,6 +102,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.icons {
+	width: 66rpx;
+	height: 66rpx;
+}
 .pane-wrapper {
 	padding: 30upx 48upx 40upx 24upx;
 	width: 100%;
