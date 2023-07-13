@@ -33,7 +33,7 @@
 				</view>
 				<view class="item" @click="(userInfo.roleIds !== 11) && (userInfo.roleIds !== 10) && go('/user/otherServe/voucher/index')">
 					<p>{{ userInfo.voucherNumber ? transformNumber(userInfo.voucherNumber) : '0.00' }}</p>
-					<p>代金卷</p>
+					<p>代金券</p>
 				</view>
 				<view class="item" @click="go('/user/otherServe/withdrawal/index?type=1')">
 					<p>{{ userInfo.commission || '0.00' }}</p>

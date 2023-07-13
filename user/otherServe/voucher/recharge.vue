@@ -98,7 +98,7 @@ export default {
 			// this.go("/pages/pay-result/pay-result");
 		},
 
-		// 获取代金卷配置
+		// 获取代金券配置
 		getVoucherConfig() {
 			getVoucherConfigApi().then(({ data }) => {
 				this.voucherConfig = data[0]

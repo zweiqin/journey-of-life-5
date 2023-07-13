@@ -8,23 +8,25 @@
 			<image src="./image/noData.png" mode=""></image>
 			<text>暂时没有投诉记录哦...</text>
 		</view>
-		<view class="complaintList" v-else>
-			<view class="complaintItem" :key="item" v-for="(item,index) in ComplainList">
+		<view v-else class="complaintList">
+			<view v-for="(item, index) in ComplainList" :key="item" class="complaintItem">
 				<image class="backUrl" :src="isSuucess(item.finalHandleStatus)" mode=""></image>
 				<p class="brandName">店家名字：{{ item.brandName }}</p>
 				<view class="CommodityInfo">
 					<image :src="common.seamingImgUrl(item.informAnnex)" mode=""></image>
 					<!-- <view class="statusImg">
 						<image src="./image/loading.png" mode=""></image>
-					</view> -->
-					<span>{{ item.finalHandleStatus == 0 ? '处理中，我们会尽快给予您答复': 
-					item.finalHandleStatus == 1 ? '已处理，审核通过' : '抱歉，投诉的证据以及原因未满足条件'}}</span>
+						</view> -->
+					<span>
+						{{ item.finalHandleStatus == 0 ? '处理中，我们会尽快给予您答复'
+							: item.finalHandleStatus == 1 ? '已处理，审核通过' : '抱歉，投诉的证据以及原因未满足条件' }}
+					</span>
 					<!-- <view class="infoText">
 						<span>超级好吃的手工面</span>
-					</view> -->
+						</view> -->
 				</view>
 				<view class="textItem">
-					<span class="TIone">投诉原因：</span><span class="TItwo">{{ item.type==1?'商品质量问题':'代金卷问题' }}</span>
+					<span class="TIone">投诉原因：</span><span class="TItwo">{{ item.type == 1 ? '商品质量问题' : '代金券问题' }}</span>
 				</view>
 				<view class="textItem">
 					<span class="TIone">投诉内容：</span><span class="TItwo">{{ item.informContent }}</span>
@@ -38,35 +40,35 @@
 </template>
 
 <script>
-	import { getComplainList } from '@/api/user'
-	export default {
-		data() {
-			return {
-				isDataNone: false,
-				ComplainList: null,
+import { getComplainList } from '@/api/user'
+export default {
+	data() {
+		return {
+			isDataNone: false,
+			ComplainList: null
+		}
+	},
+	computed: {
+
+	},
+	created() {
+		getComplainList().then((res) => {
+			this.ComplainList = res.data
+			if (!res.data || res.data.length <= 0) {
+				this.isDataNone = true
 			}
+		})
+	},
+	methods: {
+		handleBack() {
+			uni.navigateBack()
+			// new Date().
 		},
-		methods: {
-			handleBack() {
-				uni.navigateBack()
-				// new Date().
-			},
-			isSuucess(status) {
-				return status == 0 ? require('./image/loading.png'): status == 1 ? require('./image/succes.png') : require('./image/danger.png')
-			}
-		},
-		computed: {
-			
-		},
-		created() {
-			getComplainList().then(res => {
-				this.ComplainList = res.data
-				if(!res.data || res.data.length <= 0) {
-					this.isDataNone = true
-				}
-			})
+		isSuucess(status) {
+			return status == 0 ? require('./image/loading.png') : status == 1 ? require('./image/succes.png') : require('./image/danger.png')
 		}
 	}
+}
 </script>
 
 <style lang="scss" scoped>

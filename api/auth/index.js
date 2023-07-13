@@ -25,3 +25,6 @@ export const getCodeApi = (data) => RuanRequest('/dtsWxUser/getCode', data, 'get
 
 // 绑定手机号
 export const bindMobileForWXApi = (data) => RuanRequest('/dtsWxUser/bindingWxPhone', data, 'get')
+
+// 用户不绑定手机号码情况下调用接口
+export const updateNotBindingWxPhone = (data) => RuanRequest('/dtsWxUser/isNotBindingWxPhone', data)

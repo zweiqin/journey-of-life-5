@@ -208,6 +208,8 @@
 		"color": "#777777",
 		"backgroundColor": "#fff",
 		"borderStyle": "white",
+		"fontSize": "14px",
+		"height": "54px",
 		"list": [
 			{
 				"pagePath": "pages/index/index",

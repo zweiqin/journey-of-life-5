@@ -14,12 +14,12 @@ export const payFn = (res, type, order) => {
 			icon: 'error'
 		})
 	}
-	if (res.errno === 0) {
+	if (res.data === '支付成功') { // 零元支付情况
 		uni.redirectTo({
 			url: '/user/otherServe/payment-completed/index'
 		})
 	} else {
-		const payData = JSON.parse(res.h5PayUrl)
+		const payData = JSON.parse(res.data.h5PayUrl)
 		const form = document.createElement('form')
 		form.setAttribute('action', payData.url)
 		form.setAttribute('method', 'POST')

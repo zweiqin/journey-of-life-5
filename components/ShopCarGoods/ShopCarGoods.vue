@@ -1,13 +1,11 @@
 <template>
 	<view class="goods-pane">
-		<JAvatar radius="10" :size="120" :src="common.seamingImgUrl(goods.picUrl)"></JAvatar>
+		<JAvatar radius="10" :size="imgSize" :src="common.seamingImgUrl(goods.picUrl)"></JAvatar>
 		<view class="goods-pane-right">
 			<view class="goods-pane-name">{{ goods.goodsName.trim() }} </view>
 			<view class="goods-pane-desc-content">
 				<text class="goods-pane-desc">
-					{{
-						goods.specifications | getDesc
-					}}
+					{{ goods.specifications | getDesc }}
 				</text>
 			</view>
 			<view class="goods-pane-footer">
@@ -55,6 +53,10 @@ export default {
 		store: {
 			type: Object,
 			required: true
+		},
+		imgSize: {
+			type: Number,
+			default: 120
 		}
 
 	},
@@ -124,7 +126,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
 .goods-pane {
 	width: 100%;
 	display: flex;
@@ -132,40 +133,51 @@ export default {
 	align-items: center;
 
 	.goods-pane-right {
-		width: 100%;
+		flex: 1;
+		width: 0;
 		margin-left: 30upx;
-		font-size: 24upx;
 		color: #000000;
 
 		.goods-pane-name {
-			width: 404upx;
+			font-size: 30upx;
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			overflow: hidden;
 		}
 
 		.goods-pane-desc-content {
+			// width: fit-content;
+			// min-width: 55vw;
+			// max-width: 55vw;
+			width: 82%;
 			margin: 14upx 0 10upx 0;
+			padding: 4upx 8upx;
+			background-color: #f1f1f0;
+			border-radius: 6upx;
 		}
 
 		.goods-pane-desc {
-			font-size: 20upx;
 			margin-right: 10upx;
+			font-size: 20upx;
+			color: #8F8D85;
 		}
 
 		.goods-pane-footer {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+			margin-top: 18upx;
 
 			.goods-pane-price {
+				font-size: 32upx;
+				font-weight: bold;
 				color: #fa5151;
-				font-size: 28upx;
 			}
 
 			.ops {
 				width: 168upx;
 				height: 40upx;
+				font-size: 24upx;
 				background-color: #f5f5f5;
 				display: flex;
 				align-items: center;

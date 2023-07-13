@@ -5,7 +5,7 @@
 			<span>投诉</span>
 		</view>
 		<view class="productBox">
-			<view class="CommodityInformation" v-if="goodsDetail.info">
+			<view v-if="goodsDetail.info" class="CommodityInformation">
 				<image :src="goodsDetail.info.picUrl" mode=""></image>
 				<view class="textsList">
 					<span class="shopText">{{ goodsDetail.info.goodsSn }}</span>
@@ -26,127 +26,127 @@
 			<view class="reportFormItem">
 				<image src="./image/daijinjuan.png" mode=""></image>
 				<view class="reportType">
-					<p>代金卷问题</p>
-					<p>代金卷使用问题/代金卷详情...</p>
+					<p>代金券问题</p>
+					<p>代金券使用问题/代金券详情...</p>
 				</view>
 				<button class="reportBtn" @click="modal = true;type = 2">举报</button>
 			</view>
 		</view>
-		<tui-modal :show="modal" custom maskClosable @cancel="closeModal">
+		<TuiModal :show="modal" custom mask-closable @cancel="closeModal">
 			<view class="tui-modal-custom">
-				<tui-form-item label="投诉理由">
+				<TuiFormItem label="投诉理由">
 					<input v-model="informContent" class="tui-input" placeholder="请输入投诉理由" placeholder-style="color:#ccc" />
-				</tui-form-item>
-				<tui-form-item label="投诉图片">
+				</TuiFormItem>
+				<TuiFormItem label="投诉图片">
 					<JUpload
 						:title="uploadFields[0].label" :img-url="imgs[uploadFields[0].field]"
 						@upload="handleSaveImg(uploadFields[0].field, $event)" @delete="handleDeleteImg(uploadFields[0].field)"
 					></JUpload>
 					<!-- <tui-upload :value="value" :serverUrl="serverUrl"></tui-upload> -->
 					<!-- <tui-upload :value="value" :serverUrl="serverUrl" @complete="result" @remove="remove"></tui-upload> -->
-				</tui-form-item>
+				</TuiFormItem>
 				<view class="reportBtn">
 					<tui-button width="200rpx" height="72rpx" :size="28" type="danger" shape="circle" @click="handleClick">确定</tui-button>
 					<tui-button width="200rpx" height="72rpx" :size="28" type="gray-primary" shape="circle" @click="closeModal">取消</tui-button>
 				</view>
 			</view>
-		</tui-modal>
+		</TuiModal>
 	</view>
 </template>
 
 <script>
-	import { createComplain } from '@/api/user'
-	import tuiUpload from "@/components/thorui/tui-upload/tui-upload"
-	import tuiFormItem from "@/components/thorui/tui-form-item/tui-form-item.vue"
-	import tuiModal from "@/components/thorui/tui-modal/tui-modal.vue"
-	import { J_USER_ID } from '../../constant';
-	import { getGoodsDetailApi } from '../../api/goods'
-	export default {
-		components: {
-			tuiModal,
-			tuiFormItem,
-			tuiUpload
+import { createComplain } from '@/api/user'
+import tuiUpload from '@/components/thorui/tui-upload/tui-upload'
+import tuiFormItem from '@/components/thorui/tui-form-item/tui-form-item.vue'
+import tuiModal from '@/components/thorui/tui-modal/tui-modal.vue'
+import { J_USER_ID } from '../../constant'
+import { getGoodsDetailApi } from '../../api/goods'
+export default {
+	components: {
+		TuiModal: tuiModal,
+		TuiFormItem: tuiFormItem,
+		TuiUpload: tuiUpload
+	},
+	data() {
+		return {
+			modal: false,
+			informContent: '',
+			type: '',
+			userId: '',
+			goodsId: '',
+			goodsDetail: {},
+			productForm: { id: 0, specifications: [], price: 0.00, number: 0, url: '' },
+			imgs: {
+				picUrl: '',
+				gallery: []
+			},
+			uploadFields: [
+				{
+					label: ' ',
+					field: 'picUrl'
+				}
+			]
+		}
+	},
+	methods: {
+		closeModal() {
+			this.modal = false
 		},
-		data() {
-			return {
-				modal: false,
-				informContent: "",
-				type: '',
-				userId: "",
-				goodsId: "",
-				goodsDetail: {},
-				productForm: { id: 0, specifications: [], price: 0.00, number: 0, url: '' },
-				imgs: {
-					picUrl: '',
-					gallery: []
-				},
-				uploadFields: [
-					{
-						label: ' ',
-						field: 'picUrl'
-					},
-				],
-			};
+		handleBack() {
+			uni.navigateBack()
 		},
-		methods: {
-			closeModal() {
-				this.modal = false
-			},
-			handleBack() {
-				uni.navigateBack()
-			},
-			// 获取商品详情
-			async getGoodsDetail() {
-				uni.showLoading()
-				const res = await getGoodsDetailApi(this.goodsId, this.userId)
-				uni.hideLoading()
-				if (res.errno === 0) {
-					this.goodsDetail = res.data
-				}
-			},
-			// 删除当前图片
-			handleDeleteImg(field, imgUrl) {
-				if (field === 'picUrl') {
-					this.imgs[field] = ''
-				} else if (field === 'gallery') {
-					this.imgs[field].splice(this.imgs[field].findIndex((item) => item === imgUrl), 1)
-				}
-				this.$forceUpdate()
-			},
-			handleSaveImg(field, imgUrl) {
-				if (field === 'picUrl') {
-					this.imgs[field] = imgUrl
-					console.log(this.imgs)
-				} else if (field === 'gallery') {
-					this.imgs[field].push(imgUrl)
-				}
-				this.$forceUpdate()
-				console.log(field, imgUrl, this.imgs[this.uploadFields[0].field])
-			},
-			// 发送投诉请求
-			handleClick() {
-				let requestParams = {
-					type: this.type,
-					brandId: this.goodsDetail.brand.id,
-					goodsId: this.goodsId,
-					informContent: this.informContent,
-					informAnnex: this.imgs[this.uploadFields[0].field]
-				}
-				createComplain(requestParams).then(res => {
-					this.modal = false
-					uni.showToast({
-						title: `投诉成功`,
-						icon: "success"
-					})
-				})
+		// 获取商品详情
+		async getGoodsDetail() {
+			uni.showLoading()
+			const res = await getGoodsDetailApi(this.goodsId, this.userId)
+			uni.hideLoading()
+			if (res.errno === 0) {
+				this.goodsDetail = res.data
 			}
 		},
-		onLoad(options) {
-			this.goodsId = options.id
-			this.userId = uni.getStorageSync(J_USER_ID)
-			this.getGoodsDetail()
+		// 删除当前图片
+		handleDeleteImg(field, imgUrl) {
+			if (field === 'picUrl') {
+				this.imgs[field] = ''
+			} else if (field === 'gallery') {
+				this.imgs[field].splice(this.imgs[field].findIndex((item) => item === imgUrl), 1)
+			}
+			this.$forceUpdate()
+		},
+		handleSaveImg(field, imgUrl) {
+			if (field === 'picUrl') {
+				this.imgs[field] = imgUrl
+				console.log(this.imgs)
+			} else if (field === 'gallery') {
+				this.imgs[field].push(imgUrl)
+			}
+			this.$forceUpdate()
+			console.log(field, imgUrl, this.imgs[this.uploadFields[0].field])
+		},
+		// 发送投诉请求
+		handleClick() {
+			const requestParams = {
+				type: this.type,
+				brandId: this.goodsDetail.brand.id,
+				goodsId: this.goodsId,
+				informContent: this.informContent,
+				informAnnex: this.imgs[this.uploadFields[0].field]
+			}
+			createComplain(requestParams).then((res) => {
+				this.modal = false
+				uni.showToast({
+					title: `投诉成功`,
+					icon: 'success'
+				})
+			})
 		}
+	},
+	onLoad(options) {
+		this.goodsId = options.id
+		this.userId = uni.getStorageSync(J_USER_ID)
+		this.getGoodsDetail()
 	}
+}
 </script>
 
 <style lang="scss">

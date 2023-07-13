@@ -19,7 +19,8 @@
 			<BeeStoreFilter @confirm="handleConfirmType" @select-distance="handleSelectDistance"></BeeStoreFilter>
 			<view class="brand-list-wrapper">
 				<view v-if="$data._list && $data._list.length">
-					<BeeBrandPane v-for="item in $data._list" :key="item.id" :is-positioning="isPositioning" :brand-info="item"></BeeBrandPane>
+					<BeeBrandPane v-for="item in $data._list" :key="item.id" :is-positioning="isPositioning" :brand-info="item">
+					</BeeBrandPane>
 				</view>
 				<view v-else>
 					<tui-no-data v-if="$data._status !== 'loading'" :fixed="false" style="margin-top: 50upx;">暂无数据</tui-no-data>
@@ -49,13 +50,18 @@ import { mapGetters } from 'vuex'
 import loadData from '../../mixin/loadData'
 import { menusData } from './data'
 import { getHomeBrandListApi, getCategoryListApi } from '../../api/brand'
+import { getAdressDetailByLngLat } from '@/utils'
 export default {
 	name: 'Store',
 	data() {
 		return {
 			menusData: Object.freeze(menusData),
-			isPositioning: true
-			// loopTimer: null
+			isPositioning: true,
+			// loopTimer: null,
+			queryParam: {
+				dressing: '',
+				distance: ''
+			}
 		}
 	},
 	mixins: [
@@ -73,7 +79,27 @@ export default {
 			}
 		})
 	],
-	onShow() { },
+	onShow() {
+		if (!this.isPositioning) {
+			uni.showLoading()
+			getHomeBrandListApi({
+				page: 1,
+				size: this.$data._query.page * this.$data._query.size,
+				...this.queryParam,
+				areaId: this.$store.state.location.locationInfo.adcode,
+				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+			})
+				.then(({ data }) => {
+					console.log(data)
+					this.$data._list = data.brandList || []
+					uni.hideLoading()
+				})
+				.catch(() => {
+					uni.hideLoading()
+				})
+		}
+	},
 	onLoad() {
 		this.getBrandList()
 		this.getCategoryList()
@@ -90,7 +116,7 @@ export default {
 		}
 	},
 	methods: {
-		getBrandList(queryParam = {}) {
+		getBrandList() {
 			// let num = 0
 			this.$data._status = 'loading'
 			if (!this.$store.getters.obtainLocationCount) {
@@ -102,18 +128,29 @@ export default {
 					success: (result) => {
 						queryLocation.longitude = result.longitude
 						queryLocation.latitude = result.latitude
-						console.log(queryLocation)
-						this.$data._query = { ...this.$data._query, ...queryParam, ...queryLocation }
-						if ((Date.now() - tempTime) >= 1000) {
-							this._loadData(null, () => this.isPositioning = true)
-						} else {
-							this._loadData(null, () => this.isPositioning = false)
-						}
+						console.log(result)
+						getAdressDetailByLngLat(queryLocation.latitude, queryLocation.longitude)
+							.then((res) => {
+								if (res.status === '1') {
+									this.$data._query = { ...this.$data._query, ...this.queryParam, ...queryLocation, areaId: typeof res.regeocode.addressComponent.adcode === 'object' ? '' : res.regeocode.addressComponent.adcode }
+									if ((Date.now() - tempTime) >= 1000) {
+										this._loadData(null, () => this.isPositioning = true)
+									} else {
+										this._loadData(null, () => this.isPositioning = false)
+									}
+								} else {
+									this.$showToast('查询失败')
+								}
+							})
+							.catch(() => {
+								this.$showToast('查询失败')
+							})
 					},
 					fail: () => {
 						this.$data._query = {
 							...this.$data._query,
-							...queryParam,
+							...this.queryParam,
+							areaId: this.$store.state.location.locationInfo.adcode,
 							longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
 							latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 						}
@@ -123,7 +160,8 @@ export default {
 			} else {
 				this.$data._query = {
 					...this.$data._query,
-					...queryParam,
+					...this.queryParam,
+					areaId: this.$store.state.location.locationInfo.adcode,
 					longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
 					latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
 				}
@@ -169,11 +207,13 @@ export default {
 		},
 
 		handleConfirmType(e) {
-			this.getBrandList({ dressing: e.id })
+			this.queryParam.dressing = e.id
+			this.getBrandList()
 		},
 
 		handleSelectDistance(e) {
-			this.getBrandList({ distance: e })
+			this.queryParam.distance = e
+			this.getBrandList()
 		}
 	},
 	onPullDownRefresh() {

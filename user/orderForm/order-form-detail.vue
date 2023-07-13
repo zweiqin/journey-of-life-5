@@ -2,17 +2,12 @@
 	<view v-if="data" class="order-detail">
 		<JHeader width="50" height="50" title="订单详情"></JHeader>
 
-		<view
-			class="view-order-status" :style="{
-				'background-image': bg
-			}"
-		>
-			<JIcon width="44" height="44" type="active"></JIcon>
-			{{ data.orderInfo.orderStatusText }}
-		</view>
-
 		<!-- 订单信息 -->
 		<view class="order-info pane">
+			<view class="view-order-status" :style="{ 'color': bg }">
+				{{ data.orderInfo.orderStatusText }}
+			</view>
+			<!-- 有商城的商品 -->
 			<view v-if="!data.userAppoint">
 				<view v-if="data.orderGoods.find(item => item.brandId === 1001079)" class="co-info">
 					<view class="line">
@@ -32,7 +27,7 @@
 				</view>
 			</view>
 
-			<!-- 是预约商品 -->
+			<!-- 只有商家的商品（仅本地或预约） -->
 			<view v-else class="apponit-info">
 				<view class="title">提货地址：{{ data.orderInfo.brandName }}</view>
 				<view class="value"></view>
@@ -238,8 +233,7 @@ export default {
 	computed: {
 		bg() {
 			const data = {
-				已取消: 'linear-gradient(to right, #959595, #d3d3d3)',
-				未支付: 'linear-gradient(to right, #fa5151, #fddbdb)'
+				'已取消(系统)': '#959595'
 			}
 			return data[this.data.orderInfo.orderStatusText]
 		}
@@ -410,7 +404,7 @@ export default {
 <style lang="less" scoped>
 .order-detail {
 	width: 100%;
-	height: 100vh;
+	min-height: 100vh;
 	background-color: #f4f4f4;
 	font-size: 28upx;
 	color: #3d3d3d;
@@ -423,21 +417,6 @@ export default {
 		background: #fff;
 	}
 
-	.view-order-status {
-		display: flex;
-		align-items: center;
-		height: 114upx;
-		padding-left: 60upx;
-		box-sizing: border-box;
-		background-image: linear-gradient(to right, #fa5151, #fddbdb);
-		color: #fff;
-		font-size: 36upx;
-
-		.j-icon {
-			margin-right: 20upx;
-		}
-	}
-
 	.pane {
 		padding: 40upx;
 		box-sizing: border-box;
@@ -445,6 +424,20 @@ export default {
 	}
 
 	.order-info {
+
+		.view-order-status {
+			display: flex;
+			align-items: center;
+			box-sizing: border-box;
+			// background-image: linear-gradient(to right, #fa5151, #fddbdb);
+			color: #FF0000;
+			font-size: 34upx;
+
+			.j-icon {
+				margin-right: 20upx;
+			}
+		}
+
 		.co-info {
 
 			padding-bottom: 20upx;

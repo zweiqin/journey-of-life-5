@@ -17,13 +17,19 @@
 					</view>
 					<view style="color: #777777;">{{ brandInfo.browse || 0 }}浏览量</view>
 				</view>
-				<view>
+				<view style="display: flex;flex-wrap: wrap;">
 					<!-- v-if="brandInfo.voucherNum" -->
 					<view
-						style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 4upx 8upx;border: 0.25px solid #51cc46;border-radius: 12upx;font-size: 28upx;color: #51cc46;"
+						style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 4upx 8upx;border: 0.25px solid #0d0e0d;border-radius: 12upx;font-size: 28upx;font-weight: bold;color: #0d0e0d;"
 					>
 						<!-- 返消费额{{ brandInfo.voucherNum * 2 }}%价值代金券 -->
-						补贴{{ brandInfo.voucherNum * 2 || 0 }}%
+						补贴代金券{{ brandInfo.voucherNum * 2 || 0 }}%
+					</view>
+					<view
+						v-if="brandInfo.supportVoucher"
+						style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 4upx 8upx;border: 0.25px solid #51cc46;border-radius: 12upx;font-size: 28upx;font-weight: bold;color: #51cc46;"
+					>
+						支持代金券
 					</view>
 				</view>
 				<BeeNavigation>
