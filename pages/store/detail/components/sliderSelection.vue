@@ -7,7 +7,7 @@
 			</view>
 		</view>
 		<!-- <view class="selectionItem"> -->
-			<scroll-view class="selectionItem" scroll-y="true" @scrolltolower="lower" @scroll="rightScroll">
+			<scroll-view class="selectionItem" scroll-with-animation scroll-with-animation scroll-y="true" @scrolltolower="lower" @scroll="rightScroll">
 				<view class="commodityItem"  v-for="item in 10">
 					<image src="../image/cai.png" mode=""></image>
 					<view class="commodity_msg">
@@ -84,7 +84,7 @@
 						rects.forEach((rect) => {
 							this.rightScrollArr.push(rect.top - rects[0].top)
 						})
-						console.log(this.rightScrollArr)
+						// console.log(this.rightScrollArr)
 				}).exec(function() {
 					// console.log(1)
 				})
