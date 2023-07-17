@@ -97,13 +97,14 @@ export default {
 	width: 100%;
 
 	.goods-pane-right {
-		width: 100%;
+		flex: 1;
+		width: 0;
 		margin-left: 30upx;
 		font-size: @f12;
 		color: @c0;
 
 		.goods-pane-name {
-			width: 520upx;
+			width: 100%;
 			white-space: nowrap;
 			text-overflow: ellipsis;
 			overflow: hidden;

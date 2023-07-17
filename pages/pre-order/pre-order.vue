@@ -95,7 +95,7 @@ export default {
 	data() {
 		return {
 			defaultAddress: '', // 收货地址
-			voucherNumber: '', // 代金卷持有
+			voucherNumber: '', // 代金券持有
 			orderInfo: null, // 订单相关信息
 			cartId: '', // 购物车id
 			opForm: {
@@ -216,21 +216,16 @@ export default {
 
 		// 提交订单支付
 		handleToPay() {
-			if (!this.defaultAddress || !this.defaultAddress.id) {
-				this.$showToast('请选择地址')
-				return
-			}
-
-			const _this = this
+			if (!this.defaultAddress || !this.defaultAddress.id) return this.$showToast('请选择地址')
 			const submitData = {
 				userId: getUserId(),
 				cartId: this.cartId,
-				addressId: _this.defaultAddress.id,
+				addressId: this.defaultAddress.id,
 				couponId: this.couponId,
 				grouponRulesId: this.grouponRulesId,
 				grouponLinkId: this.grouponLinkId,
-				brandId: _this.orderInfo.brandId,
-				..._this.opForm
+				brandId: this.orderInfo.brandId,
+				...this.opForm
 			}
 			submitOrderApi(submitData).then(({ data }) => {
 				payOrderGoodsApi({

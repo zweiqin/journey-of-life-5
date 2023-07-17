@@ -235,7 +235,6 @@ export default {
 		// 点击更换头像
 		handleChangeAvatar() {
 			// this.$refs.jUploadAvatarRef.$el.style.left = '0'
-
 			const _this = this
 			uni.chooseImage({
 				count: 1,
@@ -245,7 +244,7 @@ export default {
 					})
 				},
 				fail: () => {
-					_this.ttoast('图片上传失败')
+					_this.$showToast('图片上传失败')
 				}
 			})
 		},
@@ -296,10 +295,7 @@ export default {
 					url: '/pages/login/bind-phone?openId=' + userInfo.openId
 				})
 			} else {
-				this.ttoast({
-					type: 'info',
-					title: '您已绑定'
-				})
+				this.$showToast('您已绑定手机号')
 			}
 		}
 	}

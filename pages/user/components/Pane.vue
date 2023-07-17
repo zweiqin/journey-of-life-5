@@ -14,11 +14,11 @@
 		<view class="menu-wrapper">
 			<view class="row-wrapper">
 				<view v-for="menu in renderMenu" :key="menu.name" class="item" @click="$emit('menu-click', menu)">
-					<img class="icons" v-if="menu.iconUrl" :src="common.seamingImgUrl(menu.iconUrl)" alt="">
 					<!-- 使用uniapp内置image组件渲染会经过很多的解析，在图片过大的情况下解析的过程会很长，造成很长时间的空白期 -->
 					<!-- <image class="icons" v-if="menu.iconUrl" :src="common.seamingImgUrl(menu.iconUrl)" mode=""></image> -->
-					<!-- <BeeIcon v-if="menu.iconUrl" :size="32" :src="common.seamingImgUrl(menu.iconUrl)"></BeeIcon> -->
-					<image v-else style="width: 64upx; height: 64upx"> </image>
+					<!-- <img v-if="menu.iconUrl" class="icons" :src="common.seamingImgUrl(menu.iconUrl)" alt=""> -->
+					<!-- <image v-else style="width: 64upx; height: 64upx"> </image> -->
+					<BeeIcon v-if="menu.iconUrl || menu.url" :size="32" :src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : common.seamingImgUrl(menu.url)"></BeeIcon>
 					<text class="menu-name">{{ menu.name }}</text>
 				</view>
 			</view>
@@ -49,9 +49,6 @@ export default {
 			default: 4
 		}
 	},
-	beforeMount() {
-		// console.log(this.menuData)
-	},
 	data() {
 		return {
 			userInfo: {}
@@ -64,7 +61,7 @@ export default {
 				return []
 			}
 			const haveMenuData = []
-			try{
+			try {
 				this.menuData.forEach((item) => {
 					const tempIconObj = this.permissionData.find((i) => i.iconName === item.name)
 					if (tempIconObj) {
@@ -75,7 +72,7 @@ export default {
 						}
 					}
 				})
-			}catch(e){
+			} catch (e) {
 				console.log(e)
 			}
 			console.log(haveMenuData)
@@ -93,6 +90,9 @@ export default {
 			// 	data: haveMenuCopyData
 			// }
 		}
+	},
+	beforeMount() {
+		// console.log(this.menuData)
 	},
 	created() {
 		this.userInfo = uni.getStorageSync(J_USER_INFO)

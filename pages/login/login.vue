@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { userLoginApi, wxLoginApi } from '../../api/auth'
+import { userLoginApi, wxLoginApi, updateNotBindingWxPhone } from '../../api/auth'
 import { moreLogins } from './config'
 import {
 	J_USER_INFO,
@@ -107,23 +107,7 @@ export default {
 				uni.setStorageSync(J_TOKEN_EXPIRE, new Date(res.data.tokenExpire).getTime())
 				this.$parent.$root.connectSocket()
 				this.$showToast('登录成功', 'success')
-				setTimeout(() => {
-					if (uni.getStorageSync(J_NEW_BIND_TYPE)) {
-						uni.redirectTo({ url: '/pages/jump/jump' })
-					} else if (this.isTabbar) {
-						uni.switchTab({
-							url: this.redirect || '/pages/index/index'
-						})
-					} else if (this.redirect) {
-						uni.redirectTo({
-							url: this.redirect
-						})
-					} else {
-						uni.switchTab({
-							url: '/pages/index/index'
-						})
-					}
-				}, 2000)
+				this.handleLoginSuccess()
 			})
 		},
 
@@ -143,40 +127,71 @@ export default {
 					encodeURIComponent(local) +
 					'&response_type=code&scope=snsapi_userinfo#wechat_redirect'
 			} else {
-				const { data } = await wxLoginApi({
-					code
-				})
+				const { data } = await wxLoginApi({ code })
+				console.log(data) // {token,status,userInfo}
 				uni.setStorageSync(J_USER_ID, data.userInfo.userId)
 				uni.setStorageSync(J_USER_INFO, data.userInfo)
 				uni.setStorageSync(J_USER_TOKEN, data.token)
 				this.$parent.$root.connectSocket()
 				// ofxYi6eg9rdj8qZx3rwSecysgePo
 				if (!data.status) {
-					uni.navigateTo({
-						url: '/pages/login/bind-phone?openId=' + data.userInfo.openId
+					uni.showModal({
+						title: '提示',
+						content: '您还未登录，请先登录',
+						success: ({ confirm }) => {
+							if (confirm) {
+								uni.navigateTo({
+									url: '/pages/login/bind-phone?openId=' + data.userInfo.openId
+								})
+							} else {
+								uni.showLoading()
+								updateNotBindingWxPhone({
+									openId: data.userInfo.openId,
+									nickname: data.userInfo.nickname,
+									sex: data.userInfo.gender,
+									headimgurl: data.userInfo.avatarUrl,
+									unionid: data.userInfo.unionid
+								})
+									.then((res) => {
+										uni.hideLoading()
+										this.$showToast('正在跳转...')
+										this.handleLoginSuccess()
+									})
+									.catch(() => {
+										uni.removeStorageSync(J_USER_ID, data.userInfo.userId)
+										uni.removeStorageSync(J_USER_INFO, data.userInfo)
+										uni.removeStorageSync(J_USER_TOKEN, data.token)
+										uni.hideLoading()
+									})
+							}
+						}
 					})
 				} else {
 					this.$showToast('登录成功', 'success')
-					setTimeout(() => {
-						if (uni.getStorageSync(J_NEW_BIND_TYPE)) {
-							uni.redirectTo({ url: '/pages/jump/jump' })
-						} else if (this.isTabbar) {
-							uni.switchTab({
-								url: this.redirect || '/pages/index/index'
-							})
-						} else if (this.redirect) {
-							uni.redirectTo({
-								url: this.redirect
-							})
-						} else {
-							uni.switchTab({
-								url: '/pages/index/index'
-							})
-						}
-					}, 2000)
+					this.handleLoginSuccess()
 				}
 			}
 			// #endif
+		},
+
+		handleLoginSuccess() {
+			setTimeout(() => {
+				if (uni.getStorageSync(J_NEW_BIND_TYPE)) {
+					uni.redirectTo({ url: '/pages/jump/jump' })
+				} else if (this.isTabbar) {
+					uni.switchTab({
+						url: this.redirect || '/pages/index/index'
+					})
+				} else if (this.redirect) {
+					uni.redirectTo({
+						url: this.redirect
+					})
+				} else {
+					uni.switchTab({
+						url: '/pages/index/index'
+					})
+				}
+			}, 2000)
 		}
 	},
 

@@ -35,7 +35,7 @@ export default {
 				neighborhood: { name: [], type: [] },
 				citycode: '0757'
 			},
-			detailAddress: '广东省佛山市顺德区大良街道碧水路顺德市民活动中心',
+			detailAddress: '', // 广东省佛山市顺德区大良街道碧水路顺德市民活动中心
 			currentCity: uni.getStorageSync(J_CURRENT_ADDRESS) || '大良街道',
 			obtainLocationCount: 0
 		}
@@ -44,23 +44,24 @@ export default {
 	mutations: {
 		[CHANGE_LOCATION_INFO](state, location) {
 			state.locationInfo = location.addressComponent
-			state.detailAddress = location.formatted_address
-			state.currentCity = location.addressComponent.township
+			typeof state.locationInfo.adcode === 'object' ? state.locationInfo.adcode = '' : ''
+			state.detailAddress = typeof location.formatted_address === 'object' ? '' : location.formatted_address
+			state.currentCity = typeof location.addressComponent.township === 'object' ? '' : location.addressComponent.township
 			state.obtainLocationCount = state.obtainLocationCount + 1
-			uni.setStorageSync(J_CURRENT_ADDRESS, location.addressComponent.township)
+			uni.setStorageSync(J_CURRENT_ADDRESS, state.currentCity)
 		},
 		[CHANGE_CURRENT_CITY](state, chooseCity) {
 			uni.setStorageSync(J_CURRENT_ADDRESS, chooseCity)
 			state.currentCity = chooseCity
 		},
 		[CHANGE_LOACTION_DETAIL_INFO](state, { detailInfo, currentCity }) {
-			state.detailAddress = detailInfo.formatted_address
+			state.detailAddress = typeof detailInfo.formatted_address === 'object' ? '' : detailInfo.formatted_address
 			state.currentCity = currentCity
 			state.locationInfo = {
-				city: detailInfo.city,
-				province: detailInfo.province,
-				adcode: '',
-				district: detailInfo.district,
+				city: typeof detailInfo.city === 'object' ? '' : detailInfo.city,
+				province: typeof detailInfo.province === 'object' ? '' : detailInfo.province,
+				adcode: typeof detailInfo.adcode === 'object' ? '' : detailInfo.adcode,
+				district: typeof detailInfo.district === 'object' ? '' : detailInfo.district,
 				towncode: '',
 				streetNumber: {
 					number: '',
@@ -70,12 +71,13 @@ export default {
 					street: ''
 				},
 				country: '中国',
-				township: detailInfo.currentCity,
+				township: typeof detailInfo.township === 'object' ? '' : detailInfo.township,
 				businessAreas: [ [] ],
 				building: { name: [], type: [] },
 				neighborhood: { name: [], type: [] },
 				citycode: ''
 			}
+			state.obtainLocationCount = state.obtainLocationCount + 1
 		}
 	},
 

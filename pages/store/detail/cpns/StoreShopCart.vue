@@ -193,5 +193,55 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '../../../../user/sever/css/shop-car.less';
+.shop-car-container {
+	padding: 72upx 32upx;
+	padding-bottom: 130upx;
+	box-sizing: border-box;
+
+	.icon {
+		width: 34upx;
+		height: 34upx;
+		flex-shrink: 0;
+		margin-right: 24upx;
+	}
+
+	.shop-list {
+
+		.shop-car-list {
+			margin-bottom: 20px;
+		}
+
+		.shop-card-name {
+			font-size: 24upx;
+			padding: 20upx 0;
+			margin-top: 30upx;
+			font-weight: bold;
+			border-bottom: 1upx solid #cdcdcd;
+			display: flex;
+			align-items: center;
+
+			.icon {
+				margin-right: 10upx
+			}
+		}
+
+		.goods-item {
+			display: flex;
+			align-items: center;
+			box-sizing: border-box;
+			margin-top: 30upx;
+
+		}
+
+		.no-data {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-height: 180upx;
+			color: #999999;
+			font-size: 36upx;
+			letter-spacing: 2px;
+		}
+	}
+}
 </style>
