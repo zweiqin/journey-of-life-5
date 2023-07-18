@@ -146,11 +146,12 @@ export default {
 							} else {
 								uni.showLoading()
 								updateNotBindingWxPhone({
-									openId: data.userInfo.openId,
-									nickname: data.userInfo.nickname,
-									sex: data.userInfo.gender,
-									headimgurl: data.userInfo.avatarUrl,
-									unionid: data.userInfo.unionid
+									// openId: data.userInfo.openId,
+									// nickname: data.userInfo.nickname,
+									// sex: data.userInfo.gender,
+									// headimgurl: data.userInfo.avatarUrl,
+									// unionid: data.userInfo.unionid
+									...data.userInfo
 								})
 									.then((res) => {
 										uni.hideLoading()

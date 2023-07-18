@@ -2,8 +2,8 @@
 	<view class="publication-type-container">
 		<JHeader style="padding: 40upx 40upx 0;" width="50" height="50" title="发放类型"></JHeader>
 		<tui-tabs
-			:item-width="userInfo.roleIds === 6 || userInfo.roleIds === 7 ? '50%' : '100%'" selected-color="#000000" bold slider-bg-color="#ff0000"
-			:tabs="userInfo.roleIds === 6 || userInfo.roleIds === 7 ? [{ name: '红包' }, { name: '优惠券' }] : [ { name: '红包' } ]" :current-tab="currentTab"
+			:item-width="userInfo.roleIds === 6 ? '50%' : '100%'" selected-color="#000000" bold slider-bg-color="#ff0000"
+			:tabs="userInfo.roleIds === 6 ? [{ name: '红包' }, { name: '优惠券' }] : [ { name: '红包' } ]" :current-tab="currentTab"
 			@change="(e) => currentTab = e.index"
 		></tui-tabs>
 
@@ -153,13 +153,6 @@ export default {
 	},
 
 	methods: {
-		// 点击进入模板选择页面
-		handleChoosePublish() {
-			uni.navigateTo({
-				url: '/user/marketing-tools/red-envelope-distribution/publication-type'
-			})
-		},
-
 		handleCouponUse(item) {
 			uni.navigateBack({
 				delta: 1,

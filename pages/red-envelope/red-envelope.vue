@@ -26,15 +26,15 @@
 					transform: showRedPackage ? 'scale(1)' : 'scale(0)'
 				}"
 			>
+				<!-- :desc="redForm.remark" :src="redForm.imageUrl" :name="redForm.publisherName" :avatar="redForm.picUrl" -->
 				<JRedEnvelope
-					:is-show="showRedPackage" :show-type="redEnvelopeType" :desc="redForm.remark" :src="redForm.imageUrl"
-					:name="redForm.publisherName" :avatar="redForm.picUrl"
+					:is-show="showRedPackage" :show-type="redEnvelopeType" :data="redForm"
 					@click-red="handleClickRed" @close="handleClose"
 				>
 				</JRedEnvelope>
 			</view>
 
-		<!-- <Controls :marks="allMarks" @receive="handleReceive"></Controls> -->
+			<!-- <Controls :marks="allMarks" @receive="handleReceive"></Controls> -->
 		</view>
 		<view v-else-if="!showMap && !isGetLocation" style="text-align: center;">
 			<view style="margin-top: 40vh;">
@@ -48,6 +48,8 @@
 				<view style="margin-top: 44upx;font-size: 24upx;color: #bbbbbb;">注：该定位用于提供地图红包服务</view>
 			</view>
 		</view>
+
+		<TabBar></TabBar>
 	</view>
 </template>
 
@@ -58,7 +60,19 @@ import { delayedLoginStatus, getUserId } from '../../utils'
 
 export default {
 	name: 'RedEnvelope',
-	onLoad() { },
+	onLoad() {
+		// uni.showTabBar({
+		// 	success: () => {
+		// 		console.log(11111)
+		// 	},
+		// 	fail: () => {
+		// 		console.log(22222)
+		// 	},
+		// 	complete: () => {
+		// 		console.log(33333)
+		// 	}
+		// })
+	},
 
 	components: {
 		// Controls
@@ -74,14 +88,14 @@ export default {
 			markers: [],
 			longitude: 0,
 			latitude: 0,
-			scale: 16,
-			redForm: { },
+			scale: 15,
+			redForm: { wrapRedText: {} },
 			allMarks: [],
 			showMap: false,
 			isGetLocation: true,
 			isChoosingLocation: false,
-			showRedPackage: false,
-			redEnvelopeType: 0,
+			showRedPackage: true, // false
+			redEnvelopeType: 1, // 0
 			circles: []
 		}
 	},
@@ -166,6 +180,55 @@ export default {
 				// latitude: 22.89223
 			}).then((res) => {
 				this.allMarks = res.data
+				this.allMarks = [{
+					'userId': '409',
+					'brandId': '1001226',
+					'wrapType': '0',
+					'longitude': '113.3210370',
+					'latitude': '23.1179010',
+					'type': '0',
+					'redpackNumber': '10',
+					'redpackAllmonkey': '100.00',
+					'effectiveDistance': '5',
+					'wrapRedText': {
+						'publisherText': '内容',
+						'bindLink': '海波链接',
+						'business': '业务外键',
+						'picUrl': '红包图片'
+					}
+				}, {
+					'userId': '409',
+					'brandId': '1001226',
+					'wrapType': '0',
+					'longitude': '113.3210370',
+					'latitude': '23.1179010',
+					'type': '0',
+					'redpackNumber': '10',
+					'redpackAllmonkey': '100.00',
+					'effectiveDistance': '5',
+					'wrapRedText': {
+						'publisherText': '内容',
+						'bindLink': '海波链接',
+						'business': '业务外键',
+						'picUrl': '红包图片'
+					}
+				}, {
+					'userId': '409',
+					'brandId': '1001226',
+					'wrapType': '0',
+					'longitude': '113.3210370',
+					'latitude': '23.1179010',
+					'type': '0',
+					'redpackNumber': '10',
+					'redpackAllmonkey': '100.00',
+					'effectiveDistance': '5',
+					'wrapRedText': {
+						'publisherText': '内容',
+						'bindLink': '海波链接',
+						'business': '业务外键',
+						'picUrl': '红包图片'
+					}
+				}]
 				console.log(this.allMarks)
 				const made = []
 				for (const redPack of res.data) {
@@ -173,9 +236,9 @@ export default {
 						id: redPack.id,
 						latitude: redPack.latitude,
 						longitude: redPack.longitude,
-						title: redPack.remark + '的红包',
-						width: 45,
-						height: 45,
+						title: (redPack.brandName || redPack.username) + '的红包',
+						width: 40,
+						height: 40,
 						anchor: {
 							x: 0.5,
 							y: 0.5
@@ -195,34 +258,34 @@ export default {
 			this.getRedEnvelopeList()
 		},
 
-		handleClickRed(e) {
-			this.redEnvelopeType = 1
-			addWrapRedReceiveApi({
-				wrapId: this.redForm.id,
-				userId: getUserId()
-			}).then((res) => {
-				console.log(res)
-				this.$showToast(res.data)
-				this.getRedEnvelopeList()
-			})
-		},
-
 		handleReceive(e) {
 			// console.log(e)
+			this.redForm = {}
 			if (!getUserId()) return
 			const { markerId } = e.detail
 			if (markerId) {
 				const currentMark = this.allMarks.find((item) => item.id == markerId)
 				if (currentMark) {
-					this.redForm = currentMark
-					console.log(this.redForm)
+					console.log(currentMark)
 					this.redEnvelopeType = 0
 					this.showRedPackage = true
 				}
 			} else {
-				this.redForm = {}
 				this.$showToast('获取红包信息失败')
 			}
+		},
+
+		handleClickRed(e) {
+			addWrapRedReceiveApi({
+				wrapId: this.redForm.id,
+				userId: getUserId()
+			}).then((res) => {
+				console.log(res)
+				// this.$showToast(res.data)
+				this.redForm = res.data || {}
+				this.redEnvelopeType = 1
+				this.getRedEnvelopeList()
+			})
 		},
 
 		// getLoaction() {
@@ -303,6 +366,7 @@ export default {
 	position: fixed;
 	top: 0;
 	left: 0;
+	z-index: 1000;
 	width: 100vw;
 	height: 100vh;
 	// background-color: rgb(255, 255, 255);
@@ -376,7 +440,7 @@ export default {
 	width: 193rpx;
 	height: 193rpx;
 	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
-	background: rgba(255, 204, 102, 0.8);
+	background: rgba(255, 204, 102, 1);
 	border-radius: 50%;
 	display: flex;
 	align-items: center;

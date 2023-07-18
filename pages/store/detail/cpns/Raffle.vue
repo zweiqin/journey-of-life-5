@@ -31,7 +31,7 @@
 											:style="{ 'backgroundColor': index % 2 === 0 ? '#fbddad' : '#ffffff' }"
 										>
 											<view>
-												<BeeAvatar :width="28" :height="28" radius="10upx" :src="item.url"></BeeAvatar>
+												<BeeAvatar :width="28" :height="28" radius="10upx" :src="common.seamingImgUrl(item.url)"></BeeAvatar>
 											</view>
 											<view style="font-size: 26upx;color: #FF2626;white-space: nowrap;overflow-x: auto;">
 												{{ item.name }}
@@ -59,7 +59,7 @@
 											style="width: 28%;padding: 20upx 0upx 8upx;margin: 10upx 0upx;text-align: center;background-color: #ffffff;border-radius: 28upx;box-sizing: border-box;"
 										>
 											<view>
-												<BeeAvatar :width="28" :height="28" radius="10upx" :src="middlePrize[0].url"></BeeAvatar>
+												<BeeAvatar :width="28" :height="28" radius="10upx" :src="common.seamingImgUrl(middlePrize[0].url)"></BeeAvatar>
 											</view>
 											<view style="font-size: 26upx;color: #FF2626;white-space: nowrap;overflow-x: auto;">
 												{{ middlePrize[0].name }}
@@ -78,7 +78,7 @@
 											style="width: 28%;padding: 20upx 0upx 8upx;margin: 10upx 0upx;text-align: center;background-color: #ffffff;border-radius: 28upx;box-sizing: border-box;"
 										>
 											<view>
-												<BeeAvatar :width="28" :height="28" radius="10upx" :src="middlePrize[1].url"></BeeAvatar>
+												<BeeAvatar :width="28" :height="28" radius="10upx" :src="common.seamingImgUrl(middlePrize[1].url)"></BeeAvatar>
 											</view>
 											<view style="font-size: 26upx;color: #FF2626;white-space: nowrap;overflow: auto;">
 												{{ middlePrize[1].name }}
@@ -107,7 +107,7 @@
 											:style="{ 'backgroundColor': index % 2 === 0 ? '#fbddad' : '#ffffff' }"
 										>
 											<view>
-												<BeeAvatar :width="28" :height="28" radius="10upx" :src="item.url"></BeeAvatar>
+												<BeeAvatar :width="28" :height="28" radius="10upx" :src="common.seamingImgUrl(item.url)"></BeeAvatar>
 											</view>
 											<view style="font-size: 26upx;color: #FF2626;white-space: nowrap;overflow-x: auto;">
 												{{ item.name }}

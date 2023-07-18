@@ -2,48 +2,33 @@
 	<view v-if="data" class="order-detail">
 		<JHeader width="50" height="50" title="订单详情"></JHeader>
 
-		<view
-			class="view-order-status" style="justify-content: space-between;" :style="{
-				'background-image': bg
-			}"
-		>
-			<view style="display: flex;align-items: center;">
-				<JIcon width="44" height="44" type="active"></JIcon>
-				{{ data.orderInfo.orderStatusText }}
-			</view>
-			<view style="padding-right: 30upx;">
-				<tui-button
-					type="warning" width="220rpx" height="60rpx" style="border-radius: 50rpx;"
-					@click="$copy(`https://h5.jfcmei.com/#/user/sever/my-group-purchase/group-purchase-detail?id=${data.groupon.id}&isJoin=true`, '复制链接成功，快发送给好友吧~')"
-				>
-					复制分享链接
-				</tui-button>
-			</view>
-
-		</view>
-
 		<!-- 订单信息 -->
-		<view class="order-info pane">
-			<view class="co-info">
-				<view class="line">
-					<JIcon width="32" height="46" class="line-icon" type="modal"></JIcon>
-					<view class="sub-title">姓名</view>
-					<view>
-						{{
-							`${data.orderInfo.consignee} ${data.orderInfo.mobile}`
-						}}
-					</view>
+		<view class="order-info">
+			<view class="view-order-status" :style="{ 'color': bg }">
+				<view style="display: flex;align-items: center;">
+					<JIcon width="44" height="44" type="active"></JIcon>
+					{{ data.orderInfo.orderStatusText }}
 				</view>
-				<view class="line">
-					<JIcon width="32" height="40" class="line-icon" type="local-black"></JIcon>
-					<view class="sub-title">地址</view>
-					<view style="color: #07b9b9">{{ data.orderInfo.address }}</view>
+				<view style="padding-right: 30upx;">
+					<tui-button
+						type="warning" width="220rpx" height="60rpx" style="border-radius: 50rpx;"
+						@click="$copy(`https://h5.jfcmei.com/#/user/sever/my-group-purchase/group-purchase-detail?id=${data.groupon.id}&isJoin=true`, '复制链接成功，快发送给好友吧~')"
+					>
+						复制分享链接
+					</tui-button>
+				</view>
+			</view>
+
+			<view>
+				<view style="margin-bottom: 16upx;font-size: 30upx;font-weight: bold;">{{ data.orderInfo.address }}</view>
+				<view style="display: flex;flex-wrap: wrap;margin-bottom: 20upx;font-size: 28upx;color: #8D8D8D;">
+					<view>收货人：</view>
+					<view>{{ `${data.orderInfo.consignee} ${data.orderInfo.mobile}` }}</view>
 				</view>
 			</view>
 
 			<view class="goods-info">
-				<view class="title">商品信息</view>
-
+				<view style="font-weight: bold;">商品信息</view>
 				<view
 					v-for="item in data.orderGoods" :key="item.id"
 					style="border-bottom: 1upx dotted #ccc; padding-bottom: 20upx"
@@ -51,35 +36,32 @@
 					<view v-if="commentGoodsId ? item.id == commentGoodsId : true" class="goods-item">
 						<image :src="common.seamingImgUrl(item.picUrl)" class="goods-img" mode="" />
 						<view class="goods-info-content">
-							<view class="goods-name">{{ item.goodsName }}</view>
-							<!-- <view class="sp">{{ item.specifications | fomatSp }}</view>
-								<view class="goods-price"> ￥{{ item.price }}</view> -->
+							<!-- <view class="goods-name">{{ item.goodsName }}</view>
+								<view class="sp">{{ item.specifications | fomatSp }}</view> -->
 							<view class="sp">{{ item.goodsSpecificationValues | fomatSp }}</view>
 							<view class="goods-price"> ￥{{ item.retailPrice }}</view>
+							<view class="goods-price">
+								<text style="font-size: 24upx;">￥</text>
+								<text>{{ item.price }}</text>
+							</view>
 						</view>
 						<view class="goods-number">x{{ item.number }}</view>
 					</view>
-
 					<!-- 评论 -->
-					<view
-						v-if="data.orderInfo.handleOption.comment && item.id == commentGoodsId && isJoin === 'false'
-						" class="evaluate-info pane"
-					>
+					<view v-if="data.orderInfo.handleOption.comment && item.id == commentGoodsId" class="evaluate-info pane">
 						<view class="line">
-							<view class="title">满意</view>
+							<view style="margin-right: 12upx;">满意</view>
 							<uni-rate v-model="evForm.star"></uni-rate>
 						</view>
-
 						<view class="line">
-							<view class="title">评论</view>
+							<view style="margin-right: 12upx;">评论</view>
 							<textarea
 								v-model="evForm.content" placeholder="请输入商品评论" class="evaluate-textarea"
 								maxlength="200"
 							></textarea>
 						</view>
-
 						<view class="line">
-							<view class="title">晒图/视频</view>
+							<view>晒图/视频</view>
 							<view class="images">
 								<view v-for="item in evForm.picUrls" :key="item">
 									<image class="user-upload-img" :src="common.seamingImgUrl(item)" mode="" />
@@ -90,25 +72,6 @@
 					</view>
 				</view>
 			</view>
-		</view>
-
-		<view
-			v-if="verificationCodeUrl"
-			style="margin: 24upx;padding: 18upx;text-align: center;font-size: 32upx;font-weight: bold;color: red;background-color: #ffffff;"
-		>
-			<view>请到店向商家出示该核销码</view>
-			<view style="display: flex;justify-content: center;align-items: center;">
-				<view>{{ verificationCode || '--' }}</view>
-				<tui-button
-					margin="0 0 0 20upx" type="warning" width="120rpx" height="50rpx"
-					style="border-radius: 50rpx;"
-					@click="$copy(verificationCode)"
-				>
-					复制
-				</tui-button>
-			</view>
-			<!-- <image style="width: 420upx;" :src="verificationCodeUrl" mode="" /> -->
-			<image style="width: 420upx;" mode="widthFix" :src="verificationCodeUrl" />
 		</view>
 
 		<view class="detail-info pane">
@@ -169,23 +132,49 @@
 
 		<!-- 详细信息 -->
 		<view class="detail-info pane">
-			<view class="detail-info-title">详细信息</view>
-
+			<view class="detail-info-title">订单信息</view>
 			<view class="line">
-				<view class="title">订单编号</view>
-				<view class="text">{{ data.orderInfo.orderSn }}</view>
+				<view class="title">商品总额</view>
+				<view class="text" style="color: red">
+					<text style="font-size: 24upx;">￥</text>
+					<text>{{ data.orderInfo.goodsPrice }}</text>
+				</view>
+			</view>
+			<view class="line">
+				<view class="title">实付款</view>
+				<view class="text" style="color: red">
+					<text style="font-size: 24upx;">￥</text>
+					<text>{{ data.orderInfo.actualPrice }}</text>
+				</view>
 			</view>
 			<view class="line">
 				<view class="title">下单时间</view>
 				<view class="text">{{ data.orderInfo.addTime }}</view>
 			</view>
 			<view class="line">
-				<view class="title">实付金额</view>
-				<view class="text" style="color: red">￥{{ data.orderInfo.actualPrice }}</view>
+				<view class="title">订单编号</view>
+				<view class="text">
+					<text>{{ data.orderInfo.orderSn }}</text>
+					<text style="margin-left: 12upx;color: #0061C8;" @click="$copy(data.orderInfo.orderSn)">复制</text>
+				</view>
 			</view>
 			<view class="line">
-				<view class="title" style="min-width: 10%;">备注</view>
-				<view class="text">{{ data.orderInfo.message }}</view>
+				<view class="title">备注</view>
+				<view class="text">{{ data.orderInfo.message || '无备注' }}</view>
+			</view>
+			<view class="line">
+				<view class="title">交易号</view>
+				<view class="text">
+					<text>{{ data.orderInfo.id || '--' }}</text>
+					<text style="margin-left: 12upx;color: #0061C8;" @click="$copy(data.orderInfo.id)">复制</text>
+				</view>
+			</view>
+			<view class="line">
+				<view class="title">遇到问题</view>
+				<view class="text" style="display: flex;" @click="go('/user/sever/customer-service/customer-service')">
+					<BeeIcon src="../../static/images/icon/kefu.png" :size="20"></BeeIcon>
+					<text style="margin-left: 16upx;">联系客服</text>
+				</view>
 			</view>
 		</view>
 
@@ -193,9 +182,9 @@
 			<view v-for="item in orderOpButtons" :key="item.label">
 				<button
 					v-if="data.orderInfo.handleOption[item.key]" :style="{
-						background: item.label === '去评论' ? 'rgb(132, 195, 65)' : '',
-						color: item.label === '去评论' ? '#fff' : '',
-						border: item.label === '去评论' ? 'none' : ''
+						background: item.label === '去评论' ? '#84c341' : '',
+						color: item.label === '去评论' ? '#ffffff' : item.label === '去支付' ? '#FF0000' : '#3d3d3d',
+						border: item.label === '去评论' ? 'none' : item.label === '去支付' ? '1upx solid #FF0000' : '1upx solid #3d3d3d'
 					}" class="uni-btn" @click="handleOpOrder(data.orderInfo, item.key)"
 				>
 					{{ item.label === "去评论" ? "发布评论" : item.label }}
@@ -251,7 +240,7 @@ import {
 	addCommentPostApi,
 	orderRefundApi
 } from '../../../api/order'
-import { getVerificationCodeHxCodeApi, getOrderRefundsReasonApi, getGrouponDetailApi } from '../../../api/user'
+import { getOrderRefundsReasonApi, getGrouponDetailApi } from '../../../api/user'
 import { getUserId, payFn } from '../../../utils'
 import { orderOpButtons } from '../../orderForm/config'
 import { payOrderGoodsApi } from '../../../api/goods'
@@ -283,7 +272,6 @@ export default {
 				hasPicture: true,
 				picUrls: []
 			},
-			verificationCodeUrl: '',
 			isShowRefundDialog: false,
 			refundRadioItems: [],
 			tempRefund: {
@@ -305,8 +293,7 @@ export default {
 	computed: {
 		bg() {
 			const data = {
-				已取消: 'linear-gradient(to right, #959595, #d3d3d3)',
-				未支付: 'linear-gradient(to right, #fa5151, #fddbdb)'
+				'已取消(系统)': '#959595'
 			}
 			return data[this.data.orderInfo.orderStatusText]
 		}
@@ -322,20 +309,7 @@ export default {
 			}).then(({ data }) => {
 				this.data = data
 				uni.hideLoading()
-				if (this.isJoin === 'false') {
-					getVerificationCodeHxCodeApi({
-						url: `https://h5.jfcmei.com/#/pages/jump/jump?userId=${getUserId()}&orderId=${data.orderInfo.id}&type=verification&code=${data.orderInfo.id}-`
-					}).then((res) => {
-						console.log(res)
-						if (res.errno === -1) return
-						// res.data.hxCode；res.data.code；res.data.orderType：0商城1本地
-						this.verificationCode = res.data.code
-						this.verificationCodeUrl = res.data.hxCode
-					})
-						.catch((e) => {
-							uni.hideToast()
-						})
-				}
+				if (this.isJoin === 'false') { }
 			})
 		},
 
@@ -479,32 +453,14 @@ export default {
 <style lang="less" scoped>
 .order-detail {
 	width: 100%;
-	height: 100vh;
-	background-color: #f4f4f4;
-	font-size: 28upx;
-	color: #3d3d3d;
-	padding-bottom: 400upx;
+	min-height: 100vh;
+	background-color: #ffffff;
+	padding-bottom: 110upx;
 	// box-sizing: border-box;
 
 	/deep/ .j-header-container {
 		padding: 20upx;
 		box-sizing: border-box;
-		background: #fff;
-	}
-
-	.view-order-status {
-		display: flex;
-		align-items: center;
-		height: 114upx;
-		padding-left: 60upx;
-		box-sizing: border-box;
-		background-image: linear-gradient(to right, #fa5151, #fddbdb);
-		color: #fff;
-		font-size: 36upx;
-
-		.j-icon {
-			margin-right: 20upx;
-		}
 	}
 
 	.pane {
@@ -514,35 +470,25 @@ export default {
 	}
 
 	.order-info {
-		.co-info {
+		padding: 20upx 40upx;
 
-			padding-bottom: 20upx;
-			border-bottom: 1upx solid #dadada;
+		.view-order-status {
+			display: flex;
+			align-items: center;
+			margin-bottom: 20upx;
+			box-sizing: border-box;
+			// background-image: linear-gradient(to right, #fa5151, #fddbdb);
+			color: #FF0000;
+			font-size: 34upx;
+			font-weight: bold;
 
-			.line {
-				display: flex;
-				justify-content: flex-start;
-				align-items: flex-start;
-
-				.line-icon {
-					margin-right: 20upx;
-					flex-shrink: 0;
-				}
-
-				&:nth-child(1) {
-					margin-bottom: 20upx;
-				}
-
-				.sub-title {
-					margin-right: 20upx;
-					flex-shrink: 0;
-				}
+			.j-icon {
+				margin-right: 20upx;
 			}
 		}
 
 		.goods-info {
-			margin: 20upx 0;
-			// border-bottom: 1upx dotted #f40;
+			padding: 20upx 0;
 
 			.goods-item {
 				display: flex;
@@ -551,11 +497,10 @@ export default {
 				margin-top: 30upx;
 
 				.goods-img {
-					width: 140upx;
-					height: 140upx;
-					border-radius: 4upx;
+					width: 126upx;
+					height: 126upx;
+					border-radius: 12upx;
 					margin-right: 20upx;
-					flex-shrink: 0;
 				}
 
 				.goods-info-content {
@@ -573,34 +518,14 @@ export default {
 					}
 
 					.sp {
-						margin: 20upx 0 10upx;
+						margin: 8upx 0 10upx;
 					}
 
 					.goods-price {
 						font-size: 28upx;
+						color: #FA5151;
 					}
 				}
-			}
-		}
-	}
-
-	.detail-info {
-		margin-top: 20upx;
-		color: #000;
-
-		.detail-info-title {
-			margin-bottom: 20upx;
-		}
-
-		.line {
-			display: flex;
-			// align-items: center;
-			justify-content: space-between;
-			font-size: 24upx;
-			padding: 10upx 0;
-
-			.title {
-				color: #3d3d3d;
 			}
 		}
 	}
@@ -608,13 +533,6 @@ export default {
 	.evaluate-info {
 		margin-top: 20upx;
 		padding: 0;
-
-		.sub-eval-btn {
-			margin-top: 80upx;
-			font-size: 28upx;
-			border-top: 1upx solid #d8d8d8;
-			padding-top: 30upx;
-		}
 
 		.line {
 			padding: 16upx 0;
@@ -632,6 +550,30 @@ export default {
 				.images {
 					display: flex;
 					flex-wrap: wrap;
+					margin-top: 16upx;
+
+					.user-upload-img {
+						width: 120upx;
+						height: 120upx;
+						border-radius: 6upx;
+						object-fit: cover;
+						margin-right: 10upx;
+						margin-bottom: 10upx;
+					}
+
+					.upload-icon {
+						width: 120upx;
+						height: 120upx;
+						border-radius: 6upx;
+						background-color: #d8d8d8;
+						color: #fff;
+						font-size: 54upx;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						padding: 0 6upx 6upx 0;
+						box-sizing: border-box;
+					}
 				}
 			}
 
@@ -643,32 +585,35 @@ export default {
 
 			.evaluate-textarea {
 				flex: 1;
-				height: 200upx;
+				height: 160upx;
 			}
 
-			.images {
-				.user-upload-img {
-					width: 120upx;
-					height: 120upx;
-					border-radius: 6upx;
-					object-fit: cover;
-					margin-right: 10upx;
-					margin-bottom: 10upx;
-				}
+		}
+	}
 
-				.upload-icon {
-					width: 120upx;
-					height: 120upx;
-					border-radius: 6upx;
-					background-color: #d8d8d8;
-					color: #fff;
-					font-size: 54upx;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-					padding: 0 6upx 6upx 0;
-					box-sizing: border-box;
-				}
+	.detail-info {
+		margin-top: 20upx;
+
+		.detail-info-title {
+			font-weight: bold;
+			margin-bottom: 10upx;
+		}
+
+		.line {
+			display: flex;
+			justify-content: space-between;
+			font-size: 28upx;
+			padding: 16upx 0 16upx 12upx;
+
+			.title {
+				min-width: 142upx;
+				color: #3d3d3d;
+				text-align: justify;
+				text-align-last: justify;
+			}
+
+			.text {
+				font-weight: bold;
 			}
 		}
 	}
@@ -687,42 +632,13 @@ export default {
 		background-color: #fff;
 
 		.uni-btn {
-			border: 1upx solid #3d3d3d;
-			padding: 18upx 28upx;
-			color: #3d3d3d;
-			font-size: 28upx;
 			margin-left: 30upx;
+			padding: 18upx 28upx;
+			font-size: 28upx;
+			font-weight: bold;
+			border-radius: 50upx;
 		}
 	}
 
-	.apponit-info {
-		display: flex;
-		align-items: center;
-	}
-
-	// .apponit {
-	// 	display: flex;
-	// 	justify-content: center;
-	// 	align-items: center;
-	// 	margin-top: 20upx;
-	// 	flex-direction: column;
-	// 	padding-bottom: 100upx;
-
-	// 	.tip {
-	// 		color: red;
-	// 	}
-
-	// 	.qrcode {
-	// 		width: 700upx;
-	// 		height: 700upx;
-	// 		object-fit: cover;
-	// 	}
-
-	// 	.code {
-	// 		font-size: 40upx;
-	// 		font-weight: bold;
-	// 		color: #ccc;
-	// 	}
-	// }
 }
 </style>

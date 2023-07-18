@@ -59,6 +59,12 @@ export default {
 					field: 'gooIds',
 					type: 'table',
 					placeholder: '请选择关联商品'
+				},
+				{
+					label: '关联商品1：',
+					field: 'goodsObj',
+					type: 'table',
+					placeholder: '请选择关联商品'
 				}
 			],
 			uploadFields: [
@@ -70,7 +76,7 @@ export default {
 			form: {
 				basicInfo: {
 					id: '',
-					name: '',
+					name: '预约项目',
 					desc: '',
 					pid: '',
 					gooIds: [],
@@ -112,8 +118,8 @@ export default {
 		submit() {
 			const data = {
 				...this.form.imgs,
-				...this.form.basicInfo,
-				brandId: getBrandId()
+				...this.form.basicInfo
+			// brandId: getBrandId()
 			}
 			console.log(data)
 			if (!data.brandId) {
@@ -145,7 +151,7 @@ export default {
 				content: '确认提交预约项目表单？',
 				success: (res) => {
 					if (res.confirm) {
-						if (data.goods.id) {
+						if (data.id) {
 							updateBrandAppointmentCategoryApi(data).then((res) => {
 								this.$showToast('修改预约项目成功')
 								setTimeout(() => {

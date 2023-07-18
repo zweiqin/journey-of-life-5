@@ -22,18 +22,18 @@
 			<tui-icon :size="24" name="gps"></tui-icon>
 		</view>
 
-		<view class="order-main-area pane">
+		<view v-if="orderInfo" class="order-main-area pane">
 			<view class="goods-item">
 				<BeeAvatar
 					:size="60" radius="10upx"
 					src="https://img0.baidu.com/it/u=833683927,1099936825&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=1422"
 				></BeeAvatar>
 				<view class="good-detial">
-					<view class="name">{{ goodsDetail.goodsName }}</view>
-					<view class="font-12 f-c-77">已选：{{ goodsDetail.productInfo.product.specifications.join(',') }}</view>
+					<view class="name">{{ orderInfo.info.name }}</view>
+					<view class="font-12 f-c-77">已选：{{ orderInfo.currentSpecification }}</view>
 					<view class="price-text">
 						<view class="price-wrapper">
-							<text class="current-price">￥{{ goodsDetail.productInfo.product.price }}</text>
+							<text class="current-price">￥{{ orderInfo.selectedProduct.product.price }}</text>
 							<!-- <text class="old-price">￥987</text> -->
 						</view>
 						<view class="op">
@@ -41,7 +41,7 @@
 								:size="22" :src="require('../../../static/brand/order-detail/jian.png')"
 								@click="handleOpNumber(-1)"
 							></BeeIcon>
-							<text class="number">{{ goodsDetail.productInfo.number }}</text>
+							<text class="number">{{ orderInfo.number }}</text>
 							<BeeIcon
 								:size="22" :src="require('../../../static/brand/order-detail/add.png')"
 								@click="handleOpNumber(+1)"
@@ -52,36 +52,37 @@
 			</view>
 		</view>
 
-		<!-- <view class="total pane">
-			<view class="item">
-			<view class="title">菜品数</view>
-			<view class="value">菜品数</view>
+		<view
+			v-if="orderInfo.info.supportVoucher"
+			style="display: flex;justify-content: space-between;align-items: center;padding: 20upx 18upx;margin-top: 20upx;background-color: #fff;"
+		>
+			<view style="color: #696969;">是否使用代金劵：</view>
+			<view>
+				<text>代金劵持有 {{ voucherNumber }}</text>
+				<switch
+					:checked="opForm.useVoucher" disabled style="transform: scale(0.7)"
+					@click="handleChangeUseVoucherStatus"
+				/>
 			</view>
-			<view class="item">
-			<view class="title">菜品数</view>
-			<view class="value">
-			优惠劵 <BeeIcon name="arrowright"></BeeIcon>
-			</view>
-			</view>
-			<view class="item no font-16">
-			小计
-			<text class="total-price font-16 p-color">
-			￥987
-			</text>
-			</view>
-			</view> -->
-
-		<CouponUse :brand-id="goodsDetail.brandId" @choose="handleChooseCoupon"></CouponUse>
+		</view>
+		<CouponUse :brand-id="orderInfo.brandId" @choose="handleChooseCoupon"></CouponUse>
 
 		<view class="footer-container f-s-b">
 			<view class="finl-price">
 				<text>
 					实付
 				</text>
-				<text class="p-color">￥ <text style="font-size: 48upx;" class="f-w-500">{{ orderCost.actualPrice }}</text></text>
+				<text class="p-color">
+					￥ <text style="font-size: 48upx;" class="f-w-500">
+						{{ calcOrderMsg.actualPrice }}
+					</text>
+				</text>
 			</view>
 			<button class="bee-btn r-5 f-w-500 f-center" @click="handleToPay">
-				<text v-if="orderType === '1'">{{ grouponRulesId && !grouponLinkId ? '发起团购' : grouponRulesId && grouponLinkId ? '加入团购' : '提交订单' }}</text>
+				<text v-if="orderType === '1'">
+					{{ grouponRulesId && !grouponLinkId ? '发起团购' : grouponRulesId && grouponLinkId
+						? '加入团购' : '提交订单' }}
+				</text>
 				<text v-else-if="orderType === '2'">立即预约</text>
 			</button>
 		</view>
@@ -90,20 +91,26 @@
 </template>
 
 <script>
+import { getVoucherNumberApi } from '../../../api/user'
 import { payShopCarApi, updateShopCarCountApi } from '../../../api/cart'
 import { submitOrderApi, payOrderGoodsApi, firstAddCar } from '../../../api/goods'
+import { getUserId, payFn } from '../../../utils'
 import { getAddressListApi } from '../../../api/address'
-import { J_SELECT_ADDRESS } from '../../../constant'
-import { payFn } from '../../../utils/pay'
+import { J_ONE_PAY_GOODS, J_SELECT_ADDRESS } from '../../../constant'
 
 export default {
 	name: 'OrderDetail',
 	data() {
 		return {
 			orderType: '', // 1本地2预约
-			goodsDetail: {},
-			carId: null,
-			orderCost: {},
+			voucherNumber: '', // 代金券持有
+			orderInfo: null, // 订单相关信息
+			cartId: '', // 购物车id
+			opForm: {
+				message: '',
+				useVoucher: false
+			},
+			calcOrderMsg: {},
 			startAddress: {},
 			couponId: 0,
 			grouponRulesId: '',
@@ -111,13 +118,10 @@ export default {
 		}
 	},
 	onLoad(options) {
-		options.productInfo = JSON.parse(options.productInfo)
 		this.grouponRulesId = options.rulesId || ''
 		this.grouponLinkId = options.linkId || ''
 		this.orderType = options.orderType
-		this.goodsDetail = options
-		console.log(this.goodsDetail)
-		this.addShopCar()
+		this.getOrderInfo()
 	},
 	onShow() {
 		this.getAddressList()
@@ -131,78 +135,111 @@ export default {
 				return
 			}
 			const { data } = await getAddressListApi({
-				userId: this.userId
+				userId: getUserId()
 			})
-			const _this = this
 			data.forEach((address) => {
-				if (address.isDefault) {
-					_this.startAddress = address
-				}
+				if (address.isDefault) this.startAddress = address
 			})
-			if (!this.startAddress) {
-				this.startAddress = data[0]
-			}
+			if (!this.startAddress) this.startAddress = data[0]
 			this.startAddress = data[0] || {}
 		},
 
-		// 立即添加购物车
-		async addShopCar() {
-			const { data } = await firstAddCar({
-				userId: this.userId,
-				goodsId: this.goodsDetail.goodsId,
-				productId: this.goodsDetail.productInfo.product.id,
-				number: this.goodsDetail.productInfo.number,
+		// 获取订单信息
+		getOrderInfo() {
+			this.orderInfo = uni.getStorageSync(J_ONE_PAY_GOODS)
+			if (this.orderInfo.info.supportVoucher) {
+				this.getVoucherHold()
+			}
+			this.getCardId()
+		},
+
+		// 获取代金劵持有
+		getVoucherHold() {
+			getVoucherNumberApi({ userId: getUserId() })
+				.then(({ data }) => {
+					this.voucherNumber = (data && data.length && data[0].number) || 0
+				})
+		},
+
+		getCardId() {
+			const data = {
+				userId: getUserId(),
+				goodsId: this.orderInfo.info.id,
+				productId: this.orderInfo.selectedProduct.product.id,
+				number: this.orderInfo.number,
+				useVoucher: this.opForm.useVoucher,
 				type: this.orderType
+			}
+			firstAddCar(data)
+				.then(({ data }) => {
+					this.cartId = data
+					this.calcOrderCost()
+				})
+		},
+
+		// 计算订单费用
+		calcOrderCost() {
+			uni.showLoading()
+			const data = {
+				// addressId: this.startAddress.id,
+				brandId: this.orderInfo.info.brandId,
+				cartId: this.cartId,
+				userId: getUserId(),
+				couponId: this.couponId,
+				grouponRulesId: this.grouponRulesId,
+				useVoucher: this.opForm.useVoucher,
+				number: this.orderInfo.number
+			}
+			payShopCarApi(data).then(({ data }) => {
+				this.calcOrderMsg = data
+				uni.hideLoading()
 			})
-			this.carId = data
-			this.calcPrice()
+		},
+
+		// 是否使用代金劵
+		handleChangeUseVoucherStatus(e) {
+			if (this.opForm.useVoucher) {
+				this.opForm.useVoucher = false
+				this.calcOrderCost()
+			} else if (this.calcOrderMsg && this.calcOrderMsg.actualPrice) {
+				if (Number(this.calcOrderMsg.actualPrice) <= Number(this.voucherNumber)) {
+					this.opForm.useVoucher = true
+					this.calcOrderCost()
+				} else {
+					this.opForm.useVoucher = false
+					return this.$showToast('代金券数量不足')
+				}
+			} else {
+				this.opForm.useVoucher = false
+				return this.$showToast('获取订单费用失败')
+			}
 		},
 
 		// 修改数量
 		async handleOpNumber(number) {
-			if (number < 0 && this.goodsDetail.productInfo.number == 1) {
-				return
-			}
-			this.goodsDetail.productInfo.number += number
+			if (number < 0 && this.orderInfo.number == 1) return
+			this.orderInfo.number += number
 			try {
 				await updateShopCarCountApi({
-					userId: this.userId,
-					goodsId: this.goodsDetail.goodsId,
-					productId: this.goodsDetail.productInfo.product.id,
-					number: this.goodsDetail.productInfo.number,
-					id: this.carId
+					userId: getUserId(),
+					goodsId: this.orderInfo.info.id,
+					productId: this.orderInfo.selectedProduct.product.id,
+					number: this.orderInfo.number,
+					id: this.cartId
 				})
-				this.calcPrice()
+				this.calcOrderCost()
 			} catch (error) {
 				this.ttoast({
 					title: '修改失败',
 					type: 'fail'
 				})
-				this.goodsDetail.productInfo.number += -number
+				this.orderInfo.number += -number
 			}
 		},
 
 		handleChooseCoupon(item) {
 			this.couponId = item.id
-			this.calcPrice()
-		},
-
-		// 计算价格
-		async calcPrice() {
-			uni.showLoading({
-				title: '加载中...'
-			})
-			const { data } = await payShopCarApi({
-				useVoucher: false,
-				brandId: this.goodsDetail.brandId,
-				userId: this.userId,
-				grouponRulesId: this.grouponRulesId,
-				couponId: this.couponId,
-				cartId: this.carId,
-				number: this.goodsDetail.productInfo.number
-			})
-			uni.hideLoading()
-			this.orderCost = data
+			this.calcOrderCost()
 		},
 
 		// 提交订单支付
@@ -214,21 +251,21 @@ export default {
 				})
 				return
 			}
-			const _this = this
 			const submitData = {
-				userId: this.userId,
-				cartId: this.carId,
+				userId: getUserId(),
+				cartId: this.cartId,
+				addressId: this.startAddress.id,
 				couponId: this.couponId,
 				grouponRulesId: this.grouponRulesId,
 				grouponLinkId: this.grouponLinkId,
-				brandId: this.goodsDetail.brandId,
+				brandId: this.orderInfo.brandId,
 				useVoucher: false,
-				addressId: this.startAddress.id
+				...this.opForm
 			}
 			submitOrderApi(submitData).then(({ data }) => {
 				payOrderGoodsApi({
 					orderNo: data.orderSn,
-					userId: _this.userId,
+					userId: getUserId(),
 					payType: 1
 				}).then((res) => {
 					payFn(res)
@@ -243,127 +280,108 @@ export default {
 @import '~@/style/mixin.less';
 
 .order-detail-container {
-  .pdd(27upx 22upx);
-  min-height: 100vh;
-  background-color: #F6F6F6;
+	.pdd(27upx 22upx);
+	min-height: 100vh;
+	background-color: #F6F6F6;
 
-  .order-detail-header {
-    .flex();
+	.order-detail-header {
+		.flex();
 
-    .title {
-      .flex();
-    }
+		.title {
+			.flex();
+		}
 
-    .share-container {
-      .flex();
+		.share-container {
+			.flex();
 
-      text {
-        margin-right: 8upx;
-      }
-    }
-  }
+			text {
+				margin-right: 8upx;
+			}
+		}
+	}
 
-  .pane {
-    background-color: #fff;
-    margin-top: 22upx;
-    border-radius: 20upx;
-    .pdd(32upx 26upx);
-  }
+	.pane {
+		background-color: #fff;
+		margin-top: 22upx;
+		border-radius: 20upx;
+		.pdd(32upx 26upx);
+	}
 
-  .total {
-    .item {
-      .flex();
-      margin-top: 6upx;
+	.order-main-area {
+		.goods-item {
+			.flex();
+			margin-bottom: 40upx;
 
-      &:nth-child(1) {
-        margin-top: 0
-      }
+			.good-detial {
+				flex: 1;
+				margin-left: 8upx;
 
-      .value {
-        .flex(flex-starty);
-      }
+				.price-text {
+					.flex();
+				}
 
-      &.no {
-        justify-content: flex-end
-      }
-    }
-  }
+				.name {
+					width: 500upx;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					-webkit-box-orient: vertical;
+					-webkit-line-clamp: 2;
+					color: #3d3d3d;
+					font-weight: 500;
+					margin-left: 10upx;
+				}
 
-  .order-main-area {
-    .goods-item {
-      .flex();
-      margin-bottom: 40upx;
+				.price-text {
+					margin-top: 8upx;
 
-      .good-detial {
-        flex: 1;
-        margin-left: 8upx;
+					text {
+						font-size: 28upx;
+						color: #fa5151;
 
-        .price-text {
-          .flex();
-        }
+						&.old-price {
+							text-decoration: line-through;
+							color: #999;
+						}
+					}
+				}
 
-        .name {
-          width: 500upx;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 2;
-          color: #3d3d3d;
-          font-weight: 500;
-          margin-left: 10upx;
-        }
+				.op {
+					.flex();
 
-        .price-text {
-          margin-top: 8upx;
+					.number {
+						width: 28upx;
+						height: 28upx;
+						text-align: center;
+						line-height: 28upx;
+						color: #000;
+						margin: 0 8upx;
+					}
+				}
+			}
+		}
+	}
 
-          text {
-            font-size: 28upx;
-            color: #fa5151;
+	.footer-container {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 120upx;
+		background-color: #fff;
+		.pdd(16upx);
 
-            &.old-price {
-              text-decoration: line-through;
-              color: #999;
-            }
-          }
-        }
+		.bee-btn {
+			width: 432upx;
+			height: 88upx;
+			background-color: #FF973F;
+			color: #fff;
+			transition: all 500ms;
 
-        .op {
-          .flex();
-
-          .number {
-            width: 28upx;
-            height: 28upx;
-            text-align: center;
-            line-height: 28upx;
-            color: #000;
-            margin: 0 8upx;
-          }
-        }
-      }
-    }
-  }
-
-  .footer-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 120upx;
-    background-color: #fff;
-    .pdd(16upx);
-
-    .bee-btn {
-      width: 432upx;
-      height: 88upx;
-      background-color: #FF973F;
-      color: #fff;
-      transition: all 500ms;
-
-      &:active {
-        opacity: 0.1;
-      }
-    }
-  }
+			&:active {
+				opacity: 0.1;
+			}
+		}
+	}
 }
 </style>

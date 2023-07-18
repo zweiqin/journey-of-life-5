@@ -22,16 +22,17 @@
 
 			<view class="time">
 				<view class="wrapper" @click="$emit('click-content', goodsData)">
-					<view class="price-wrapper">
-						<text class="price-text">￥{{ goodsData.counterPrice }}</text>
-						<text v-if="showTag && goodsData.isHot" class="price-tag">热卖</text>
-					</view>
+					<view v-if="showTag && goodsData.isHot" class="price-tag">热卖</view>
+					<view class="price-text">￥{{ goodsData.counterPrice }}</view>
 				</view>
 
-				<BeeIcon
+				<!-- <BeeIcon
 					v-if="showIcon" :size="28" :src="require('../../static/brand/detail/add-icon.png')"
 					@click="$emit('add-car', goodsData)"
-				></BeeIcon>
+					></BeeIcon> -->
+				<view v-if="showIcon" style="padding: 10upx;background-color: #ffe500;border-radius: 50%;line-height: 1;">
+					<tui-icon name="plus" color="#000000" size="28" unit="upx" bold @click="$emit('add-car', goodsData)"></tui-icon>
+				</view>
 				<slot name="button"></slot>
 			</view>
 		</view>
@@ -76,6 +77,7 @@ export default {
 	align-items: center;
 	width: 100%;
 	margin-bottom: 15upx;
+	box-sizing: border-box;
 
 	.store-goods-name {
 		color: #3d3d3d;
@@ -101,6 +103,8 @@ export default {
 			}
 
 			.price-tag {
+				width: fit-content;
+				margin-bottom: 4upx;
 				padding: 0 10upx;
 				border: 1upx solid #fa5151;
 				font-size: 20upx;

@@ -59,7 +59,7 @@ export default {
 						success(res) {
 							if (res.confirm) {
 								uni.redirectTo({
-									url: `/user/otherServe/chat/chat-detail?chat=${rootState.customerService.chatListData[0].toUserId}&name=${rootState.customerService.chatListData[0].toUserName}`
+									url: `/user/otherServe/chat/chat-detail?chat=${rootState.customerService.chatListData[0].toUserId}&name=${rootState.customerService.chatListData[0].toUsername}&avatar=${rootState.customerService.chatListData[0].toAvatarImage}`
 								})
 							} else {
 								dispatch('getCustomerServiceList')

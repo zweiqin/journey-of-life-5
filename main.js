@@ -19,7 +19,8 @@ Vue.mixin({
 				// },
 				seamingImgUrl(url) {
 					if (!url) return ''
-					return url.startsWith('https://') ? url : 'https://adminapi.jfcmei.com/admin/storage/fetch/' + url
+					// return url.startsWith('https://') ? url : 'https://adminapi.jfcmei.com/admin/storage/fetch/' + url
+					return url.startsWith('https://') ? url : 'https://jufeng-shop-1317254189.cos.ap-guangzhou.myqcloud.com/' + url
 				},
 				explainMembership(roleIds) {
 					let roleName

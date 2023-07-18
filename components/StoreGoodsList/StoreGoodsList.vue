@@ -4,7 +4,7 @@
 			v-if="brandDetail.categoryList && brandDetail.categoryList.length"
 			style="display: flex;box-sizing: border-box;"
 		>
-			<view style="background-color: #f3f3f3;">
+			<view style="background-color: #f3f3f3;max-height: 90vh;overflow-y: auto;">
 				<view
 					v-for="item in brandDetail.categoryList" :key="item.serverNameOne"
 					style="max-width: 140upx;padding: 20upx 36upx;word-break: break-all;box-sizing: border-box;"
@@ -14,7 +14,7 @@
 					{{ item.name }}
 				</view>
 			</view>
-			<view style="flex: 1;padding: 20upx;">
+			<view style="flex: 1;padding: 20upx;max-height: 90vh;overflow-y: auto;">
 				<view v-if="currentGoods && currentGoods.length">
 					<view v-for="item in currentGoods" :key="item.id">
 						<StoreGoods

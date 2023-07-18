@@ -83,7 +83,9 @@ export default {
 					position: 1,
 					phase: ''
 				},
-				imgs: {}
+				imgs: {
+					url: ''
+				}
 			}
 		}
 	},
@@ -96,7 +98,7 @@ export default {
 			uni.hideLoading()
 			if (res.errno === 0) {
 				this.form.basicInfo.name = (res.data && res.data.name) || ''
-				this.form.basicInfo.url = (res.data && res.data.url) || ''
+				this.form.imgs.url = (res.data && res.data.url) || ''
 				this.form.basicInfo.value = (res.data && res.data.value) || ''
 				this.form.basicInfo.type = res.data && res.data.type
 				this.form.basicInfo.position = res.data && res.data.position || ''
@@ -109,7 +111,8 @@ export default {
 			const data = {
 				...this.form.imgs,
 				...this.form.basicInfo,
-				brandId: getBrandId()
+				// brandId: getBrandId()
+				brandId: 1001207
 			}
 			if (!data.type) {
 				this.$showToast('请选择奖品类型')

@@ -1,50 +1,50 @@
 <template>
-  <view class="brand-info-container" v-if="data">
-    <view class="name-info-wrapper">
-      <image class="avatar" :src="data.avatar" mode="" />
+	<view v-if="data" class="intelligent-info-container">
+		<view class="name-info-wrapper">
+			<image class="avatar" :src="data.avatar" mode="" />
 
-      <view class="info">
-        <view class="name-container">
-          <view class="name">{{ data.nickname }}</view>
-          <!-- <view class="order">31.7k人已订阅</view> -->
-        </view>
+			<view class="info">
+				<view class="name-container">
+					<view class="name">{{ data.nickname }}</view>
+					<!-- <view class="order">31.7k人已订阅</view> -->
+				</view>
 
-        <view class="desc">
-          <text>{{ data.text1 || '营销达人' }}</text>
-          <text>{{ data.text2 || '自媒体' }}</text>
-          <text>{{ data.text3 || '佛山 · 顺德' }}</text>
-        </view>
-      </view>
-    </view>
+				<view class="desc">
+					<text>{{ data.text1 || '营销达人' }}</text>
+					<text>{{ data.text2 || '自媒体' }}</text>
+					<text>{{ data.text3 || '佛山 · 顺德' }}</text>
+				</view>
+			</view>
+		</view>
 
-    <view class="merit-container">
-      <view class="f-f-s f-w-500">
-        <image src="../../../static/square/detail/tag.png"></image>
-        <text>个人标签</text>
-      </view>
+		<view class="merit-container">
+			<view class="f-f-s f-w-500">
+				<image src="../../../static/square/detail/tag.png"></image>
+				<text>个人标签</text>
+			</view>
 
-      <view class="introduct">
-        {{ data.introduce || '无介绍' }}
-      </view>
+			<view class="introduct">
+				{{ data.introduce || '无介绍' }}
+			</view>
 
-    </view>
+		</view>
 
-  </view>
+	</view>
 </template>
 
 <script>
 export default {
-  props: {
-    data: {
-      type: Object,
-      required: true,
-    },
-  },
+	props: {
+		data: {
+			type: Object,
+			required: true
+		}
+	}
 }
 </script>
 
 <style lang="less" scoped>
-.brand-info-container {
+.intelligent-info-container {
   background-color: #fff;
   border-radius: 24upx;
   box-sizing: border-box;

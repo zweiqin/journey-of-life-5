@@ -550,7 +550,7 @@ export default {
 			.op-btn {
 				width: 180upx;
 				height: 68upx;
-				border-radius: 100px;
+				border-radius: 32upx;
 				border: 1px solid #FF0000;
 				color: #3d3d3d;
 				.flex(center, center);

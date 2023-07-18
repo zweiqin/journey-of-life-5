@@ -29,11 +29,11 @@
 		<view class="goods-list">
 			<view class="pane">
 				<!-- <GoodsFilter :scrollTop="scrollTop"></GoodsFilter> -->
-				<scroll-view scroll-x="true" >
+				<scroll-view scroll-x="true">
 					<view class="menus-wrapper">
 						<view
-							v-for="item in menus" :key="item.id" class="item"
-							:class="{ active: currentFilterMenuId === item.id }" @click="handleChooseMenu(item)"
+							v-for="item in menus" :key="item.id" class="item" :class="{ active: currentFilterMenuId === item.id }"
+							@click="handleChooseMenu(item)"
 						>
 							<BeeIcon :size="40" :src="item.icon"></BeeIcon>
 							<text>{{ item.name }}</text>
@@ -44,8 +44,8 @@
 				<scroll-view scroll-x="true">
 					<view class="sub-menus">
 						<view
-							v-for="item in submenus" :key="item.id" class="item"
-							:class="{ active: query.categoryId === item.id }" @click="handleChangeSubMenu(item)"
+							v-for="item in submenus" :key="item.id" class="item" :class="{ active: query.categoryId === item.id }"
+							@click="handleChangeSubMenu(item)"
 						>
 							{{ item.name }}
 						</view>
@@ -59,8 +59,8 @@
 				<LoadMore v-show="goodsList.length" :status="status"></LoadMore>
 
 				<GoodsSkeleton
-					v-if="status === 'loading' && !goodsList.length" background="linear-gradient(180deg, #ffffff 0%, #f6f6f6 6%)"
-					padding="20upx"
+					v-if="status === 'loading' && !goodsList.length"
+					background="linear-gradient(180deg, #ffffff 0%, #f6f6f6 6%)" padding="20upx"
 				></GoodsSkeleton>
 			</view>
 		</view>
@@ -248,10 +248,7 @@ export default {
 	},
 	onReachBottom() {
 		if (this.query.page >= this.totalPages) {
-			uni.showToast({
-				title: '没有更多了',
-				duration: 2000
-			})
+			this.$showToast('没有更多了')
 			return
 		}
 		if (this.query.size > this.goodsList.length) {
@@ -337,6 +334,8 @@ export default {
 		border-radius: 20upx 20upx 0 0;
 
 		.pane {
+			padding-bottom: 48upx;
+
 			.goods-wrapper {
 				margin-top: 32upx;
 				display: flex;

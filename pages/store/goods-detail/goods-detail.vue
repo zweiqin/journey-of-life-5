@@ -92,7 +92,7 @@ import uParse from '../../../components/u-parse/u-parse.vue'
 import { marked } from 'marked'
 import { getMoreGoodsApi, getMoreCityRecommendApi } from '../../../api/brand'
 import { getGoodsDetailApi, addShopCarApi } from '../../../api/goods'
-import { J_RESERVATION_PAY_GOODS } from '../../../constant'
+import { J_ONE_PAY_GOODS, J_RESERVATION_PAY_GOODS } from '../../../constant'
 
 export default {
 	name: 'GoodsDetail',
@@ -180,9 +180,18 @@ export default {
 		// 点击支付
 		async handlePay() {
 			const goodsInfo = await this.getSpacification()
-			const { name, id, picUrl, unit, brandId } = this.goodsDetail.info
-			if ((this.orderType == 0) || (this.orderType == 1)) {
-				this.go(`/pages/store/order-detail/order-detail?orderType=${this.orderType}&rulesId=${this.grouponRulesId}&linkId=${this.grouponLinkId}&goodsName=${name}&goodsId=${id}&url=${picUrl}&unit=${unit}&brandId=${brandId}&productInfo=${JSON.stringify(goodsInfo)}`)
+			if (this.orderType == 1) {
+				uni.setStorageSync(J_ONE_PAY_GOODS, {
+					currentGoodsImg: goodsInfo.product.url || this.goodsDetail.info.picUrl,
+					currentSpecification: goodsInfo.spStr,
+					currentPrice: goodsInfo.product.price,
+					number: goodsInfo.number,
+					status: 0,
+					...this.goodsDetail,
+					selectedProduct: goodsInfo,
+					brandId: this.goodsDetail.brand.id
+				})
+				this.go(`/pages/store/order-detail/order-detail?orderType=${this.orderType}&rulesId=${this.grouponRulesId}&linkId=${this.grouponLinkId}`)
 			} else if (this.orderType == 2) {
 				if (!this.goodsDetail || !this.goodsDetail.info || !this.goodsDetail.brand) return this.$showToast('缺少商品信息')
 				uni.setStorageSync(J_RESERVATION_PAY_GOODS, {

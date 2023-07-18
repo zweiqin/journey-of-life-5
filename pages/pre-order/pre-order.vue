@@ -3,10 +3,10 @@
 		<JHeader title="商品订单详情" width="50" height="50"></JHeader>
 		<view class="address container" @click="go('/user/site/site-manage?appoint=true')">
 			<JIcon width="26" height="34" type="locale"></JIcon>
-			<view v-if="!defaultAddress" class="address-text">请选择收货地址</view>
+			<view v-if="!startAddress" class="address-text">请选择收货地址</view>
 			<view v-else class="address-detail">
-				<view>收件人：{{ defaultAddress.name }} {{ defaultAddress.mobile }}</view>
-				<view>{{ defaultAddress.detailedAddress }}</view>
+				<view>收件人：{{ startAddress.name }} {{ startAddress.mobile }}</view>
+				<view>{{ startAddress.detailedAddress }}</view>
 			</view>
 
 			<JIcon type="right-arrow" width="34" height="40"></JIcon>
@@ -40,17 +40,21 @@
 				<view class="title">运费：</view>
 				<view class="value">￥{{ calcOrderMsg ? calcOrderMsg.freightPrice : '--' }}</view>
 			</view>
-
-			<view v-if="orderInfo.info.supportVoucher" class="line">
-				<view class="title">是否使用代金劵：</view>
-
-				<view>
-					<text>代金劵持有 {{ voucherNumber }}</text>
-					<switch :checked="opForm.useVoucher" disabled style="transform: scale(0.7)" @click="handleChangeUseVoucherStatus" />
-				</view>
-			</view>
 		</view>
 
+		<view
+			v-if="orderInfo.info.supportVoucher"
+			style="display: flex;justify-content: space-between;align-items: center;padding: 20upx 18upx;margin-top: 20upx;background-color: #fff;"
+		>
+			<view style="color: #696969;">是否使用代金劵：</view>
+			<view>
+				<text>代金劵持有 {{ voucherNumber }}</text>
+				<switch
+					:checked="opForm.useVoucher" disabled style="transform: scale(0.7)"
+					@click="handleChangeUseVoucherStatus"
+				/>
+			</view>
+		</view>
 		<CouponUse :brand-id="orderInfo.brandId" @choose="handleChooseCoupon"></CouponUse>
 
 		<view v-if="calcOrderMsg" class="prder-cost container">
@@ -84,7 +88,6 @@ export default {
 	onLoad(options) {
 		this.grouponRulesId = options.rulesId || ''
 		this.grouponLinkId = options.linkId || ''
-		this.getAddressList()
 		this.getOrderInfo()
 	},
 
@@ -94,7 +97,7 @@ export default {
 
 	data() {
 		return {
-			defaultAddress: '', // 收货地址
+			startAddress: '', // 收货地址
 			voucherNumber: '', // 代金券持有
 			orderInfo: null, // 订单相关信息
 			cartId: '', // 购物车id
@@ -111,70 +114,60 @@ export default {
 
 	methods: {
 		// 获取地址
-		getAddressList() {
+		async getAddressList() {
 			const address = uni.getStorageSync(J_SELECT_ADDRESS)
 			if (address) {
-				this.defaultAddress = address
+				this.startAddress = address
 				return
 			}
-			getAddressListApi({
+			const { data } = await getAddressListApi({
 				userId: getUserId()
-			}).then(({ data }) => {
-				console.log(data)
-				const _this = this
-				data.forEach((address) => {
-					if (address.isDefault) {
-						_this.defaultAddress = address
-					}
-				})
-				if (!this.defaultAddress) {
-					this.defaultAddress = data[0]
-				}
 			})
-		},
-
-		// 获取代金劵持有
-		getVoucherHold() {
-			getVoucherNumberApi({
-				userId: getUserId()
-			}).then(({ data }) => {
-				this.voucherNumber = (data && data.length && data[0].number) || 0
+			data.forEach((address) => {
+				if (address.isDefault) this.startAddress = address
 			})
+			if (!this.startAddress) this.startAddress = data[0]
+			this.startAddress = data[0] || {}
 		},
 
 		// 获取订单信息
 		getOrderInfo() {
 			this.orderInfo = uni.getStorageSync(J_ONE_PAY_GOODS)
-			console.log(this.orderInfo)
 			if (this.orderInfo.info.supportVoucher) {
 				this.getVoucherHold()
 			}
 			this.getCardId()
 		},
 
-		// 计算订单费用
+		// 获取代金劵持有
+		getVoucherHold() {
+			getVoucherNumberApi({ userId: getUserId() })
+				.then(({ data }) => {
+					this.voucherNumber = (data && data.length && data[0].number) || 0
+				})
+		},
+
 		getCardId() {
-			const _this = this
 			const data = {
 				userId: getUserId(),
 				goodsId: this.orderInfo.info.id,
 				productId: this.orderInfo.selectedProduct.product.id,
 				number: this.orderInfo.number,
-				useVoucher: this.isUserVoucher,
+				useVoucher: this.opForm.useVoucher,
 				type: 0
 			}
-			firstAddCar(data).then(({ data }) => {
-				_this.cartId = data
-				_this.calcOrderCost()
-			})
+			firstAddCar(data)
+				.then(({ data }) => {
+					this.cartId = data
+					this.calcOrderCost()
+				})
 		},
 
 		// 计算订单费用
 		calcOrderCost() {
 			uni.showLoading()
-			const _this = this
 			const data = {
-				// addressId: this.defaultAddress.id,
+				// addressId: this.startAddress.id,
 				brandId: this.orderInfo.info.brandId,
 				cartId: this.cartId,
 				userId: getUserId(),
@@ -183,7 +176,7 @@ export default {
 				useVoucher: this.opForm.useVoucher
 			}
 			payShopCarApi(data).then(({ data }) => {
-				_this.calcOrderMsg = data
+				this.calcOrderMsg = data
 				uni.hideLoading()
 			})
 		},
@@ -194,7 +187,7 @@ export default {
 				this.opForm.useVoucher = false
 				this.calcOrderCost()
 			} else if (this.calcOrderMsg && this.calcOrderMsg.actualPrice) {
-				if (Number(this.calcOrderMsg.actualPrice) < Number(this.voucherNumber)) {
+				if (Number(this.calcOrderMsg.actualPrice) <= Number(this.voucherNumber)) {
 					this.opForm.useVoucher = true
 					this.calcOrderCost()
 				} else {
@@ -216,11 +209,11 @@ export default {
 
 		// 提交订单支付
 		handleToPay() {
-			if (!this.defaultAddress || !this.defaultAddress.id) return this.$showToast('请选择地址')
+			if (!this.startAddress || !this.startAddress.id) return this.$showToast('请选择地址')
 			const submitData = {
 				userId: getUserId(),
 				cartId: this.cartId,
-				addressId: this.defaultAddress.id,
+				addressId: this.startAddress.id,
 				couponId: this.couponId,
 				grouponRulesId: this.grouponRulesId,
 				grouponLinkId: this.grouponLinkId,

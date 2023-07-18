@@ -1,7 +1,10 @@
 <template>
 	<view>
 		<view>
-			<tui-drawer mode="bottom" :visible="visibleDrawer" :mask-z-index="1" :z-index="2" @close="visibleDrawer = false">
+			<tui-drawer
+				mode="bottom" :visible="visibleDrawer" :mask-z-index="996" :z-index="998"
+				@close="visibleDrawer = false"
+			>
 				<view class="shop-car-container" style="padding-top: 0;">
 
 					<view class="shop-list" style="max-height: 60vh;overflow-y: auto;">
@@ -14,7 +17,8 @@
 							<view class="shop-goods-list">
 								<view v-for="(item, index) in store.cartList" :key="item.productId" class="goods-item">
 									<JIcon
-										v-show="opStatus === 'EDIT'" class="icon" :type="item.checked ? 'active-choose' : 'active-default'"
+										v-show="opStatus === 'EDIT'" class="icon"
+										:type="item.checked ? 'active-choose' : 'active-default'"
 										@click="handleChangeGoodsStatus(item, index, store)"
 									></JIcon>
 
@@ -32,17 +36,27 @@
 				</view>
 			</tui-drawer>
 		</view>
-		<view style="position: fixed;bottom: 0;z-index: 3;width: 100%;padding: 20upx;background-color: #ffffff;box-sizing: border-box;">
-			<view style="display: flex;justify-content: flex-end;align-items: center;font-size: 28upx;" @click="visibleDrawer = !visibleDrawer">
-				<!-- <text style="color: #949494;padding-right: 20upx;">共件</text> -->
+		<view
+			style="position: fixed;bottom: 0;z-index: 999;width: 100%;padding: 20upx;background-color: #ffffff;box-sizing: border-box;"
+		>
+			<view
+				style="display: flex;justify-content: flex-end;align-items: flex-end;font-size: 28upx;"
+				@click="visibleDrawer = !visibleDrawer"
+			>
+				<view
+					style="position: absolute;left: 46upx;bottom: 26upx;padding: 28upx;background-color: #ff973f;border-radius: 50%;"
+				>
+					<BeeIcon :src="require('../../../../static/brand/detail/spCar.png')" :size="28"></BeeIcon>
+				</view>
+				<text style="color: #949494;padding-right: 20upx;">共{{ carTotalInfo.goodsCount }}件</text>
 				<text>合计：</text>
 				<text style="padding-right: 20upx;font-weight: bold;font-size: 46upx;color: #ff1111;">￥{{ totalPrice }}</text>
 				<view>
 					<tui-button
-						type="danger" width="180rpx" height="68rpx" style="border-radius: 50rpx;"
+						type="danger" width="180rpx" height="58rpx" style="border-radius: 50rpx;"
 						@click="handleToPay('mall')"
 					>
-						结算
+						立即结算
 					</tui-button>
 				</view>
 			</view>
@@ -62,7 +76,7 @@ const EDIT = 'EDIT'
 
 export default {
 	name: 'StoreShopCart',
-	components: { },
+	components: {},
 
 	filters: {
 		getDesc(specifications) {
@@ -96,7 +110,14 @@ export default {
 			opStatus: EDIT,
 			opList: [],
 			shopCarList: [],
-			carTotalInfo: [],
+			carTotalInfo: {
+				checkedGoodsAmount: '',
+				checkedGoodsCount: '',
+				goodsAmount: '',
+				goodsCount: '',
+				tabMallNum: '',
+				tabStoreNum: ''
+			},
 			loadingStatus: 'noMore',
 			isChangeNumber: false,
 			opGoodsList: [],
@@ -146,6 +167,10 @@ export default {
 			})
 				.then(({ data }) => {
 					this.shopCarList = [ { brandId: this.brandId, brandName: this.brandName, cartList: data.cartList } ]
+					this.carTotalInfo.checkedGoodsAmount = data.cartTotal.checkedGoodsAmount
+					this.carTotalInfo.checkedGoodsCount = data.cartTotal.checkedGoodsCount
+					this.carTotalInfo.goodsAmount = data.cartTotal.goodsAmount
+					this.carTotalInfo.goodsCount = data.cartTotal.goodsCount
 					uni.hideLoading()
 					this.loadingStatus = 'noMore'
 				})
