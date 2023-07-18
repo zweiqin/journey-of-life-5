@@ -2,6 +2,9 @@ export {
 	GyRequest as request,
 	RuanRequest
 } from './DWHRequest'
+export {
+	KuaiDiRequest
+} from './KuaiDiRequest'
 export { request2 } from './request'
 
 export {

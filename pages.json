@@ -951,7 +951,16 @@
 						"navigationBarTitleText": "快递"
 					}
 				}
-			]
+                ,{
+                    "path" : "kuai-di/LogisticsDetails",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "物流详情",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
 		}
 	],
 	"easycom": {

@@ -24,7 +24,6 @@
 					<image :src="item.icon" mode="" @click="handleTo(item)" />
 					<view class="text">{{ item.name }}</view>
 				</view>
-
 			</view>
 			<!-- <view class="coupon-list">
 				<view class="coupon" v-for="item in coupons" :key="item.id">
@@ -81,7 +80,7 @@ export default {
 				// 	name: '防疫礼包',
 				// 	id: 5,
 				// 	icon: require('../../../static/index/item5.png'),
-				// }
+				// },
 				{
 					name: '寄快递',
 					id: 6,
@@ -152,12 +151,16 @@ export default {
 		background: linear-gradient(180deg, #FFFFFF 0%, #FDFAFA 122%);
 
 		.bar-list {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
+			width: 100vw;
+			height: auto;
+			// display: flex;
+			// justify-content: space-between;
+			// align-items: center;
 			padding: 44upx 0 68upx 0;
 
 			.bar {
+				margin: 10rpx;
+				float: left;
 				width: 112upx;
 				display: flex;
 				flex-direction: column;
