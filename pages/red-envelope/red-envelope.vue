@@ -94,8 +94,8 @@ export default {
 			showMap: false,
 			isGetLocation: true,
 			isChoosingLocation: false,
-			showRedPackage: true, // false
-			redEnvelopeType: 1, // 0
+			showRedPackage: false, // false
+			redEnvelopeType: 0, // 0
 			circles: []
 		}
 	},
@@ -180,55 +180,6 @@ export default {
 				// latitude: 22.89223
 			}).then((res) => {
 				this.allMarks = res.data
-				this.allMarks = [{
-					'userId': '409',
-					'brandId': '1001226',
-					'wrapType': '0',
-					'longitude': '113.3210370',
-					'latitude': '23.1179010',
-					'type': '0',
-					'redpackNumber': '10',
-					'redpackAllmonkey': '100.00',
-					'effectiveDistance': '5',
-					'wrapRedText': {
-						'publisherText': '内容',
-						'bindLink': '海波链接',
-						'business': '业务外键',
-						'picUrl': '红包图片'
-					}
-				}, {
-					'userId': '409',
-					'brandId': '1001226',
-					'wrapType': '0',
-					'longitude': '113.3210370',
-					'latitude': '23.1179010',
-					'type': '0',
-					'redpackNumber': '10',
-					'redpackAllmonkey': '100.00',
-					'effectiveDistance': '5',
-					'wrapRedText': {
-						'publisherText': '内容',
-						'bindLink': '海波链接',
-						'business': '业务外键',
-						'picUrl': '红包图片'
-					}
-				}, {
-					'userId': '409',
-					'brandId': '1001226',
-					'wrapType': '0',
-					'longitude': '113.3210370',
-					'latitude': '23.1179010',
-					'type': '0',
-					'redpackNumber': '10',
-					'redpackAllmonkey': '100.00',
-					'effectiveDistance': '5',
-					'wrapRedText': {
-						'publisherText': '内容',
-						'bindLink': '海波链接',
-						'business': '业务外键',
-						'picUrl': '红包图片'
-					}
-				}]
 				console.log(this.allMarks)
 				const made = []
 				for (const redPack of res.data) {
