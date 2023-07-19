@@ -2,158 +2,210 @@
 	<view class="red-envelope-distribution-container">
 		<JHeader tabbar="/pages/user/user" width="50" height="50" title="红包发放"></JHeader>
 
-		<view class="line-item" @click="handleChoosePublish">
-			<view class="title">发布类型</view>
-			<input v-model="redForm.wrapName" disabled placeholder="请选择发布类型" class="input-el" />
-		</view>
+		<view style="font-size: 30upx;">
+			<!-- <view class="line-item" @click="go('/user/marketing-tools/red-envelope-distribution/publication-type')">
+				<view>发布类型</view>
+				<input v-model="redForm.wrapName" disabled placeholder="请选择发布类型" class="input-el" placeholder-style="color:#9F9F9F" />
+				</view> -->
 
-		<!-- <view class="line-item">
-			<view class="title">发布者名称</view>
-			<input v-model="redForm.publisherName" type="text" placeholder="请输入发布者名称" class="input-el" />
-			</view> -->
+			<!-- <view class="line-item">
+				<view>发布者名称</view>
+				<input v-model="redForm.publisherName" type="text" placeholder="请输入发布者名称" class="input-el" placeholder-style="color:#9F9F9F" />
+				</view> -->
 
-		<view class="line-item">
-			<image
-				class="icon" :src="common.seamingImgUrl('802z9z04t98uxzfyrz06.png')"
-				mode=""
-			/>
-			<view class="title">红包金额</view>
-			<input v-model.number="redForm.redpackAllmonkey" type="digit" placeholder="请输入红包金额" class="input-el" />
-			<view class="company">元</view>
-		</view>
-
-		<view class="line-item">
-			<image
-				class="icon" :src="common.seamingImgUrl('mk74fnhfp4fu7djpnh3h.png')"
-				mode=""
-			/>
-			<view class="title">红包个数</view>
-			<input v-model.number="redForm.redpackNumber" type="number" placeholder="请输入红包个数" class="input-el" />
-			<view class="company">个</view>
-		</view>
-
-		<view style="margin-top: 90upx;">
-			<tui-list-cell padding="0">
-				<tui-radio-group v-model="redForm.type">
-					<text>红包金额是否随机</text>
-					<text style="padding-left: 20rpx;">
-						<tui-radio value="1" color="#07c160" border-color="#999">
-						</tui-radio>
-						<text>是</text>
-					</text>
-					<text style="padding-left: 20rpx;">
-						<tui-radio value="0" color="#07c160" border-color="#999">
-						</tui-radio>
-						<text>否</text>
-					</text>
+			<view class="line-item">
+				<text>红包类型</text>
+				<tui-radio-group
+					v-model="redForm.wrapType"
+					style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;"
+					@change="(e) => {}"
+				>
+					<block v-if="userInfo.roleIds === 6 && brandId">
+						<tui-label
+							v-for="(part, index) in [{ name: '普通红包', value: '0' }, { name: '携带优惠券红包', value: '1' }]"
+							:key="index"
+						>
+							<tui-list-cell padding="16upx">
+								<view>
+									<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
+									</tui-radio>
+									<text>{{ part.name }}</text>
+								</view>
+							</tui-list-cell>
+						</tui-label>
+					</block>
+					<block v-else>
+						<tui-label
+							v-for="(part, index) in [ { name: '普通红包', value: '0' } ]"
+							:key="index"
+						>
+							<tui-list-cell padding="16upx">
+								<view>
+									<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
+									</tui-radio>
+									<text>{{ part.name }}</text>
+								</view>
+							</tui-list-cell>
+						</tui-label>
+					</block>
 				</tui-radio-group>
-			</tui-list-cell>
-		</view>
+			</view>
 
-		<view class="line-item" @click="handleChooseRange">
-			<image
-				class="icon" :src="common.seamingImgUrl('bcn99sapk1p3nzm56285.png')"
-				mode=""
-			/>
-			<view class="title">红包范围</view>
-			<view class="input-el">
-				{{
-					redForm.effectiveDistance | filterEffectiveDistance
-				}}
+			<view
+				v-if="userInfo.roleIds === 6 && brandId && redForm.wrapType === '1'" class="line-item"
+				@click="isShowCouponPopup = true"
+			>
+				<view>红包关联优惠券</view>
+				<input
+					v-model="redForm.couponName" disabled placeholder="请选择发布类型" class="input-el"
+					placeholder-style="color:#9F9F9F"
+				/>
+			</view>
+
+			<view v-if="userInfo.roleIds === 6 && brandId" class="line-item" @click="isShowStoreGoodsPopup = true">
+				<view>红包关联商品</view>
+				<input
+					v-model="redForm.goodsName" disabled placeholder="请选择发布类型" class="input-el"
+					placeholder-style="color:#9F9F9F"
+				/>
+			</view>
+
+			<view class="line-item">
+				<view>红包金额</view>
+				<input
+					v-model.number="redForm.redpackAllmonkey" type="digit" placeholder="请输入红包金额" class="input-el"
+					placeholder-style="color:#9F9F9F"
+				/>
+				<view class="company">元</view>
+			</view>
+
+			<view class="line-item">
+				<view>红包个数</view>
+				<input
+					v-model.number="redForm.redpackNumber" type="number" placeholder="请输入红包个数" class="input-el"
+					placeholder-style="color:#9F9F9F"
+				/>
+				<view class="company">个</view>
+			</view>
+
+			<view class="line-item">
+				<text>红包金额是否随机</text>
+				<tui-radio-group
+					v-model="redForm.wrapType"
+					style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;"
+					@change="(e) => {}"
+				>
+					<tui-label
+						v-for="(part, index) in [{ name: '是', value: '1' }, { name: '否', value: '0' }]"
+						:key="index"
+					>
+						<tui-list-cell padding="16upx">
+							<view>
+								<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
+								</tui-radio>
+								<text>{{ part.name }}</text>
+							</view>
+						</tui-list-cell>
+					</tui-label>
+				</tui-radio-group>
+			</view>
+
+			<view class="line-item" @click="handleChooseRange">
+				<view>红包范围</view>
+				<view class="input-el">
+					{{ redForm.effectiveDistance | filterEffectiveDistance }}
+				</view>
+			</view>
+
+			<view class="line-item" @click="handleChooseRedPackLocation">
+				<view>红包位置</view>
+				<input
+					v-model="redPackAddress" readonly disabled placeholder="请选择红包位置"
+					class="input-el"
+					placeholder-style="color:#9F9F9F"
+				/>
+			</view>
+
+			<view style="margin-top: 40upx;">
+				<view class="title-form">红包内容</view>
+				<textarea
+					v-model.trim="redForm.publisherText" placeholder="（留言15字符以内）" class="rich-text" cols="30"
+					rows="10"
+					maxlength="15"
+				></textarea>
+			</view>
+
+			<view style="margin-top: 40upx;">
+				<view class="title-form">
+					红包图片
+					<button v-show="redForm.picUrl" class="preview" @click="handlePreview">
+						红包预览
+					</button>
+				</view>
+				<view class="upload-pane">
+					<view class="left">
+						<view v-if="!redForm.picUrl" class="upload" @click="chooseImg">+</view>
+						<image v-else class="iamge-background" :src="redForm.picUrl" mode="" />
+					</view>
+					<image
+						v-show="redForm.picUrl" class="delete-icon" :src="common.seamingImgUrl('ghggvke7uc134gbv71gh.png')"
+						mode="" @click="removeBackground"
+					/>
+				</view>
 			</view>
 		</view>
 
-		<view class="line-item" @click="handleChooseRedPackLocation">
-			<JIcon type="blue-locale" width="36" height="40"></JIcon>
-			<view class="title">红包位置</view>
-			<input v-model="redPackAddress" readonly disabled class="input-el" />
-		</view>
-
-		<view class="title-form">内容留言</view>
-		<textarea
-			v-model.trim="redForm.remark" placeholder="（留言15字符以内）" class="rich-text" cols="30"
-			rows="10"
-			maxlength="15"
-		></textarea>
-		<view class="title-form">
-			红包背景
-			<button v-show="redForm.imageUrl" class="preview" @click="handlePreview">
-				红包预览
-			</button>
-		</view>
-
-		<view class="upload-pane">
-			<view class="left">
-				<view v-if="!redForm.imageUrl" class="upload" @click="chooseImg">+</view>
-				<image v-else class="iamge-background" :src="redForm.imageUrl" mode="" />
-			</view>
-			<image
-				v-show="redForm.imageUrl" class="delete-icon" :src="common.seamingImgUrl('ghggvke7uc134gbv71gh.png')"
-				mode="" @click="removeBackground"
-			/>
-		</view>
-
-		<button class="sendRedPackage" @click="handleSend">塞进红包</button>
+		<button class="sendRedPackage" @click="handleConfirm">确定</button>
 
 		<view ref="previewWrapperRef" class="preview-wrapper">
 			<JRedEnvelope
-				:is-show="showRedPackage" :show-type="redEnvelopeType" :desc="redForm.remark" :src="redForm.imageUrl"
-				:name="userInfo.nickName" :avatar="common.seamingImgUrl(userInfo.avatarUrl)"
+				:is-show="showRedPackage" :show-type="redEnvelopeType" :desc="redForm.publisherText"
+				:src="redForm.picUrl" :name="userInfo.nickName" :avatar="common.seamingImgUrl(userInfo.avatarUrl)"
 				@click-red="redEnvelopeType = 1" @close="(showRedPackage = false) || (redEnvelopeType = 0) || closePreview()"
-			></JRedEnvelope>
-			<!-- <view class="op">
-				<button class="btn" @click="reUploadBgi">重新上传</button>
-				<button class="btn" @click="closePreview">确认</button>
-				</view> -->
+			>
+			</JRedEnvelope>
+		</view>
+
+		<!-- 优惠券选择 -->
+		<view v-if="userInfo.roleIds === 6 && brandId">
+			<tui-bottom-popup :show="isShowCouponPopup" @close="isShowCouponPopup = false">
+				<BrandCouponList :brand-id="brandId" btn-text="选择" @click-btn="(e) => handleSelectCoupon(e)">
+				</BrandCouponList>
+			</tui-bottom-popup>
+		</view>
+
+		<!-- 商品选择 -->
+		<view v-if="userInfo.roleIds === 6 && brandId">
+			<tui-bottom-popup :show="isShowStoreGoodsPopup" @close="isShowStoreGoodsPopup = false">
+				<BrandGoodsList v-if="isShowStoreGoodsPopup" :brand-id="brandId" @send="handleSend"></BrandGoodsList>
+			</tui-bottom-popup>
 		</view>
 	</view>
 </template>
 
 <script>
-import { J_USER_TOKEN, J_PAY_TYPE, J_USER_INFO } from '../../../constant'
+import { J_PAY_TYPE, J_USER_INFO, J_BRAND_ID } from '../../../constant'
 import { payFn } from '../../../utils/pay'
 import { getUserId } from '../../../utils'
-import { uploadFle, getBusinessInfoByUserIdApi, sendRedEnvelopeApi, addWrapRedReleaseApi } from '../../../api/user'
+import { uploadFle, sendRedEnvelopeApi, addWrapRedReleaseApi } from '../../../api/user'
 import { payOrderGoodsApi } from '../../../api/goods'
 
 export default {
 	name: 'RedEnvelopeDistribution',
 	onLoad(option) {
-		uni.$on('sendWrapMsg', (data) => {
-			console.log(data)
-			this.redForm.wrapType = data.data.wrapType
-			this.redForm.wrapName = data.data.wrapName
-			this.redForm.magicId = data.data.magicId
-		})
+		// uni.$on('sendWrapMsg', (data) => {
+		// 	console.log(data)
+		// 	this.redForm.wrapType = data.data.wrapType
+		// 	this.redForm.wrapName = data.data.wrapName
+		// 	this.redForm.magicId = data.data.magicId
+		// })
 	},
 	onShow() {
-		// const _this = this
-		// getBusinessInfoByUserIdApi()
-		// 	.then((res) => {
-		// 		_this.businessInfo = res.data
-		// 	})
-		// 	.catch((err) => {
-		// 		uni.showModal({
-		// 			title: '提示',
-		// 			content: '您还不是商家或营销策划师,是否去升级？',
-		// 			success(res) {
-		// 				if (res.confirm) {
-		// 					// uni.navigateTo({
-		// 					//   url: "/user/sever/userUp",
-		// 					// });
-		// 				} else if (res.cancel) {
-		// 					// uni.switchTab({
-		// 					//   url: "/pages/user/user",
-		// 					// });
-		// 				}
-		// 			}
-		// 		})
-		// 	})
 	},
 	onUnload(option) {
-		uni.$off('sendWrapMsg', function (data) {
-			console.log(data)
-		})
+		// uni.$off('sendWrapMsg', function (data) {
+		// 	console.log(data)
+		// })
 	},
 
 	filters: {
@@ -192,42 +244,53 @@ export default {
 			redForm: {
 				userId: getUserId(),
 				wrapType: '',
-				wrapName: '',
-				magicId: '',
+				// wrapName: '',
+				// magicId: '',
 				// publisherName: '',
 				redpackAllmonkey: '',
 				redpackNumber: '',
+				type: '0',
 				effectiveDistance: 1,
-				remark: '',
-				imageUrl: '',
 				latitude: null,
 				longitude: null,
-				type: '0'
+				publisherText: '',
+				picUrl: '',
+				bindLink: '',
+				goodsName: '',
+				business: '',
+				couponName: ''
 			},
 			redPackAddress: '',
 			userInfo: uni.getStorageSync(J_USER_INFO) || {},
+			brandId: uni.getStorageSync(J_BRAND_ID) || '',
 			showRedPackage: false,
-			redEnvelopeType: 0
+			redEnvelopeType: 0,
+			isShowCouponPopup: false,
+			isShowStoreGoodsPopup: false
 		}
 	},
 
 	methods: {
-		// 点击进入模板选择页面
-		handleChoosePublish() {
-			uni.navigateTo({
-				url: '/user/marketing-tools/red-envelope-distribution/publication-type'
-			})
+		handleSend(obj) {
+			this.isShowStoreGoodsPopup = false
+			this.redForm.bindLink = obj.id
+			this.redForm.goodsName = obj.name
+		},
+		handleSelectCoupon(obj) {
+			this.isShowCouponPopup = false
+			this.redForm.business = obj.id
+			this.redForm.couponName = obj.name
 		},
 
-		// 删除红包背景
+		// 删除红包图片
 		removeBackground() {
 			const _this = this
 			uni.showModal({
 				title: '提示',
-				content: '确定删除当前红包背景吗？',
+				content: '确定删除当前红包图片吗？',
 				success(res) {
 					if (res.confirm) {
-						_this.redForm.imageUrl = ''
+						_this.redForm.picUrl = ''
 					}
 				}
 			})
@@ -235,7 +298,6 @@ export default {
 
 		// 选择图片
 		chooseImg() {
-			const _this = this
 			uni.chooseImage({
 				count: 1,
 				success: (chooseImageRes) => {
@@ -244,7 +306,7 @@ export default {
 						filePath: chooseImageRes.tempFiles[0].path,
 						name: 'file',
 						success: (uploadFileRes) => {
-							_this.redForm.imageUrl = _this.common.seamingImgUrl(JSON.parse(uploadFileRes.data).data.url)
+							this.redForm.picUrl = this.common.seamingImgUrl(JSON.parse(uploadFileRes.data).data.url)
 							// this.$refs.previewWrapperRef.$el.style.transform = 'scale(1)'
 						}
 					})
@@ -263,9 +325,13 @@ export default {
 		},
 
 		// 发送红包
-		handleSend() {
-			if ((this.redForm.wrapType === undefined || this.redForm.wrapType === '' || this.redForm.wrapType === null) || !this.redForm.magicId) {
-				this.$showToast('请选择发布类型')
+		handleConfirm() {
+			// if ((this.redForm.wrapType === undefined || this.redForm.wrapType === '' || this.redForm.wrapType === null) || !this.redForm.magicId) {
+			// 	this.$showToast('请选择发布类型')
+			// 	return
+			// }
+			if (this.redForm.wrapType === undefined || this.redForm.wrapType === '' || this.redForm.wrapType === null) {
+				this.$showToast('请选择红包类型')
 				return
 			}
 			if (
@@ -304,14 +370,20 @@ export default {
 				wrapType: this.redForm.wrapType,
 				latitude: this.redForm.latitude,
 				longitude: this.redForm.longitude,
-				magicId: this.redForm.magicId,
+				// magicId: this.redForm.magicId, // 去除
 				redpackNumber: this.redForm.redpackNumber,
 				redpackAllmonkey: this.redForm.redpackAllmonkey,
-				imageUrl: this.redForm.imageUrl,
-				remark: this.redForm.remark,
+				// imageUrl: this.redForm.imageUrl, // 去除
+				// remark: this.redForm.remark, // 去除
 				effectiveDistance: this.redForm.effectiveDistance || 1,
 				type: this.redForm.type,
-				brandId: this.userInfo.brandId || ''
+				brandId: this.brandId || '',
+				wrapRedText: {
+					publisherText: this.redForm.publisherText,
+					bindLink: this.redForm.bindLink,
+					business: this.redForm.wrapType === '1' ? this.redForm.business : '',
+					picUrl: this.redForm.picUrl
+				}
 			}
 			addWrapRedReleaseApi(data)
 				.then((res) => {
@@ -347,21 +419,13 @@ export default {
 			this.$refs.previewWrapperRef.$el.style.transform = 'translateX(-100%)'
 		},
 
-		// 点击重新上传
-		reUploadBgi() {
-			this.redForm.imageUrl = ''
-			this.closePreview()
-		},
-
 		// 点击选择范围
 		handleChooseRange() {
-			const _this = this
 			uni.showActionSheet({
 				itemList: ['1km', '2km', '3km', '4km', '5km'],
 				success: (res) => {
 					console.log(res)
-					_this.redForm.effectiveDistance = res.tapIndex + 1
-					console.log(_this.redForm.effectiveDistance)
+					this.redForm.effectiveDistance = res.tapIndex + 1
 				}
 			})
 		}
@@ -375,25 +439,14 @@ export default {
 .red-envelope-distribution-container {
 	padding: 40upx;
 	box-sizing: border-box;
-	font-size: 24upx;
-	color: #3d3d3d;
 
 	.line-item {
-		margin-top: 90upx;
+		margin-top: 40upx;
 		display: flex;
 		align-items: center;
 		padding: 20upx 0;
 		padding-right: 20upx;
-		border-bottom: 1upx solid #d8d8d8;
-
-		.title {
-			margin: 0 28upx;
-		}
-
-		.icon {
-			width: 36upx;
-			height: 40upx;
-		}
+		border-bottom: 1px solid #D8D8D8;
 
 		.input-el {
 			text-align: right;
@@ -405,6 +458,21 @@ export default {
 
 	.title-form {
 		margin: 28upx 0;
+
+		.preview {
+			margin: 0;
+			padding: 0;
+			width: auto;
+			font-size: 24upx;
+			line-height: 1;
+			display: inline;
+			background-color: transparent;
+			border: none !important;
+			float: right;
+			padding: 0 4upx;
+			color: #07b9b9;
+			transition: all 350ms;
+		}
 	}
 
 	.rich-text {
@@ -473,21 +541,6 @@ export default {
 		margin-top: 100upx;
 	}
 
-	.preview {
-		margin: 0;
-		padding: 0;
-		width: auto;
-		font-size: 24upx;
-		line-height: 1;
-		display: inline;
-		background-color: transparent;
-		border: none !important;
-		float: right;
-		padding: 0 4upx;
-		color: #07b9b9;
-		transition: all 350ms;
-	}
-
 	.preview-wrapper {
 		position: fixed;
 		top: 0;
@@ -502,24 +555,10 @@ export default {
 		box-sizing: border-box;
 		transform: scale(0);
 		transition: all 350ms;
+	}
 
-		.op {
-			margin-top: 40upx;
-			.flex();
-			width: 100%;
-
-			.btn {
-				margin: 0;
-				padding: 0;
-				flex: 1;
-				background-color: #fa5151;
-				color: #fff;
-
-				&:nth-child(1) {
-					margin-right: 20upx;
-				}
-			}
-		}
+	/deep/ .tui-popup-class.tui-bottom-popup {
+		height: 85vh !important;
 	}
 }
 </style>

@@ -1,28 +1,32 @@
 <template>
-  <view class="detail-container" v-if="detailInfo">
-    <view class="bg">
-      <OpContainer></OpContainer>
-    </view>
+	<view v-if="detailInfo" class="detail-container">
+		<view class="bg">
+			<OpContainer></OpContainer>
+		</view>
 
-    <view class="main-area">
-      <BrandInfo :data="detailInfo"></BrandInfo>
+		<view class="main-area">
+			<IntelligentInfo :data="detailInfo"></IntelligentInfo>
 
-      <view class="main-nav">
-        <view class="item" v-for="item in navs" :key="item.value" @click="handleSwitchTab(item)"
-          :class="{ active: currentNav === item.value }">{{ item.label }}</view>
-      </view>
+			<view class="main-nav">
+				<view
+					v-for="item in navs" :key="item.value" class="item" :class="{ active: currentNav === item.value }"
+					@click="handleSwitchTab(item)"
+				>
+					{{ item.label }}
+				</view>
+			</view>
 
-      <CasePresentation :data="[]"></CasePresentation>
-      <ProductPresentation :data="{}"></ProductPresentation>
-      <Evaluate></Evaluate>
-      <OpFooter></OpFooter>
-    </view>
-  </view>
+			<CasePresentation :data="[]"></CasePresentation>
+			<ProductPresentation :data="{}"></ProductPresentation>
+			<Evaluate></Evaluate>
+			<OpFooter></OpFooter>
+		</view>
+	</view>
 </template>
 
 <script>
 import OpContainer from './cpns/OpCntainer.vue'
-import BrandInfo from './cpns/BrandInfo.vue'
+import IntelligentInfo from './cpns/IntelligentInfo.vue'
 import CasePresentation from './cpns/CasePresentation.vue'
 import ProductPresentation from './cpns/ProductPresentation.vue'
 import OpFooter from './cpns/OpFooter.vue'
@@ -31,53 +35,53 @@ import { tempData } from '../data'
 import { queryTalentDetailApi } from '../../api/marketing-treasure-house'
 
 export default {
-  components: {
-    OpContainer,
-    BrandInfo,
-    CasePresentation,
-    ProductPresentation,
-    OpFooter,
-    Evaluate,
-  },
-  data() {
-    return {
-      navs: [
-        {
-          label: '服务案例',
-          value: 0,
-        },
-        {
-          label: '服务企业',
-          value: 1,
-        },
-        {
-          label: '评论',
-          value: 2,
-        },
-      ],
-      currentNav: 0,
-      tempData: Object.freeze(tempData),
-      detailInfo: null,
-    }
-  },
+	components: {
+		OpContainer,
+		IntelligentInfo,
+		CasePresentation,
+		ProductPresentation,
+		OpFooter,
+		Evaluate
+	},
+	data() {
+		return {
+			navs: [
+				{
+					label: '服务案例',
+					value: 0
+				},
+				{
+					label: '服务企业',
+					value: 1
+				},
+				{
+					label: '评论',
+					value: 2
+				}
+			],
+			currentNav: 0,
+			tempData: Object.freeze(tempData),
+			detailInfo: null
+		}
+	},
 
-  onLoad(params) {
-    this.getDetail(params.id)
-  },
+	onLoad(params) {
+		this.getDetail(params.id)
+	},
 
-  methods: {
-    handleSwitchTab(item) {
-      this.currentNav = item.value
-    },
+	methods: {
+		handleSwitchTab(item) {
+			this.currentNav = item.value
+		},
 
-    async getDetail(id) {
-      const { data } = await queryTalentDetailApi({
-        expertId: id
-      })
+		async getDetail(id) {
+			const { data } = await queryTalentDetailApi({
+				expertId: id
+			})
 
-      this.detailInfo = data
-    }
-  },
+			this.detailInfo = data
+		}
+	}
 }
 </script>
 

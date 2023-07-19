@@ -187,7 +187,7 @@ export function getRandom(min, max) {
 
 export const getAddressLongitudeAndLatitude = (address) => new Promise((resolve, reject) => {
 	jsonp('https://apis.map.qq.com/ws/geocoder/v1/', {
-		key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH',
+		key: 'JMABZ-72LWU-R2UV5-GOYJ7-6QFZV-57BZW',
 		address,
 		output: 'jsonp'
 	})
@@ -202,7 +202,7 @@ export const getAddressLongitudeAndLatitude = (address) => new Promise((resolve,
 	//   url: 'https://apis.map.qq.com/ws/geocoder/v1/',
 	//   method: 'GET',
 	//   data: {
-	//     key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH',
+	//     key: 'JMABZ-72LWU-R2UV5-GOYJ7-6QFZV-57BZW',
 	//     address: address,
 	//     output: 'jsonp',
 	//   },
@@ -251,7 +251,7 @@ export const getAdressDetailByLngLat = (lat, lng) => new Promise((resolve, rejec
 
 	// // #ifdef APP-PLUS
 	// const TMap = new QQMapWX({
-	//   key: '3ODBZ-FVG3V-BPQPQ-UBZRP-ZXRVV-AUFGH'
+	//   key: 'JMABZ-72LWU-R2UV5-GOYJ7-6QFZV-57BZW'
 	// })
 
 	// TMap.reverseGeocoder({

@@ -2,33 +2,35 @@
 	<view v-if="brandDetail" class="brand-info-container">
 		<view class="brand-name">{{ brandDetail.name }}</view>
 		<view class="rate">
-			<BeeIcon :src="require('../../../../components/BeeBrandPane/images/star.png')" :size="12"></BeeIcon>
+			<BeeIcon :src="require('../../../../components/BeeBrandPane/images/star.png')" :size="14"></BeeIcon>
 			<text>{{ brandDetail.starTotal || 0 }}</text>
-			<text>月售{{ brandDetail.salesVolume }}</text>
-			<text>人均{{ brandDetail.perCapita }}</text>
+			<text>月售 {{ brandDetail.salesVolume }}</text>
+			<text>人均{{ brandDetail.perCapita || '：--' }}</text>
 		</view>
-		<view class="open-time"> 营业时间：{{ brandDetail.startTime }}-{{ brandDetail.endTime }} </view>
-		<scroll-view v-if="brandDetail.bgUrl" scroll-x="true">
+		<view v-if="brandDetail.businessSlogan || brandDetail.voucherNum || brandDetail.supportVoucher" class="tags">
+			<view v-if="brandDetail.voucherNum" class="tag">补贴代金券{{ brandDetail.voucherNum * 2 || 0 }}%</view>
+			<view v-if="brandDetail.supportVoucher" class="tag">支持代金券</view>
+			<block v-if="brandDetail.businessSlogan"><view v-for="item in brandDetail.businessSlogan.split(',')" :key="item" class="tag">{{ item }}</view></block>
+		</view>
+		<!-- <scroll-view v-if="brandDetail.bgUrl" scroll-x="true">
 			<view class="goods-list">
-				<tui-lazyload-img
-					v-for="(img, index) in JSON.parse(brandDetail.bgUrl)" :key="index" class="goods-img"
-					mode="scaleToFill" width="250rpx" height="210rpx"
-					:radius="!index ? '20rpx 0 0 20rpx' : index === JSON.parse(brandDetail.bgUrl).length - 1 ? '0 20rpx 20rpx 0' : ''"
-					:src="common.seamingImgUrl(img)" @click="handleViewImg(img)"
-				></tui-lazyload-img>
+			<tui-lazyload-img
+			v-for="(img, index) in JSON.parse(brandDetail.bgUrl)" :key="index" class="goods-img"
+			mode="scaleToFill" width="250rpx" height="210rpx"
+			:radius="!index ? '20rpx 0 0 20rpx' : index === JSON.parse(brandDetail.bgUrl).length - 1 ? '0 20rpx 20rpx 0' : ''"
+			:src="common.seamingImgUrl(img)"
+			></tui-lazyload-img>
 			</view>
-		</scroll-view>
+			</scroll-view> -->
 		<view class="brand-status">
 			店铺状态：<text class="status">{{ brandDetail.status ? '打烊啦~' : '营业中' }}</text>
 		</view>
-		<view v-if="brandDetail.businessSlogan" class="tags">
-			<view v-for="item in brandDetail.businessSlogan.split(',')" :key="item" class="tag">{{ item }}</view>
-		</view>
+		<view class="open-time"> 营业时间：{{ brandDetail.startTime }}-{{ brandDetail.endTime }} </view>
 
 		<view class="address-info">
 			<view class="address-detail-info">
-				<view class="address-text">{{ brandDetail.address }}</view>
-				<view style="color: #777" class="address-text">
+				<view class="address-text" style="font-weight: bold;">{{ brandDetail.address }}</view>
+				<view style="color: #777777" class="address-text">
 					距你{{ brandDetail.distance || 0 }}公里，驾车{{ brandDetail.driveTime }}分钟
 				</view>
 			</view>
@@ -47,10 +49,10 @@
 					</view>
 				</BeeNavigation>
 
-				<view class="item" @click="$emit('follow')">
+				<!-- <view class="item" @click="$emit('follow')">
 					<BeeIcon :size="26" :src="require('../../../../static/brand/detail/collection.png')"></BeeIcon>
 					<text>{{ brandDetail.is ? '取消收藏' : '收藏' }}</text>
-				</view>
+					</view> -->
 			</view>
 		</view>
 	</view>
@@ -83,7 +85,7 @@ export default {
 	.rate {
 		display: flex;
 		align-items: center;
-		margin: 8upx 0 16upx 0;
+		margin: 12upx 0 16upx 0;
 
 		text {
 			font-size: 24upx;
@@ -104,12 +106,21 @@ export default {
 		}
 	}
 
-	.open-time {
-		padding: 0 20upx;
-		border-radius: 10upx;
-		background-color: #f6f6f6;
-		color: #777;
-		display: inline-block;
+	.tags {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		margin: 0 0 20upx 0;
+
+		.tag {
+			font-size: 26upx;
+			margin-right: 12upx;
+			margin-bottom: 10upx;
+			padding: 4upx 12upx;
+			background-color: #ff8000;
+			color: #ffffff;
+			border-radius: 10upx;
+		}
 	}
 
 	.goods-list {
@@ -122,62 +133,35 @@ export default {
 	}
 
 	.brand-status {
-		font-size: 24upx;
+		font-size: 26upx;
 
 		.status {
 			color: #fa5151;
-			font-size: 24upx;
-			font-weight: 500;
+			font-weight: bold;
 		}
 	}
 
-	.tags {
-		display: flex;
-		align-items: center;
-		flex-wrap: wrap;
-		margin: 12upx 0 32upx 0;
-
-		.tag {
-			font-size: 24upx;
-			padding: 0 12upx;
-			// background-color: #ff0505;
-			background-color: #f6f6f6;
-			color: #fff;
-			border-radius: 10upx;
-			margin-right: 10upx;
-			color: #3d3d3d;
-		}
+	.open-time {
+		display: inline-block;
+		margin-top: 15upx;
+		padding: 0 6upx;
+		border-radius: 10upx;
+		background-color: #f6f6f6;
+		font-size: 26upx;
+		color: #777;
 	}
 
 	.address-info {
+		display: flex;
+		align-items: center;
 		width: 100%;
-		display: flex;
-		align-items: center;
-	}
-
-	.op-menus {
-		display: flex;
-		align-items: center;
-
-		.item {
-			display: flex;
-			align-items: center;
-			flex-direction: column;
-			margin-left: 30upx;
-
-			text {
-				font-size: 24upx;
-				margin-top: 4upx;
-				white-space: nowrap;
-			}
-		}
-	}
-
+		margin-top: 18upx;
 	.address-detail-info {
 		flex: 1;
+		width: 0;
+		font-size: 26upx;
 
 		.address-text {
-			width: 360upx;
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
@@ -185,5 +169,24 @@ export default {
 			font-weight: 500;
 		}
 	}
+	}
+
+.op-menus {
+	display: flex;
+	align-items: center;
+
+	.item {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		margin-left: 30upx;
+
+		text {
+			font-size: 24upx;
+			margin-top: 4upx;
+			white-space: nowrap;
+		}
+	}
+}
 }
 </style>

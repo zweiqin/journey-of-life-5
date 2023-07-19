@@ -36,6 +36,19 @@ export default {
 		updateToken()
 		const launchOptions = uni.getLaunchOptionsSync()
 		this.scene = launchOptions.scene
+
+		// #ifdef H5
+		uni.onTabBarMidButtonTap(() => {
+			// this.switchTab('/pages/red-envelope/red-envelope')
+			// this.go('/pages/red-envelope/red-envelope')
+			uni.redirectTo({ url: '/pages/red-envelope/red-envelope' })
+		})
+		// #endif
+		// #ifdef APP
+		uni.onTabBarMidButtonTap(() => {
+			uni.redirectTo({ url: '/pages/red-envelope/red-envelope' })
+		})
+		// #endif
 	},
 
 	methods: {

@@ -161,7 +161,7 @@ export default {
 			getBrandAppointmentSelectGoodsApi({
 				appointmentId: e.id
 			}).then(({ data }) => {
-				this.currentGoods = data || []
+				this.currentGoods = (data && data.filter((item) => !!item)) || []
 				uni.hideLoading()
 			})
 		}

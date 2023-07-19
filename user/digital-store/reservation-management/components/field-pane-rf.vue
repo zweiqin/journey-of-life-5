@@ -2,7 +2,7 @@
 	<view class="field-pane-container">
 		<view class="title">{{ title }}</view>
 		<view v-for="item in fields" :key="item.label">
-			<view v-if="item.field === 'id'"></view>
+			<view v-if="(item.field === 'id') || (item.field === 'goodsObj')"></view>
 			<view v-else-if="item.field === 'gooIds'" class="item">
 				<view style="display: flex;justify-content: space-between;align-items: center;">
 					<view class="input-wrapper">关联商品：</view>

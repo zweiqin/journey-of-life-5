@@ -42,9 +42,10 @@
 					:img-url="common.seamingImgUrl(item.picUrl)" :desc="item.desc" show-num-only :number="item.number"
 				></Goods>
 
-				<view v-if="brand.brandId === 1001079" class="line-pane">
-					<view class="title">是否使用代金劵</view>
-					<view class="desc" style="color: #999">
+				<!-- <view v-if="brand.brandId === 1001079" class="line-pane"> -->
+				<view class="line-pane">
+					<view>是否使用代金劵</view>
+					<view style="color: #999">
 						<label style="display: flex; align-items: center" @click="handleUserVoucher(index)">
 							<radio class="radio-use-voucher" disabled :checked="brand.useVoucher" />
 							<text style="margin-left: 10px">
@@ -59,14 +60,9 @@
 
 		<!-- 汇总信息 -->
 		<view class="line-pane">
-			<view class="title">商品总额</view>
-			<view class="desc">￥{{ payOrderInfo.actualPrice }}</view>
+			<view>商品总额</view>
+			<view>￥{{ payOrderInfo.actualPrice }}</view>
 		</view>
-
-		<!-- <view class="line-pane">
-			<view class="title">优惠劵</view>
-			<view class="desc" style="color: #999">暂无优惠劵可用</view>
-			</view> -->
 
 		<view class="footer">
 			<view class="price-wrapper">
@@ -104,7 +100,7 @@ export default {
 		this.getAddress()
 		getVoucherNumberApi({ userId: getUserId() })
 			.then(({ data }) => {
-				this.voucherNumber = data[0] ? data[0].number : ''
+				this.voucherNumber = data[0] ? data[0].number : 999
 			})
 	},
 
@@ -177,12 +173,23 @@ export default {
 			// 	...currentBrand,
 			// 	useVoucher: !currentBrand.useVoucher
 			// })
-			if (this.orderType === '0') {
+			if (this.orderType === '0' || this.orderType === '1') {
 				if (this.goodsList[index].useVoucher) {
 					this.$set(this.goodsList, index, { ...currentBrand, useVoucher: !currentBrand.useVoucher })
 					this.handleBuildPayCount()
 				} else if (this.payOrderInfo && this.payOrderInfo.actualPrice) {
-					if (Number(this.payOrderInfo.actualPrice) < Number(this.voucherNumber)) {
+					// if (Number(this.payOrderInfo.actualPrice) < Number(this.voucherNumber)) {
+					if (Number(this.voucherNumber)) {
+						if (!this.payOrderInfo.brandCartgoods || !this.payOrderInfo.brandCartgoods.length) {
+							return this.$showToast('获取订单商品失败')
+						}
+						let usedVoucherNumber = 0
+						this.goodsList.filter((item) => item.useVoucher).forEach((item) => {
+							const tempPayObj = this.payOrderInfo.brandCartgoods.find((i) => i.brandId == item.brandId)
+							if (tempPayObj) usedVoucherNumber += Number(tempPayObj.brandGoodsTotalPrice)
+						})
+						const remainVoucherNumber = Number(this.voucherNumber) - usedVoucherNumber
+						if ((remainVoucherNumber <= 0) || (remainVoucherNumber < this.payOrderInfo.brandCartgoods.find((i) => i.brandId == this.goodsList[index].brandId).brandGoodsTotalPrice)) return this.$showToast('代金券数量不足')
 						this.$set(this.goodsList, index, { ...currentBrand, useVoucher: !currentBrand.useVoucher })
 						this.handleBuildPayCount()
 					} else {
@@ -227,9 +234,8 @@ export default {
 			uni.showLoading({
 				title: '加载中'
 			})
-			const _this = this
 			payAllShopCarApi(this.getPostData()).then(({ data }) => {
-				_this.payOrderInfo = data
+				this.payOrderInfo = data
 				uni.hideLoading()
 			})
 		},

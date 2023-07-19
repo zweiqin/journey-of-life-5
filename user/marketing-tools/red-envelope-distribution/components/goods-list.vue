@@ -57,7 +57,6 @@ export default {
 		return {
 			opList: [],
 			goodsList: [],
-			carTotalInfo: [],
 			query: {
 				page: 1,
 				size: 10,

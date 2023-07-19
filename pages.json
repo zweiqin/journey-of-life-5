@@ -223,12 +223,12 @@
 				"iconPath": "/static/images/tabbar/store.png",
 				"selectedIconPath": "/static/images/tabbar/store-active.png"
 			},
-			{
-				"pagePath": "pages/red-envelope/red-envelope",
-				"text": "抢红包",
-				"iconPath": "/static/images/tabbar/red-pack-active.png",
-				"selectedIconPath": "/static/images/tabbar/red-pack-active.png"
-			},
+			// {
+			// 	"pagePath": "pages/red-envelope/red-envelope",
+			// 	"text": "抢红包",
+			// 	"iconPath": "/static/images/tabbar/red-pack-active.png",
+			// 	"selectedIconPath": "/static/images/tabbar/red-pack-active.png"
+			// },
 			{
 				"pagePath": "pages/marketing-treasure-house/marketing-treasure-house",
 				"text": "达人广场",
@@ -241,7 +241,15 @@
 				"iconPath": "/static/images/tabbar/vip.png",
 				"selectedIconPath": "/static/images/tabbar/vip-active.png"
 			}
-		]
+		],
+		// 使用midButton则不知道点击后发生什么事，除非onTabBarMidButtonTap，但注册事件后也不能switchTab到对应页面，且在该页面不能显示tabbar
+		"midButton": {
+			"width": "150upx",
+			"height": "148upx",
+			"text": "抢红包",
+			"iconPath": "/static/images/tabbar/red-wrap.png",
+			"iconWidth": "58px"
+		}
 	},
 	"sitemapLocation": "sitemap.json",
 	"globalStyle": {
