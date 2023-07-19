@@ -156,13 +156,12 @@ export default {
 			// display: flex;
 			// justify-content: space-between;
 			// align-items: center;
-			padding: 44upx 0 68upx 0;
+			padding: 20upx 0 20upx 0;
 
 			.bar {
 				margin: 10rpx;
-				float: left;
 				width: 112upx;
-				display: flex;
+				display: inline-flex;
 				flex-direction: column;
 				align-items: center;
 

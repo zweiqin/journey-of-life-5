@@ -46,7 +46,7 @@
 					<span>我的快递</span> <span></span>
 				</view>
 				<scroll-view v-if="myExpressData" class="RecordList" scroll-y="true">
-					<view class="RecordItem" v-for="(item,index) in myExpressData.records" :key="item.sn">
+					<view class="RecordItem" v-for="(item,index) in myExpressData.records" @click="ViewDetails(item)" :key="item.sn">
 						<image :src="item.imgUrl" mode=""></image>
 						<span>订单编号:{{ item.sn }}</span>
 						<button class="ExpressDetails" @click="">查看详情</button>
@@ -95,7 +95,7 @@
 		},
 		created() {
 			this.getMyExpressList()
-			// getKuaidi100ComApi().then(res => {  // 该方法用来获取可以邮寄的公司，但是由于数据较少，且没有相对应的图片传输过来，因此暂时写死，约为拓展时再做拓展
+			// getKuaidi100ComApi().then(res => {  // 该方法用来获取可以邮寄的公司，但是由于数据较少，且没有相对应的图片传输过来，因此暂时写死，业务拓展时再做更改
 			// 	console.log(res.data)
 			// 	const Array = [];
 			// 	for(let key in res.data) {
@@ -121,7 +121,12 @@
 							}
 						})
 					})
-					// console.log(this.myExpressData.records)
+					console.log(this.myExpressData)
+				})
+			},
+			ViewDetails(item) {
+				uni.navigateTo({
+					url: `/pages/index/convenient-services/kuai-di/LogisticsDetails?id=${item.id}`
 				})
 			}
 		}

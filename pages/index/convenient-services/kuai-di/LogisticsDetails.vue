@@ -1,40 +1,19 @@
 <template>
 	<view class="logisticsView">
-		<NavHeader>
+		<NavHeader :BindClick="goBack">
 			<template v-slot:body>
 				<view class="defaultBody">
 					物流详情
 				</view>
 			</template>
 		</NavHeader>
-		<view class="LogisticsDetails_flow">
-			<view class="flowItem">
-				<view class="statusNode" :class="{img_Success:true}">
-					<image v-if="true" src="./image/successful.png" mode=""></image>
+		<view class="LogisticsDetails_flow" v-if="Exstatus">
+			<view class="flowItem" v-for="(item,index) in Exstatus" :key="index">
+				<view class="statusNode" :class="{img_Success:index == 0}">
+					<image v-if="index == 0" src="./image/successful.png" mode=""></image>
 				</view>
-				<p>【苏州转运中心】 已发出 下一站 【无锡转运中心公司】</p>
-				<p>2021-12-15 20:15:14</p>
-			</view>
-			<view class="flowItem">
-				<view class="statusNode">
-					
-				</view>
-				<p>【苏州转运中心】 已发出 下一站 【无锡转运中心公司】</p>
-				<p>2021-12-15 20:15:14</p>
-			</view>
-			<view class="flowItem">
-				<view class="statusNode">
-					
-				</view>
-				<p>【苏州转运中心】 已发出 下一站 【无锡转运中心公司】</p>
-				<p>2021-12-15 20:15:14</p>
-			</view>
-			<view class="flowItem">
-				<view class="statusNode">
-					
-				</view>
-				<p>【苏州转运中心】 已发出 下一站 【无锡转运中心公司】</p>
-				<p>2021-12-15 20:15:14</p>
+				<p>{{item.context}}</p>
+				<p>{{item.ftime}}</p>
 			</view>
 		</view>
 		<view class="footer">
@@ -61,64 +40,21 @@
 					page: 1,
 					size: 10,
 					type: 1001,
-					recordId: 2
+					recordId: "",
 				},
-				Exstatus: [
-				    {
-				        "time": "2021-12-15 20:15:14",
-				        "context": "【苏州转运中心】 已发出 下一站 【无锡转运中心公司】",
-				        "ftime": "2021-12-15 20:15:14",
-				        "areaCode": "CN320500000000",
-				        "areaName": "江苏,苏州市",
-				        "status": "干线",
-				        "location": "",
-				        "areaCenter": "120.585315,31.298886",
-				        "areaPinYin": "su zhou shi",
-				        "statusCode": "1002"
-				    },
-				    {
-				        "time": "2021-12-15 20:11:25",
-				        "context": "【苏州转运中心公司】 已收入",
-				        "ftime": "2021-12-15 20:11:25",
-				        "areaCode": "CN320500000000",
-				        "areaName": "江苏,苏州市",
-				        "status": "干线",
-				        "location": "",
-				        "areaCenter": "120.585315,31.298886",
-				        "areaPinYin": "su zhou shi",
-				        "statusCode": "1002"
-				    },
-				    {
-				        "time": "2021-12-15 19:18:27",
-				        "context": "【江苏省无锡市锡新开发区公司】 已收入",
-				        "ftime": "2021-12-15 19:18:27",
-				        "areaCode": "CN320200000000",
-				        "areaName": "江苏,无锡市",
-				        "status": "在途",
-				        "location": "",
-				        "areaCenter": "120.31191,31.491169",
-				        "areaPinYin": "wu xi shi",
-				        "statusCode": "0"
-				    },
-				    {
-				        "time": "2021-12-15 17:10:09",
-				        "context": "【江苏省苏州市北桥公司】 已揽收",
-				        "ftime": "2021-12-15 17:10:09",
-				        "areaCode": "CN320507004000",
-				        "areaName": "江苏,苏州市,相城区,北桥",
-				        "status": "揽收",
-				        "location": "",
-				        "areaCenter": "120.606531,31.505825",
-				        "areaPinYin": "bei qiao jie dao",
-				        "statusCode": "1"
-				    }
-				]
+				Exstatus: null
 			};
+		},
+		onLoad(options) {
+			this.queryList.recordId = options.id
 		},
 		created() {
 			this.getDataList()
 		},
 		methods: {
+			goBack() {
+				uni.navigateBack()
+			},
 			getDataList() {
 				getKuaiDiRecordMsg(this.queryList).then(res => {
 					this.myExpressData = JSON.parse(JSON.stringify(res))
@@ -126,7 +62,7 @@
 						let ResIndex = index
 						this.myExpressData.records[index] = { ...item, req:JSON.parse(item.req), resp:JSON.parse(item.resp) }
 					})
-					console.log(this.myExpressData)
+					this.Exstatus = this.myExpressData.records[0]?.req.lastResult.data
 				})
 			}
 		}
@@ -134,6 +70,14 @@
 </script>
 
 <style lang="scss" scoped>
+.errorInfo {
+	width: 100vw;
+	font-size: 40rpx;
+	font-weight: 600;
+	text-align: center;
+	box-sizing: border-box;
+	padding: 30rpx;
+}
 .logisticsView {
 	box-sizing: border-box;
 	width: 100vw;

@@ -1,6 +1,7 @@
 <template>
 	<view class="tabbarView">
-		<view class="tabbarItem" v-for="(item,index) in tabbarData" :key="item.name" @click="(ev) => BindClick(ev,index)">
+		<!-- @click="(ev) => BindClick(ev,index)" -->
+		<view class="tabbarItem" v-for="(item,index) in tabbarData" :key="item.name" @click="linkTo(item.path)">
 			<image :src="currIndex == index ? item.activeImage: item.imgUrl" mode=""></image>
 			<text :class="{blueColor: currIndex == index}">{{ item.name }}</text>
 		</view>
@@ -28,16 +29,23 @@
 					activeImage: require("../image/bangongbiaoqiantubiaoji_chakuaidi_active.png")
 				},{
 					name: "寄快递",
-					path: "/pages/index/convenient-services/kuai-di/index",
+					path: "/pages/index/convenient-services/kuai-di/DeliveryExpress",
 					imgUrl: require("../image/jikuaidi.png"),
 					activeImage: require("../image/jikuaidi_active.png")
 				},{
 					name: "我",
-					path: "/pages/index/convenient-services/kuai-di/index",
+					path: "/pages/index/convenient-services/kuai-di/MyExpress",
 					imgUrl: require("../image/wode.png"),
 					activeImage: require("../image/wode_active.png")
 				}]
 			};
+		},
+		methods: {
+			linkTo(path) {
+				uni.navigateTo({
+					url: path
+				})
+			}
 		}
 	}
 </script>

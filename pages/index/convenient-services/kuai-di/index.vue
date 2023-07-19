@@ -4,9 +4,7 @@
 		<!-- 用于填充因定位而失去的高度 -->
 		<view class="NavHeader"></view>  
 		<view class="main">
-			<IndexView :isFixed="isFixed" :ECList="ECList" v-if="currIndex == 0"></IndexView>
-			<DeliveryExpress v-if="currIndex == 1"></DeliveryExpress>
-			<MyExpress v-if="currIndex == 2"></MyExpress>
+			<IndexView :isFixed="isFixed" :ECList="ECList"></IndexView>
 		</view>
 		<SubsetTabbar :currIndex="currIndex" :BindClick="CheckTabbar"></SubsetTabbar>
 		<!-- 用于填充因定位而失去的高度 -->
@@ -24,13 +22,13 @@
 	import {
 		getUserId
 	} from '@/utils';
-	import {
-		// getBianminRecordKuaidiApi,  // 查询我个人寄快递的记录
-		// getKuaidi100ComApi,  // 获取可使用快递公司编码
-		getKuaidi100PriceApi, // C端寄件下单-价格查询
-		addKuaidi100CorderApi,  // C端寄件下单
-		orderCancelApi // C端寄件下单-取消
-	} from '@/api/convenient-services';
+	// import {
+	// 	// getBianminRecordKuaidiApi,  // 查询我个人寄快递的记录
+	// 	// getKuaidi100ComApi,  // 获取可使用快递公司编码
+	// 	getKuaidi100PriceApi, // C端寄件下单-价格查询
+	// 	addKuaidi100CorderApi,  // C端寄件下单
+	// 	orderCancelApi // C端寄件下单-取消
+	// } from '@/api/convenient-services';
 	export default {
 		name: 'KuaiDi',
 		components: {
