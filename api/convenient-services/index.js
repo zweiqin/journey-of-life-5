@@ -13,7 +13,7 @@ export const getKuaiDiCorporation = (data) => KuaiDiRequest('/kuaidi100/getCompa
 export const getKuaiDiMethods = (data) => KuaiDiRequest('/kuaidi100/queryTrack', data, 'get')
 
 // 查询我个人寄快递的记录                     测试数据，最终将以USERID为准     672950279         getUserId()  
-export const getBianminRecordKuaidiApi = (data) => KuaiDiRequest('/dtsBianminRecord', { ...data, userId: 672950279 }, 'get')
+export const getBianminRecordKuaidiApi = (data) => KuaiDiRequest('/dtsBianminRecord', { ...data, userId:  getUserId()   }, 'get')
 
 // 查询我个人寄快递记录的消息事件
 export const getKuaiDiRecordMsg = (data) => KuaiDiRequest('/dtsBianminRecordMsg', data, 'get')
@@ -22,7 +22,7 @@ export const getKuaiDiRecordMsg = (data) => KuaiDiRequest('/dtsBianminRecordMsg'
 export const getKuaidi100ComApi = (data) => KuaiDiRequest('/kuaidi100/kuaidicom', data, 'get')
 
 // C端寄件下单-价格查询
-export const getKuaidi100PriceApi = (data) => KuaiDiRequest('/kuaidi100/corderPrice', data)
+export const getKuaidi100PriceApi = (data) => KuaiDiRequest('/kuaidi100/cloud/corderPrice', data)
 
 // C端寄件下单
 export const addKuaidi100CorderApi = (data) => KuaiDiRequest('/kuaidi100/corder', data)

@@ -28,7 +28,7 @@
 		<!-- 轮播图 -->
 		<swiper
 			v-if="brandDetail.bgUrl && JSON.parse(brandDetail.bgUrl).length" class="swiper" :indicator-dots="true"
-			:autoplay="true" :interval="3000" :duration="1000"
+			:autoplay="true" :interval="3000" :duration=                                                            "1000"
 		>
 			<swiper-item v-for="(img, index) in JSON.parse(brandDetail.bgUrl)" :key="index">
 				<tui-lazyload-img

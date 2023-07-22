@@ -16,6 +16,9 @@
 				<p>{{item.ftime}}</p>
 			</view>
 		</view>
+		<view class="noData" v-else style="text-align: center;font-size: 38rpx;line-height: 160rpx;">
+			🤐暂时没有关于该订单的物流情况🤐
+		</view>
 		<view class="footer">
 			<tui-button width="153rpx" height="64rpx" class="ExpressInfoBtn" plain>物流服务</tui-button>
 			<tui-button width="153rpx" height="64rpx" class="ExpressInfoBtn" plain>延长收货</tui-button>

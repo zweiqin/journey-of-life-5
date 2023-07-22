@@ -4,7 +4,7 @@
 		<!-- 用于填充因定位而失去的高度 -->
 		<view class="NavHeader"></view>  
 		<view class="main">
-			<IndexView :isFixed="isFixed" :ECList="ECList"></IndexView>
+			<IndexView ref="IndexView" :isFixed="isFixed" :ECList="ECList"></IndexView>
 		</view>
 		<SubsetTabbar :currIndex="currIndex" :BindClick="CheckTabbar"></SubsetTabbar>
 		<!-- 用于填充因定位而失去的高度 -->
@@ -60,6 +60,15 @@
 			// 	console.log(res)
 			// })
 		},
+		onPullDownRefresh () {  // 下拉刷新
+			// console.log('refresh');
+			// setTimeout(function () {
+			// 	uni.stopPullDownRefresh();
+			// }, 1000);
+		},
+		onReachBottom() {   
+			this.$refs.IndexView.myExpressData?this.$refs.IndexView.getMyExpressList():''
+		}, 
 		methods: {
 			goBack() {
 				uni.navigateBack()

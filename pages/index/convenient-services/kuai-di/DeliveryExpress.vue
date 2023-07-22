@@ -1,6 +1,6 @@
 <template>
 	<view class="DeliveryExpress">
-		<NavHeader :BindClick="goBack"></NavHeader>
+		<NavHeader></NavHeader>
 		<!-- 用于填充因定位而失去的高度 -->
 		<view class="NavHeader"></view>
 		<DeliveryExpress :SenderData="SenderData" :collecterData="collecterData" :options="options"></DeliveryExpress>
@@ -14,13 +14,13 @@
 	import SubsetTabbar from "./components/SubsetTabbar.vue";
 	import DeliveryExpress from "./components/DeliveryExpress.vue"
 	import NavHeader from "./components/header.vue";
-	import {
-		// getBianminRecordKuaidiApi,  // 查询我个人寄快递的记录
-		getKuaidi100ComApi,  // 获取可使用快递公司编码
-		getKuaidi100PriceApi, // C端寄件下单-价格查询
-		addKuaidi100CorderApi,  // C端寄件下单
-		orderCancelApi // C端寄件下单-取消
-	} from '@/api/convenient-services';
+	// import {
+	// 	// getBianminRecordKuaidiApi,  // 查询我个人寄快递的记录
+	// 	getKuaidi100ComApi,  // 获取可使用快递公司编码
+	// 	getKuaidi100PriceApi, // C端寄件下单-价格查询
+	// 	addKuaidi100CorderApi,  // C端寄件下单
+	// 	orderCancelApi // C端寄件下单-取消
+	// } from '@/api/convenient-services';
 	export default {
 		components: {
 			SubsetTabbar,
@@ -45,11 +45,10 @@
 			};
 		},
 		methods: {
-			goBack() {
-				uni.navigateBack()
-			},
+			
 		},
 		onLoad(options) {
+			// 测试接口是否正常可用
 			// getKuaidi100PriceApi({
 			// 	"kuaidicom": "shunfeng",
 			// 	"recManPrintAddr": "广东省深圳市",
@@ -59,17 +58,24 @@
 			// }).then(res => {
 			// 	console.log(res)
 			// })
-			try{
-				this.options = JSON.parse(options.standingForm)
-				if(this.options.standing == "Send") {
-					this.SenderData = this.options
-				}else {
-					this.collecterData = this.options
+		},
+		// 每次页面重新出现时加载用户地址数据
+		onShow() {
+			let that = this
+			uni.getStorage({
+				key: 'UserExpressInfoSend',
+				success: function (res) {
+					that.SenderData = res.data
+					// console.log(this.SenderData);
 				}
-				console.log(this.options)
-			}catch(err){
-				console.log(err)
-			}
+			});
+			uni.getStorage({
+				key: 'UserExpressInfoCollect',
+				success: function (res) {
+					that.collecterData = res.data
+					// console.log(res.data);
+				}
+			});
 		}
 	}
 </script>

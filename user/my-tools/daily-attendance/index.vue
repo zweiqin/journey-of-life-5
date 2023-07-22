@@ -38,7 +38,7 @@
 								{{ item.flag == 0 ? `+${item.integral}` : '√' }}
 							</view>
 							<view class="SignRound_text">
-								第{{ index + 1 }}天
+								第{{ index + 1 }}天{{item.flag}}
 								<!-- {{ new Date(item.date).getDate() ==new Date().getDate()?'今天':item.easyDate }} -->
 							</view>
 						</view>

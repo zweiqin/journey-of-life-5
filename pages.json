@@ -948,7 +948,8 @@
 				{
 					"path": "kuai-di/index",
 					"style": {
-						"navigationBarTitleText": "快递"
+						"navigationBarTitleText": "快递",
+						"enablePullDownRefresh": true
 					}
 				}
                 ,{
@@ -980,6 +981,15 @@
                 }
                 ,{
                     "path" : "kuai-di/MyExpress",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "kuai-di/ExpressDelivery",
                     "style" :                                                                                    
                 {
                     "navigationBarTitleText": "",

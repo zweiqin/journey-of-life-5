@@ -19,7 +19,7 @@
 		props: {
 			BindClick: {
 				type: Function,
-				default: () => alert("暂时未绑定任何方法")
+				default: () => uni.navigateBack()
 			},
 			pathUrl: {
 				type: String,
@@ -47,7 +47,9 @@
 		height: 50rpx;
 	}
 	.defaultBody {
-		margin-left: 145rpx;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
 		font-size: 34rpx;
 		color: white;
 		font-weight: 550;

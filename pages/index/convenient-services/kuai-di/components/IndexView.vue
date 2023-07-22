@@ -45,11 +45,16 @@
 				<view class="viewHeader" :class="{'sticky-fixed':isFixed}">
 					<span>我的快递</span> <span></span>
 				</view>
-				<scroll-view v-if="myExpressData" class="RecordList" scroll-y="true">
-					<view class="RecordItem" v-for="(item,index) in myExpressData.records" @click="ViewDetails(item)" :key="item.sn">
+				<scroll-view v-if="myExpressData.records.length > 0" class="RecordList" scroll-y="true">
+					<view class="RecordItem" v-for="(item,index) in myExpressData.records" :key="item.sn">
 						<image :src="item.imgUrl" mode=""></image>
 						<span>订单编号:{{ item.sn }}</span>
-						<button class="ExpressDetails" @click="">查看详情</button>
+						<button type="primary" class="ExpressDetails" @click="ViewDetails(item)" v-if="item.status == 4">查看详情</button>
+						<button type="primary" class="ExpressDetails gray" v-else-if="item.status == 3">已取消</button>
+						<button type="primary" class="ExpressDetails gray" v-else-if="item.status == 2">受理失败</button>
+						<!-- <button type="warn" class="ExpressDetails" @click="CancelOrder(item)" v-else-if="item.status == 1 || item.status == 0">取消订单</button> -->
+						<button type="warn" class="ExpressDetails" @click="CancelOrder(item)" v-else-if="(item.status == 1 || item.status == 0) && item.resp">取消订单</button>
+						<button type="warn" class="ExpressDetails" v-else>订单异常</button>
 					</view>
 				</scroll-view>
 				<view v-else class="noRecordData">
@@ -59,19 +64,35 @@
 				</view>
 			</view>
 		</view>
+		<tui-modal :show="modal" @click="handleClick" @cancel="hideModal" custom>
+			<text style="font-size: 36rpx; font-weight: 600;width: 100%;display: inline-block; text-align: center;">取消退款原因</text>
+			<tuiInput placeholder="请输入退款原因" v-model="cancelMsg"></tuiInput>
+			<view class="cacelBtn">
+				<tuiButton width="200rpx" @click="hideModal" height="70rpx" type="danger">取消</tuiButton>
+				<tuiButton width="200rpx" @click="handleClick" height="70rpx" type="primary">确认</tuiButton>
+			</view>
+		</tui-modal>
 	</view>
 </template>
 
 <script>
+	import tuiButton from "@/components/thorui/tui-button/tui-button.vue"
+	import tuiInput from "@/components/thorui/tui-input/tui-input.vue"
+	import tuiModal from "@/components/thorui/tui-modal/tui-modal.vue"
 	import {
 		getBianminRecordKuaidiApi, // 查询我个人寄快递的记录
 		// getKuaiDiRecordMsg, // 快递状态详情
 		getKuaidi100ComApi, // 获取可使用快递公司编码
 		// getKuaidi100PriceApi, // C端寄件下单-价格查询
 		// addKuaidi100CorderApi,  // C端寄件下单
-		// orderCancelApi // C端寄件下单-取消
+		orderCancelApi // C端寄件下单-取消
 	} from '@/api/convenient-services';
 	export default {
+		components: {
+			tuiModal,
+			tuiInput,
+			tuiButton
+		},
 		props: {
 			ECList: {
 				type: [Object, Array],
@@ -84,13 +105,19 @@
 		},
 		data() {
 			return {
+				modal: false,
+				cancelMsg: "",
 				expressId: '',
-				myExpressData: null,
+				myExpressData: {
+					records: []
+				},
 				queryList: {
 					page: 1,
 					size: 10,
 					type: 1
 				},
+				dataLength: 0,
+				CancelOrderParams: {}
 			};
 		},
 		created() {
@@ -106,10 +133,12 @@
 		},
 		methods: {
 			async getMyExpressList() {
+				let OldDatalength = this.dataLength
 				// getBianminRecordKuaidiApi  getKuaiDiRecordMsg  // 用于对比数据是否能对应上
 				getBianminRecordKuaidiApi(this.queryList).then(res => {
 					// 转化JSON字符串的数据格式 方便后面使用
 					this.myExpressData = JSON.parse(JSON.stringify(res))
+					this.dataLength = res.records.length;
 					res.records.forEach((item,index) => {
 						let ResIndex = index
 						this.myExpressData.records[index] = { ...item, req:JSON.parse(item.req), resp:JSON.parse(item.resp) }
@@ -121,12 +150,42 @@
 							}
 						})
 					})
-					console.log(this.myExpressData)
+					if(OldDatalength == this.dataLength && OldDatalength > 0) {
+						uni.showToast({
+							title: "没有更多了...😐",
+							icon: "none"
+						})
+					}else {
+						this.queryList.size += 6
+					}
 				})
 			},
 			ViewDetails(item) {
 				uni.navigateTo({
 					url: `/pages/index/convenient-services/kuai-di/LogisticsDetails?id=${item.id}`
+				})
+			},
+			CancelOrder(res) {
+				let params = {
+					orderId: res.req.orderReq.thirdOrderId,
+					recordId: res.id,
+					taskId: res.resp.data.taskId,
+					userId: res.req.userId
+				}
+				this.CancelOrderParams = params
+				this.modal = true;
+				console.log(this.CancelOrderParams)
+			},
+			//隐藏组件
+			hideModal() {
+				this.modal = false;
+			},
+			handleClick(){
+				orderCancelApi({cancelMsg: this.cancelMsg,...this.CancelOrderParams}).then(res => {
+					console.log(res)
+					this.hideModal();
+				}).catch(err => {
+					console.log(err)
 				})
 			}
 		}
@@ -134,6 +193,13 @@
 </script>
 
 <style lang="scss">
+	.cacelBtn {
+		display: flex;
+		justify-content: space-around;
+	}
+	.gray {
+		background-color: #979797 !important;
+	}
 	.sticky-fixed {
 		/* #ifdef H5 */
 		position: fixed;
@@ -350,7 +416,7 @@
 
 				>button {
 					margin: 0;
-					background-color: #01aaff;
+					// background-color: #01aaff;
 					color: #fff;
 					padding: 0;
 					font-size: 20rpx;
