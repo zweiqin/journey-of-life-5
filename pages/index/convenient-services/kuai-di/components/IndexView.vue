@@ -51,7 +51,7 @@
 						<span>订单编号:{{ item.sn }}</span>
 						<button type="primary" class="ExpressDetails" @click="ViewDetails(item)" v-if="item.status == 4">查看详情</button>
 						<button type="primary" class="ExpressDetails gray" v-else-if="item.status == 3">已取消</button>
-						<button type="primary" class="ExpressDetails gray" @click="CancelOrder(item)" v-else-if="item.status == 2">受理失败</button>
+						<button type="primary" class="ExpressDetails gray" v-else-if="item.status == 2">受理失败</button>
 						<!-- <button type="warn" class="ExpressDetails" @click="CancelOrder(item)" v-else-if="item.status == 1 || item.status == 0">取消订单</button> -->
 						<button type="warn" class="ExpressDetails" @click="CancelOrder(item)" v-else-if="(item.status == 1 || item.status == 0) && item.resp">取消订单</button>
 						<button type="warn" class="ExpressDetails" v-else>订单异常</button>
@@ -183,6 +183,7 @@
 			handleClick(){
 				orderCancelApi({cancelMsg: this.cancelMsg,...this.CancelOrderParams}).then(res => {
 					console.log(res)
+					this.getMyExpressList()
 					this.hideModal();
 				}).catch(err => {
 					console.log(err)
