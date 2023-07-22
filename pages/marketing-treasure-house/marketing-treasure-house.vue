@@ -77,7 +77,6 @@ export default {
 				value: 1
 			})
 		}
-
 		this.getArticleList()
 	},
 	onPageScroll(scrollTop) {
@@ -107,7 +106,6 @@ export default {
 			} else {
 				this.taskQuery.userId = ''
 			}
-
 			this.getTaskList()
 		},
 
@@ -132,7 +130,6 @@ export default {
 			} else {
 				this.taskList = data.list
 			}
-
 			this.taskTotals = Math.ceil(data.total / this.taskQuery.limit)
 		}
 	}

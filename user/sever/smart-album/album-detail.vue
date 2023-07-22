@@ -31,7 +31,7 @@
 				<!-- Swiper -->
 				<z-swiper ref="zSwiper" v-model="imgList" :options="options" @init="init">
 					<z-swiper-item v-for="(item, index) in imgList" :key="index">
-						<image :src="common.seamingImgUrl(item.url)" class="travel-slider-bg-image" />
+						<image :src="common.seamingImgUrl(item.url)" mode="widthFix" class="travel-slider-bg-image" />
 						<view class="travel-slider-content">
 							<view class="travel-slider-title">{{ item.title }}</view>
 							<view class="travel-slider-subtitle">{{ item.subTitle }}</view>
@@ -107,7 +107,7 @@ import { getUserCrmSlbumSelectId } from '../../../api/user'
 // import wxShare from '../../utils/wxshare'
 // // #endif
 import share from '../../../utils/share'
-import PointShare from '../../../components/TuanWxShare/point-share'
+import PointShare from '../../../components/BeeWxShare/point-share'
 import PosterPopup from './cpns/PosterPopup.vue'
 import { isInWx } from '../../../utils'
 
@@ -221,8 +221,7 @@ export default {
 			this.$refs.zSwiper.swiper.on('progress', (s, progress) => {
 				const max =
 					s.slides.length > 4 ? 360 - (8 - s.slides.length + 1) * 45 : 270
-				this.$set(this.planetStyle, 'transform', `translate(-50%, -50%) rotate(${max * -progress
-				}deg)`)
+				this.$set(this.planetStyle, 'transform', `translate(-50%, -50%) rotate(${max * -progress}deg)`)
 			})
 			this.$refs.zSwiper.swiper.on('setTransition', (s, duration) => {
 				const max =
@@ -428,7 +427,8 @@ export default {
 	&-bg-image {
 		position: absolute;
 		width: 100%;
-		height: 100%;
+		// height: 100%;
+		max-height: 45vh;
 		object-fit: cover;
 		left: 0;
 		top: 0;
@@ -438,21 +438,21 @@ export default {
 			0px -1px 0px rgba(255, 255, 255, 0.5);
 	}
 
-	&-content {
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		padding: 32px;
-		box-sizing: border-box;
-		color: #fff;
-		text-shadow: 1px 1px 1px #000;
-		line-height: 1.25;
-		border-radius: 0 0 16px 16px;
-		background-image: linear-gradient(to top,
-				rgba(0, 0, 0, 0.5),
-				rgba(0, 0, 0, 0));
-	}
+	// &-content {
+	// 	position: absolute;
+	// 	left: 0;
+	// 	right: 0;
+	// 	bottom: 0;
+	// 	padding: 32px;
+	// 	box-sizing: border-box;
+	// 	color: #fff;
+	// 	text-shadow: 1px 1px 1px #000;
+	// 	line-height: 1.25;
+	// 	border-radius: 0 0 16px 16px;
+	// 	background-image: linear-gradient(to top,
+	// 			rgba(0, 0, 0, 0.5),
+	// 			rgba(0, 0, 0, 0));
+	// }
 
 	&-title {
 		font-weight: bold;

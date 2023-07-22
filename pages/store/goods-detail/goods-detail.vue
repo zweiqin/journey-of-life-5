@@ -3,9 +3,6 @@
 
 		<!-- 图片区域 -->
 		<view class="top-image-wrapper">
-			<!-- <image src="https://img2.baidu.com/it/u=631516092,1411937024&fm=253&fmt=auto&app=120&f=JPEG?w=1280&h=800">
-				</image> -->
-
 			<BeeSwiper
 				height="540rpx" :list="goodsDetail.info.gallery.map(item => common.seamingImgUrl(item))" mode="aspectFit"
 				@click="handlePreviewImg"
@@ -16,11 +13,9 @@
 					<BeeIcon :size="24" color="#fff" name="arrowleft"></BeeIcon>
 				</BeeBack>
 
-				<BeeShare>
-					<view class="share-container">
-						<BeeIcon :size="24" :src="require('../../../static/brand/detail/share.png')"></BeeIcon>
-					</view>
-				</BeeShare>
+				<view class="share-container">
+					<BeeIcon :size="24" :src="require('../../../static/brand/detail/share.png')"></BeeIcon>
+				</view>
 			</view>
 		</view>
 

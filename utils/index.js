@@ -28,5 +28,6 @@ export {
 } from './DWHutils'
 export { formatTime, debounce } from './util'
 export { payFn } from './pay'
+export { saveImg } from './upload'
 export { nums } from './filter'
 export { getAdressDetailByLngLat, navigationAddress, getLngLatByAddress, MapLoader } from './location'

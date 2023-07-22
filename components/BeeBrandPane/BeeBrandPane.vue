@@ -32,19 +32,17 @@
 						支持代金券
 					</view>
 				</view>
-				<BeeNavigation>
-					<view class="location-wrapper">
-						<BeeIcon style="line-height: 100%;" :src="require('./images/location.png')" :size="14"></BeeIcon>
-						<view class="detail">
-							<!-- <text class="dis-container"> {{ Math.ceil(brandInfo.distance) || 0 }} km </text> -->
-							<text v-if="isPositioning" class="dis-container">{{ positioningText }}</text>
-							<view v-else style="display: flex;align-items: center;">
-								<text class="dis-container"> {{ brandInfo.distance || 0 }} km </text>
-								<BeeIcon :src="require('./images/to.png')" :size="14"></BeeIcon>
-							</view>
+				<view class="location-wrapper">
+					<BeeIcon style="line-height: 100%;" :src="require('./images/location.png')" :size="14"></BeeIcon>
+					<view class="detail">
+						<!-- <text class="dis-container"> {{ Math.ceil(brandInfo.distance) || 0 }} km </text> -->
+						<text v-if="isPositioning" class="dis-container">{{ positioningText }}</text>
+						<view v-else style="display: flex;align-items: center;">
+							<text class="dis-container"> {{ brandInfo.distance || 0 }} km </text>
+							<BeeIcon :src="require('./images/to.png')" :size="14"></BeeIcon>
 						</view>
 					</view>
-				</BeeNavigation>
+				</view>
 				<view class="elva">
 					<view class="elva-text hidden">
 						{{ brandInfo.desc || '--' }}

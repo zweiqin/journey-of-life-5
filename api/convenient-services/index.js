@@ -25,13 +25,13 @@ export const getKuaidi100ComApi = (data) => KuaiDiRequest('/kuaidi100/kuaidicom'
 export const getKuaidi100PriceApi = (data) => KuaiDiRequest('/kuaidi100/cloud/corderPrice', data)
 
 // C端寄件下单
-export const addKuaidi100CorderApi = (data) => KuaiDiRequest('/kuaidi100/corder', data)
+export const addKuaidi100CorderApi = (data) => KuaiDiRequest('/kuaidi100/cloud/corder', data)
 
 // // C端寄件下单-回调url
 // export const orderCancelApi = (data) => KuaiDiRequest('/kuaidi100/corderCb', data)
 
 // C端寄件下单-取消
-export const orderCancelApi = (data) => KuaiDiRequest('/kuaidi100/corderCancel', data)
+export const orderCancelApi = (data) => KuaiDiRequest('/kuaidi100/cloud/corderCancel', data)
 
 // // C端寄件下单-快递信息推送
 // export const orderCancelApi = (data) => KuaiDiRequest('/kuaidi100/corderTrackCb', data)

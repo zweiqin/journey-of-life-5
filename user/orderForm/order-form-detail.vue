@@ -4,6 +4,15 @@
 
 		<!-- 订单信息 -->
 		<view class="order-info">
+			<view style="text-align: right;">
+				<tui-button
+					type="danger" plain width="180rpx" height="54rpx"
+					style="display: inline-block;" shape="circle"
+					@click="handleShare"
+				>
+					一键分享
+				</tui-button>
+			</view>
 			<view class="view-order-status" :style="{ 'color': bg }">
 				{{ data.orderInfo.orderStatusText }}
 			</view>
@@ -173,6 +182,9 @@
 				</view>
 			</template>
 		</tui-dialog>
+
+		<!-- 分享订单商品海报 -->
+		<OrderPoster ref="refOrderPoster"></OrderPoster>
 	</view>
 </template>
 
@@ -189,6 +201,7 @@ import { getVerificationCodeHxCodeApi, getOrderRefundsReasonApi } from '../../ap
 import { getUserId, payFn } from '../../utils'
 import { orderOpButtons } from './config'
 import { payOrderGoodsApi } from '../../api/goods'
+import { J_USER_INFO } from '../../constant'
 
 export default {
 	name: 'OrderFormDetail',
@@ -398,6 +411,27 @@ export default {
 				refundRemark: ''
 			}
 			this.isShowRefundDialog = false
+		},
+
+		// 点击分享
+		handleShare() {
+			if (this.data.orderGoods && this.data.orderGoods.length) {
+				const nickName = uni.getStorageSync(J_USER_INFO).nickName
+				this.$refs.refOrderPoster.show({
+					headerTitle: nickName ? nickName + '的订单商品' : '订单商品',
+					brandList: [ {
+						brandName: this.data.orderInfo.brandName,
+						goodsList: this.data.orderGoods.map((item) => ({
+							picUrl: item.picUrl,
+							goodsName: item.goodsName,
+							specifications: item.specifications.join('，'),
+							price: item.price
+						}))
+					} ]
+				})
+			} else {
+				return this.$showToast('缺少商品数据')
+			}
 		}
 	}
 }

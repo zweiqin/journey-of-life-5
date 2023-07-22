@@ -164,6 +164,9 @@ export default {
 					areaId: this.$store.state.location.locationInfo.adcode,
 					longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
 					latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+				// areaId: 440606,
+				// longitude: 113.293719,
+				// latitude: 22.803751
 				}
 				this._loadData(null, () => this.isPositioning = false)
 			}

@@ -8,22 +8,58 @@
 			</NewHeader> -->
 		<JHeader style="padding: 30upx 0 10upx;" tabbar="/pages/user/user" width="50" height="50" title="我的画册"></JHeader>
 
-		<view style="position: sticky;top: 0;z-index: 999;padding: 10px 30px;background-color: #fff;"><tui-button width="100%" height="84rpx" @click="handleCreate">新建画册</tui-button></view>
+		<view style="position: sticky;top: 0;z-index: 999;padding: 10px 30px;background-color: #fff;">
+			<tui-button
+				width="100%"
+				height="84rpx" @click="handleCreate"
+			>
+				新建画册
+			</tui-button>
+		</view>
 
 		<view class="main">
-			<view v-for="(item, index) in UserCrmSlbumList" :key="index" class="" style="padding-bottom: 15upx;" @click="handleDetail(item.id)">
-				<tui-card :title="{ text: item.atlasName }" :tag="{ text: item.atlasType }">
-					<template #body>
-						<view class="tui-default" style="display: flex;padding: 20upx 30upx;">
-							<view style="padding-right: 10px;"><image style="width: 120rpx; height: 120rpx; background-color: #eeeeee;" mode="aspectFit" :src="common.seamingImgUrl(item.bookFace)"></image></view>
-							<view style="flex: 1;width: 0;box-shadow:0px 0px 10px #f00;overflow-x: auto;">
-								<tui-image-group :image-list="item.urls" mode="aspectFit" is-group distance="50" width="120rpx" height="120rpx" fade-show radius="10upx"></tui-image-group>
+			<view v-if="UserCrmSlbumList && UserCrmSlbumList.length">
+				<view
+					v-for="(item, index) in UserCrmSlbumList" :key="index" class="" style="padding-bottom: 15upx;"
+					@click="handleDetail(item.id)"
+				>
+					<tui-card :title="{ text: item.atlasName }" :tag="{ text: item.atlasType }">
+						<template #body>
+							<view class="tui-default" style="display: flex;padding: 20upx 30upx;">
+								<view style="padding-right: 10px;">
+									<image
+										style="width: 120rpx; height: 120rpx; background-color: #eeeeee;" mode="aspectFit"
+										:src="common.seamingImgUrl(item.bookFace)"
+									></image>
+								</view>
+								<view style="flex: 1;width: 0;box-shadow:0px 0px 10px #f00;overflow-x: auto;">
+									<tui-image-group
+										:image-list="item.urls" mode="aspectFit" is-group distance="50"
+										width="120rpx"
+										height="120rpx" fade-show radius="10upx"
+									></tui-image-group>
+								</view>
+								<view style="padding-left: 10px;">
+									<image
+										style="width: 120rpx; height: 120rpx; background-color: #eeeeee;" mode="aspectFit"
+										:src="common.seamingImgUrl(item.bookEnd)"
+									></image>
+								</view>
+								<view style="display: flex;justify-content: center;align-items: center;padding-left: 10px;">
+									<tui-button
+										width="80rpx" height="60rpx" type="danger" shape="circle"
+										@click="handleUserCrmSlbumDelete(item.atlasName, item.id)"
+									>
+										删除
+									</tui-button>
+								</view>
 							</view>
-							<view style="padding-left: 10px;"><image style="width: 120rpx; height: 120rpx; background-color: #eeeeee;" mode="aspectFit" :src="common.seamingImgUrl(item.bookEnd)"></image></view>
-							<view style="display: flex;justify-content: center;align-items: center;padding-left: 10px;"><tui-button width="80rpx" height="60rpx" type="danger" shape="circle" @click="handleUserCrmSlbumDelete(item.atlasName, item.id)">删除</tui-button></view>
-						</view>
-					</template>
-				</tui-card>
+						</template>
+					</tui-card>
+				</view>
+			</view>
+			<view v-else>
+				<tui-no-data>暂无画册</tui-no-data>
 			</view>
 			<LoadMore v-show="status !== 'none'" :status="status"></LoadMore>
 		</view>
@@ -79,7 +115,7 @@ export default {
 						id: item.id,
 						urls: [ ...item.imageUrl.substring(1, item.imageUrl.length - 1)
 							.split(',')
-							.map((section) => ({ src: section.substring(1, section.length - 1) })) ]
+							.map((section) => ({ src: this.common.seamingImgUrl(section.substring(1, section.length - 1)) })) ]
 					})))
 				} else {
 					this.UserCrmSlbumList = [ ...res.data.smartList.map((item) => ({
@@ -91,7 +127,7 @@ export default {
 						id: item.id,
 						urls: [ ...item.imageUrl.substring(1, item.imageUrl.length - 1)
 							.split(',')
-							.map((section) => ({ src: section.substring(1, section.length - 1) })) ]
+							.map((section) => ({ src: this.common.seamingImgUrl(section.substring(1, section.length - 1)) })) ]
 					})) ]
 				}
 			}

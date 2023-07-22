@@ -38,7 +38,7 @@
 				</view>
 			</view>
 		</view>
-		<view style="box-sizing: border-box; padding: 0rpx 18rpx; margin-top: 290rpx;">
+		<view style="box-sizing: border-box; padding: 0rpx 18rpx; margin-top: 350rpx;">
 			<scroll-view class="ExpressSelection" scroll-x="true">
 				<view class="SelectionItem" @click="selectExpress(index)" :class="{itemSelect:exServerIndex == index}" :key="index" v-for="(item,index) in ECList">
 					<view class="icfonts">
@@ -207,8 +207,8 @@
 				margin-top: 10rpx;
 				width: 100%;
 				box-sizing: border-box;
-				padding: 0rpx 18rpx 35rpx 18rpx;
-
+				padding: 0rpx 18rpx 0rpx 18rpx;
+				background-color: #fff;
 				.fromItem {
 					// width: 712rpx;
 					// height: 145rpx;

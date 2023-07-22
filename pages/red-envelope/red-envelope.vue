@@ -182,14 +182,14 @@ export default {
 				this.allMarks = res.data
 				console.log(this.allMarks)
 				const made = []
-				for (const redPack of res.data) {
+				for (const redPack of this.allMarks) {
 					made.push({
 						id: redPack.id,
 						latitude: redPack.latitude,
 						longitude: redPack.longitude,
 						title: (redPack.brandName || redPack.username) + '的红包',
-						width: 40,
-						height: 40,
+						width: 40 - Math.abs(this.scale - 15) * 2.5,
+						height: 40 - Math.abs(this.scale - 15) * 2.5,
 						anchor: {
 							x: 0.5,
 							y: 0.5
@@ -282,20 +282,15 @@ export default {
 			this.scale += number
 			if (this.scale > 18) {
 				this.scale = 18
-				uni.showToast({
-					title: '已经缩放到最大了',
-					duration: 2000,
-					icon: 'none'
-				})
-			}
-			if (this.scale < 5) {
+				return this.$showToast('已经缩放到最大了')
+			} else if (this.scale < 5) {
 				this.scale = 5
-				uni.showToast({
-					title: '已经缩放到最小了',
-					duration: 2000,
-					icon: 'none'
-				})
+				return this.$showToast('已经缩放到最小了')
 			}
+			this.markers.forEach((item) => {
+				item.width = 40 - Math.abs(this.scale - 15) * 2.5
+				item.height = 40 - Math.abs(this.scale - 15) * 2.5
+			})
 		},
 
 		// 去发红包

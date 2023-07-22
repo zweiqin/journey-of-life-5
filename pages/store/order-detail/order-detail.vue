@@ -7,13 +7,6 @@
 					<text class="title">订单详情</text>
 				</view>
 			</BeeBack>
-
-			<!-- <BeeShare>
-				<view class="share-container">
-				<text>分享</text>
-				<BeeIcon :size="20" :src="require('../../../static/brand/order-detail/share.png')"></BeeIcon>
-				</view>
-				</BeeShare> -->
 		</view>
 
 		<view class="pane f-s-b" @click="go('/user/site/site-manage?appoint=true')">
@@ -25,8 +18,8 @@
 		<view v-if="orderInfo" class="order-main-area pane">
 			<view class="goods-item">
 				<BeeAvatar
-					:size="60" radius="10upx"
-					src="https://img0.baidu.com/it/u=833683927,1099936825&fm=253&fmt=auto&app=120&f=JPEG?w=800&h=1422"
+					:size="68" radius="10upx"
+					:src="common.seamingImgUrl(orderInfo.selectedProduct.product.url)"
 				></BeeAvatar>
 				<view class="good-detial">
 					<view class="name">{{ orderInfo.info.name }}</view>
@@ -314,14 +307,13 @@ export default {
 
 			.good-detial {
 				flex: 1;
-				margin-left: 8upx;
+				margin-left: 18upx;
 
 				.price-text {
 					.flex();
 				}
 
 				.name {
-					width: 500upx;
 					overflow: hidden;
 					text-overflow: ellipsis;
 					display: -webkit-box;

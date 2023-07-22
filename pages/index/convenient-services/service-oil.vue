@@ -1,14 +1,5 @@
 <template>
 	<view class="service-oil">
-		<!-- <view class="header">
-			<tui-icon name="arrowleft" color="#000" @click="handleBack"></tui-icon>
-			<BeeAddress>
-			<view class="address-wrapper">
-			<view class="current-addresss">位置：广东省佛山市</view>
-			<BeeIcon :src="require('../../../static/index/bianmin/location.png')" :size="24"></BeeIcon>
-			</view>
-			</BeeAddress>
-			</view> -->
 		<view class="top">
 			<image src="../../../static/index/convenient-services/return.png" mode="" @click="back" />
 			<text>加油</text>

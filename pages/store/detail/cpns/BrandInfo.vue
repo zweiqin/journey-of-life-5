@@ -42,12 +42,10 @@
 					</view>
 				</BeeMakePhone>
 
-				<BeeNavigation>
-					<view class="item" @click="$emit('navgation')">
-						<BeeIcon :size="26" :src="require('../../../../static/brand/detail/location.png')"></BeeIcon>
-						<text>到这去</text>
-					</view>
-				</BeeNavigation>
+				<view class="item" @click="$emit('navgation')">
+					<BeeIcon :size="26" :src="require('../../../../static/brand/detail/location.png')"></BeeIcon>
+					<text>到这去</text>
+				</view>
 
 				<!-- <view class="item" @click="$emit('follow')">
 					<BeeIcon :size="26" :src="require('../../../../static/brand/detail/collection.png')"></BeeIcon>
