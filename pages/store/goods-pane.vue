@@ -2,7 +2,7 @@
 	<view class="goods-pane">
 		<JAvatar
 			radius="10" :size="120" :src="imgUrl ||
-				'https://img2.baidu.com/it/u=3642934879,209265319&fm=253&fmt=auto&app=138&f=PNG?w=500&h=618'
+				'../../static/easy-loadimage/loadfail.png'
 			"
 		></JAvatar>
 

@@ -830,12 +830,12 @@
 						"navigationBarTitleText": "达人入驻"
 					}
 				},
-				{
-					"path": "daren-square/task-detail",
-					"style": {
-						"navigationBarTitleText": "任务详情"
-					}
-				},
+				// {
+				// 	"path": "daren-square/task-detail",
+				// 	"style": {
+				// 		"navigationBarTitleText": "任务详情"
+				// 	}
+				// },
 				{
 					"path": "talent-list/talent-list",
 					"style": {
@@ -850,20 +850,20 @@
 				}
 			]
 		},
-		{
-			"root": "home",
-			"pages": [
-				{
-					"path": "activity-recommendation"
-				},
-				{
-					"path": "activity-detail"
-				},
-				{
-					"path": "ranking-list"
-				}
-			]
-		},
+		// {
+		// 	"root": "home",
+		// 	"pages": [
+		// 		{
+		// 			"path": "activity-recommendation"
+		// 		},
+		// 		{
+		// 			"path": "activity-detail"
+		// 		},
+		// 		{
+		// 			"path": "ranking-list"
+		// 		}
+		// 	]
+		// },
 		// 2.0
 		{
 			"root": "pages/store",
@@ -950,44 +950,36 @@
 					"style": {
 						"navigationBarTitleText": "快递"
 					}
+				},
+				{
+					"path": "kuai-di/LogisticsDetails",
+					"style": {
+						"navigationBarTitleText": "物流详情",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "kuai-di/kuaiDiForm",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "kuai-di/DeliveryExpress",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
+				},
+				{
+					"path": "kuai-di/MyExpress",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
 				}
-                ,{
-                    "path" : "kuai-di/LogisticsDetails",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "物流详情",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "kuai-di/kuaiDiForm",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "kuai-di/DeliveryExpress",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "kuai-di/MyExpress",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-            ]
+			]
 		}
 	],
 	"easycom": {

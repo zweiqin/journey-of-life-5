@@ -205,7 +205,6 @@
 
 <script>
 import MoreFunctions from '@/components/MoreFunctions/MoreFunctions.vue'
-import Carousel from '../../components/carousel'
 import { subInfoConfig, goodsInfoConfig } from './config'
 import uParse from '../../components/u-parse/u-parse.vue'
 import { marked } from 'marked'
@@ -225,7 +224,6 @@ import { getUserId } from '../../utils'
 export default {
 	name: 'Prod',
 	components: {
-		Carousel,
 		UParse: uParse
 		// RecommendGoods
 	},
@@ -482,14 +480,15 @@ export default {
 					_this.evalPosition = data.top
 				})
 				.exec()
-
-			query
-				.select('#goods-detail')
-				.boundingClientRect((data) => {
-					console.log(_this.detailPosition)
-					_this.detailPosition = data.top
-				})
-				.exec()
+			if (this.goodsDetail.info.detail) {
+				query
+					.select('#goods-detail')
+					.boundingClientRect((data) => {
+						console.log(_this.detailPosition, data)
+						_this.detailPosition = data.top
+					})
+					.exec()
+			}
 		},
 
 		// 点击移动到对应的位置

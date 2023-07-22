@@ -137,7 +137,16 @@ export default {
 
 	onLoad() {
 		this.userInfo = uni.getStorageSync(J_USER_INFO)
-		this.nickName = this.userInfo.nickName
+	},
+	onShow() {
+		if (getUserId()) {
+			refrshUserInfoApi({
+				userId: getUserId()
+			}).then((res) => {
+				this.userInfo = res.data
+				uni.setStorageSync(J_USER_INFO, res.data)
+			})
+		}
 	},
 	methods: {
 		handleClickLogout() {

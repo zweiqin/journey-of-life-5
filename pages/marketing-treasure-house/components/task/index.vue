@@ -1,9 +1,4 @@
 <template>
-	<!-- <view
-		v-if="data"
-		class="task-container"
-		@click="go('/marketing-treasure-house/daren-square/task-detail?id=' + data.id)"
-		> -->
 	<view v-if="data" class="task-container">
 		<view class="info">
 			<view class="left">

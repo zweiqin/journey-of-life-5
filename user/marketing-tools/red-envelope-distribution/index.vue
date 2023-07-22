@@ -89,14 +89,14 @@
 			</view>
 
 			<view class="line-item">
-				<text>红包金额是否随机</text>
+				<text>红包金额</text>
 				<tui-radio-group
 					v-model="redForm.wrapType"
 					style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;"
 					@change="(e) => {}"
 				>
 					<tui-label
-						v-for="(part, index) in [{ name: '是', value: '1' }, { name: '否', value: '0' }]"
+						v-for="(part, index) in [{ name: '随机', value: '1' }, { name: '等额', value: '0' }]"
 						:key="index"
 					>
 						<tui-list-cell padding="16upx">
@@ -361,7 +361,7 @@ export default {
 				return
 			}
 			if (!this.redForm.type) {
-				this.$showToast('请选择金额是否随机')
+				this.$showToast('请选择红包金额选项')
 				return
 			}
 			const data = {

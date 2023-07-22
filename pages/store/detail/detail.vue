@@ -16,7 +16,7 @@
 					<BeeIcon v-else :size="18" :src="require('../../../static/brand/detail/aixin.png')"></BeeIcon>
 				</view>
 				<view class="imgbg">
-					<BeeWxShare ref="tuanWxShareRef" @click="handleShareServe">
+					<BeeWxShare ref="beeWxShareRef" @click="handleShareServe">
 						<BeeIcon :src="require('../../../static/brand/detail/share.png')" :size="22"></BeeIcon>
 					</BeeWxShare>
 				</view>
@@ -245,7 +245,7 @@ export default {
 				successCb: () => { },
 				failCb: () => { }
 			}
-			this.$refs.tuanWxShareRef.share(data, isQuit)
+			this.$refs.beeWxShareRef.share(data, isQuit)
 		},
 
 		// 导航

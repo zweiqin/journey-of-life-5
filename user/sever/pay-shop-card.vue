@@ -2,9 +2,20 @@
 	<view class="shop-cat-pay-container">
 		<!-- 头部 -->
 		<view class="header">
-			<JBack width="50" dark height="50" style="margin-top: 8upx"></JBack>
-			<h2 v-if="type === 'mall'">确认订单</h2>
-			<h2 v-else-if="type === 'reservation'">确认预约</h2>
+			<view style="display: flex;align-items: center;">
+				<JBack width="50" dark height="50" style="margin-top: 8upx"></JBack>
+				<h2 v-if="type === 'mall'">确认订单</h2>
+				<h2 v-else-if="type === 'reservation'">确认预约</h2>
+			</view>
+			<view style="text-align: right;">
+				<tui-button
+					type="danger" plain width="180rpx" height="54rpx"
+					style="display: inline-block;" shape="circle"
+					@click="handleShare"
+				>
+					一键分享
+				</tui-button>
+			</view>
 		</view>
 
 		<!-- 收货信息 -->
@@ -75,12 +86,15 @@
 				<text v-else-if="type === 'reservation'">确认预约</text>
 			</button>
 		</view>
+
+		<!-- 分享订单商品海报 -->
+		<OrderPoster ref="refOrderPoster"></OrderPoster>
 	</view>
 </template>
 
 <script>
 import Goods from '../../pages/store/goods-pane.vue'
-import { J_TWO_PAY_GOODS, J_SELECT_ADDRESS } from '../../constant'
+import { J_TWO_PAY_GOODS, J_SELECT_ADDRESS, J_USER_INFO } from '../../constant'
 import { getAddressListApi } from '../../api/address'
 import { getUserId, payFn } from '../../utils'
 import { payAllShopCarApi, payAllGoodsSubmit } from '../../api/cart'
@@ -129,6 +143,7 @@ export default {
 		getGoods() {
 			const payGoodsInfo = uni.getStorageSync(J_TWO_PAY_GOODS) || {}
 			this.goodsList = payGoodsInfo.cardsInfo.filter((item) => item.brandCartgoods && item.brandCartgoods.length).map((item) => ({ ...item, couponId: -1 }))
+			console.log(this.goodsList)
 		},
 		// 获取地址信息
 		getAddress() {
@@ -267,6 +282,27 @@ export default {
 					}, 2000)
 				})
 			}
+		},
+
+		// 点击分享
+		handleShare() {
+			if (this.goodsList && this.goodsList.length) {
+				const nickName = uni.getStorageSync(J_USER_INFO).nickName
+				this.$refs.refOrderPoster.show({
+					headerTitle: nickName ? nickName + '的订单商品' : '订单商品',
+					brandList: this.goodsList.map((brand) => ({
+						brandName: brand.brandName,
+						goodsList: brand.brandCartgoods.map((item) => ({
+							picUrl: item.picUrl,
+							goodsName: item.goodsName,
+							specifications: item.specifications.join('，'),
+							price: item.price
+						}))
+					}))
+				})
+			} else {
+				return this.$showToast('缺少商品数据')
+			}
 		}
 	}
 }
@@ -283,6 +319,7 @@ export default {
 
 	.header {
 		display: flex;
+		justify-content: space-between;
 		align-items: center;
 
 		h2 {

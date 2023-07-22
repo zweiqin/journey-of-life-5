@@ -31,17 +31,6 @@
 			<Article :data="data" :status="loadingStatus"></Article>
 
 			<NoData v-show="isShowNoData" text="没有相关文章"></NoData>
-
-			<!-- <view class="history-search">
-				<view class="title-text history-line"> 猜你喜欢 </view>
-				<block>
-				<img
-				class="guess-img"
-				src="https://img0.baidu.com/it/u=1088731986,324059000&fm=253&fmt=auto?w=500&h=217"
-				alt=""
-				/>
-				</block>
-				</view> -->
 		</view>
 	</view>
 </template>
