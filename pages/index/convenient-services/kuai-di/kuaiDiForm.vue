@@ -12,8 +12,12 @@
 				<tuiInput label="姓名" v-model="formData.name" placeholder="请输入姓名" clearable required></tuiInput>
 				<tui-input label="手机号" :lineLeft="false" placeholder="请输入手机号" v-model="formData.mobile" clearable
 					required></tui-input>
-				<tui-input label="地址" disabled v-model="formData.area" :lineLeft="false" placeholder="选择地址" @click="getArea"
-				 required></tui-input>
+				<tui-input label="地址" class="activeSelect" disabled v-model="formData.area" :lineLeft="false" placeholder="选择地址" @click="getArea"
+				 required>
+					 <template v-slot:right>
+						<image style="width: 30rpx;height: 30rpx" src="./image/youjiantou.png" mode=""></image>
+					 </template>
+				 </tui-input>
 				<tui-input label="详细地址" :lineLeft="false" placeholder="请输入详细地址" v-model="formData.detailedArea"
 					clearable></tui-input>
 			</tui-form>
@@ -30,12 +34,12 @@
 </template>
 
 <script>
-	import cityData from '@/utils/picker.city.js'
+	import cityData from '@/utils/picker.city.js'  // 地址选择组件的数据
 	import tuiPicker from "@/components/thorui/tui-picker/tui-picker.vue"
 	import tuiForm from "@/components/thorui/tui-form/tui-form.vue"
 	import tuiInput from "@/components/thorui/tui-input/tui-input.vue"
 	// import tuiModal from "@/components/thorui/tui-modal/tui-modal.vue"
-	import NavHeader from "./components/header.vue";
+	import NavHeader from "./components/header.vue"; // 头部导航栏组件
 	export default {
 		components: {
 			NavHeader,
@@ -58,6 +62,18 @@
 					name: "mobile",
 					rule: ["required", "isMobile"],
 					msg: ["请输入手机号", "请输入正确的手机号"]
+				},{
+					name: "name",
+					rule: ["required"],
+					msg: ["请输入名字"]
+				},{
+					name: "area",
+					rule: ["required"],
+					msg: ["请选择地址"]
+				},{
+					name: "detailedArea",
+					rule: ["required", "isMobile"],
+					msg: ["请补充详细地址"]
 				}],
 				// modal: false,
 				addresSelect: false,
@@ -65,6 +81,11 @@
 			}
 		},
 		onLoad(option) {
+			if(!option.standing) {
+				uni.navigateTo({
+					url:"/pages/index/convenient-services/kuai-di/DeliveryExpress"
+				})
+			}
 			this.option = option
 			this.formData.standing = option.standing
 		},
@@ -72,21 +93,30 @@
 			goBack() {
 				uni.navigateBack()
 			},
+			// 开启地址选择器
 			getArea() {
 				this.addresSelect = true
 			},
+			// 修改地址选择数据
 			change(e) {
 				this.formData.area = e.result
 			},
+			// 关闭地址选择器
 			hide(e) {
 				this.addresSelect = false
 			},
+			// 将用户的表单数据存入本地
 			submit() {
 				if (!this.$refs.form) return;
 				this.$refs.form.validate(this.formData, this.rules).then(res => {
 					// console.log(this.formData)
-					uni.navigateBack({
-						standingForm: JSON.stringify(this.formData)
+					uni.setStorage({
+						key: `UserExpressInfo${this.option.standing}`,
+						data: this.formData,
+						success: function () {
+							console.log('success');
+							uni.navigateBack()
+						}
 					})
 					// uni.navigateTo({
 					// 	url: `/pages/index/convenient-services/kuai-di/DeliveryExpress?standingForm=${JSON.stringify(this.formData)}`
@@ -103,6 +133,9 @@
 </script>
 
 <style lang="scss" scoped>
+	.activeSelect:active {
+		background:  none;
+	}
 	.defaultBody {
 		position: absolute;
 		left: 50%;

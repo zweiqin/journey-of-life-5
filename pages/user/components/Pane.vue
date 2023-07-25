@@ -78,7 +78,7 @@ export default {
 			} catch (e) {
 				console.log(e)
 			}
-			console.log(haveMenuData)
+			// console.log(haveMenuData)
 			return haveMenuData
 			// const haveMenuCopyData = JSON.parse(JSON.stringify(this.menuData))
 			// const intRow = Math.floor(this.menuData.length / this.colum)

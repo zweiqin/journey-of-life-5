@@ -70,7 +70,7 @@
 				</view> -->
 			</scroll-view>
 			<view class="orderSubmit">
-				<button>去寄件</button>
+				<button @click="goExpressDelivery()">去寄件</button>
 				<view>
 					<span>丢件必赔</span> <span>比价下单</span> <span>上门取件</span>
 				</view>
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-	// 写死的快递公司
+	// 写死的快递公司数据
 	import { ECList } from "../ExpressData.js"
 	export default {
 		components: {
@@ -101,7 +101,12 @@
 			}
 		},
 		watch: {
-			
+			// SenderData: {
+			// 	immediate: true,
+			// 	handler(Val,oldVal) {
+			// 		console.log(Val)
+			// 	}
+			// }
 		},
 		data() {
 			return {
@@ -109,14 +114,17 @@
 				fromItem: ["寄快件", "批量寄件", "寄大件", "国际港澳台"],
 				currIndex: 0,
 				exServerIndex: 0,
+				expressCpns: {},
 			}
 		},
 		created() {
-			
+			this.expressCpns = ECList[0]
 		},
 		methods: {
 			selectExpress(index) {
 				this.exServerIndex = index
+				this.expressCpns = ECList[index]
+				// console.log(this.expressCpns)
 			},
 			checkFrom(index) {
 				this.currIndex = index
@@ -139,6 +147,11 @@
 					url: `/pages/index/convenient-services/kuai-di/kuaiDiForm?standing=${standing}`
 				})
 			},
+			goExpressDelivery() {
+				uni.navigateTo({
+					url: `/pages/index/convenient-services/kuai-di/ExpressDelivery?excomp=${JSON.stringify(this.expressCpns)}`
+				})
+			}
 		}
 	}
 </script>
@@ -194,8 +207,8 @@
 				margin-top: 10rpx;
 				width: 100%;
 				box-sizing: border-box;
-				padding: 0rpx 18rpx 35rpx 18rpx;
-
+				padding: 0rpx 18rpx 0rpx 18rpx;
+				background-color: #fff;
 				.fromItem {
 					// width: 712rpx;
 					// height: 145rpx;
@@ -293,10 +306,12 @@
 			background-color: white;
 			border: 5rpx solid #0084ff00;
 			.icfonts {
-				margin-top: 16rpx;
+				margin-top: 2rpx;
 				display: flex;
 				align-items: center;
-
+				padding: 10rpx 10rpx;
+				border-radius: 15rpx;
+				background-color: #dadbdc5f;
 				>image {
 					width: 50rpx;
 					height: 50rpx;
@@ -353,7 +368,7 @@
 
 	.orderSubmit {
 		border-radius: 15rpx;
-		margin-top: 28rpx;
+		// margin-top: 28rpx;
 		width: 712rpx;
 		height: 200rpx;
 		background-color: #fff;

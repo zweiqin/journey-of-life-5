@@ -1,6 +1,6 @@
 <template>
 	<view class="ExpressServiceContainer">
-		<NavHeader :BindClick="goBack"></NavHeader>
+		<NavHeader></NavHeader>
 		<!-- 用于填充因定位而失去的高度 -->
 		<view class="NavHeader"></view>  
 		<MyExpress></MyExpress>
@@ -26,9 +26,7 @@
 			};
 		},
 		methods: {
-			goBack() {
-				uni.navigateBack()
-			},
+			
 		}
 	}
 </script>
