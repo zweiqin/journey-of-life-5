@@ -18,7 +18,10 @@
 					<!-- <image class="icons" v-if="menu.iconUrl" :src="common.seamingImgUrl(menu.iconUrl)" mode=""></image> -->
 					<!-- <img v-if="menu.iconUrl" class="icons" :src="common.seamingImgUrl(menu.iconUrl)" alt=""> -->
 					<!-- <image v-else style="width: 64upx; height: 64upx"> </image> -->
-					<BeeIcon v-if="menu.iconUrl || menu.url" :size="32" :src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : common.seamingImgUrl(menu.url)"></BeeIcon>
+					<BeeIcon
+						v-if="menu.iconUrl || menu.url" :size="32"
+						:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : common.seamingImgUrl(menu.url)"
+					></BeeIcon>
 					<text class="menu-name">{{ menu.name }}</text>
 				</view>
 			</view>
@@ -106,6 +109,7 @@ export default {
 	width: 66rpx;
 	height: 66rpx;
 }
+
 .pane-wrapper {
 	padding: 30upx 48upx 40upx 24upx;
 	width: 100%;
@@ -154,11 +158,8 @@ export default {
 				background-color: #f0f0f0;
 			}
 
-			text {
-				font-size: 24upx;
-			}
 			.menu-name {
-				font-size: 20rpx;
+				font-size: 28rpx;
 				line-height: 51rpx;
 				color: #3D3D3D;
 			}

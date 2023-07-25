@@ -14,11 +14,9 @@
 			<view class="header">
 				<view style="display: flex;justify-content: center;align-items: center;">
 					<image class="header-icon" src="/static/images/user/ju-icon.png" mode="" />
-					<text>我的邀请码</text>
-				</view>
-				<view style="display: flex;justify-content: center;align-items: center;">
+					<text>我的邀请码：</text>
 					<text>{{ code }}</text>
-					<tui-button margin="0 0 0 20upx" type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="handleCopyData(code)">复制</tui-button>
+					<text style="margin-left: 12upx;font-size: 26upx;color: #0061C8;" @click="$copy(code)">复制</text>
 				</view>
 				<view>
 					昵称：{{ userInfo.nickName }}&nbsp;&nbsp;&nbsp;&nbsp;用户ID：{{ userInfo.userId }}
@@ -36,7 +34,12 @@
 				</view>
 				<view style="text-align: center;">
 					<image class="code" :src="invitationCodeUrl" alt="" />
-					<view style="font-size: 26upx;color: #06a6f0;" @click="handleCopyData(`https://h5.jfcmei.com/#/pages/jump/jump?userId=${userInfo.userId}&type=invitation&code=${code}`)">复制链接</view>
+					<view
+						style="font-size: 26upx;color: #06a6f0;"
+						@click="$copy(`https://h5.jfcmei.com/#/pages/jump/jump?userId=${userInfo.userId}&type=invitation&code=${code}`)"
+					>
+						复制链接
+					</view>
 				</view>
 			</view>
 
@@ -72,17 +75,6 @@ export default {
 				this.code = data.code
 				this.invitationCodeUrl = data.qrCode
 				uni.hideLoading()
-			})
-		},
-
-		handleCopyData(text) {
-			uni.setClipboardData({
-				data: text,
-				success: () => {
-					uni.showToast({
-						title: '复制成功'
-					})
-				}
 			})
 		}
 	}
@@ -162,13 +154,6 @@ export default {
 				height: 280upx;
 				object-fit: cover;
 			}
-		}
-
-		.code-title {
-			text-align: center;
-			font-size: 36upx;
-			font-weight: bold;
-			margin-top: 20upx;
 		}
 
 		.code {

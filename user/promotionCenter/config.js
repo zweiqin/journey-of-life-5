@@ -2,13 +2,12 @@ export const incomeInfotmation = [
 	{
 		value: 0,
 		label: '收入明细',
-		url: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/w4zvv3ri472cs1xnse03.png',
+		url: '../../static/images/user/sjourumingxi1.png',
 		color: 'linear-gradient(180deg, #07B9B9 45%, #00B578 120%)'
-		// img:"./detailIncome/index"
 	}, {
 		value: 1,
 		label: '收入明细',
-		url: 'https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/p4d90ytv9ejmze1302ez.png',
+		url: '../../static/images/user/sjourumingxi2.png',
 		color: 'linear-gradient(180deg, #3662EC 33%, #8A38F5 147%)'
 	}
 ]

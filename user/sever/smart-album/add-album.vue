@@ -2,7 +2,7 @@
 	<view class="community-order">
 		<view class="title-list">
 			<img
-				src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png"
+				:src="common.seamingImgUrl('qt4o7j0jglkweyicy1fw.png')"
 				alt=""
 				class="return"
 				@click="handleBack"
@@ -44,12 +44,7 @@
               "
 						>
 							<img :src="common.seamingImgUrl(img)" alt="" class="img1" />
-							<img
-								src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qqzm2u887derediugqlf.png"
-								alt=""
-								class="img2"
-								@click="removeBackgroundFace(img)"
-							/>
+							<tui-icon class="img2" name="close" :size="40" unit="rpx" bold color="#ea0000" @click="removeBackgroundFace(img)"></tui-icon>
 						</view>
 					</view>
 					<view
@@ -82,12 +77,7 @@
               "
 						>
 							<img :src="common.seamingImgUrl(img)" alt="" class="img1" />
-							<img
-								src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qqzm2u887derediugqlf.png"
-								alt=""
-								class="img2"
-								@click="removeBackground(img)"
-							/>
+							<tui-icon class="img2" name="close" :size="40" unit="rpx" bold color="#ea0000" @click="removeBackgroundFace(img)"></tui-icon>
 						</view>
 					</view>
 					<view
@@ -119,12 +109,7 @@
               "
 						>
 							<img :src="common.seamingImgUrl(img)" alt="" class="img1" />
-							<img
-								src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/qqzm2u887derediugqlf.png"
-								alt=""
-								class="img2"
-								@click="removeBackgroundEnd(img)"
-							/>
+							<tui-icon class="img2" name="close" :size="40" unit="rpx" bold color="#ea0000" @click="removeBackgroundFace(img)"></tui-icon>
 						</view>
 					</view>
 					<view
@@ -160,7 +145,7 @@ export default {
 			name: '',
 			price: '',
 			id: '',
-			imagesFace: [],
+			imagesFace: [ 'w0swlakzfjkgljk60bpx.png' ],
 			images: [],
 			imagesEnd: [],
 			length: '',
@@ -422,8 +407,8 @@ export default {
         border-radius: 20upx;
       }
       .img2 {
-        width: 40upx;
-        height: 40upx;
+        // width: 40upx;
+        // height: 40upx;
         position: absolute;
         right: -15upx;
         top: -15upx;

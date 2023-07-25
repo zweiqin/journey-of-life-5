@@ -2,12 +2,11 @@
 	<view class="community-order">
 		<view class="title-list">
 			<img
-				src="https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ishr7aqz6vm8if80if92.png" alt=""
+				:src="common.seamingImgUrl('qt4o7j0jglkweyicy1fw.png')" alt=""
 				class="return" @click="handleBack"
 			/>
 			<view class="title">
-				{{ form.id ? '编辑' : '新建' }}{{ templateType === 1 ? '红包模板' : templateType === 0 ? '优惠券模板' : '--'
-				}}
+				{{ form.id ? '编辑' : '新建' }}{{ templateType === 1 ? '红包模板' : templateType === 0 ? '优惠券模板' : '--' }}
 			</view>
 		</view>
 

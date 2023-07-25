@@ -81,7 +81,7 @@ export default {
 	],
 	onShow() {
 		if (!this.isPositioning) {
-			uni.showLoading()
+			// uni.showLoading()
 			getHomeBrandListApi({
 				page: 1,
 				size: this.$data._query.page * this.$data._query.size,
@@ -93,10 +93,10 @@ export default {
 				.then(({ data }) => {
 					console.log(data)
 					this.$data._list = data.brandList || []
-					uni.hideLoading()
+					// uni.hideLoading()
 				})
 				.catch(() => {
-					uni.hideLoading()
+					// uni.hideLoading()
 				})
 		}
 	},
@@ -295,5 +295,6 @@ export default {
 			padding-bottom: 140upx;
 		}
 	}
+
 }
 </style>

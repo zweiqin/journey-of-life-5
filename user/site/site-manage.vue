@@ -16,8 +16,8 @@
 			<view class="site-detail-frame">
 				<view class="site-detail-fram-text">
 					<view class="site-detail-top">
-						<image v-if="item.isDefault" src="../../static/images/lqb/site/site-pitch.png" class="site-detail-icon" />
-						<image v-else src="../../static/images/lqb/site/site-nopitch.png" class="site-detail-icon" />
+						<tui-icon v-if="item.isDefault" name="label-fill" :size="44" unit="rpx" bold color="#fc673e"></tui-icon>
+						<tui-icon v-else name="label" :size="44" unit="rpx" bold color="#efefef"></tui-icon>
 						<view class="site-detail-name">{{ item.name }}</view>
 						<view class="site-detail-phone">{{ item.mobile }}</view>
 						<view v-if="item.isDefault" class="default-site">默认</view>
@@ -30,7 +30,7 @@
 									<view class="area">顺德区</view> -->
 							</view>
 							<image
-								v-if="!isSelect" class="compile" mode="widthFix" src="../../static/images/lqb/site/compile.png"
+								v-if="!isSelect" class="compile" mode="widthFix" src="../../static/images/icon/compile.png"
 								@click="editAddress(item)"
 							/>
 
@@ -47,7 +47,7 @@
 								</view>
 								<view>
 									<image
-										class="site-delete" src="../../static/images/lqb/site/delete.png" alt=""
+										class="site-delete" src="../../static/images/icon/clear-his.png" alt=""
 										@click="addressDelete(item)"
 									/>
 								</view>
@@ -205,15 +205,6 @@ export default {
 		margin-right: 54upx;
 	}
 
-	.back {
-		width: @hw24;
-		height: @hw24;
-		margin-left: 48upx;
-		margin-right: 50upx;
-	}
-
-	.site-detail-choseall {}
-
 	.site-detail {
 		margin-bottom: 24upx;
 
@@ -334,8 +325,8 @@ export default {
 		}
 
 		.site-delete {
-			width: 33upx;
-			height: 37upx;
+			width: 38upx;
+			height: 42upx;
 		}
 	}
 

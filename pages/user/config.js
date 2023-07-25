@@ -117,11 +117,11 @@ export const myServe = [
 		icon: require('../../static/user-center/menus/shenqingjilu.png'),
 		url: '/user/sever/user-pool'
 	},
-	{
-		name: '粉丝统计',
-		icon: require('../../static/user-center/menus/shenqingjilu.png'),
-		url: '/user/sever/fan-statistics'
-	},
+	// {
+	// 	name: '粉丝统计',
+	// 	icon: require('../../static/user-center/menus/shenqingjilu.png'),
+	// 	url: '/user/sever/fan-statistics'
+	// },
 	{
 		name: '关联商家',
 		icon: require('../../static/user-center/menus/shenqingjilu.png'),
@@ -182,6 +182,11 @@ export const myStore = [
 
 export const marketingTools = [
 	{
+		name: '推广中心',
+		icon: require('../../static/user-center/menus/tuiguangma.png'),
+		url: '/user/promotionCenter/index'
+	},
+	{
 		name: '分享券',
 		icon: require('../../static/user-center/menus/fenxiangjuan.png')
 	},
@@ -190,11 +195,6 @@ export const marketingTools = [
 		icon: require('../../static/user-center/menus/hongbaofafang+.png'),
 		url: '/user/marketing-tools/red-envelope-distribution/index',
 		role: [10, 7, 6, 5, 4, 3, 2]
-	},
-	{
-		name: '推广中心',
-		icon: require('../../static/user-center/menus/tuiguangma.png'),
-		url: '/user/promotionCenter/index'
 	},
 	{
 		name: '秒杀活动',

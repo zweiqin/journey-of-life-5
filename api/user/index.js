@@ -221,9 +221,8 @@ export const getNameCardDetailApi = (data) => RuanRequest('/businessCard/detail'
 // 修改名片
 export const updateNameCardApi = (data) => RuanRequest('/businessCard/update', data)
 
-export const promotionCommissionApi = (data) => RuanRequest('/promotion/commission', data, 'get')
 // 推广中心
-
+export const promotionCommissionApi = (data) => RuanRequest('/promotion/commission', data, 'get')
 export const promotionOrderAndFansApi = (data) => RuanRequest('/promotion/orderAndFans', data, 'get')
 
 // 申请区域代理

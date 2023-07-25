@@ -34,7 +34,10 @@
 					</view>
 				</view>
 				<view style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;">
-					<view style="font-size: 28upx;">我的粉丝（{{ branchFans.totalFans }}）</view>
+					<view style="display: flex;justify-content: space-between;font-size: 28upx;">
+						<text>我的粉丝（{{ branchFans.totalFans }}）</text>
+						<tui-button type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="go('/user/sever/fan-statistics')">详情</tui-button>
+					</view>
 					<view
 						style="display: flex;justify-content: space-between;align-items: center;width: 100%;margin-top: 30upx;font-size: 28upx;text-align: center;"
 					>
@@ -169,7 +172,10 @@
 					</view>
 				</view>
 				<view style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;">
-					<view style="font-size: 28upx;">我的粉丝（{{ plannerFans.totalFans }}）</view>
+					<view style="display: flex;justify-content: space-between;font-size: 28upx;">
+						<text>我的粉丝（{{ plannerFans.totalFans }}）</text>
+						<tui-button type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="go('/user/sever/fan-statistics')">详情</tui-button>
+					</view>
 					<view
 						style="display: flex;justify-content: space-between;align-items: center;width: 100%;margin-top: 30upx;font-size: 28upx;text-align: center;"
 					>
@@ -335,7 +341,10 @@
 					</view>
 				</view>
 				<view style="margin-top: 20upx;padding: 30upx;background-color: #ffffff;border-radius: 40upx;">
-					<view style="font-size: 28upx;">我的粉丝（{{ brandFans.totalCount }}）</view>
+					<view style="display: flex;justify-content: space-between;font-size: 28upx;">
+						<text>我的粉丝（{{ brandFans.totalCount }}）</text>
+						<tui-button type="warning" width="120rpx" height="50rpx" style="border-radius: 50rpx;" @click="go('/user/sever/fan-statistics')">详情</tui-button>
+					</view>
 					<view
 						style="display: flex;justify-content: space-between;align-items: center;width: 100%;margin-top: 30upx;font-size: 28upx;text-align: center;"
 					>

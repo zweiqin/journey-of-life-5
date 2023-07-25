@@ -5,19 +5,24 @@
 		</view>
 		<view class="user-pool">
 
-			<view v-for="(item, index) in userPoolList" :key="item.id" class="" style="padding: 20upx 30upx;">
-				<view style="display: flex;align-items: center;padding: 20upx 30upx;background-color: #fff;">
-					<JAvatar
-						:src="item.avatar" size="92" radius="50%"
-						border="5upx solid #ffffff"
-					></JAvatar>
-					<view style="padding-left: 40upx;">
-						<view>粉丝ID：{{ item.id }}</view>
-						<view>名称：{{ item.nickName || '--' }}</view>
-						<view>性别：{{ item.gender === 1 ? '男' : item.gender === 2 ? '女' : '--' }}</view>
-						<view>会员类型：{{ common.explainMembership(item.roleIds) }}</view>
+			<view v-if="userPoolList && userPoolList.length">
+				<view v-for="(item, index) in userPoolList" :key="item.id" class="" style="padding: 20upx 30upx;">
+					<view style="display: flex;align-items: center;padding: 20upx 30upx;background-color: #fff;">
+						<JAvatar
+							:src="item.avatar" size="92" radius="50%"
+							border="5upx solid #ffffff"
+						></JAvatar>
+						<view style="padding-left: 40upx;">
+							<view>粉丝ID：{{ item.id }}</view>
+							<view>名称：{{ item.nickName || '--' }}</view>
+							<view>性别：{{ item.gender === 1 ? '男' : item.gender === 2 ? '女' : '--' }}</view>
+							<view>会员类型：{{ common.explainMembership(item.roleIds) }}</view>
+						</view>
 					</view>
 				</view>
+			</view>
+			<view v-else>
+				<tui-no-data>暂无数据</tui-no-data>
 			</view>
 
 		</view>

@@ -231,15 +231,13 @@ export default {
 
 		// 分享
 		handleShareServe(isQuit) {
-			if (!this.isLogin()) {
-				return
-			}
+			if (!this.isLogin()) return
 			const _this = this
 			const data = {
 				data: {
 					title: _this.brandDetail.name,
 					desc: _this.brandDetail.businessSlogan,
-					link: `https://www.tuanfengkeji.cn/JFShop_Uni_H5/#/pages/store/detail/detail?brandId=${_this.brandDetail.id}`,
+					link: `https://h5.jfcmei.com//#/pages/store/detail/detail?brandId=${_this.brandDetail.id}`,
 					imageUrl: _this.brandDetail.picUrl
 				},
 				successCb: () => { },

@@ -7,34 +7,17 @@
 <template>
 	<view>
 		<view class="header">
-			<img
-				src="../../../static/images/lqb/site/back.png"
-				class="back"
-				alt=""
-				@click="back"
-			/>
+			<img :src="common.seamingImgUrl('qt4o7j0jglkweyicy1fw.png')" class="back" alt="" @click="back" />
 			<h2>业务管理</h2>
 		</view>
 		<view class="bussiness-chose">
-			<view
-				:class="{ active: currentTab === 0 }"
-				class="item"
-				@click="changeTab(0)"
-			>
+			<view :class="{ active: currentTab === 0 }" class="item" @click="changeTab(0)">
 				开发
 			</view>
-			<view
-				:class="{ active: currentTab === 1 }"
-				class="item"
-				@click="changeTab(1)"
-			>
+			<view :class="{ active: currentTab === 1 }" class="item" @click="changeTab(1)">
 				潜在
 			</view>
-			<view
-				:class="{ active: currentTab === 2 }"
-				class="item"
-				@click="changeTab(2)"
-			>
+			<view :class="{ active: currentTab === 2 }" class="item" @click="changeTab(2)">
 				VIP
 			</view>
 		</view>
@@ -51,20 +34,10 @@
 			<view class="userProfessionlist">{{ item.professional }}</view>
 			<view class="operationDetail">
 				<view class="userUp" :data-list="item" @click="window">详情</view>
-				<view
-					v-if="currentTab == 0"
-					class="userChange"
-					:data-list="item"
-					@click="userUp"
-				>
+				<view v-if="currentTab == 0" class="userChange" :data-list="item" @click="userUp">
 					升级
 				</view>
-				<view
-					v-if="currentTab == 1"
-					class="userChange"
-					:data-list="item"
-					@click="userUp"
-				>
+				<view v-if="currentTab == 1" class="userChange" :data-list="item" @click="userUp">
 					升级
 				</view>
 			</view>
@@ -78,70 +51,43 @@
 					<view class="title">用户详情</view>
 
 					<view class="input-title">姓名:</view><input
-						v-model="userName"
-						type="text"
-						disabled="ture"
-						class="input-detail"
+						v-model="userName" type="text" disabled="ture" class="input-detail"
 						@input="userNameinput"
 					/>
 					<view class="input-title">手机号:</view><input
-						v-model="userPhone"
-						type="text"
-						disabled="ture"
-						class="input-detail"
+						v-model="userPhone" type="text" disabled="ture" class="input-detail"
 						@input="userPhoneinput"
 					/>
 					<view class="input-title">职业类型:</view><input
-						v-model="userProfession"
-						type="text"
-						disabled="ture"
-						class="input-detail"
-						@input="userProfessioninput"
+						v-model="userProfession" type="text" disabled="ture"
+						class="input-detail" @input="userProfessioninput"
 					/>
 					<view v-if="currentTab == 1">
 						<view class="input-title">爱好:</view><input
-							v-model="userLove"
-							type="text"
-							disabled="ture"
-							class="input-detail"
+							v-model="userLove" type="text" disabled="ture" class="input-detail"
 							@input="userLoveinput"
 						/>
 						<view class="input-title">工作地址:</view><input
-							v-model="userWorklive"
-							type="text"
-							disabled="ture"
-							class="input-detail"
-							@input="userWorkliveinput"
+							v-model="userWorklive" type="text" disabled="ture"
+							class="input-detail" @input="userWorkliveinput"
 						/>
 					</view>
 					<view v-if="currentTab == 2">
 						<view class="input-title">爱好:</view><input
-							v-model="userLove"
-							type="text"
-							disabled="ture"
-							class="input-detail"
+							v-model="userLove" type="text" disabled="ture" class="input-detail"
 							@input="userLoveinput"
 						/>
 						<view class="input-title">工作地址:</view><input
-							v-model="userWorklive"
-							type="text"
-							disabled="ture"
-							class="input-detail"
-							@input="userWorkliveinput"
+							v-model="userWorklive" type="text" disabled="ture"
+							class="input-detail" @input="userWorkliveinput"
 						/>
 						<view class="input-title">家庭住址:</view><input
-							v-model="userHome"
-							type="text"
-							disabled="ture"
-							class="input-detail"
-							@input="userHomeinput"
+							v-model="userHome" type="text" disabled="ture"
+							class="input-detail" @input="userHomeinput"
 						/>
 						<view class="input-title">生日:</view><input
-							v-model="userBirthday"
-							type="text"
-							disabled="ture"
-							class="input-detail"
-							@input="userBirthdayinput"
+							v-model="userBirthday" type="text" disabled="ture"
+							class="input-detail" @input="userBirthdayinput"
 						/>
 					</view>
 				</view>
@@ -157,29 +103,21 @@
 				<view class="title">用户升级</view>
 				<view v-if="currentTab == 0">
 					<view class="input-title">爱好:</view><input
-						v-model="userLove"
-						type="text"
-						class="input-detail"
+						v-model="userLove" type="text" class="input-detail"
 						@input="userLoveinput"
 					/>
 					<view class="input-title">工作地址:</view><input
-						v-model="userWorklive"
-						type="text"
-						class="input-detail"
+						v-model="userWorklive" type="text" class="input-detail"
 						@input="userWorkliveinput"
 					/>
 				</view>
 				<view v-if="currentTab == 1">
 					<view class="input-title">家庭住址:</view><input
-						v-model="userHome"
-						type="text"
-						class="input-detail"
+						v-model="userHome" type="text" class="input-detail"
 						@input="userHomeinput"
 					/>
 					<view class="input-title">生日:</view><input
-						v-model="userBirthday"
-						type="text"
-						class="input-detail"
+						v-model="userBirthday" type="text" class="input-detail"
 						@input="userBirthdayinput"
 					/>
 				</view>
@@ -195,43 +133,29 @@
 				<view>
 					<view class="title">用户添加</view>
 					<view class="input-title">姓名:</view><input
-						type="text"
-						placeholder="请输入姓名"
-						class="input-detail"
+						type="text" placeholder="请输入姓名" class="input-detail"
 						@input="userNameinput"
 					/>
 					<view class="input-title"> 选择性别:</view>
 					<view>
-						<uni-data-select
-							v-model="value"
-							:localdata="range"
-							@change="change"
-						></uni-data-select>
+						<uni-data-select v-model="value" :localdata="range" @change="change"></uni-data-select>
 					</view>
 					<view class="input-title">手机号:</view><input
-						type="text"
-						placeholder="请输入手机号"
-						class="input-detail"
+						type="text" placeholder="请输入手机号" class="input-detail"
 						@input="userPhoneinput"
 					/>
 					<view class="input-title">职业类型:</view><input
-						type="text"
-						placeholder="请输入职业类型"
-						class="input-detail"
+						type="text" placeholder="请输入职业类型" class="input-detail"
 						@input="userProfessioninput"
 					/>
 				</view>
 				<view class="input-title">所属业务员:</view><input
-					type="text"
-					placeholder="请输入业务员姓名"
-					class="input-detail"
+					type="text" placeholder="请输入业务员姓名" class="input-detail"
 					@input="belongsSalesmaninput"
 				/>
 
 				<view class="input-title">业务员所属部门:</view><input
-					type="text"
-					placeholder="请输入业务员所属部门"
-					class="input-detail"
+					type="text" placeholder="请输入业务员所属部门" class="input-detail"
 					@input="belongsDepartmentinput"
 				/>
 
@@ -243,11 +167,8 @@
 		</uni-popup>
 		<view class="addimg">
 			<img
-				v-if="currentTab == 0"
-				class="img"
-				src="
-https://www.tuanfengkeji.cn:9527/dts-admin-api/admin/storage/fetch/ifpelt2gfb91mkkrxy1n.png"
-				alt=""
+				v-if="currentTab == 0" class="img"
+				src="../../../static/images/icon/add.png" alt=""
 				@click="useradd"
 			/>
 		</view>
@@ -437,9 +358,9 @@ export default {
 		},
 
 		/**
-     * 点击取消按钮触发
-     * @param {Object} done
-     */
+		 * 点击取消按钮触发
+		 * @param {Object} done
+		 */
 
 		close() {
 			// TODO 做一些其他的事情，before-close 为true的情况下，手动执行 close 才会关闭对话框
@@ -454,10 +375,10 @@ export default {
 		},
 
 		/**
-     * 点击确认按钮触发
-     * @param {Object} done
-     * @param {Object} value
-     */
+		 * 点击确认按钮触发
+		 * @param {Object} done
+		 * @param {Object} value
+		 */
 
 		confirm(value) {
 			// 输入框的值
@@ -570,171 +491,189 @@ export default {
 @import "../../../style/var.less";
 
 .header {
-  width: 100%;
-  text-align: center;
-  margin-top: 30upx;
-  padding-top: 30upx;
-  .back {
-    float: left;
-    width: 16upx;
-    margin-top: 6upx;
-    padding-left: 30upx;
-  }
+	width: 100%;
+	text-align: center;
+	margin-top: 30upx;
+	padding-top: 30upx;
 
-  h2 {
-    font-size: 34upx;
-    display: inline;
-    font-weight: normal;
-  }
+	.back {
+		float: left;
+		width: 40upx;
+		margin-top: 6upx;
+		padding-left: 30upx;
+	}
+
+	h2 {
+		font-size: 34upx;
+		display: inline;
+		font-weight: normal;
+	}
 }
+
 .bussiness-chose {
-  display: flex;
-  margin-top: 20upx;
-  margin-bottom: 10upx;
-  .item {
-    margin: 0 auto;
-    font-size: 24upx;
+	display: flex;
+	margin-top: 20upx;
+	margin-bottom: 10upx;
 
-    &.active {
-      font-weight: bold;
-      color: #3d3d3d;
-    }
-  }
+	.item {
+		margin: 0 auto;
+		font-size: 24upx;
+
+		&.active {
+			font-weight: bold;
+			color: #3d3d3d;
+		}
+	}
 }
+
 .border {
-  width: 95%;
-  margin: 0 auto;
-  border: 0.5px solid #d8d8d8;
+	width: 95%;
+	margin: 0 auto;
+	border: 0.5px solid #d8d8d8;
 }
+
 .listTetle {
-  display: flex;
-  align-items: center;
-  padding: 0 20upx;
-  margin: 10upx 0upx;
-  .userName {
-    width: 20%;
-    text-align: center;
-  }
-  .userPhone {
-    width: 35%;
-    text-align: center;
-  }
-  .userProfession {
-    width: 187.5upx;
-    text-align: center;
-  }
-  .operation {
-    width: 20%;
-    text-align: center;
-  }
+	display: flex;
+	align-items: center;
+	padding: 0 20upx;
+	margin: 10upx 0upx;
+
+	.userName {
+		width: 20%;
+		text-align: center;
+	}
+
+	.userPhone {
+		width: 35%;
+		text-align: center;
+	}
+
+	.userProfession {
+		width: 187.5upx;
+		text-align: center;
+	}
+
+	.operation {
+		width: 20%;
+		text-align: center;
+	}
 }
+
 .listDetail {
-  display: flex;
-  align-items: center;
-  padding: 0 20upx;
-  .userNamelist {
-    width: 20%;
-    text-align: center;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    padding: 0 10upx;
-  }
+	display: flex;
+	align-items: center;
+	padding: 0 20upx;
 
-  .userPhonelist {
-    width: 35%;
-    text-align: center;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    padding: 0 10upx;
-  }
-  .userProfessionlist {
-    width: 25%;
-    text-align: center;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    padding: 0 10upx;
-  }
-  .operationDetail {
-    width: 20%;
-    text-align: center;
-    padding: 0 10upx;
-    font-size: 25upx;
-    margin: 5upx;
-    color: white;
-    .userUp {
-      background-color: lightskyblue;
-      border-radius: 10upx;
-      margin-bottom: 3upx;
-      box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
-    }
+	.userNamelist {
+		width: 20%;
+		text-align: center;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		padding: 0 10upx;
+	}
 
-    .userChange {
-      background-color: lightblue;
-      border-radius: 10upx;
-      box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
-    }
-  }
+	.userPhonelist {
+		width: 35%;
+		text-align: center;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		padding: 0 10upx;
+	}
+
+	.userProfessionlist {
+		width: 25%;
+		text-align: center;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		padding: 0 10upx;
+	}
+
+	.operationDetail {
+		width: 20%;
+		text-align: center;
+		padding: 0 10upx;
+		font-size: 25upx;
+		margin: 5upx;
+		color: white;
+
+		.userUp {
+			background-color: lightskyblue;
+			border-radius: 10upx;
+			margin-bottom: 3upx;
+			box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+		}
+
+		.userChange {
+			background-color: lightblue;
+			border-radius: 10upx;
+			box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+		}
+	}
 }
+
 .detail-window {
-  background-color: white;
-  width: 630upx;
-  padding: 40upx;
-  border-radius: 20upx;
-  .title {
-    text-align: center;
-    font-weight: 600;
-    padding: 20upx;
-  }
-  .input-title {
-    font-size: 32upx;
-    font-weight: 700;
-  }
-  .input-detail {
-    margin: 10upx 0;
-    border: 1px solid #999999;
-  }
-  .button-background {
-    padding-top: 40upx;
-    .top-button {
-      margin: 0 auto;
-      text-align: center;
-      color: white;
-      width: 300upx;
-      border-radius: 20px;
-      background: linear-gradient(
-        359deg,
-        #07b907 4%,
-        rgba(7, 185, 185, 0) 141%
-      );
-      box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
-    }
-    .bottom-button {
-      margin: 0 auto;
-      text-align: center;
-      color: white;
-      margin-top: 20upx;
-      width: 300upx;
-      border-radius: 20px;
-      background: linear-gradient(
-        359deg,
-        #07b9b9 4%,
-        rgba(7, 185, 185, 0) 141%
-      );
-      box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
-    }
-  }
+	background-color: white;
+	width: 630upx;
+	padding: 40upx;
+	border-radius: 20upx;
+
+	.title {
+		text-align: center;
+		font-weight: 600;
+		padding: 20upx;
+	}
+
+	.input-title {
+		font-size: 32upx;
+		font-weight: 700;
+	}
+
+	.input-detail {
+		margin: 10upx 0;
+		border: 1px solid #999999;
+	}
+
+	.button-background {
+		padding-top: 40upx;
+
+		.top-button {
+			margin: 0 auto;
+			text-align: center;
+			color: white;
+			width: 300upx;
+			border-radius: 20px;
+			background: linear-gradient(359deg,
+					#07b907 4%,
+					rgba(7, 185, 185, 0) 141%);
+			box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+		}
+
+		.bottom-button {
+			margin: 0 auto;
+			text-align: center;
+			color: white;
+			margin-top: 20upx;
+			width: 300upx;
+			border-radius: 20px;
+			background: linear-gradient(359deg,
+					#07b9b9 4%,
+					rgba(7, 185, 185, 0) 141%);
+			box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.3);
+		}
+	}
 }
-.userUp-window {
-}
+
+.userUp-window {}
+
 .addimg {
-  .img {
-    position: fixed;
-    bottom: 60upx;
-    right: 60upx;
-    width: 80upx;
-  }
+	.img {
+		position: fixed;
+		bottom: 60upx;
+		right: 60upx;
+		width: 80upx;
+	}
 }
 </style>
