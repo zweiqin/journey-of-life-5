@@ -59,7 +59,7 @@
 			},
 			//rpx 只对左右padding起作用，上下为0
 			padding: {
-				type: Number,
+				type: [Number,String],
 				default: 30
 			},
 			//背景色

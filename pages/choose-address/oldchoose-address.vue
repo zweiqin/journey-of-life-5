@@ -32,52 +32,41 @@
 				</view>
 			</view>
 		</view>
-		<tuiTabs class="addresTabs" padding="30" :currentTab="swiperTabs" :tabs="tabs" @change="stageLinkageAddres"></tuiTabs>
-		<view class="wrapper-container">
-			<swiper class="swiper" disable-touch="true" :current="swiperIndex" :duration="300">
-				<swiper-item>
-					<view class="address-list-wrapper">
-						<tui-index-list
-							active-key-color="#e95d20" active-color="#e95d20" active-key-background="#fff"
-							:list-data="cityList.data"
-						>
-							<template #item="{ entity }">
-								<tui-list-cell v-for="(item, index) in entity" :key="index" padding="16rpx 30rpx">
-									<view class="tui-list__item" @click="handleChooseProvince(item,index)">
-										<view :id="'item' + item.name" class="tui-name">
-											{{
-												item.name
-											}}
-										</view>
+		<tui-tab :tabs="tabs" @change="stageLinkageAddres"></tui-tab>
+		<scroll-view :scroll-x="isScoll" 
+			class="addresScollSelect" 
+			scroll-with-animation="true" 
+			style="white-space: nowrap;" 
+			:scroll-into-view="addresScroll"
+		>
+			<view class="addresViewItem" id="addresScroll0" style="background-color: aqua;">
+				<view class="address-list-wrapper">
+					<tui-index-list
+						active-key-color="#e95d20" active-color="#e95d20" active-key-background="#fff"
+						:list-data="cityList.data"
+					>
+						<template #item="{ entity }">
+							<tui-list-cell v-for="(item, index) in entity" :key="index" padding="16rpx 30rpx">
+								<view class="tui-list__item" @click="handleChooseCity(item.name)">
+									<view :id="'item' + item.name" class="tui-name">
+										{{
+											item.name
+										}}
 									</view>
-								</tui-list-cell>
-							</template>
-						</tui-index-list>
-					</view>
-				</swiper-item>
-				<swiper-item>
-					<view class="choose-cities">
-						<view class="choose-cities-item" 
-						:class="{isSelect:areaCityIndex == index}" 
-						@click="handleChooseArea(item,index)" 
-						:key="item.id"
-						v-for="(item,index) in areaCity">
-							<span>{{item.name}}</span>
-						</view>
-					</view>
-				</swiper-item>
-				<swiper-item>
-					<view class="choose-cities">
-						<view class="choose-cities-item"
-						:class="{isSelect:areaIndex == index}" 
-						@click="handleChooseCity(item,index)" :key="item.id"
-						v-for="(item,index) in area">
-							<span>{{item.name}}</span>
-						</view>
-					</view>
-				</swiper-item>
-			</swiper>
-		</view>
+								</view>
+							</tui-list-cell>
+						</template>
+					</tui-index-list>
+				</view>
+			</view>
+			<view class="addresViewItem" id="addresScroll1" style="background-color: blue;">
+				2
+			</view>
+			<view class="addresViewItem" id="addresScroll2" style="background-color: red;">
+				3
+			</view>
+		</scroll-view>
+
 		<tui-popup
 			:duration="500" :mode-class="[ 'fade-in' ]" :styles="styles" :show="showAuthPopupVisible"
 			@click="showAuthPopupVisible = false"
@@ -86,38 +75,27 @@
 				<tui-icon name="gps" :size="30" color="#e95d20"></tui-icon>
 				"团蜂"想访问您的地理位置，将根据你的地理位置提供准确的收货地址，社区服务地址，查看附近商家及门店等功能
 			</view>
-			{{areaCity}}
 		</tui-popup>
 	</view>
 </template>
 
 <script>
-import tuiTabs from "@/components/thorui/tui-tabs/tui-tabs.vue"
+import tuiTab from "@/components/thorui/tui-tab/tui-tab.vue"
 export default {
 	name: 'ChooseAddress',
 	components: {
-		tuiTabs 
+		tuiTab
 	},
 	data() {
 		return {
-			swiperIndex: 0,  // 地区选择栏下标
-			swiperTabs: 0,  // 切换swiper页来选择地址
-			areaCityIndex: null,
-			areaIndex: null,
+			addresScroll: 'addresScroll0',
+			isScoll: false,
 			currentTab: 0,
 			cityList: {},
 			searchValue: '',
 			isShowLoading: true,
 			showAuthPopupVisible: false,
-			tabs: [{
-					name: "所在城市"
-				}, {
-					name: "区/县",
-					disabled: true
-				}, {
-					name: "镇/街道",
-					disabled: true
-				}],
+			tabs: ['所在城市','区/县','镇/街道'],
 			styles: {
 				'position': 'fixed',
 				'bottom': 0,
@@ -129,27 +107,23 @@ export default {
 				'align-items': 'flex-start',
 				'background-color': 'rgba(0, 0, 0, 0.5)',
 				'padding': '50rpx 0 0 0'
-			},
-			areaCity: null,
-			area: null
+			}
 		}
 	},
-	computed: {
-		
-	},
+
 	mounted() {
 		this.getData()
 	},
 	methods: {
 		stageLinkageAddres(current) {
-			// if(current.index == 1 && !this.areaCity) {
-			// 	return
-			// }else if(current.index == 2 && !this.area) {
-			// 	return
-			// }else {
-				this.swiperTabs = current.index
-				this.swiperIndex = current.index
-			// console.log(current)
+			this.isScoll = true
+			this.addresScroll = 'addresScroll' + current.index
+			let timer = setTimeout(() => {
+				this.isScoll = false
+				clearTimeout(timer)
+			},300)  // 懒得改了，需要更优雅的写法可采用swiper组件来实现
+			// this.isScoll = false
+			// console.log(this.addresScroll)
 		},
 		getData() {
 			const _this = this
@@ -166,40 +140,27 @@ export default {
 				_this.isShowLoading = false
 			})
 		},
-		// changeTab(e) {
-		// 	this.currentTab = e.index
-		// },
+		changeTab(e) {
+			this.currentTab = e.index
+		},
 
 		searchCity(e) {
 			const value = e.value
 		},
+
 		handleBack() {
 			uni.navigateBack()
 		},
-		handleChooseProvince(item,index) {
-			this.areaCity = item.children
-			this.tabs[0].name = item.name
-			this.tabs[1].disabled = false
-			this.swiperIndex= 1,this.swiperTabs = 1
-		},
-		handleChooseArea(item,index) {
-			this.areaCityIndex = index
-			this.area = item.children
-			this.tabs[1].name = item.name
-			this.tabs[2].disabled = false
-			this.swiperIndex= 2,this.swiperTabs = 2
-		},
-		handleChooseCity(cityName,index) {
-			this.areaIndex = index
-			let area = this.tabs[0].name + this.tabs[1].name + cityName.name
-			uni.showLoading()
+
+		handleChooseCity(cityName) {
+			// uni.showLoading()
 			// console.log(cityName)
-			this.$store.dispatch('location/getDetailAddress', {
-				city: area,
-				distinguish: '',
-				town: ''
-			})
-			this.handleBack()
+			// this.$store.dispatch('location/getDetailAddress', {
+			// 	city: cityName,
+			// 	distinguish: '',
+			// 	town: ''
+			// })
+			// this.handleBack()
 		},
 
 		// 开始定位
@@ -223,47 +184,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.choose-cities {
-	width: 100vw;
-	position: relative;
-	overflow: hidden;
-	.choose-cities-item {
-		margin: 0;
-		font-weight: 600;
-		text-align: center;
-		box-sizing: border-box;
-		padding: 30rpx 20rpx;
-		display: inline-block;
-		width: 33.3333%;
-		min-height: 100rpx;
-		max-height: 100rpx;
-		background-color: #ffffff;
-		> span {
-			display: inline-block;
-			max-width: 160rpx;
-			white-space:nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-	}
-	.isSelect {
-		color: #fff;
-		background-color: #e95d20;
-	}
-}
-// .addresTabs {
-// 	margin-top: 30rpx;
-// }
-.tui-index__letter {
-	position: absolute;
-}
-.wrapper-container {
-	width: 100vw;
-	height: calc(100vh - 0rpx) !important;
-}
-.swiper {
-	height: calc(100vh - 0rpx) !important;
-}
 .addresViewItem {
 	display: inline-block;
 	width: 100vw;
@@ -397,9 +317,6 @@ export default {
 	/deep/ .tui-icon {
 		margin-right: 10upx !important;
 	}
-}
-.tui-index__letter {
-	position: absolute !important;
 }
 </style>
 
