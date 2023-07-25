@@ -7,15 +7,15 @@
 				<image src="../image/saoma.png" mode=""></image>
 			</view>
 			<view class="ExpressOptions">
-				<view class="optItem">
+				<view class="optItem" @click="runToExpress('/pages/index/convenient-services/kuai-di/DeliveryExpress')">
 					<image src="../image/delTask_slt.png" mode=""></image>
 					<p>寄快递</p>
 				</view>
-				<view class="optItem">
+				<view class="optItem" @click="runToExpress()">
 					<image src="../image/piliangjijian.png" mode=""></image>
 					<p>寄大件</p>
 				</view>
-				<view class="optItem">
+				<view class="optItem" @click="runToExpress()">
 					<image src="../image/qingdanxiang.png" mode=""></image>
 					<p>批量寄件</p>
 				</view>
@@ -132,6 +132,14 @@
 			// console.log(this.ECList)
 		},
 		methods: {
+			runToExpress(path) {
+				path?uni.navigateTo({
+					url: path
+				}):uni.showToast({
+					title: "暂时未开通服务!",
+					icon: "none"
+				})
+			},
 			async getMyExpressList() {
 				let OldDatalength = this.dataLength
 				// getBianminRecordKuaidiApi  getKuaiDiRecordMsg  // 用于对比数据是否能对应上

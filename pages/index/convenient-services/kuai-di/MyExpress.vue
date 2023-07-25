@@ -27,6 +27,12 @@
 		},
 		methods: {
 			
+		},
+		created() {
+			uni.showToast({
+				title: "这里的功能暂时不提供支持，可预览界面，后续功能敬请期待",
+				icon: "none"
+			})
 		}
 	}
 </script>
