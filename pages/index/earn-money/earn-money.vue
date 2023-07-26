@@ -11,7 +11,7 @@
 		<view class="main">
 			<view class="main-top">
 				<view class="top-img">
-					<image src="../../../static/index/earn-money/组1.png" mode="" />
+					<image src="../../../static/index/earn-money/active-task.png" mode="" />
 				</view>
 				<!-- s暂时隐藏 -->
 				<!-- <view class="top-text">我的任务></view>
@@ -24,7 +24,7 @@
 			</view>
 			<view class="main-bot">
 				<view class="bot-img">
-					<image src="../../../static/index/earn-money/组2.png" mode="" />
+					<image src="../../../static/index/earn-money/activate-membership.png" mode="" />
 				</view>
 				<!-- s暂时隐藏 -->
 				<!-- <view class="data">

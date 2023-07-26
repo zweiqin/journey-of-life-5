@@ -39,8 +39,6 @@ export const getTypeDetailList = (data) => RuanRequest('/catalog/current', data,
  * @returns
  */
 
-export const getGoodsById = (data) => RuanRequest('/goods/list', data, 'get')
-
 export const getUserCouponApi = (data) => RuanRequest('/coupon/getUserCoupon', data, 'get')
 
 export const getAllCategoryList = () => RuanRequest('/catalog/all', {}, 'get')

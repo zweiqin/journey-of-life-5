@@ -18,9 +18,7 @@
 			</view>
 
 			<view class="goods-wrapper">
-				<!-- s暂时隐藏 -->
-				<!-- <GoodsFilter :scrollTop="0"></GoodsFilter> -->
-				<!-- e暂时隐藏 -->
+				<GoodsFilter :scroll-top="0"></GoodsFilter>
 				<scroll-view scroll-x="true">
 					<view class="sub-menus">
 						<view
@@ -53,6 +51,7 @@ import { menus } from './data'
 import { getTypeDetailList } from '../../../api/home'
 import { goodsListApi } from '../../../api/goods'
 export default {
+	name: 'Shop',
 	data() {
 		return {
 			menus: Object.freeze(menus),

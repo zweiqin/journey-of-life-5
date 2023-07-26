@@ -28,7 +28,6 @@
 		</view>
 		<view class="goods-list">
 			<view class="pane">
-				<!-- <GoodsFilter :scrollTop="scrollTop"></GoodsFilter> -->
 				<scroll-view scroll-x="true">
 					<view class="menus-wrapper">
 						<view
@@ -52,6 +51,7 @@
 					</view>
 				</scroll-view>
 
+				<GoodsFilter :scroll-top="scrollTop"></GoodsFilter>
 				<view class="goods-wrapper">
 					<NewGoods v-for="item in goodsList" :key="item.id" :data="item"></NewGoods>
 				</view>
@@ -71,8 +71,8 @@
 import { menusData } from './data'
 import Menus from './cpns/Menus'
 import Synthesize from './cpns/Synthesize.vue'
-import { getGoodsById } from '../../api/home'
 import { getTypeDetailList } from '../../api/home'
+import { goodsListApi } from '../../api/goods'
 
 export default {
 	name: 'Index',
@@ -184,14 +184,7 @@ export default {
 			submenus: []
 		}
 	},
-	onLoad() {
-		// #ifdef H5
-		if (window.location.href.includes('?code')) {
-			window.location.href =
-				window.location.origin + window.location.pathname
-		}
-		// #endif
-	},
+	onLoad() {},
 	mounted() {
 		this.getSubMenus()
 	},
@@ -200,7 +193,7 @@ export default {
 			uni.showLoading({
 				title: '加载中'
 			})
-			getGoodsById(this.query).then(({ data }) => {
+			goodsListApi(this.query).then(({ data }) => {
 				this.status = 'loading'
 				this.totalPages = data.totalPages
 				if (isLoadMore) {
@@ -218,9 +211,7 @@ export default {
 			if (item.type === 'external') {
 				this.go('/user/view?target=' + item.url)
 			} else {
-				uni.navigateTo({
-					url: item.url
-				})
+				this.go(item.url)
 			}
 		},
 

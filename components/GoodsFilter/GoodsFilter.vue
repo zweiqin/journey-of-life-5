@@ -1,23 +1,23 @@
 <template>
-  <view
-    class="goods-filter-container"
-    :class="{ fixed: scrollTop > top + 200 }"
-  >
-    <view
-      class="item"
-      v-for="item in filterMenu"
-      @click="handleFilter(item)"
-      :key="item.value"
-    >
-      <text :style="{ color: item.color }">{{ item.name }}</text>
-      <BeeIcon :size="14" :src="item.icon"></BeeIcon>
-    </view>
+	<view
+		class="goods-filter-container"
+		:class="{ fixed: scrollTop > top + 200 }"
+	>
+		<view
+			v-for="item in filterMenu"
+			:key="item.value"
+			class="item"
+			@click="handleFilter(item)"
+		>
+			<text :style="{ color: item.color }">{{ item.name }}</text>
+			<BeeIcon :size="14" :src="item.icon"></BeeIcon>
+		</view>
 
-    <!-- <SynthesizePopup
-      :translatey="translatey"
-      v-model="visible.synthesizePopupVisible"
-    ></SynthesizePopup> -->
-  </view>
+		<!-- <SynthesizePopup
+			:translatey="translatey"
+			v-model="visible.synthesizePopupVisible"
+			></SynthesizePopup> -->
+	</view>
 </template>
 
 <script>
@@ -25,50 +25,51 @@ import SynthesizePopup from './cpns/SynthesizePopup.vue'
 import { filterMenu } from './data'
 
 const mapComponent = {
-  0: 'synthesizePopupVisible',
+	0: 'synthesizePopupVisible'
 }
 
 export default {
-  props: {
-    scrollTop: {
-      type: Number,
-      required: true,
-    },
-  },
-  components: {
-    SynthesizePopup,
-  },
-  data() {
-    return {
-      filterMenu: Object.freeze(filterMenu),
-      top: 0,
-      visible: {
-        synthesizePopupVisible: false,
-      },
-    }
-  },
+	name: 'GoodsFilter',
+	components: {
+		SynthesizePopup
+	},
+	props: {
+		scrollTop: {
+			type: Number,
+			required: true
+		}
+	},
+	data() {
+		return {
+			filterMenu: Object.freeze(filterMenu),
+			top: 0,
+			visible: {
+				synthesizePopupVisible: false
+			}
+		}
+	},
 
-  mounted() {
-    this.getPosition()
-  },
+	computed: {
+		translatey() {
+			return this.top - this.scrollTop
+		}
+	},
 
-  methods: {
-    async getPosition() {
-      const res = await this._getSize('.goods-filter-container')
-      this.top = res.top + res.height
-    },
+	mounted() {
+		this.getPosition()
+	},
 
-    // 点击显示筛选
-    handleFilter(item) {
-      // this.visible[mapComponent[item.value]] = true
-    },
-  },
+	methods: {
+		async getPosition() {
+			const res = await this._getSize('.goods-filter-container')
+			this.top = res.top + res.height
+		},
 
-  computed: {
-    translatey() {
-      return this.top - this.scrollTop
-    },
-  },
+		// 点击显示筛选
+		handleFilter(item) {
+			// this.visible[mapComponent[item.value]] = true
+		}
+	}
 }
 </script>
 

@@ -1,9 +1,9 @@
 {
     "name" : "巨蜂商城",
-    "appid" : "__UNI__B07FE0F",
+    "appid" : "__UNI__6537B5D",
     "description" : "",
-    "versionName" : "2.0.5",
-    "versionCode" : 2050,
+    "versionName" : "4.0.0",
+    "versionCode" : 4000,
     "transformPx" : false,
     "app-plus" : {
         "runmode" : "liberate",
@@ -113,16 +113,17 @@
                 "androidStyle" : "default",
                 "iosStyle" : "common",
                 "android" : {
-                    "hdpi" : "C:/Users/86176/Desktop/e3cede98e1dce528adb25d9902c7774.png",
-                    "xhdpi" : "C:/Users/86176/Desktop/e3cede98e1dce528adb25d9902c7774.png",
-                    "xxhdpi" : "C:/Users/86176/Desktop/e3cede98e1dce528adb25d9902c7774.png"
-                }
+                    "hdpi" : "D:/zwq/company_project/giant-bee/巨蜂/h5/app图标图片/480-762.png",
+                    "xhdpi" : "D:/zwq/company_project/giant-bee/巨蜂/h5/app图标图片/720-1242.png",
+                    "xxhdpi" : "D:/zwq/company_project/giant-bee/巨蜂/h5/app图标图片/1080-1882.png"
+                },
+                "useOriginalMsgbox" : true
             }
         }
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "wx6fa71e69231a4fa4",
+        "appid" : "wxf804c468af0e962b",
         "setting" : {
             "urlCheck" : false
         },

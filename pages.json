@@ -16,6 +16,12 @@
 				"navigationBarTitleText": "商城"
 			}
 		},
+		// {
+		// 	"path": "pages/categoryGoods/index",
+		// 	"style": {
+		// 		"navigationBarTitleText": "分类商品"
+		// 	}
+		// },
 		{
 			"path": "pages/map-navigation/map-navigation",
 			"style": {

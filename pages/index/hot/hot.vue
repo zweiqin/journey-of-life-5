@@ -10,9 +10,7 @@
 		</view>
 
 		<view class="goods-wrapper">
-			<!-- s暂时隐藏 -->
-			<!-- <GoodsFilter></GoodsFilter> -->
-			<!-- e暂时隐藏 -->
+			<GoodsFilter></GoodsFilter>
 			<view class="goods-list">
 				<HotGoods v-for="goods in $data._list" :key="goods.id" :data="goods"></HotGoods>
 
@@ -27,7 +25,7 @@ import Banner from './cpns/banner.vue'
 import HotGoods from './cpns/HotGoods.vue'
 import HotToday from './cpns/HotToday.vue'
 import loadMore from '../../../mixin/loadData'
-import { getGoodsById } from '../../../api/home'
+import { goodsListApi } from '../../../api/goods'
 
 export default {
 	name: 'Hot',
@@ -37,7 +35,7 @@ export default {
 		HotGoods
 	},
 
-	mixins: [ loadMore({ api: getGoodsById }) ],
+	mixins: [ loadMore({ api: goodsListApi }) ],
 
 	onLoad() {
 		this._loadData()
