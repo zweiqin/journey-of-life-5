@@ -140,9 +140,7 @@ export default {
 				}
 
 				setTimeout(() => {
-					uni.switchTab({
-						url: '/pages/marketing-treasure-house/marketing-treasure-house'
-					})
+					this.$switchTab('/pages/marketing-treasure-house/marketing-treasure-house')
 				}, 1000)
 			} finally {
 				uni.hideLoading()

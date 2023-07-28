@@ -94,9 +94,7 @@ export default {
 	mixins: [ showModel() ],
 	methods: {
 		handleBack() {
-			uni.switchTab({
-				url: '/pages/index/index'
-			})
+			this.$switchTab('/pages/index/index')
 		},
 		handleTo(item) {
 			if (!this.isLogin()) {

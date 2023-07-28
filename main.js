@@ -122,13 +122,9 @@ Vue.mixin({
 			})
 		},
 
-		switchTab(url) {
-			if (!url) {
-				return
-			}
-			uni.switchTab({
-				url
-			})
+		$switchTab(url) {
+			if (!url) return
+			uni.switchTab({ url })
 		},
 
 		_getSize(selecter) {

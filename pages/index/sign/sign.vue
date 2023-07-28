@@ -4,12 +4,12 @@
 			<image src="../../../static/index/earn-money/back.png" mode="" @click="handleBack" />
 			<text>每日签到领大礼</text>
 		</view>
-		
-		<image src="../../../static/index/sign/bg.png" mode="" class="bg"/>
+
+		<image src="../../../static/index/sign/bg.png" mode="" class="bg" />
 
 		<view class="middle">
 			<view class="date">
-				<youlanSignIn type="sign" @change="signDate" />
+				<YoulanSignIn type="sign" @change="signDate" />
 			</view>
 			<view class="main">
 				<view class="integral">
@@ -32,7 +32,7 @@
 						<view class="ex-name">可兑换</view>
 						<view class="heng"></view>
 						<view class="sub-list">
-							<view class="sub" v-for="sub in subs" :key="sub.id">
+							<view v-for="sub in subs" :key="sub.id" class="sub">
 								<image :src="sub.icon" mode="" />
 								<text>{{ sub.name }}</text>
 							</view>
@@ -46,7 +46,7 @@
 						</view>
 					</view>
 					<view class="goods-list">
-						<view class="goods" v-for="item in items" :key="item.id">
+						<view v-for="item in items" :key="item.id" class="goods">
 							<image :src="item.icon" mode="" />
 							<view class="goods-name">{{ item.name }}</view>
 							<text>兑换积分: {{ item.number }}</text>
@@ -65,39 +65,36 @@ import youlanSignIn from '../../../components/youlan-SignIn/youlan-SignIn.vue'
 import JCalendar from '../../../components/j-calendar/j-calendar.vue'
 import { subs, items } from './data'
 export default {
-	name: "Sign",
+	name: 'Sign',
+	components: {
+		YoulanSignIn: youlanSignIn,
+		JCalendar
+	},
 	props: {
 
 	},
 	data() {
 		return {
 			subs,
-			items,
+			items
 		}
 	},
+	created() { },
 	methods: {
 		handleBack() {
-			uni.switchTab({
-				url: '/pages/index/index',
-			})
+			this.$switchTab('/pages/index/index')
 		},
 
 		updateSign(item) {
-			console.log(item);
-
+			console.log(item)
 		},
 		refeshSignData(item) {
-			console.log(item);
+			console.log(item)
 		},
 		signDate(item) {
-			console.log(item);
+			console.log(item)
 		}
-	},
-	components: {
-		youlanSignIn,
-		JCalendar
-	},
-	created() { }
+	}
 }
 </script>
 
@@ -139,7 +136,8 @@ export default {
 	.middle {
 		padding: 0 20upx;
 		position: relative;
-    padding-top: 86px;
+		padding-top: 86px;
+
 		.date {
 			// position: absolute;
 			// top: 308upx;
@@ -151,6 +149,7 @@ export default {
 			// margin-top: 400upx;
 			padding-bottom: 40upx;
 			padding-top: 28upx;
+
 			.integral {
 				width: 100%;
 				// height: 114upx;

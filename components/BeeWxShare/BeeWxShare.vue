@@ -1,61 +1,61 @@
 <template>
-  <view class="wx-share-container">
-    <view class="view-ui" @click.stop="$emit('click')">
-      <slot></slot>
-    </view>
-    <tui-bottom-popup
-      backgroundColor="transparent"
-      :zIndex="100000033"
-      :show="showSharePopupVisible"
-      @close="showSharePopupVisible = false"
-    >
-      <view class="main-wrapper">
-        <view class="share-header"> 分享到 </view>
+	<view class="wx-share-container">
+		<view class="view-ui" @click.stop="$emit('click')">
+			<slot></slot>
+		</view>
+		<tui-bottom-popup
+			background-color="transparent"
+			:z-index="100000033"
+			:show="showSharePopupVisible"
+			@close="showSharePopupVisible = false"
+		>
+			<view class="main-wrapper">
+				<view class="share-header"> 分享到 </view>
 
-        <view class="container">
-          <view class="item">
-            <view
-              class="icon-wrapper"
-              @click="handleShareApp('WXSceneSession')"
-            >
-              <tui-icon color="#80d640" :size="34" name="wechat"></tui-icon>
-            </view>
-            <text>微信</text>
-          </view>
+				<view class="container">
+					<view class="item">
+						<view
+							class="icon-wrapper"
+							@click="handleShareApp('WXSceneSession')"
+						>
+							<tui-icon color="#80d640" :size="34" name="wechat"></tui-icon>
+						</view>
+						<text>微信</text>
+					</view>
 
-          <view class="item">
-            <view
-              class="icon-wrapper"
-              @click="handleShareApp('WXSceneTimeline')"
-            >
-              <tui-icon color="#80d640" :size="34" name="moments"></tui-icon>
-            </view>
-            <text>朋友圈</text>
-          </view>
-        </view>
+					<view class="item">
+						<view
+							class="icon-wrapper"
+							@click="handleShareApp('WXSceneTimeline')"
+						>
+							<tui-icon color="#80d640" :size="34" name="moments"></tui-icon>
+						</view>
+						<text>朋友圈</text>
+					</view>
+				</view>
 
-        <button class="uni-btn" @click="showSharePopupVisible = false">
-          取消
-        </button>
-      </view>
-    </tui-bottom-popup>
+				<button class="uni-btn" @click="showSharePopupVisible = false">
+					取消
+				</button>
+			</view>
+		</tui-bottom-popup>
 
-    <!-- #ifdef H5 -->
-    <PointShare
-      @close="showPointVisible = false"
-      :show="showPointVisible"
-    ></PointShare>
-    <!-- #endif -->
+		<!-- #ifdef H5 -->
+		<PointShare
+			:show="showPointVisible"
+			@close="showPointVisible = false"
+		></PointShare>
+		<!-- #endif -->
 
-    <tui-toast ref="toast"></tui-toast>
+		<tui-toast ref="toast"></tui-toast>
 
-    <tui-modal
-      :show="$data._isShowTuiModel"
-      title="提示"
-      content="您还未登录，是否先去登录？"
-      @click="_handleClickTuiModel($event, 'login', backUrl)"
-    ></tui-modal>
-  </view>
+		<tui-modal
+			:show="$data._isShowTuiModel"
+			title="提示"
+			content="您还未登录，是否先去登录？"
+			@click="_handleClickTuiModel($event, 'login', backUrl)"
+		></tui-modal>
+	</view>
 </template>
 
 <script>
@@ -66,60 +66,58 @@ import { J_USER_TOKEN } from '../../constant'
 import showModal from '../../mixin/showModel'
 
 export default {
-  components: {
-    PointShare,
-  },
-  data() {
-    return {
-      showSharePopupVisible: false,
-      showPointVisible: false,
-      shareData: null,
-      backUrl: null,
-    }
-  },
+	name: 'BeeWxShare',
+	components: {
+		PointShare
+	},
+	data() {
+		return {
+			showSharePopupVisible: false,
+			showPointVisible: false,
+			shareData: null,
+			backUrl: null
+		}
+	},
 
-  mixins: [showModal()],
+	mixins: [ showModal() ],
 
-  methods: {
-    share(data, quiet, backUrl) {
-      this.shareData = data
-      this.backUrl = backUrl
+	methods: {
+		share(data, quiet, backUrl) {
+			this.shareData = data
+			this.backUrl = backUrl
+			if (!uni.getStorageSync(J_USER_TOKEN)) {
+				if (!quiet) {
+					this.$data._isShowTuiModel = true
+				}
+				return
+			}
 
-      if (!uni.getStorageSync(J_USER_TOKEN)) {
-        if (!quiet) {
-          this.$data._isShowTuiModel = true
-        }
-        return
-      }
+			// #ifdef H5
+			if (quiet) {
+				share(data)
+				return
+			}
+			if (isInWx()) {
+				this.showPointVisible = true
+				share(data)
+				return
+			}
+			this.ttoast({
+				title: '请在微信公众号中打开',
+				type: 'fail'
+			})
+			return
+			// #endif
 
-      // #ifdef H5
-      if (quiet) {
-        share(data)
-        return
-      }
-      if (isInWx()) {
-        this.showPointVisible = true
-        share(data)
-        return
-      } else {
-        this.ttoast({
-          title: '请在微信公众号中打开',
-          type: 'fail',
-        })
+			// #ifdef APP
+			this.showSharePopupVisible = true
+			// #endif
+		},
 
-        return
-      }
-      // #endif
-
-      // #ifdef APP
-      this.showSharePopupVisible = true
-      // #endif
-    },
-
-    handleShareApp(shareType) {
-      share(this.shareData, shareType)
-    },
-  },
+		handleShareApp(shareType) {
+			share(this.shareData, shareType)
+		}
+	}
 }
 </script>
 

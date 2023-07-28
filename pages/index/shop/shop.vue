@@ -73,9 +73,7 @@ export default {
 	},
 	methods: {
 		handleBack() {
-			uni.switchTab({
-				url: '/pages/index/index'
-			})
+			this.$switchTab('/pages/index/index')
 		},
 
 		// 选择一级

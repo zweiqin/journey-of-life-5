@@ -24,7 +24,7 @@
 				bold slider-bg-color="#ff0000"
 				:is-slider="false" background-color="#f1f1f1"
 				:tabs="[{ name: `巨蜂自营${carTotalInfo.tabMallNum ? `（${carTotalInfo.tabMallNum}）` : ''}` }, { name: `本地生活${carTotalInfo.tabStoreNum ? `（${carTotalInfo.tabStoreNum}）` : ''}` }]"
-				:current-tab="currentTab" @change="handleSwitchTab"
+				:current-tab="currentTab" @change="handleChangeTab"
 			></tui-tabs>
 		</view>
 
@@ -212,7 +212,7 @@ export default {
 	},
 
 	methods: {
-		handleSwitchTab(e) {
+		handleChangeTab(e) {
 			this.currentTab = e.index
 			this.shopCarList = []
 			this.getShopList()

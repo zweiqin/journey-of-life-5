@@ -90,9 +90,7 @@ export default {
 	methods: {
 		// 点击取消
 		goBackIndex() {
-			uni.switchTab({
-				url: mapUrl[this.type]
-			})
+			this.$switchTab(mapUrl[this.type])
 		},
 
 		// 点击确认

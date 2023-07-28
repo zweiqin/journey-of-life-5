@@ -263,13 +263,7 @@ export default {
 			}
 			if (this.type === 'mall') {
 				payAllGoodsSubmit(this.getPostData()).then(({ data }) => {
-					payOrderGoodsApi({
-						orderNo: data.orderSn,
-						userId: getUserId(),
-						payType: 1
-					}).then((res) => {
-						payFn(res)
-					})
+					payFn({ ...data }, 1)
 				})
 			} else if (this.type === 'reservation') {
 				payAllGoodsSubmit(this.getPostData()).then(({ data }) => {

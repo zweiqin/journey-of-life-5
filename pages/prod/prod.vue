@@ -15,7 +15,7 @@
 				</view>
 
 				<view>
-					<image src="../../static/images/detail/brand.png" mode="" @click="$showToast('功能未开放', 'none')" />
+					<image src="../../static/images/detail/brand.png" mode="" @click="go('/pages/index/shop/shop')" />
 					<image src="../../static/images/detail/share.png" mode="" @click="isMoreFunction = true" />
 				</view>
 			</view>
@@ -70,10 +70,11 @@
 
 			<view class="salsed">
 				<text>月销100+</text>
-				<image
-					class="share-tran" src="../../static/images/detail/share-tran.png" mode=""
-					@click="$showToast('功能未开放', 'none')"
-				/>
+				<BeeWxShare ref="refBeeWxShare" @click="handleShareGoods">
+					<image
+						class="share-tran" src="../../static/images/detail/share-tran.png" mode=""
+					/>
+				</BeeWxShare>
 			</view>
 
 			<!-- <view class="sub-info">
@@ -177,7 +178,7 @@
 					<view v-if="shopCarNumber" class="number">{{ shopCarNumber }}</view>
 				</view>
 
-				<view class="item" @click="handleKefu">
+				<view class="item" @click="go('/user/sever/customer-service/customer-service')">
 					<image src="../../static/images/detail/kefu.png" mode="" />
 					<text>客服</text>
 				</view>
@@ -204,7 +205,6 @@
 </template>
 
 <script>
-import MoreFunctions from '@/components/MoreFunctions/MoreFunctions.vue'
 import { subInfoConfig, goodsInfoConfig } from './config'
 import uParse from '../../components/u-parse/u-parse.vue'
 import { marked } from 'marked'
@@ -307,6 +307,9 @@ export default {
 			if (res.errno === 0) {
 				this.goodsDetail = res.data
 				this.isCollect = !!res.data.userHasCollect
+				// #ifdef H5
+				this.$nextTick(() => this.handleShareGoods(true))
+				// #endif
 				this.getBrandOtherGoods(res.data.brand.id)
 				this.getCommentCount(res.data.info.id)
 				if (this.userId) {
@@ -322,6 +325,21 @@ export default {
 				this.commentCount = data
 				console.log(data)
 			})
+		},
+
+		// 分享
+		handleShareGoods(isQuit) {
+			const data = {
+				data: {
+					title: this.goodsDetail.info.name,
+					desc: this.goodsDetail.productList.map((item) => item.specifications.join(',')).join(','),
+					link: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=' + this.goodsId,
+					imageUrl: (this.goodsDetail.shareImage && this.common.seamingImgUrl(this.goodsDetail.shareImage)) || (this.goodsDetail.info.picUrl && this.common.seamingImgUrl(this.goodsDetail.shareImage))
+				},
+				successCb: () => {},
+				failCb: () => {}
+			}
+			this.$refs.refBeeWxShare.share(data, isQuit, '/pages/prod/prod?goodsId' + this.goodsId)
 		},
 
 		// 加入购物车
@@ -408,25 +426,6 @@ export default {
 			}
 		},
 
-		// 获取品牌商的其他商品
-		async getBrandOtherGoods(id) {
-			this.brandOtherGoods = []
-			// if (!id) return
-			// const res = await goodsListApi({
-			// 	page: 1,
-			// 	size: 6,
-			// 	brandId: id
-			// })
-			// if (res.errno === 0) {
-			// 	this.brandOtherGoods = res.data.goodsList
-			// } else {
-			// 	uni.showLoading({
-			// 		title: res.errmsg,
-			// 		icon: 'none'
-			// 	})
-			// }
-		},
-
 		// 添加收藏
 		async handleCollect() {
 			if (!this.userId) {
@@ -462,12 +461,23 @@ export default {
 			}
 		},
 
-		handleKefu() {
-			uni.showLoading({
-				title: '暂未开放',
-				icon: 'none',
-				duration: 1000
-			})
+		// 获取品牌商的其他商品
+		async getBrandOtherGoods(id) {
+			this.brandOtherGoods = []
+			// if (!id) return
+			// const res = await goodsListApi({
+			// 	page: 1,
+			// 	size: 6,
+			// 	brandId: id
+			// })
+			// if (res.errno === 0) {
+			// 	this.brandOtherGoods = res.data.goodsList
+			// } else {
+			// 	uni.showLoading({
+			// 		title: res.errmsg,
+			// 		icon: 'none'
+			// 	})
+			// }
 		},
 
 		// 获取移动的位置

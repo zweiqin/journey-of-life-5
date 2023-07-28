@@ -272,7 +272,7 @@ export default {
 					mask: true
 				})
 				setTimeout(() => {
-					uni.switchTab({ url: '/pages/user/user' })
+					this.$switchTab('/pages/user/user')
 				}, 2000)
 			}
 		},
@@ -453,9 +453,7 @@ export default {
 			this.queryMsgSentryList()
 		},
 		back() {
-			uni.switchTab({
-				url: '/pages/user/user'
-			})
+			this.$switchTab('/pages/user/user')
 		},
 		window(e) {
 			this.id = e.currentTarget.dataset.list.id

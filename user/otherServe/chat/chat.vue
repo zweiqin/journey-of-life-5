@@ -32,9 +32,6 @@ import {
 	mapGetters
 } from 'vuex'
 import {
-	BASE_WS_API
-} from '../../../config'
-import {
 	getUserId,
 	timestampToTime
 } from '../../../utils'
@@ -72,9 +69,6 @@ export default {
 	methods: {
 		handleBack() {
 			uni.navigateBack()
-			// uni.switchTab({
-			// 	url: '/pages/user/user'
-			// })
 		},
 
 		onMessage(evt) {

@@ -20,7 +20,9 @@ export default {
 	onLaunch() {
 		this.connectSocket()
 	},
-	globalData: { },
+	globalData: {
+		// isInMiniprogram: false // 是否处于小程序环境
+	},
 	data() {
 		return {
 			scene: '',
@@ -39,7 +41,7 @@ export default {
 
 		// #ifdef H5
 		uni.onTabBarMidButtonTap(() => {
-			// this.switchTab('/pages/red-envelope/red-envelope')
+			// this.$switchTab('/pages/red-envelope/red-envelope')
 			// this.go('/pages/red-envelope/red-envelope')
 			uni.redirectTo({ url: '/pages/red-envelope/red-envelope' })
 		})

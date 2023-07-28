@@ -89,9 +89,7 @@ export default {
 
 	methods: {
 		handleBack() {
-			uni.switchTab({
-				url: '/pages/user/user'
-			})
+			this.$switchTab('/pages/user/user')
 		},
 		handleApplicationPay(item) {
 			upgradeOrderAddOrderApi({
@@ -99,13 +97,7 @@ export default {
 				// packageId: item.packageId
 				id: item.id
 			}).then(({ data }) => {
-				payOrderGoodsApi({
-					orderNo: data,
-					userId: getUserId(),
-					payType: 4
-				}).then((res) => {
-					payFn(res, J_PAY_TYPE.VIP.value)
-				})
+				payFn({ orderSn: data }, 4, J_PAY_TYPE.VIP.value)
 			})
 		}
 	},

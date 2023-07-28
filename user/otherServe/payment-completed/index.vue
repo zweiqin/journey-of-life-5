@@ -23,6 +23,7 @@
 <script>
 // import { } from '../../../api/user'
 // import { getUserId, getBrandId } from '../../../utils'
+import { J_PAY_ORDER } from '../../../constant'
 
 export default {
 	name: 'PaymentCompleted',
@@ -33,14 +34,13 @@ export default {
 		}
 	},
 	onLoad(options) {
+		uni.removeStorageSync(J_PAY_ORDER)
 	},
 	mounted() {
 	},
 	methods: {
 		handelClickBack() {
-			uni.switchTab({
-				url: '/pages/index/index'
-			})
+			this.$switchTab('/pages/index/index')
 		}
 	},
 	onPageScroll(e) { },

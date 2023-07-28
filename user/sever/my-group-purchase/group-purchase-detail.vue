@@ -382,13 +382,7 @@ export default {
 						this.isShowRefundDialog = true
 					})
 			} else if (key === 'pay') {
-				payOrderGoodsApi({
-					orderNo: goods.orderSn,
-					userId: getUserId(),
-					payType: goods.isAppoint ? 6 : 1
-				}).then((res) => {
-					payFn(res)
-				})
+				payFn({ ...goods }, goods.isAppoint ? 6 : 1)
 			} else if (key === 'comment') {
 				uni.showModal({
 					title: '提示',

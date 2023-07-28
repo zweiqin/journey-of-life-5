@@ -9,7 +9,7 @@
 				<image class="image" src="../../../static/square/detail/marks.png" mode="" @click="$showToast('功能未开放', 'none')" />
 			</view>
 			<view class="image-wrapper">
-				<image class="image" src="../../../static/square/detail/home.png" mode="" @click="$showToast('功能未开放', 'none')" />
+				<image class="image" src="../../../static/square/detail/home.png" mode="" @click="$switchTab('/pages/marketing-treasure-house/marketing-treasure-house')" />
 			</view>
 		</view>
 	</view>

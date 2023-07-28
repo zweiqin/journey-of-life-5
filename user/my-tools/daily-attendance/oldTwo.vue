@@ -166,12 +166,7 @@ export default {
 				})
 		},
 		handleBack() {
-			// uni.switchTab({
-			// 	url: "/pages/index/index",
-			// });
-			uni.switchTab({
-				url: "/pages/user/user"
-			})
+			this.$switchTab('/pages/user/user')
 		},
 		updateSign(item) {
 			console.log(item)

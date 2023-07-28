@@ -5,7 +5,7 @@
 		<view class="pane">
 			<view
 				v-for="item in tabConfig" :key="item.value" class="pane-item" :class="{ active: currentTab === item.value }"
-				@click="handleSwitchTab(item.value)"
+				@click="handleChangeTab(item.value)"
 			>
 				<text>{{ item.text }}</text>
 			</view>
@@ -97,7 +97,7 @@ export default {
 	},
 
 	methods: {
-		handleSwitchTab(currentTab) {
+		handleChangeTab(currentTab) {
 			this.currentTab = currentTab
 			this.taskQuery.page = 1
 			this.taskList = []

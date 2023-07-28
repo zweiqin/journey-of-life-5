@@ -145,9 +145,7 @@ export default {
 			uni.removeStorageSync(J_NEW_BIND_CODE)
 			uni.removeStorageSync(J_NEW_BIND_ID)
 			if (this.type === 'nothing') {
-				uni.switchTab({
-					url: '/pages/store/store'
-				})
+				this.$switchTab('/pages/store/store')
 			} else if (this.type === 'verification') {
 				this.orderId = this.code.split('-')[0]
 				this.code = this.code.split('-')[1]
@@ -166,16 +164,12 @@ export default {
 				// 	})
 				// 	.finally((e) => {
 				// 		setTimeout(() => {
-				// 			uni.switchTab({
-				// 				url: '/pages/user/user'
-				// 			})
+				// 			this.$switchTab('/pages/user/user')
 				// 		}, 2000)
 				// 	})
 			} else if (this.type === 'invitation') {
 				setTimeout(() => {
-					uni.switchTab({
-						url: '/pages/user/user'
-					})
+					this.$switchTab('/pages/user/user')
 				}, 1000)
 			} else if (this.type === 'bindingBranchOffice' || this.type === 'bindingStore' || this.type === 'bindingPlanner') {
 				updateUserBindingUserApi({ userCode: this.code, userId: this.userId })
@@ -184,9 +178,7 @@ export default {
 					})
 					.finally((e) => {
 						setTimeout(() => {
-							uni.switchTab({
-								url: '/pages/user/user'
-							})
+							this.$switchTab('/pages/user/user')
 						}, 2000)
 					})
 			}
@@ -204,9 +196,7 @@ export default {
 			// 			})
 			// 			.finally((e) => {
 			// 				setTimeout(() => {
-			// 					uni.switchTab({
-			// 						url: '/pages/user/user'
-			// 					})
+			// 					this.$switchTab('/pages/user/user')
 			// 				}, 2000)
 			// 			})
 			// 	}
@@ -215,15 +205,11 @@ export default {
 			// 		bindSaoMaBrandApi({ marketingId: this.otherSideUserId, userId: this.userId })
 			// 			.then((res) => {
 			// 				this.$showToast('绑定商户成功', 'success')
-			// 				uni.switchTab({
-			// 					url: '/pages/user/user'
-			// 				})
+			// 				this.$switchTab('/pages/user/user')
 			// 			})
 			// 			.finally((e) => {
 			// 				setTimeout(() => {
-			// 					uni.switchTab({
-			// 						url: '/pages/user/user'
-			// 					})
+			// 					this.$switchTab('/pages/user/user')
 			// 				}, 2000)
 			// 			})
 			// 	}
@@ -236,9 +222,7 @@ export default {
 				})
 				.finally((e) => {
 					setTimeout(() => {
-						uni.switchTab({
-							url: '/pages/user/user'
-						})
+						this.$switchTab('/pages/user/user')
 					}, 2000)
 				})
 		}

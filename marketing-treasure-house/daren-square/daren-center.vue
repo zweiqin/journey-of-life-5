@@ -1,31 +1,29 @@
 <template>
-  <view class="my-center">
-    <!-- <h1>成为达人</h1> -->
-    <image src="../../static/images/square/icon5.png" mode="" />
-    <view class="desc"
-      >您还没完成达人入驻流程， 入驻达人成功后才能使用该功能哦</view
-    >
+	<view class="my-center">
+		<!-- <h1>成为达人</h1> -->
+		<image src="../../static/images/square/icon5.png" mode="" />
+		<view class="desc">
+			您还没完成达人入驻流程， 入驻达人成功后才能使用该功能哦
+		</view>
 
-    <button
-      class="uni-btn"
-      @click="go('/marketing-treasure-house/daren-square/apply-daren')"
-    >
-      成为达人
-    </button>
-    <button class="uni-btn" @click="handleBack">返回</button>
-  </view>
+		<button
+			class="uni-btn"
+			@click="go('/marketing-treasure-house/daren-square/apply-daren')"
+		>
+			成为达人
+		</button>
+		<button class="uni-btn" @click="handleBack">返回</button>
+	</view>
 </template>
 
 <script>
 export default {
-  methods: {
-    handleBack() {
-      uni.switchTab({
-        url: "/pages/marketing-treasure-house/marketing-treasure-house",
-      });
-    },
-  },
-};
+	methods: {
+		handleBack() {
+			this.$switchTab('/pages/marketing-treasure-house/marketing-treasure-house')
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>

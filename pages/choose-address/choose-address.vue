@@ -1,19 +1,18 @@
 <template>
 	<view class="my-address">
+		<!-- 定位区 -->
 		<view class="search-box">
 			<tui-icon name="arrowleft" :size="25" color="#00" @click="handleBack"></tui-icon>
 			<view class="search-wrapper">
 				<tui-icon class="search-icon" name="search" :size="20"></tui-icon>
-				<input type="text" placeholder="省/市/区/县" />
+				<input v-model="searchCity" type="text" placeholder="请输入所在城市" />
+				<tui-icon v-if="searchCity" name="close" :size="20" @click="handleClearSearch"></tui-icon>
 			</view>
+			<button v-if="searchCity" class="uni-btn" @click="handleSearchCity">搜索</button>
 		</view>
 		<view class="current-address" @click="handleGetCurrentAddress">
 			<text class="current-address-text">
-				当前：{{
-					$store.getters.currentCity
-						? $store.getters.currentCity
-						: '定位失败，重新定位'
-				}}
+				当前：{{ $store.getters.currentCity ? $store.getters.currentCity : '定位失败，重新定位' }}
 			</text>
 			<view>
 				<tui-icon :size="16" color="#000" name="location"></tui-icon>
@@ -21,63 +20,80 @@
 			</view>
 		</view>
 
+		<!-- 热门城市 -->
 		<view class="hot-city">
 			<view class="title">热门城市</view>
-			<view class="city-list">
-				<view
-					v-for="item in cityList.hotdata" :key="item.name" class="hot-city-item"
-					@click="handleChooseCity(item.name)"
-				>
-					{{ item.name }}
-				</view>
-			</view>
+			<tui-grid unlined>
+				<block v-for="(item, index) in hotCities" :key="index">
+					<tui-grid-item :cell="3" @click="confirmChooseAddress(item, true)">
+						<text class="tui-grid-label">
+							{{ item.level === 4 ? item.town : item.level === 3 ? item.distinguish : item.city
+							}}
+						</text>
+					</tui-grid-item>
+				</block>
+			</tui-grid>
 		</view>
-		<tuiTabs class="addresTabs" padding="30" :currentTab="swiperTabs" :tabs="tabs" @change="stageLinkageAddres"></tuiTabs>
-		<view class="wrapper-container">
-			<swiper class="swiper" disable-touch="true" :current="swiperIndex" :duration="300">
-				<swiper-item>
+
+		<!-- tabs 标签页 -->
+		<tui-tabs
+			:tabs="tabs" selected-color="#e95d20" slider-bg-color="#e95d20" item-width="30%"
+			:current-tab="currentTab"
+			@change="handleChangeTab"
+		></tui-tabs>
+
+		<!-- 标签页 -->
+		<view v-if="cityList.length" class="wrapper-container">
+			<swiper disable-touch :current="currentTab" class="swiper" @change="handleChangeSwiper">
+				<swiper-item class="" item-id="">
 					<view class="address-list-wrapper">
 						<tui-index-list
 							active-key-color="#e95d20" active-color="#e95d20" active-key-background="#fff"
-							:list-data="cityList.data"
+							:list-data="cityList"
 						>
 							<template #item="{ entity }">
 								<tui-list-cell v-for="(item, index) in entity" :key="index" padding="16rpx 30rpx">
-									<view class="tui-list__item" @click="handleChooseProvince(item,index)">
-										<view :id="'item' + item.name" class="tui-name">
-											{{
-												item.name
-											}}
-										</view>
+									<view class="tui-list__item" @click="handleChooseCity(item)">
+										<view :id="'item' + item.name" class="tui-name">{{ item.name }}</view>
 									</view>
 								</tui-list-cell>
 							</template>
 						</tui-index-list>
 					</view>
 				</swiper-item>
+
 				<swiper-item>
 					<view class="choose-cities">
-						<view class="choose-cities-item" 
-						:class="{isSelect:areaCityIndex == index}" 
-						@click="handleChooseArea(item,index)" 
-						:key="item.id"
-						v-for="(item,index) in areaCity">
-							<span>{{item.name}}</span>
-						</view>
+						<tui-grid unlined>
+							<block v-for="(item, index) in currentDistinguishData" :key="index">
+								<tui-grid-item
+									class="grid-item" :class="{
+										active: tabs[1].name === item.name.slice(0, 3) + '...'
+									}" :cell="3" @click="handleChooseTown(item)"
+								>
+									<text class="tui-grid-label">{{ item.name }}</text>
+								</tui-grid-item>
+							</block>
+						</tui-grid>
 					</view>
 				</swiper-item>
+
 				<swiper-item>
 					<view class="choose-cities">
-						<view class="choose-cities-item"
-						:class="{isSelect:areaIndex == index}" 
-						@click="handleChooseCity(item,index)" :key="item.id"
-						v-for="(item,index) in area">
-							<span>{{item.name}}</span>
-						</view>
+						<tui-grid unlined>
+							<block v-for="(item, index) in currentTownData" :key="index">
+								<tui-grid-item :cell="3" @click="confirmChooseAddress(item)">
+									<text class="tui-grid-label">{{ item.name }}</text>
+								</tui-grid-item>
+							</block>
+						</tui-grid>
 					</view>
 				</swiper-item>
 			</swiper>
 		</view>
+
+		<view v-else class="no-data"> 暂无数据~ </view>
+
 		<tui-popup
 			:duration="500" :mode-class="[ 'fade-in' ]" :styles="styles" :show="showAuthPopupVisible"
 			@click="showAuthPopupVisible = false"
@@ -86,38 +102,55 @@
 				<tui-icon name="gps" :size="30" color="#e95d20"></tui-icon>
 				"团蜂"想访问您的地理位置，将根据你的地理位置提供准确的收货地址，社区服务地址，查看附近商家及门店等功能
 			</view>
-			{{areaCity}}
 		</tui-popup>
+
+		<tui-toast ref="toast"></tui-toast>
 	</view>
 </template>
 
 <script>
-import tuiTabs from "@/components/thorui/tui-tabs/tui-tabs.vue"
+// import { hotCities } from './data';
+const hotCities = [
+	{
+		city: '佛山市',
+		town: '大良街道',
+		distinguish: '顺德区',
+		level: 4
+	},
+	{
+		city: '佛山市',
+		town: '龙江镇',
+		distinguish: '顺德区',
+		level: 4
+	},
+	{
+		city: '佛山市',
+		town: '容桂街道',
+		distinguish: '顺德区',
+		level: 4
+	},
+	{
+		city: '佛山市',
+		town: '乐从镇',
+		distinguish: '顺德区',
+		level: 4
+	},
+	{
+		city: '贵港市',
+		town: '',
+		distinguish: '港北区',
+		level: 3
+	}
+]
 export default {
 	name: 'ChooseAddress',
-	components: {
-		tuiTabs 
-	},
 	data() {
 		return {
-			swiperIndex: 0,  // 地区选择栏下标
-			swiperTabs: 0,  // 切换swiper页来选择地址
-			areaCityIndex: null,
-			areaIndex: null,
 			currentTab: 0,
-			cityList: {},
+			cityList: [],
 			searchValue: '',
 			isShowLoading: true,
 			showAuthPopupVisible: false,
-			tabs: [{
-					name: "所在城市"
-				}, {
-					name: "区/县",
-					disabled: true
-				}, {
-					name: "镇/街道",
-					disabled: true
-				}],
 			styles: {
 				'position': 'fixed',
 				'bottom': 0,
@@ -130,76 +163,101 @@ export default {
 				'background-color': 'rgba(0, 0, 0, 0.5)',
 				'padding': '50rpx 0 0 0'
 			},
-			areaCity: null,
-			area: null
+			tabs: [
+				{
+					name: '所在城市'
+				},
+				{
+					name: '区/县'
+				},
+				{
+					name: '镇/街道'
+				}
+			],
+			mainHeight: 0,
+			currentDistinguishData: null,
+			currentTownData: null,
+			searchCity: '',
+			allCityData: {},
+			hotCities: Object.freeze(hotCities),
+			backUrl: null
 		}
 	},
-	computed: {
-		
+
+	watch: {
+		searchCity(val) {
+			if (!val) {
+				this.currentTab = 0
+				this.currentDistinguishData = null
+				this.currentTownData = null
+				this.cityList = this.allCityData
+			}
+		}
 	},
+
 	mounted() {
 		this.getData()
 	},
 	methods: {
-		stageLinkageAddres(current) {
-			// if(current.index == 1 && !this.areaCity) {
-			// 	return
-			// }else if(current.index == 2 && !this.area) {
-			// 	return
-			// }else {
-				this.swiperTabs = current.index
-				this.swiperIndex = current.index
-			// console.log(current)
-		},
 		getData() {
+			uni.showLoading()
 			const _this = this
-			import('./city.json').then((res) => {
-				_this.cityList = res
-				// cities
-				// console.log(res)
-				_this.isShowLoading = false
-			})
 			import('./cities.json').then((res) => {
-				_this.cityList.data = res.default
-				// cities
-				// console.log(res)
+				for (const key in res) {
+					_this.cityList.push(res[key])
+				}
+				_this.allCityData = Object.freeze(_this.cityList)
 				_this.isShowLoading = false
+				uni.hideLoading()
 			})
 		},
-		// changeTab(e) {
-		// 	this.currentTab = e.index
-		// },
 
-		searchCity(e) {
-			const value = e.value
+		changeTab(e) {
+			this.currentTab = e.index
 		},
+
+		handleSearchCity() {
+			this.currentTab = 0
+			this.currentDistinguishData = null
+			this.currentTownData = null
+			let data = JSON.parse(JSON.stringify(this.allCityData))
+			data = data.filter((item) => {
+				item.data = item.data && item.data.filter((cities) => cities.name.includes(this.searchCity))
+				return item.data && item.data.length
+			})
+			this.cityList = data
+		},
+
 		handleBack() {
+			if (this.backUrl) {
+				this.$switchTab('/')
+				return
+			}
 			uni.navigateBack()
 		},
-		handleChooseProvince(item,index) {
-			this.areaCity = item.children
-			this.tabs[0].name = item.name
-			this.tabs[1].disabled = false
-			this.swiperIndex= 1,this.swiperTabs = 1
+
+		handleClearSearch() {
+			this.searchCity = ''
 		},
-		handleChooseArea(item,index) {
-			this.areaCityIndex = index
-			this.area = item.children
-			this.tabs[1].name = item.name
-			this.tabs[2].disabled = false
-			this.swiperIndex= 2,this.swiperTabs = 2
+
+		handleChooseCity(chooseAddressInfo) {
+			this.currentDistinguishData = chooseAddressInfo.children
+			this.currentTownData = null
+			this.currentTab = 1
+			this.tabs[0].name = chooseAddressInfo.name.slice(0, 3) + '...'
+			this.tabs[0].select = chooseAddressInfo.name
+			// this.$store.commit('location/CHANGE_CURRENT_CITY', cityName)
+			// this.handleBack()
 		},
-		handleChooseCity(cityName,index) {
-			this.areaIndex = index
-			let area = this.tabs[0].name + this.tabs[1].name + cityName.name
-			uni.showLoading()
-			// console.log(cityName)
-			this.$store.dispatch('location/getDetailAddress', {
-				city: area,
-				distinguish: '',
-				town: ''
-			})
-			this.handleBack()
+
+		// 滑动swiper
+		handleChangeSwiper(e) {
+			const nextIndex = e.detail.current
+			if (nextIndex === 1 && !this.currentDistinguishData) {
+				this.currentTab = nextIndex - 1
+				return
+			}
+			this.currentTab = nextIndex
 		},
 
 		// 开始定位
@@ -213,62 +271,75 @@ export default {
 				this.$store.dispatch('location/getCurrentLocation')
 			}
 			// #endif
-
 			// #ifdef H5
 			this.$store.dispatch('location/getCurrentLocation')
 			// #endif
+		},
+
+		// 切换tab
+		handleChangeTab(info) {
+			if (info.index === 1 && !this.currentDistinguishData) {
+				this.ttoast({
+					type: 'fail',
+					title: '请选择所在城市'
+				})
+				return
+			}
+			if (info.index === 2 && !this.currentTownData) {
+				this.ttoast({
+					type: 'fail',
+					title: '请选择所在区县'
+				})
+				return
+			}
+			this.currentTab = info.index
+		},
+
+		// 选择区县
+		handleChooseTown(data) {
+			this.currentTownData = data.children
+			this.currentTab = 2
+			this.tabs[1].name = data.name.slice(0, 3) + '...'
+			this.tabs[1].select = data.name
+		},
+
+		// 选择定位
+		confirmChooseAddress(data, isHot) {
+			uni.showLoading()
+			if (isHot) {
+				this.$store.dispatch('location/getDetailAddress', data)
+			} else {
+				console.log(this.tabs)
+				this.$store.dispatch('location/getDetailAddress', {
+					city: this.tabs[0].select,
+					distinguish: this.tabs[1].select,
+					town: data.name
+				})
+			}
+			uni.hideLoading()
+			this.ttoast('修改成功')
+			setTimeout(() => {
+				if (this.backUrl) {
+					uni.redirectTo({
+						url: this.backUrl
+					})
+				} else {
+					this.handleBack()
+				}
+			}, 1000)
+		}
+	},
+
+	onLoad(params) {
+		const backUrl = params.backUrl
+		if (backUrl) {
+			this.backUrl = backUrl.replaceAll('_', '?').replaceAll('|', '/')
 		}
 	}
 }
 </script>
 
 <style lang="scss" scoped>
-.choose-cities {
-	width: 100vw;
-	position: relative;
-	overflow: hidden;
-	.choose-cities-item {
-		margin: 0;
-		font-weight: 600;
-		text-align: center;
-		box-sizing: border-box;
-		padding: 30rpx 20rpx;
-		display: inline-block;
-		width: 33.3333%;
-		min-height: 100rpx;
-		max-height: 100rpx;
-		background-color: #ffffff;
-		> span {
-			display: inline-block;
-			max-width: 160rpx;
-			white-space:nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-	}
-	.isSelect {
-		color: #fff;
-		background-color: #e95d20;
-	}
-}
-// .addresTabs {
-// 	margin-top: 30rpx;
-// }
-.tui-index__letter {
-	position: absolute;
-}
-.wrapper-container {
-	width: 100vw;
-	height: calc(100vh - 0rpx) !important;
-}
-.swiper {
-	height: calc(100vh - 0rpx) !important;
-}
-.addresViewItem {
-	display: inline-block;
-	width: 100vw;
-	// height: 200rpx;
-}
 .my-address {
 	width: 100vw;
 	min-height: 100vh;
@@ -320,7 +391,7 @@ export default {
 		.current-address-text {
 			display: flex;
 			align-items: center;
-			width: 500upx;
+			width: 300upx;
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
@@ -338,6 +409,7 @@ export default {
 
 	.hot-city {
 		background-color: #fff;
+		margin-bottom: 30upx;
 
 		.title {
 			width: 100%;
@@ -398,8 +470,63 @@ export default {
 		margin-right: 10upx !important;
 	}
 }
-.tui-index__letter {
-	position: absolute !important;
+
+.uni-btn {
+	font-size: 28upx;
+	margin-left: 10upx;
+	color: rgb(233, 93, 32);
+}
+
+.no-data {
+	height: 300upx;
+	text-align: center;
+	line-height: 400upx;
+	color: #ccc;
+	font-size: 28upx;
+}
+
+.wrapper-container {
+	width: 100%;
+	height: calc(100vh - 292upx);
+	// background-color: #f40;
+	overflow: hidden;
+
+	.swiper {
+		height: calc(100vh - 292upx);
+	}
+
+	/deep/ .tui-scroll__view {
+		height: calc(100vh - 292upx) !important;
+	}
+}
+
+.choose-cities {
+	width: 100%;
+	height: 100%;
+}
+
+/deep/ .tui-tabs-item {
+	width: 160rpx;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/deep/ .tui-grid {
+	text-align: center;
+}
+
+.grid-item.active {
+	background-color: #e95d20 !important;
+	color: #fff;
+}
+
+.tui-grid-label {
+	font-size: 28upx;
+	width: 100px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: inline-block;
 }
 </style>
-

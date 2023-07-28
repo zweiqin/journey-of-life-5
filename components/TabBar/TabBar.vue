@@ -10,7 +10,7 @@
 		>
 			<view
 				style="flex: 1;display: flex;flex-direction: column;justify-content: flex-end;align-items: center;height: 100%;"
-				@click="switchTab('/pages/index/index')"
+				@click="$switchTab('/pages/index/index')"
 			>
 				<view style="margin-top: 10upx;">
 					<BeeIcon width="24px" height="24px" :src="require('../../static/images/tabbar/home.png')"></BeeIcon>
@@ -19,7 +19,7 @@
 			</view>
 			<view
 				style="flex: 1;display: flex;flex-direction: column;justify-content: flex-end;align-items: center;height: 100%;"
-				@click="switchTab('/pages/store/store')"
+				@click="$switchTab('/pages/store/store')"
 			>
 				<view style="margin-top: 10upx;">
 					<BeeIcon width="24px" height="24px" :src="require('../../static/images/tabbar/store.png')"></BeeIcon>
@@ -47,7 +47,7 @@
 			</view>
 			<view
 				style="flex: 1;display: flex;flex-direction: column;justify-content: flex-end;align-items: center;height: 100%;"
-				@click="switchTab('/pages/marketing-treasure-house/marketing-treasure-house')"
+				@click="$switchTab('/pages/marketing-treasure-house/marketing-treasure-house')"
 			>
 				<view style="margin-top: 10upx;">
 					<BeeIcon width="24px" height="24px" :src="require('../../static/images/tabbar/books.png')"></BeeIcon>
@@ -56,7 +56,7 @@
 			</view>
 			<view
 				style="flex: 1;display: flex;flex-direction: column;justify-content: flex-end;align-items: center;height: 100%;"
-				@click="switchTab('/pages/user/user')"
+				@click="$switchTab('/pages/user/user')"
 			>
 				<view style="margin-top: 10upx;">
 					<BeeIcon width="24px" height="24px" :src="require('../../static/images/tabbar/vip.png')"></BeeIcon>

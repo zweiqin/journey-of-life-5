@@ -127,6 +127,8 @@ import {
 import { getOrderRefundsReasonApi } from '../../api/user'
 import { payOrderGoodsApi } from '../../api/goods'
 import { getUserId, payFn } from '../../utils'
+import { J_PAY_ORDER } from '../../constant'
+
 export default {
 	name: 'OrderForm',
 	data() {
@@ -174,10 +176,12 @@ export default {
 		}
 	},
 
-	onLoad(options) { },
+	onLoad(options) {
+		this.getOrderList()
+	},
 
 	onShow() {
-		this.getOrderList()
+		uni.removeStorageSync(J_PAY_ORDER)
 	},
 
 	methods: {
@@ -261,13 +265,7 @@ export default {
 						this.isShowRefundDialog = true
 					})
 			} else if (key === 'pay') {
-				payOrderGoodsApi({
-					orderNo: goods.orderSn,
-					userId: getUserId(),
-					payType: goods.isAppoint ? 6 : 1
-				}).then((res) => {
-					payFn(res)
-				})
+				payFn({ ...goods }, goods.isAppoint ? 6 : 1)
 			}
 		},
 
@@ -308,12 +306,10 @@ export default {
 			this.loadingStatus = 'noMore'
 			return
 		}
-
 		if (this.query.page >= this.totalPages) {
 			this.loadingStatus = 'noMore'
 			return
 		}
-
 		this.query.page++
 		this.getOrderList(true)
 	}

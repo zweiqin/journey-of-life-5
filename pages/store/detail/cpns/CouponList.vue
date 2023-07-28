@@ -4,7 +4,7 @@
 			style="width: 710upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="250" :padding="0"
 			item-width="237rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
 			:tabs="[{ name: '店铺券' }, { name: '未领取' }, { name: '已领取' }]" :current-tab="currentTab"
-			@change="handleSwitchTab"
+			@change="handleChangeTab"
 		></tui-tabs>
 		<scroll-view
 			refresher-background="#3f3d3d" scroll-y="true" style="max-height: 85vh;min-height: 400rpx;"
@@ -188,7 +188,7 @@ export default {
 			}
 		},
 
-		handleSwitchTab(e) {
+		handleChangeTab(e) {
 			this.currentTab = e.index
 			if (this.currentTab === 0) {
 				this.storeCouponList = []

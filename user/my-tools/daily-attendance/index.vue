@@ -14,10 +14,7 @@
 
 		<view class="middle">
 			<view class="date">
-				<view
-					v-if="!todaySignL" class="getMorePoints"
-					@click="getSign"
-				>
+				<view v-if="!todaySignL" class="getMorePoints" @click="getSign">
 					<view class="getMorePoints_text"> 签到领积分 </view>
 				</view>
 				<view v-else class="getMorePoints noanimation" @click="getSign">
@@ -38,7 +35,7 @@
 								{{ item.flag == 0 ? `+${item.integral}` : '√' }}
 							</view>
 							<view class="SignRound_text">
-								第{{ index + 1 }}天{{item.flag}}
+								第{{ index + 1 }}天{{ item.flag }}
 								<!-- {{ new Date(item.date).getDate() ==new Date().getDate()?'今天':item.easyDate }} -->
 							</view>
 						</view>
@@ -88,8 +85,8 @@ export default {
 	props: {},
 	data() {
 		return {
-			timerNumber: "",
-			todays: "",
+			timerNumber: '',
+			todays: '',
 			todaySignL: false,
 			today: new Date().toISOString()
 				.slice(0, 10),
@@ -136,16 +133,17 @@ export default {
 			var m = (startTime.getMonth() + 1) < 10 ? '0' + (startTime.getMonth() + 1) : startTime.getMonth() +
 				1 // 获取当前月份的日期，不足10补0
 			var d = startTime.getDate() < 10 ? '0' + startTime.getDate() : startTime.getDate() // 获取当前几号，不足10补0
-			this.todays = y + '-' + m + '-' + d;
-			let today = y + m + d
+			this.todays = y + '-' + m + '-' + d
+			const today = y + m + d
 			// console.log(this.todays)
 			// console.log(today)
-			geUserSign({ startDate:today, endDate:today }).then(res => {
+			geUserSign({ startDate: today, endDate: today }).then((res) => {
 				res.data > 0 ? this.todaySignL = true : this.todaySignL = false
 				// console.log(this.todaySignL)
-			}).catch(err => {
-				console.log(err)
 			})
+				.catch((err) => {
+					console.log(err)
+				})
 		},
 		getUserData() {
 			// 获取当前连续签到日期和明天签到积分
@@ -191,12 +189,7 @@ export default {
 				})
 		},
 		handleBack() {
-			// uni.switchTab({
-			// 	url: "/pages/index/index",
-			// });
-			uni.switchTab({
-				url: "/pages/user/user"
-			})
+			this.$switchTab('/pages/user/user')
 		},
 		updateSign(item) {
 			console.log(item)
@@ -281,479 +274,480 @@ export default {
 					icon: 'success'
 				})
 				this.$forceUpdate()
-			}).finally(() => {
-				this.getTodaySign()
-				this.getUserData()
 			})
+				.finally(() => {
+					this.getTodaySign()
+					this.getUserData()
+				})
 		}
 	}
 }
 </script>
 
 <style lang="less" scoped>
-	// 按钮动画
-	@keyframes animateBtn {
-		0% {
-			transform: scale(1);
-		}
-
-		50% {
-			transform: scale(1.1);
-		}
-
-		100% {
-			transform: scale(1);
-		}
+// 按钮动画
+@keyframes animateBtn {
+	0% {
+		transform: scale(1);
 	}
 
-	@-webkit-keyframes shiny-btn1 {
-		0% {
-			-webkit-transform: scale(0) rotate(45deg);
-			opacity: 0;
-		}
-
-		80% {
-			-webkit-transform: scale(0) rotate(45deg);
-			opacity: 0.5;
-		}
-
-		81% {
-			-webkit-transform: scale(4) rotate(45deg);
-			opacity: 1;
-		}
-
-		100% {
-			-webkit-transform: scale(50) rotate(45deg);
-			opacity: 0;
-		}
+	50% {
+		transform: scale(1.1);
 	}
 
-	.sign {
-		width: 100vw;
-		min-height: 100vh;
-		background: linear-gradient(180deg, #FFE5CC 5%, #FFF9F0 25%, #F6F6F6 13%);
+	100% {
+		transform: scale(1);
+	}
+}
 
-		.head {
-			box-sizing: border-box;
-			width: 100%;
+@-webkit-keyframes shiny-btn1 {
+	0% {
+		-webkit-transform: scale(0) rotate(45deg);
+		opacity: 0;
+	}
+
+	80% {
+		-webkit-transform: scale(0) rotate(45deg);
+		opacity: 0.5;
+	}
+
+	81% {
+		-webkit-transform: scale(4) rotate(45deg);
+		opacity: 1;
+	}
+
+	100% {
+		-webkit-transform: scale(50) rotate(45deg);
+		opacity: 0;
+	}
+}
+
+.sign {
+	width: 100vw;
+	min-height: 100vh;
+	background: linear-gradient(180deg, #FFE5CC 5%, #FFF9F0 25%, #F6F6F6 13%);
+
+	.head {
+		box-sizing: border-box;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		// padding-top: 40upx;
+		// padding-bottom: 24upx;
+		padding: 40rpx 30rpx 24rpx 30rpx;
+		// background: linear-gradient(174deg, #fe5c22 15%, #fe933f 77%);
+
+		>image {
+			width: 56upx;
+			height: 56upx;
+		}
+
+		// > text {
+		// 	font-size: 36upx;
+		// 	font-weight: 500;
+		// 	margin-right: 100rpx;
+		// }
+		.points_buttom {
+			margin-left: -310rpx;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			// padding-top: 40upx;
-			// padding-bottom: 24upx;
-			padding: 40rpx 30rpx 24rpx 30rpx;
-			// background: linear-gradient(174deg, #fe5c22 15%, #fe933f 77%);
+			border-radius: 50rpx;
+			// width: 128rpx;
+			padding-right: 25rpx;
+			height: 66rpx;
+			background-color: #7070708e;
 
-			>image {
-				width: 56upx;
-				height: 56upx;
+			image {
+				margin-left: 10rpx;
+				width: 50rpx;
+				height: 50rpx;
 			}
 
-			// > text {
-			// 	font-size: 36upx;
-			// 	font-weight: 500;
-			// 	margin-right: 100rpx;
-			// }
-			.points_buttom {
-				margin-left: -310rpx;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				border-radius: 50rpx;
-				// width: 128rpx;
-				padding-right: 25rpx;
-				height: 66rpx;
-				background-color: #7070708e;
+			text {
+				text-align: right;
+				margin-left: 10rpx;
+				color: #fff;
+			}
 
-				image {
-					margin-left: 10rpx;
-					width: 50rpx;
-					height: 50rpx;
-				}
-
-				text {
-					text-align: right;
-					margin-left: 10rpx;
-					color: #fff;
-				}
-
-				.goToPointsMall {
-					width: 25rpx;
-					height: 25rpx;
-				}
+			.goToPointsMall {
+				width: 25rpx;
+				height: 25rpx;
 			}
 		}
+	}
 
-		.bg {
-			width: 100%;
-			height: 610upx;
-			position: absolute;
-		}
+	.bg {
+		width: 100%;
+		height: 610upx;
+		position: absolute;
+	}
 
-		.middle {
-			padding: 0 20upx;
+	.middle {
+		padding: 0 20upx;
+		position: relative;
+		padding-top: 36px;
+
+		.date {
+			width: 715rpx;
+			height: 300rpx;
 			position: relative;
-			padding-top: 36px;
+			background-color: #fff;
+			border-radius: 25rpx;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
 
-			.date {
-				width: 715rpx;
-				height: 300rpx;
-				position: relative;
+			// 模仿光线效果
+			.getMorePoints:before {
+				position: absolute;
+				content: '';
+				display: inline-block;
+				top: -180px;
+				left: 0;
+				width: 50rpx;
+				height: 100%;
 				background-color: #fff;
-				border-radius: 25rpx;
+				animation: shiny-btn1 3s ease-in-out infinite;
+			}
+
+			.getMorePoints {
+				// z-index: 0;
+				position: absolute;
+				top: -40rpx;
+				color: #fff;
+				background: linear-gradient(0deg, #fd1a02 0%, #fd7831 65%);
+				border-radius: 50rpx;
+				width: 300rpx;
+				height: 85rpx;
 				display: flex;
 				align-items: center;
-				flex-direction: column;
+				justify-content: center;
+				cursor: pointer;
+				outline: none;
+				overflow: hidden;
+				// 放大缩小动画
+				animation: animateBtn 1.5s ease-in-out infinite;
 
-				// 模仿光线效果
-				.getMorePoints:before {
-					position: absolute;
-					content: '';
-					display: inline-block;
-					top: -180px;
-					left: 0;
-					width: 50rpx;
-					height: 100%;
-					background-color: #fff;
-					animation: shiny-btn1 3s ease-in-out infinite;
-				}
-
-				.getMorePoints {
-					// z-index: 0;
-					position: absolute;
-					top: -40rpx;
-					color: #fff;
-					background: linear-gradient(0deg, #fd1a02 0%, #fd7831 65%);
+				.getMorePoints_text {
+					background: linear-gradient(0deg, #fd1a02 0%, #fb9761 90%);
 					border-radius: 50rpx;
-					width: 300rpx;
-					height: 85rpx;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					cursor: pointer;
-					outline: none;
-					overflow: hidden;
-					// 放大缩小动画
-					animation: animateBtn 1.5s ease-in-out infinite;
-
-					.getMorePoints_text {
-						background: linear-gradient(0deg, #fd1a02 0%, #fb9761 90%);
-						border-radius: 50rpx;
-						line-height: 60rpx;
-						text-align: center;
-						width: 275rpx;
-						height: 60rpx;
-					}
-				}
-
-				.noanimation {
-					animation: none;
-				}
-
-				.SignIn {
-					margin-top: 54rpx;
-					width: 668rpx;
-					height: 193rpx;
-
-					.SignIn_heade {
-						display: flex;
-						justify-content: space-between;
-
-						.SignIn_headeText {
-							font-size: 24rpx;
-							color: #a3a8b9;
-
-							text {
-								color: #ff8515;
-								padding: 0 5rpx;
-								font-size: 35rpx;
-							}
-						}
-
-						.SignIn_warn {
-							display: flex;
-							color: #ff8515;
-							font-size: 26rpx;
-							line-height: 40rpx;
-							font-weight: 600;
-
-							image {
-								margin-right: 2rpx;
-								margin-top: 2rpx;
-								width: 40rpx;
-								height: 35rpx;
-							}
-						}
-					}
-
-					// 下半部分打卡区
-					.SignI_Button {
-						display: flex;
-
-						.SignI_ButtonItem {
-							flex: 1;
-							display: flex;
-							flex-direction: column;
-							align-items: center;
-							margin-top: 30rpx;
-
-							.SignRound {
-								width: 60rpx;
-								height: 60rpx;
-								// border-radius: 50%;
-								background-color: #f4f3f9;
-								font-size: 20rpx;
-								text-align: center;
-								line-height: 55rpx;
-								color: #a9acb8;
-							}
-
-							.SignRound_text {
-								margin-top: 12rpx;
-								font-size: 20rpx;
-								text-align: center;
-								color: #a9acb8;
-							}
-
-							.isSignIn {
-								background-color: #FFE5CC;
-								color: #d80000;
-							}
-						}
-					}
-				}
-
-				>image {
-					margin-top: 15rpx;
-					width: 38rpx;
-					height: 26rpx;
+					line-height: 60rpx;
+					text-align: center;
+					width: 275rpx;
+					height: 60rpx;
 				}
 			}
 
-			.main {
-				// padding: 0 20upx;
-				// margin-top: 400upx;
-				padding-bottom: 40upx;
-				padding-top: 28upx;
+			.noanimation {
+				animation: none;
+			}
 
-				.integral {
-					width: 100%;
-					// height: 114upx;
-					border-radius: 20upx;
-					box-sizing: border-box;
-					background-color: #5357613f;
-					// background: linear-gradient(270deg, #515972 0%, #66708b 100%);
-					padding: 14upx 36upx 18upx 36upx;
+			.SignIn {
+				margin-top: 54rpx;
+				width: 668rpx;
+				height: 193rpx;
+
+				.SignIn_heade {
 					display: flex;
 					justify-content: space-between;
-					align-items: center;
-					margin-bottom: 36upx;
 
-					.i-left {
-						.i-name {
-							font-size: 24upx;
-							color: #ffffff;
-						}
+					.SignIn_headeText {
+						font-size: 24rpx;
+						color: #a3a8b9;
 
-						.i-list {
-							display: flex;
-							align-items: center;
-
-							text {
-								font-size: 36upx;
-								font-weight: 500;
-								color: #ffffff;
-								padding-right: 28upx;
-							}
-
-							image {
-								width: 48upx;
-								height: 48upx;
-							}
+						text {
+							color: #ff8515;
+							padding: 0 5rpx;
+							font-size: 35rpx;
 						}
 					}
 
-					.i-right {
-						width: 232upx;
-						height: 62upx;
-						border-radius: 100upx;
-						background: linear-gradient(90deg, #f44b06 0%, #fc9214 100%);
-						font-size: 28upx;
-						font-weight: 500;
-						color: #ffffff;
+					.SignIn_warn {
 						display: flex;
-						justify-content: center;
-						align-items: center;
+						color: #ff8515;
+						font-size: 26rpx;
+						line-height: 40rpx;
+						font-weight: 600;
+
+						image {
+							margin-right: 2rpx;
+							margin-top: 2rpx;
+							width: 40rpx;
+							height: 35rpx;
+						}
 					}
 				}
 
-				.mid {
-					width: 100%;
-					// height: 725px;
-					border-radius: 20upx;
-					background: #fff6e5;
-					box-sizing: border-box;
-					border: 2upx solid #e1b590;
-					padding: 0 24upx;
-					padding-bottom: 20upx;
+				// 下半部分打卡区
+				.SignI_Button {
+					display: flex;
 
-					.head-img {
+					.SignI_ButtonItem {
+						flex: 1;
 						display: flex;
-						justify-content: center;
+						flex-direction: column;
 						align-items: center;
-						padding: 60upx 0upx 68upx 0upx;
+						margin-top: 30rpx;
 
-						image {
-							width: 64upx;
-							height: 30upx;
+						.SignRound {
+							width: 60rpx;
+							height: 60rpx;
+							// border-radius: 50%;
+							background-color: #f4f3f9;
+							font-size: 20rpx;
+							text-align: center;
+							line-height: 55rpx;
+							color: #a9acb8;
 						}
+
+						.SignRound_text {
+							margin-top: 12rpx;
+							font-size: 20rpx;
+							text-align: center;
+							color: #a9acb8;
+						}
+
+						.isSignIn {
+							background-color: #FFE5CC;
+							color: #d80000;
+						}
+					}
+				}
+			}
+
+			>image {
+				margin-top: 15rpx;
+				width: 38rpx;
+				height: 26rpx;
+			}
+		}
+
+		.main {
+			// padding: 0 20upx;
+			// margin-top: 400upx;
+			padding-bottom: 40upx;
+			padding-top: 28upx;
+
+			.integral {
+				width: 100%;
+				// height: 114upx;
+				border-radius: 20upx;
+				box-sizing: border-box;
+				background-color: #5357613f;
+				// background: linear-gradient(270deg, #515972 0%, #66708b 100%);
+				padding: 14upx 36upx 18upx 36upx;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 36upx;
+
+				.i-left {
+					.i-name {
+						font-size: 24upx;
+						color: #ffffff;
+					}
+
+					.i-list {
+						display: flex;
+						align-items: center;
 
 						text {
-							font-size: 48upx;
-							font-weight: bold;
-							color: #911a00;
-							padding: 0 48upx;
+							font-size: 36upx;
+							font-weight: 500;
+							color: #ffffff;
+							padding-right: 28upx;
+						}
+
+						image {
+							width: 48upx;
+							height: 48upx;
 						}
 					}
+				}
 
-					.exchange {
+				.i-right {
+					width: 232upx;
+					height: 62upx;
+					border-radius: 100upx;
+					background: linear-gradient(90deg, #f44b06 0%, #fc9214 100%);
+					font-size: 28upx;
+					font-weight: 500;
+					color: #ffffff;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+			}
+
+			.mid {
+				width: 100%;
+				// height: 725px;
+				border-radius: 20upx;
+				background: #fff6e5;
+				box-sizing: border-box;
+				border: 2upx solid #e1b590;
+				padding: 0 24upx;
+				padding-bottom: 20upx;
+
+				.head-img {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					padding: 60upx 0upx 68upx 0upx;
+
+					image {
+						width: 64upx;
+						height: 30upx;
+					}
+
+					text {
+						font-size: 48upx;
+						font-weight: bold;
+						color: #911a00;
+						padding: 0 48upx;
+					}
+				}
+
+				.exchange {
+					width: 100%;
+					border-radius: 20upx;
+					background: #ffffff;
+					padding: 26upx 28upx 40upx 28upx;
+					box-sizing: border-box;
+
+					.ex-name {
+						font-size: 28upx;
+						font-weight: 500;
+						color: #3d3d3d;
+						// margin-bottom: 18upx;
+					}
+
+					.heng {
 						width: 100%;
-						border-radius: 20upx;
-						background: #ffffff;
-						padding: 26upx 28upx 40upx 28upx;
-						box-sizing: border-box;
-
-						.ex-name {
-							font-size: 28upx;
-							font-weight: 500;
-							color: #3d3d3d;
-							// margin-bottom: 18upx;
-						}
-
-						.heng {
-							width: 100%;
-							height: 2upx;
-							background: linear-gradient(90deg,
-									#ffffff 0%,
-									#d8d8d8 47%,
-									#ffffff 100%);
-							margin-top: 18upx;
-							margin-bottom: 20upx;
-						}
-
-						.sub-list {
-							position: relative;
-							display: flex;
-							justify-content: space-between;
-
-							// white-space: nowrap;
-							// &::after {
-							// 	content: '';
-							// 	position: absolute;
-							// 	left: 33%;
-							// 	top: 50%;
-							// 	width: 196upx;
-							// 	height: 2upx;
-							// 	transform: rotate(90deg);
-							// 	background: linear-gradient(270deg, #FFFFFF 0%, #D8D8D8 50%, #FFFFFF 100%);
-							// }
-
-							.sub {
-								display: flex;
-								flex-direction: column;
-								align-items: center;
-
-								image {
-									width: 224upx;
-									height: 142upx;
-								}
-
-								text {
-									font-size: 24upx;
-									color: #3d3d3d;
-									padding-top: 6upx;
-								}
-							}
-						}
+						height: 2upx;
+						background: linear-gradient(90deg,
+								#ffffff 0%,
+								#d8d8d8 47%,
+								#ffffff 100%);
+						margin-top: 18upx;
+						margin-bottom: 20upx;
 					}
 
-					.text-list {
+					.sub-list {
+						position: relative;
 						display: flex;
 						justify-content: space-between;
-						align-items: center;
-						padding: 52upx 20upx 26upx 24upx;
 
-						.name {
-							font-size: 28upx;
-							font-weight: 500;
-							color: #3d3d3d;
-						}
+						// white-space: nowrap;
+						// &::after {
+						// 	content: '';
+						// 	position: absolute;
+						// 	left: 33%;
+						// 	top: 50%;
+						// 	width: 196upx;
+						// 	height: 2upx;
+						// 	transform: rotate(90deg);
+						// 	background: linear-gradient(270deg, #FFFFFF 0%, #D8D8D8 50%, #FFFFFF 100%);
+						// }
 
-						.more {
-							display: flex;
-							align-items: center;
-
-							text {
-								font-size: 24upx;
-								color: #999999;
-							}
-
-							image {
-								width: 28upx;
-								height: 28upx;
-							}
-						}
-					}
-
-					.goods-list {
-						display: flex;
-						flex-wrap: wrap;
-						justify-content: space-between;
-
-						.goods {
-							width: 310upx;
-							// height: 380upx;
-							border-radius: 20upx;
-							background: #ffffff;
+						.sub {
 							display: flex;
 							flex-direction: column;
 							align-items: center;
-							margin-bottom: 28upx;
 
 							image {
 								width: 224upx;
 								height: 142upx;
-								margin: 30upx 0 20upx 0;
 							}
 
 							text {
-								margin: 8upx 0upx 14upx 0upx;
-								font-size: 24upx;
-								color: #3662ec;
-							}
-
-							.goods-name {
 								font-size: 24upx;
 								color: #3d3d3d;
+								padding-top: 6upx;
 							}
+						}
+					}
+				}
 
-							.click {
-								width: 184upx;
-								height: 44upx;
-								border-radius: 20upx;
-								background: linear-gradient(90deg, #f55808 0%, #fb8d13 100%);
-								font-size: 28upx;
-								font-weight: 500;
-								color: #ffffff;
-								display: flex;
-								justify-content: center;
-								align-items: center;
-								margin-bottom: 34upx;
-							}
+				.text-list {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					padding: 52upx 20upx 26upx 24upx;
+
+					.name {
+						font-size: 28upx;
+						font-weight: 500;
+						color: #3d3d3d;
+					}
+
+					.more {
+						display: flex;
+						align-items: center;
+
+						text {
+							font-size: 24upx;
+							color: #999999;
+						}
+
+						image {
+							width: 28upx;
+							height: 28upx;
+						}
+					}
+				}
+
+				.goods-list {
+					display: flex;
+					flex-wrap: wrap;
+					justify-content: space-between;
+
+					.goods {
+						width: 310upx;
+						// height: 380upx;
+						border-radius: 20upx;
+						background: #ffffff;
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						margin-bottom: 28upx;
+
+						image {
+							width: 224upx;
+							height: 142upx;
+							margin: 30upx 0 20upx 0;
+						}
+
+						text {
+							margin: 8upx 0upx 14upx 0upx;
+							font-size: 24upx;
+							color: #3662ec;
+						}
+
+						.goods-name {
+							font-size: 24upx;
+							color: #3d3d3d;
+						}
+
+						.click {
+							width: 184upx;
+							height: 44upx;
+							border-radius: 20upx;
+							background: linear-gradient(90deg, #f55808 0%, #fb8d13 100%);
+							font-size: 28upx;
+							font-weight: 500;
+							color: #ffffff;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							margin-bottom: 34upx;
 						}
 					}
 				}
 			}
 		}
 	}
+}
 </style>

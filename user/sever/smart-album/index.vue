@@ -182,9 +182,7 @@ export default {
 
 		// 点击回退
 		handleBack() {
-			uni.switchTab({
-				url: '/pages/user/user'
-			})
+			this.$switchTab('/pages/user/user')
 		}
 	}
 }

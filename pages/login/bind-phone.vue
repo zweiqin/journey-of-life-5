@@ -164,9 +164,7 @@ export default {
 				}, 1000)
 			} else {
 				setTimeout(() => {
-					uni.switchTab({
-						url: '/'
-					})
+					this.$switchTab('/')
 				}, 1000)
 			}
 		}

@@ -32,12 +32,9 @@ export default {
 	methods: {
 		handleBack() {
 			if (this.tabbar) {
-				uni.switchTab({
-					url: this.tabbar
-				})
+				this.$switchTab(this.tabbar)
 				return
 			}
-
 			uni.navigateBack()
 		}
 	}
