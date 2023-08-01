@@ -52,12 +52,12 @@
 				"navigationBarTitleText": "地图红包"
 			}
 		},
-		{
-			"path": "pages/pay-result/pay-result",
-			"style": {
-				"navigationBarTitleText": "支付结果"
-			}
-		},
+		// {
+		// 	"path": "pages/pay-result/pay-result",
+		// 	"style": {
+		// 		"navigationBarTitleText": "支付结果"
+		// 	}
+		// },
 		{
 			"path": "pages/marketing-treasure-house/marketing-treasure-house",
 			"style": {

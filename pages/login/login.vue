@@ -180,17 +180,13 @@ export default {
 				if (uni.getStorageSync(J_NEW_BIND_TYPE)) {
 					uni.redirectTo({ url: '/pages/jump/jump' })
 				} else if (this.isTabbar) {
-					uni.switchTab({
-						url: this.redirect || '/pages/index/index'
-					})
+					this.$switchTab(this.redirect || '/pages/index/index')
 				} else if (this.redirect) {
 					uni.redirectTo({
 						url: this.redirect
 					})
 				} else {
-					uni.switchTab({
-						url: '/pages/index/index'
-					})
+					this.$switchTab('/pages/index/index')
 				}
 			}, 2000)
 		}

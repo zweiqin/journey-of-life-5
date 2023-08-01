@@ -164,9 +164,7 @@ export default {
 
 		// 回退
 		handleBack() {
-			uni.switchTab({
-				url: '/pages/user/user'
-			})
+			this.$switchTab('/pages/user/user')
 		},
 
 		// 获取列表数据
@@ -180,9 +178,7 @@ export default {
 				this.$showToast('您还不是业务员，无法访问')
 				uni.hideLoading()
 				setTimeout(() => {
-					uni.switchTab({
-						url: '/pages/user/user'
-					})
+					this.$switchTab('/pages/user/user')
 				}, 2000)
 			} else {
 				this.list = res

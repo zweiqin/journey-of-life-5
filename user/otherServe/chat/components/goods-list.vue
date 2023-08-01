@@ -11,7 +11,7 @@
 				style="width: 686upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="105" :padding="32"
 				item-width="229rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
 				:tabs="[{ name: '巨蜂自营' }, { name: '本地生活' }, { name: '预约' }]" :current-tab="currentTab"
-				@change="handleSwitchTab"
+				@change="handleChangeTab"
 			></tui-tabs>
 		</view>
 
@@ -72,7 +72,7 @@ export default {
 		this.getShopList()
 	},
 	methods: {
-		handleSwitchTab(e) {
+		handleChangeTab(e) {
 			this.currentTab = e.index
 			this.shopCarInfo = { brandCartgoods: [] }
 			this.getShopList()

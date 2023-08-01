@@ -8,5 +8,8 @@ export default {
 	customerServiceInfo: (state) => state.customerService.customerServiceInfo,
 	chatListData: (state) => state.customerService.chatListData,
 	wsHandleInfo: (state) => state.customerService.wsHandleInfo,
-	wsHandle: (state) => state.customerService.wsHandle
+	wsHandle: (state) => state.customerService.wsHandle,
+
+	// app
+	statusBarHeight: (state) => state.app.systermInfo.statusBarHeight || 0
 }

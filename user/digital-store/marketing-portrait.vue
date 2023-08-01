@@ -181,9 +181,7 @@ export default {
 	},
 	methods: {
 		back() {
-			uni.switchTab({
-				url: '/pages/user/user'
-			})
+			this.$switchTab('/pages/user/user')
 		},
 		fomartNumber,
 
@@ -199,9 +197,7 @@ export default {
 				})
 
 				setTimeout(() => {
-					uni.switchTab({
-						url: '/pages/user/user'
-					})
+					this.$switchTab('/pages/user/user')
 				}, 2000)
 			}
 		}

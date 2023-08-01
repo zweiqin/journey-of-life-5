@@ -62,7 +62,7 @@
 		<view class="order-data-record" style="padding-bottom: 40upx;background-color: #ffffff;border-radius: 25upx;overflow: hidden;">
 			<tui-tabs
 				item-width="50%" selected-color="#000000" bold slider-bg-color="#ff0000"
-				:tabs="[{ name: '入账出账' }, { name: '订单' }]" :current-tab="currentTab" @change="handleSwitchTab"
+				:tabs="[{ name: '入账出账' }, { name: '订单' }]" :current-tab="currentTab" @change="handleChangeTab"
 			></tui-tabs>
 
 			<view v-if="currentTab === 0">
@@ -197,7 +197,7 @@ export default {
 					this.status = 'none'
 				})
 		},
-		handleSwitchTab(e) {
+		handleChangeTab(e) {
 			this.currentTab = e.index
 			if (this.currentTab === 0) {
 				this.getBrandLedgerRecords()

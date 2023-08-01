@@ -16,7 +16,7 @@
 					style="width: 684upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="375" :padding="0"
 					item-width="342rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
 					:tabs="[{ name: '商品' }, { name: '店铺' }]" :current-tab="currentTab"
-					@change="handleSwitchTab"
+					@change="handleChangeTab"
 				></tui-tabs>
 				<CollectionsGoods v-if="currentTab === 0" :data="collectionInfo.data" @delete="getCollections"></CollectionsGoods>
 				<CollectionsStore v-else-if="currentTab === 1" :data="collectionInfo.data" @delete="getCollections"></CollectionsStore>
@@ -121,7 +121,7 @@ export default {
 			this.currentPageInfo = mapCurrentInfo[this.currentPage]
 			this.currentPageInfo.api ? this[this.currentPageInfo.api]() : this.showNoData = true
 		},
-		handleSwitchTab(e) {
+		handleChangeTab(e) {
 			this.currentTab = e.index
 			this.collectionInfo.query.page = 1
 			this.collectionInfo.query.size = 20

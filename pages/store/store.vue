@@ -51,6 +51,8 @@ import loadData from '../../mixin/loadData'
 import { menusData } from './data'
 import { getHomeBrandListApi, getCategoryListApi } from '../../api/brand'
 import { getAdressDetailByLngLat } from '@/utils'
+import { CHANGE_IS_IN_MINIPROGRAM } from '../../store/modules/type'
+
 export default {
 	name: 'Store',
 	data() {
@@ -100,7 +102,16 @@ export default {
 				})
 		}
 	},
-	onLoad() {
+	onLoad(options) {
+		if (options.miniProgram) {
+			// getApp().globalData.isInMiniprogram = true;
+			this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!(options.miniProgram * 1))
+		}
+		// #ifdef H5
+		const script = document.createElement('script')
+		script.src = 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js'
+		document.body.appendChild(script)
+		// #endif
 		this.getBrandList()
 		this.getCategoryList()
 	},

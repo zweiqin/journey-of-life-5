@@ -1,7 +1,6 @@
 <template>
 	<view class="hot-container">
 		<Banner></Banner>
-		<HotToday></HotToday>
 
 		<view class="navs">
 			<view v-for="item in navs" :key="item.value" class="item" :class="{ active: currentNav === item.value }">
@@ -23,7 +22,6 @@
 <script>
 import Banner from './cpns/banner.vue'
 import HotGoods from './cpns/HotGoods.vue'
-import HotToday from './cpns/HotToday.vue'
 import loadMore from '../../../mixin/loadData'
 import { goodsListApi } from '../../../api/goods'
 
@@ -31,7 +29,6 @@ export default {
 	name: 'Hot',
 	components: {
 		Banner,
-		HotToday,
 		HotGoods
 	},
 
@@ -49,16 +46,6 @@ export default {
 					name: '全部爆款',
 					value: 0
 				}
-				// <!-- s暂时隐藏 -->
-				// {
-				// 	name: '限时秒杀',
-				// 	value: 1
-				// },
-				// {
-				// 	name: '巨蜂特惠',
-				// 	value: 2
-				// }
-				// <!-- e暂时隐藏 -->
 			])
 		}
 	}
@@ -77,12 +64,8 @@ export default {
 		width: 100%;
 		height: 160upx;
 		border-radius: 40upx 40upx 0 0;
-		background: linear-gradient(180deg,
-				#ffffff 0%,
-				#ffe5cc 5%,
-				#ffe5cc 1%,
-				#fff);
-		margin-top: -50upx;
+		background: linear-gradient(180deg,#ffffff 0%,#ffe5cc 5%,#ffe5cc 1%,#fff);
+		margin-top: 10upx;
 		padding: 24upx 48upx;
 		box-sizing: border-box;
 
@@ -121,7 +104,7 @@ export default {
 		width: 100%;
 		padding: 22upx 20upx;
 		box-sizing: border-box;
-		margin-top: -56upx;
+		margin-top: -76upx;
 		background: linear-gradient(180deg, #ffffff 4%, #f6f6f6 9%);
 	}
 

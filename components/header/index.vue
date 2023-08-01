@@ -17,19 +17,14 @@ export default {
 			type: String,
 			required: true
 		},
-
 		redirect: String
 	},
 	methods: {
 		back() {
 			if (this.redirect) {
-				uni.switchTab({
-					url: this.redirect
-				})
-
+				this.$switchTab(this.redirect)
 				return
 			}
-
 			uni.navigateBack()
 		}
 	}

@@ -231,7 +231,7 @@ export default {
 		},
 
 		handleBack() {
-			uni.switchTab({ url: '/pages/index/index' })
+			this.$switchTab('/pages/index/index')
 		},
 
 		async getUserCrmSlbumSelectId() {

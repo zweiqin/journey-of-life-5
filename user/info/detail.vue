@@ -154,9 +154,7 @@ export default {
 		},
 
 		handleBack() {
-			uni.switchTab({
-				url: '/pages/user/user'
-			})
+			this.$switchTab('/pages/user/user')
 		},
 
 		/**

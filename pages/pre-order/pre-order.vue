@@ -17,7 +17,7 @@
 				<text class="title">店铺名称</text>：{{ orderInfo.brand.name }}
 			</view>
 			<view class="goods">
-				<image class="goods-img" :src="orderInfo.currentGoodsImg" mode="" />
+				<image class="goods-img" :src="common.seamingImgUrl(orderInfo.currentGoodsImg)" mode="" />
 
 				<view class="info">
 					<view class="goods-name">{{ orderInfo.info.name }}</view>
@@ -70,7 +70,7 @@
 		</view>
 
 		<view v-if="calcOrderMsg" class="footer">
-			合计：<text class="footer-text">￥{{ calcOrderMsg.actualPrice }}</text>
+			{{ $store.state.app.isInMiniProgram }}合计：<text class="footer-text">￥{{ calcOrderMsg.actualPrice }}</text>
 			<button class="uni-btn" @click="handleToPay">提交订单</button>
 		</view>
 	</view>
@@ -79,20 +79,27 @@
 <script>
 import { getAddressListApi } from '../../api/address'
 import { getVoucherNumberApi } from '../../api/user'
-import { firstAddCar, submitOrderApi, payOrderGoodsApi } from '../../api/goods'
+import { firstAddCar, submitOrderApi } from '../../api/goods'
 import { getUserId, payFn } from '../../utils'
 import { payShopCarApi } from '../../api/cart'
-import { J_ONE_PAY_GOODS, J_SELECT_ADDRESS } from '../../constant'
+import { J_ONE_PAY_GOODS, J_SELECT_ADDRESS, J_PAY_ORDER } from '../../constant'
 export default {
 	name: 'PreOrder',
 	onLoad(options) {
+		uni.removeStorageSync(J_PAY_ORDER)
 		this.grouponRulesId = options.rulesId || ''
 		this.grouponLinkId = options.linkId || ''
 		this.getOrderInfo()
 	},
 
 	onShow() {
-		this.getAddressList()
+		if (uni.getStorageSync(J_PAY_ORDER)) {
+			uni.redirectTo({
+				url: '/user/orderForm/order-form'
+			})
+		} else {
+			this.getAddressList()
+		}
 	},
 
 	data() {
@@ -221,13 +228,7 @@ export default {
 				...this.opForm
 			}
 			submitOrderApi(submitData).then(({ data }) => {
-				payOrderGoodsApi({
-					orderNo: data.orderSn,
-					userId: getUserId(),
-					payType: 1
-				}).then((res) => {
-					payFn(res)
-				})
+				payFn(data, 1)
 			})
 		}
 	}

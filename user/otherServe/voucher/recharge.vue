@@ -87,15 +87,8 @@ export default {
 				voucherId: this.voucherConfig.id,
 				userId: getUserId()
 			}).then(({ data }) => {
-				payOrderGoodsApi({
-					orderNo: data.payOrderID,
-					userId: getUserId(),
-					payType: 2
-				}).then((res) => {
-					payFn(res, J_PAY_TYPE.VOUCHER.value, data.payOrderID)
-				})
+				payFn({ ...data, orderSn: data.payOrderID }, 2, J_PAY_TYPE.VOUCHER.value)
 			})
-			// this.go("/pages/pay-result/pay-result");
 		},
 
 		// 获取代金券配置

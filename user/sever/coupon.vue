@@ -10,7 +10,7 @@
 				v-for="nav in couponNavs" :key="nav.value" class="nav-item" :class="{
 					active: nav.value === currentNav
 				}"
-				@click="switchTab(nav.value)"
+				@click="handleChangeTab(nav.value)"
 			>
 				{{ nav.label }}
 			</view>
@@ -68,7 +68,7 @@ export default {
 
 	methods: {
 		// 切换tab
-		switchTab(currentNav) {
+		handleChangeTab(currentNav) {
 			this.currentNav = currentNav
 			this.getCoupons()
 		},

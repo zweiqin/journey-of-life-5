@@ -61,7 +61,10 @@ export const submitOrderApi = (data) => RuanRequest('/order/submit', data)
 // 快速添加购物车
 export const firstAddCar = (data) => RuanRequest('/cart/fastadd', data)
 
+// H5支付
 export const payOrderGoodsApi = (data) => RuanRequest('/api/syb/orderPayH5', data)
+// APP支付
+export const payOrderGoodsAPPApi = (data) => RuanRequest('/api/syb/getSybPaySign', data)
 
 export const getPayOrderResultApi = (data) => RuanRequest('/api/syb/getIsPaySucceed', data, 'get')
 

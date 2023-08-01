@@ -102,9 +102,7 @@ export default {
 	},
 	methods: {
 		back() {
-			uni.switchTab({
-				url: '/pages/user/user'
-			})
+			this.$switchTab('/pages/user/user')
 		},
 		getrepetitionMonth() {
 			var arr = this.timeList.data
@@ -309,9 +307,7 @@ export default {
 				})
 
 				setTimeout(() => {
-					uni.switchTab({
-						url: '/pages/user/user'
-					})
+					this.$switchTab('/pages/user/user')
 				}, 2000)
 			} else {
 				this.info = res.data

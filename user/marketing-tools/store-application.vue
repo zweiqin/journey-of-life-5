@@ -247,9 +247,7 @@ export default {
 							this.$showToast('提交成功，请等待审核')
 							setTimeout(() => {
 								// uni.navigateBack()
-								uni.switchTab({
-									url: '/pages/user/user'
-								})
+								this.$switchTab('/pages/user/user')
 							}, 2000)
 						})
 					}

@@ -150,13 +150,7 @@ export default {
 						upgradeOrderAddOrderApi({
 							id: result.id
 						}).then(({ data }) => {
-							payOrderGoodsApi({
-								orderNo: data,
-								userId: getUserId(),
-								payType: 4
-							}).then((res) => {
-								payFn(res, J_PAY_TYPE.VIP.value)
-							})
+							payFn({ orderSn: data }, 4, J_PAY_TYPE.VIP.value)
 						})
 					} else {
 						return this.$showToast('未查询到申请记录')
@@ -169,13 +163,7 @@ export default {
 						upgradeOrderAddOrderApi({
 							id: result.id
 						}).then(({ data }) => {
-							payOrderGoodsApi({
-								orderNo: data,
-								userId: getUserId(),
-								payType: 4
-							}).then((res) => {
-								payFn(res, J_PAY_TYPE.VIP.value)
-							})
+							payFn({ orderSn: data }, 4, J_PAY_TYPE.VIP.value)
 						})
 					} else {
 						return this.$showToast('未查询到申请记录')
@@ -189,13 +177,7 @@ export default {
 						upgradeOrderAddOrderApi({
 							id: result.id
 						}).then(({ data }) => {
-							payOrderGoodsApi({
-								orderNo: data,
-								userId: getUserId(),
-								payType: 4
-							}).then((res) => {
-								payFn(res, J_PAY_TYPE.VIP.value)
-							})
+							payFn({ orderSn: data }, 4, J_PAY_TYPE.VIP.value)
 						})
 					} else {
 						return this.$showToast('未查询到申请记录')

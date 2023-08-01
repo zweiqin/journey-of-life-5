@@ -71,7 +71,7 @@
 							style="width: 640upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="85" :padding="55"
 							item-width="320rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
 							:tabs="[{ name: '佣金' }, { name: '粉丝' }]" :current-tab="currentIncomeOrFansTab"
-							@change="handleSwitchTab"
+							@change="handleChangeTab"
 						></tui-tabs>
 						<view v-if="currentIncomeOrFansTab === 0">
 							<view v-if="branchListIncome && branchListIncome.length">
@@ -209,7 +209,7 @@
 							style="width: 640upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="85" :padding="55"
 							item-width="320rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
 							:tabs="[{ name: '佣金' }, { name: '粉丝' }]" :current-tab="currentIncomeOrFansTab"
-							@change="handleSwitchTab"
+							@change="handleChangeTab"
 						></tui-tabs>
 						<view v-if="currentIncomeOrFansTab === 0">
 							<view v-if="plannerListIncome && plannerListIncome.length">
@@ -420,7 +420,7 @@
 							style="width: 640upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="85" :padding="55"
 							item-width="320rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
 							:tabs="[{ name: '佣金' }, { name: '粉丝' }]" :current-tab="currentIncomeOrFansTab"
-							@change="handleSwitchTab"
+							@change="handleChangeTab"
 						></tui-tabs>
 						<view v-if="currentIncomeOrFansTab === 0">
 							<view v-if="brandListIncome && brandListIncome.length">
@@ -793,7 +793,7 @@ export default {
 		},
 
 		// 佣金或粉丝
-		handleSwitchTab(e) {
+		handleChangeTab(e) {
 			this.currentIncomeOrFansTab = e.index
 			if (this.userInfo.roleIds === 2) {
 				if (this.currentIncomeOrFansTab === 0) {
@@ -819,9 +819,7 @@ export default {
 		},
 
 		handleBack() {
-			uni.switchTab({
-				url: '/pages/user/user'
-			})
+			this.$switchTab('/pages/user/user')
 		}
 	},
 

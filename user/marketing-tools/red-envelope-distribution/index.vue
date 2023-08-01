@@ -395,13 +395,7 @@ export default {
 						})
 						return
 					}
-					payOrderGoodsApi({
-						orderNo: res.data,
-						userId: getUserId(),
-						payType: 8
-					}).then((res) => {
-						payFn(res, J_PAY_TYPE.RED_PACK.value)
-					})
+					payFn({ orderSn: res.data }, 8, J_PAY_TYPE.RED_PACK.value)
 				})
 				.catch(() => {
 					this.$showToast('红包发送失败')

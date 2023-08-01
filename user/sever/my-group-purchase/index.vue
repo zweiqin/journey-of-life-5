@@ -7,7 +7,7 @@
 				style="width: 702upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="105" :padding="24"
 				item-width="351rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
 				:tabs="[{ name: '开团' }, { name: '入团' }]" :current-tab="currentTab"
-				@change="handleSwitchTab"
+				@change="handleChangeTab"
 			></tui-tabs>
 		</view>
 
@@ -215,7 +215,7 @@ export default {
 					this.loadingStatus = 'noMore'
 				})
 		},
-		handleSwitchTab(e) {
+		handleChangeTab(e) {
 			this.currentTab = e.index
 			this.grouponQuery.page = 1
 			this.myGrouponList = []
@@ -271,13 +271,7 @@ export default {
 						this.isShowRefundDialog = true
 					})
 			} else if (key === 'pay') {
-				payOrderGoodsApi({
-					orderNo: goods.orderSn,
-					userId: getUserId(),
-					payType: goods.isAppoint ? 6 : 1
-				}).then((res) => {
-					payFn(res)
-				})
+				payFn({ ...goods }, goods.isAppoint ? 6 : 1)
 			}
 		},
 

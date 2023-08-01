@@ -10,7 +10,7 @@
 				<image class="title2" src="../../../../static/index/hot/title1.png" mode="" />
 				<image class="title3" src="../../../../static/index/hot/title2.png" mode="" />
 
-				<view class="coupon-container">
+				<view class="coupon-container" @click="go('/pages/index/coupons/coupons?currentTab=1')">
 					<view class="main-title">全场最低3折起</view>
 					<view class="sub-title">无门槛优惠券 可重叠使用</view>
 				</view>
@@ -23,9 +23,7 @@
 export default {
 	methods: {
 		handleBack() {
-			uni.switchTab({
-				url: '/pages/index/index'
-			})
+			this.$switchTab('/pages/index/index')
 		}
 	}
 }

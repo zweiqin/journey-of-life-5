@@ -73,9 +73,7 @@ export default {
 			this.currentbar = bar.id
 		},
 		handleBack() {
-			uni.switchTab({
-				url: '/pages/index/index'
-			})
+			this.$switchTab('/pages/index/index')
 		}
 	}
 }

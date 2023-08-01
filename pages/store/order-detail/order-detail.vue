@@ -256,13 +256,7 @@ export default {
 				...this.opForm
 			}
 			submitOrderApi(submitData).then(({ data }) => {
-				payOrderGoodsApi({
-					orderNo: data.orderSn,
-					userId: getUserId(),
-					payType: 1
-				}).then((res) => {
-					payFn(res)
-				})
+				payFn(data, 1)
 			})
 		}
 	}

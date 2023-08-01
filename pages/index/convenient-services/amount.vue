@@ -70,13 +70,7 @@ export default {
 			}
 			RuanRequest('/tuanyou/tygetorderinfo', reqData, 'post').then(({ data }) => {
 				console.log(data)
-				payOrderGoodsApi({
-					orderNo: data.orderno,
-					userId: getUserId(),
-					payType: data.payType
-				}).then((res) => {
-					payFn(res)
-				})
+				payFn({ ...data, orderSn: data.orderno }, data.payType)
 			})
 		}
 	},

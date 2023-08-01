@@ -1,132 +1,126 @@
 <template>
-  <view class="talent-list-container">
-    <view class="header-titl-wrapper">
-      <tui-icon @click="handleBack" name="arrowleft" color="#000" :size="24"></tui-icon>
-      <view class="title">营销达人</view>
-    </view>
+	<view class="talent-list-container">
+		<view class="header-titl-wrapper">
+			<tui-icon name="arrowleft" color="#000" :size="24" @click="handleBack"></tui-icon>
+			<view class="title">营销达人</view>
+		</view>
 
-    <view class="wrapper" v-show="currentNavs === 1">
-      <TalentPane :data="item" v-for="item in talentList" :key="item.id"></TalentPane>
-      <LoadMore :status="talentStatus"></LoadMore>
+		<view v-show="currentNavs === 1" class="wrapper">
+			<TalentPane v-for="item in talentList" :key="item.id" :data="item"></TalentPane>
+			<LoadMore :status="talentStatus"></LoadMore>
 
-      <view class="no-data" v-if="!talentList.length"> 暂无达人~ </view>
-    </view>
-  </view>
+			<view v-if="!talentList.length" class="no-data"> 暂无达人~ </view>
+		</view>
+	</view>
 </template>
 
 <script>
 import TalentPane from './cpns/TalentPane.vue'
 import { getTalentListApi, getMarketingPlannerListApi } from '../../api/square'
 export default {
-  components: {
-    TalentPane,
-  },
-  data() {
-    return {
-      currentNavs: 1,
+	components: {
+		TalentPane
+	},
+	data() {
+		return {
+			currentNavs: 1,
 
-      // 抖音达人
-      talentQuery: {
-        page: 1,
-        limit: 50,
-      },
-      talentList: [],
-      talentTotal: 0,
-      talentStatus: 'none',
+			// 抖音达人
+			talentQuery: {
+				page: 1,
+				limit: 50
+			},
+			talentList: [],
+			talentTotal: 0,
+			talentStatus: 'none',
 
-      // 营销策划师
-      marketingPlannerQuery: {
-        page: 1,
-        limit: 50,
-      },
-      marketingPlannerList: [],
-      marketingPlannerTotal: 0,
-      marketingPlannerStatus: 'none',
-    }
-  },
+			// 营销策划师
+			marketingPlannerQuery: {
+				page: 1,
+				limit: 50
+			},
+			marketingPlannerList: [],
+			marketingPlannerTotal: 0,
+			marketingPlannerStatus: 'none'
+		}
+	},
 
-  methods: {
-    handleSwitchTab(tag) {
-      this.currentNavs = tag
-    },
+	methods: {
+		handleSwitchTab(tag) {
+			this.currentNavs = tag
+		},
 
-    // 获取达人信息
-    async getTalentList(isLoadMore) {
-      this.talentStatus = 'loading'
-      const { data } = await getTalentListApi(this.talentQuery)
-      this.talentStatus = 'none'
+		// 获取达人信息
+		async getTalentList(isLoadMore) {
+			this.talentStatus = 'loading'
+			const { data } = await getTalentListApi(this.talentQuery)
+			this.talentStatus = 'none'
 
-      if (isLoadMore) {
-        this.talentList.push(...data.list)
-      } else {
-        this.talentList = data.list
-      }
+			if (isLoadMore) {
+				this.talentList.push(...data.list)
+			} else {
+				this.talentList = data.list
+			}
 
-      this.talentTotal = Math.ceil(data.total / this.talentQuery.limit)
-      console.log(this.talentList)
-    },
+			this.talentTotal = Math.ceil(data.total / this.talentQuery.limit)
+			console.log(this.talentList)
+		},
 
-    // 获取营销策划师列表
-    async getMarketingPlannerList(isLoadMore) {
-      this.marketingPlannerStatus = 'loading'
-      const { data } = await getMarketingPlannerListApi(
-        this.marketingPlannerQuery
-      )
-      this.marketingPlannerStatus = 'none'
+		// 获取营销策划师列表
+		async getMarketingPlannerList(isLoadMore) {
+			this.marketingPlannerStatus = 'loading'
+			const { data } = await getMarketingPlannerListApi(this.marketingPlannerQuery)
+			this.marketingPlannerStatus = 'none'
 
-      if (isLoadMore) {
-        this.marketingPlannerList.push(...data.list)
-      } else {
-        this.marketingPlannerList = data.list
-      }
+			if (isLoadMore) {
+				this.marketingPlannerList.push(...data.list)
+			} else {
+				this.marketingPlannerList = data.list
+			}
 
-      console.log(this.marketingPlannerList)
+			console.log(this.marketingPlannerList)
 
-      this.marketingPlannerTotal = Math.ceil(
-        data.total / this.marketingPlannerQuery.limit
-      )
-    },
+			this.marketingPlannerTotal = Math.ceil(data.total / this.marketingPlannerQuery.limit)
+		},
 
-    // 返回
-    handleBack() {
-      uni.switchTab({
-        url: '/pages/marketing-treasure-house/marketing-treasure-house',
-      })
-    },
-  },
+		// 返回
+		handleBack() {
+			this.$switchTab('/pages/marketing-treasure-house/marketing-treasure-house')
+		}
+	},
 
-  onLoad() {
-    this.getTalentList()
-    // this.getMarketingPlannerList()
-  },
+	onLoad() {
+		this.getTalentList()
+		// this.getMarketingPlannerList()
+	},
 
-  onReachBottom() {
-    if (this.currentNavs === 0) {
-      if (this.talentQuery.limit > this.talentList.length) {
-        return
-      }
+	onReachBottom() {
+		if (this.currentNavs === 0) {
+			if (this.talentQuery.limit > this.talentList.length) {
+				return
+			}
 
-      if (this.talentQuery.page >= this.talentTotal) {
-        this.talentStatus = 'no-more'
-        return
-      }
+			if (this.talentQuery.page >= this.talentTotal) {
+				this.talentStatus = 'no-more'
+				return
+			}
 
-      this.talentQuery.page++
-      this.getTalentList(true)
-    } else {
-      if (this.marketingPlannerQuery.limit > this.marketingPlannerList.length) {
-        return
-      }
+			this.talentQuery.page++
+			this.getTalentList(true)
+		} else {
+			if (this.marketingPlannerQuery.limit > this.marketingPlannerList.length) {
+				return
+			}
 
-      if (this.marketingPlannerQuery.page >= this.marketingPlannerTotal) {
-        this.talentStatus = 'no-more'
-        return
-      }
+			if (this.marketingPlannerQuery.page >= this.marketingPlannerTotal) {
+				this.talentStatus = 'no-more'
+				return
+			}
 
-      this.marketingPlannerQuery.page++
-      this.getMarketingPlannerList(true)
-    }
-  },
+			this.marketingPlannerQuery.page++
+			this.getMarketingPlannerList(true)
+		}
+	}
 }
 </script>
 
