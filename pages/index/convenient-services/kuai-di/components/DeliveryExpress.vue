@@ -3,7 +3,9 @@
 		<view class="QueryExpContainer">
 			<view class="QueryExpfrom">
 				<view class="FromSelect">
-					<view v-for="(item,index) in fromItem" class="selectItem" :class="{isSelect: index == currIndex }"
+					<view v-for="(item,index) in fromItem" 
+					class="selectItem" 
+					:class="{isSelect: index == currIndex }"
 						@click="checkFrom(index)">
 						{{ item }}
 					</view>

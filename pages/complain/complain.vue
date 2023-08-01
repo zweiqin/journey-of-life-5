@@ -6,9 +6,9 @@
 		</view>
 		<view class="productBox">
 			<view v-if="goodsDetail.info" class="CommodityInformation">
-				<image :src="goodsDetail.info.picUrl" mode=""></image>
+				<image :src="common.seamingImgUrl(goodsDetail.info.picUrl)" mode=""></image>
 				<view class="textsList">
-					<span class="shopText">{{ goodsDetail.info.goodsSn }}</span>
+					<span class="shopText">{{ goodsDetail.info.name }}</span>
 					<p class="MerchantName">{{ goodsDetail.brand.name }}</p>
 				</view>
 			</view>
