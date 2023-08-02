@@ -31,7 +31,10 @@
 				mode=""
 				/> -->
 			<view class="menus-wrapper">
-				<BeeMenus :data="menusData" @click="handleTo"></BeeMenus>
+				<BeeMenus
+					:data="menusData"
+					@click="(e) => go(`/pages/store/fine-food/food-nearby/food-nearby?name=${e.storeName}&id=${e.id}`)"
+				></BeeMenus>
 			</view>
 
 			<view class="menus-wrapper">
@@ -48,11 +51,15 @@
 		</view>
 
 		<view class="brand">
-			<FilterPane></FilterPane>
+			<BeeStoreFilter
+				style="margin: 0;padding: 24upx 28upx 20upx;" @confirm="handleConfirmType"
+				@select-distance="handleSelectDistance"
+			></BeeStoreFilter>
 			<view class="brand-list-wrapper">
 				<BigNameSpecials></BigNameSpecials>
 
-				<BeeBrandPane v-for="item in $data._list" :key="item.id" :is-positioning="false" :brand-info="item"></BeeBrandPane>
+				<BeeBrandPane v-for="item in $data._list" :key="item.id" :is-positioning="false" :brand-info="item">
+				</BeeBrandPane>
 				<LoadMore :status="$data._status"></LoadMore>
 			</view>
 		</view>
@@ -62,18 +69,15 @@
 <script>
 import loadData from '../../../mixin/loadData'
 import { menusData } from './data'
-import { getSroreListApi } from '../../../api/store'
-import { filterBrandByMenuIdApi } from '../../../api/brand'
+import { filterBrandByMenuIdApi, getNearbyFonndMenuApi } from '../../../api/brand'
 import TimeLimitedSeckill from './cpns/TimeLimitedSeckill.vue'
 import BigNameSpecials from './cpns/BigNameSpecials.vue'
-import FilterPane from './cpns/FilterPane.vue'
-import { getNearbyFonndMenuApi } from '../../../api/brand'
 
 export default {
+	name: 'FineFood',
 	components: {
 		TimeLimitedSeckill,
-		BigNameSpecials,
-		FilterPane
+		BigNameSpecials
 	},
 	mixins: [
 		loadData({
@@ -93,18 +97,16 @@ export default {
 		return {
 			menusData: Object.freeze(menusData),
 			currentNavs: 0,
-			id: ''
+			id: '',
+			queryParam: {
+				dressing: '',
+				distance: ''
+			}
 		}
 	},
 	onLoad(options) {
 		this.id = options.id
-		this.$data._query.dressing = this.id
-		this.$data._query = {
-			...this.$data._query,
-			longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
-			latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
-		}
-		this._loadData()
+		this.getBrandList()
 		this.getMenus(options.id)
 	},
 	onPullDownRefresh() {
@@ -113,128 +115,143 @@ export default {
 		uni.stopPullDownRefresh()
 	},
 	methods: {
+		getBrandList() {
+			this.$data._query = {
+				...this.$data._query,
+				...this.queryParam,
+				areaId: this.$store.state.location.locationInfo.adcode,
+				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+			}
+			this._loadData()
+		},
+
 		// 获取menus
 		async getMenus(id) {
 			const { data } = await getNearbyFonndMenuApi({
 				typeId: id
 			})
-
 			this.menusData = data
 		},
 
-		handleTo(item) {
-			this.go(`/pages/store/fine-food/food-nearby/food-nearby?name=${item.storeName}&id=${item.id}`)
-		}
+		handleConfirmType(e) {
+			this.queryParam.dressing = e.id
+			this.getBrandList()
+		},
 
+		handleSelectDistance(e) {
+			this.queryParam.distance = e
+			this.getBrandList()
+		}
 	}
 }
 </script>
 
 <style lang="less" scoped>
 .brand-page-container {
-  width: 100vw;
-  min-height: 100vh;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 3%, #f6f6f6 8%);
+	width: 100vw;
+	min-height: 100vh;
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 3%, #f6f6f6 8%);
 
-  .top-container {
-    width: 100%;
-    min-height: 826upx;
-    background: linear-gradient(0deg,
-        rgba(246, 246, 246, 0.87) -3%,
-        rgba(246, 246, 246, 0.87) 8%,
-        rgba(246, 246, 246, 0.87) 14%,
-        rgba(253, 164, 164, 0.87) 59%);
+	.top-container {
+		width: 100%;
+		min-height: 826upx;
+		background: linear-gradient(0deg,
+				rgba(246, 246, 246, 0.87) -3%,
+				rgba(246, 246, 246, 0.87) 8%,
+				rgba(246, 246, 246, 0.87) 14%,
+				rgba(253, 164, 164, 0.87) 59%);
 
-    .search-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 44upx 22upx 0;
-      box-sizing: border-box;
+		.search-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 44upx 22upx 0;
+			box-sizing: border-box;
 
-      .header-title {
-        display: flex;
-        align-items: center;
-      }
+			.header-title {
+				display: flex;
+				align-items: center;
+			}
 
-      h1 {
-        font-size: 28upx;
-        color: #fff;
-        font-weight: normal;
-        margin-right: 10upx;
-      }
+			h1 {
+				font-size: 28upx;
+				color: #fff;
+				font-weight: normal;
+				margin-right: 10upx;
+			}
 
-      /deep/ .search-bar-container {
-        flex: 1;
-        margin-right: 15upx;
-      }
+			/deep/ .search-bar-container {
+				flex: 1;
+				margin-right: 15upx;
+			}
 
-      .control {
-        display: flex;
-        align-items: center;
+			.control {
+				display: flex;
+				align-items: center;
 
-        .item {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          color: #fff;
-          font-size: 24upx;
-          margin-left: 8upx;
+				.item {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					flex-direction: column;
+					color: #fff;
+					font-size: 24upx;
+					margin-left: 8upx;
 
-          &:nth-child(1) {
-            margin-left: 0;
-          }
-        }
-      }
-    }
+					&:nth-child(1) {
+						margin-left: 0;
+					}
+				}
+			}
+		}
 
-    .hot-search {
-      padding: 0 22upx;
-      box-sizing: border-box;
-      padding-left: 32upx;
-      color: #fff;
-      margin: 20upx 0 16upx 0;
+		.hot-search {
+			padding: 0 22upx;
+			box-sizing: border-box;
+			padding-left: 32upx;
+			color: #fff;
+			margin: 20upx 0 16upx 0;
 
-      text {
-        margin-right: 40upx;
-        color: #fff;
-      }
-    }
+			text {
+				margin-right: 40upx;
+				color: #fff;
+			}
+		}
 
-    .banner-img {
-      width: 100%;
-      height: 244upx;
-    }
+		.banner-img {
+			width: 100%;
+			height: 244upx;
+		}
 
-    .menus-wrapper {
-      padding: 0 20upx 22upx;
-      box-sizing: border-box;
+		.menus-wrapper {
+			padding: 0 20upx 22upx;
+			box-sizing: border-box;
 
-      /deep/ .menus-container {
-        margin-top: 0;
-      }
-    }
+			/deep/ .menus-container {
+				margin-top: 0;
+			}
+		}
 
-    .navs {
-      display: flex;
-      align-items: center;
+		.navs {
+			display: flex;
+			align-items: center;
 
-      .nav-item {
-        margin-right: 56upx;
-        color: #3d3d3d;
+			.nav-item {
+				margin-right: 56upx;
+				color: #3d3d3d;
 
-        &.active {
-          color: #fa5151;
-          font-weight: 500;
-        }
-      }
-    }
-  }
+				&.active {
+					color: #fa5151;
+					font-weight: 500;
+				}
+			}
+		}
+	}
 
-  .brand-list-wrapper {
-    padding: 0 20upx;
-    box-sizing: border-box;
-  }
+	.brand-list-wrapper {
+		padding: 0 20upx;
+		box-sizing: border-box;
+	}
 }
 </style>

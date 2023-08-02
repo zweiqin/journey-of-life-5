@@ -18,14 +18,14 @@
 
 		<view style="background-color: #e2403b;">
 			<!-- item-width="229rpx"  [{ name: '巨蜂自营' }, { name: '本地生活' }, { name: '预约' }] -->
-			<tui-tabs
+			<!-- <tui-tabs
 				style="width: 750upx;padding: 0 0upx 0 0upx;overflow: hidden;border-radius: 42upx 42upx 0 0;"
 				:slider-width="187.5" :padding="0" item-width="375rpx" selected-color="#ff3d3d"
 				bold slider-bg-color="#ff0000"
 				:is-slider="false" background-color="#f1f1f1"
 				:tabs="[{ name: `巨蜂自营${carTotalInfo.tabMallNum ? `（${carTotalInfo.tabMallNum}）` : ''}` }, { name: `本地生活${carTotalInfo.tabStoreNum ? `（${carTotalInfo.tabStoreNum}）` : ''}` }]"
 				:current-tab="currentTab" @change="handleChangeTab"
-			></tui-tabs>
+				></tui-tabs> -->
 		</view>
 
 		<view class="shop-list">
@@ -78,10 +78,10 @@
 				v-for="item in recommentList" :key="item.id"
 				style="margin-bottom: 12upx;padding: 12upx 20upx;background-color: #ffffff;"
 			>
-				<Goods
+				<GoodsPane
 					:id="item.id" :price="item.counterPrice" :name="item.name" :order-type="currentTab"
 					:img-url="common.seamingImgUrl(item.picUrl)" read-only
-				></Goods>
+				></GoodsPane>
 			</view>
 		</view>
 
@@ -98,9 +98,9 @@
 			<view v-show="opStatus === 'EDIT'" class="edit-op">
 				<text class="text">合计：</text>
 				<view class="totoal-price">￥{{ totalPrice }}</view>
-				<button v-if="currentTab === 0" class="uni-btn pay-btn" @click="handleToPay('mall')">结算</button>
-				<button v-else-if="currentTab === 1" class="uni-btn pay-btn" @click="handleToPay('mall')">结算</button>
-				<button v-else-if="currentTab === 2" class="uni-btn pay-btn" @click="handleToPay('reservation')">结算</button>
+				<button v-if="currentTab === 0" class="uni-btn pay-btn" @click="handleToPay">结算</button>
+				<button v-else-if="currentTab === 1" class="uni-btn pay-btn" @click="handleToPay">结算</button>
+				<button v-else-if="currentTab === 2" class="uni-btn pay-btn" @click="handleToPay">结算</button>
 			</view>
 
 			<!-- 完成 -->
@@ -118,7 +118,6 @@
 </template>
 
 <script>
-import Goods from '../../pages/store/goods-pane'
 import {
 	getShopCarListApi,
 	deleteShopCarGoodsApi,
@@ -134,9 +133,7 @@ const CONFIRM = 'CONFIRM'
 
 export default {
 	name: 'ShopCar',
-	components: {
-		Goods
-	},
+	components: {},
 
 	onLoad(options) {
 		this.currentTab = options.orderType * 1 || 0
@@ -212,11 +209,11 @@ export default {
 	},
 
 	methods: {
-		handleChangeTab(e) {
-			this.currentTab = e.index
-			this.shopCarList = []
-			this.getShopList()
-		},
+		// handleChangeTab(e) {
+		// 	this.currentTab = e.index
+		// 	this.shopCarList = []
+		// 	this.getShopList()
+		// },
 		getRecommentList(id) {
 			everyLookApi(id).then(({ data }) => {
 				this.recommentList = data.goodsList.slice(0, 10)
@@ -348,7 +345,7 @@ export default {
 		},
 
 		// 去结算
-		handleToPay(type) {
+		handleToPay() {
 			uni.showLoading()
 			const op = []
 			for (const item of this.shopCarList) {
@@ -366,7 +363,7 @@ export default {
 			if (op.length < 1) {
 				return this.$showToast('请先选择商品')
 			}
-			if (type === 'reservation') {
+			if (this.currentTab === 2) {
 				if (op.find((item) => item.brandId === 1001079)) {
 					return this.$showToast('无法预约巨蜂自营的商品')
 				}
@@ -377,7 +374,7 @@ export default {
 			})
 			uni.hideLoading()
 			uni.navigateTo({
-				url: `/user/sever/pay-shop-card?orderType=${this.currentTab}&type=${type}`
+				url: `/user/sever/pay-shop-card?orderType=${this.currentTab}`
 			})
 		},
 

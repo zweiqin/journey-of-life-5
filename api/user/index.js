@@ -778,3 +778,37 @@ export const updatePrizeConfigurationApi = (data) => RuanRequest('/dtsPointsLuck
 // 积分抽奖
 export const getPrizeLotteryDrawApi = (data) => RuanRequest('/dtsPointsLuckDrawPrize/lotteryDraw', data, 'get')
 
+/**
+ * 二级分销
+ */
+
+// 分页获取商家商品Sku列表
+export const getDistributionGoodsSkuListApi = (data) => RuanRequest('/dtsDistributionGoods/sku/list', data, 'get')
+
+// 商家选择商品参与分销
+export const updateDistributionGoodsCheckedApi = (data) => RuanRequest(`/dtsDistributionGoods/checked/${data.id}`, data, 'put')
+
+// 判断用户是否是分销员或者是已被绑定的分销员
+export const getIsDistributionApi = (data) => RuanRequest('/dtsDistribution/isDistribution', data, 'get')
+
+// 申请分销员
+export const updateApplyDistributionApi = (data) => RuanRequest('/dtsDistributionSelectedGoods/applyDistribution', data)
+
+// 生成用户分销的邀请码
+export const getDistributionCreateCodeApi = (data) => RuanRequest('/dtsDistribution/createCode', data, 'get')
+
+// 邀请用户绑定成为分销员
+export const updateBindDistributionApi = (data) => RuanRequest('/dtsDistribution/bindDistribution', data)
+
+// 获取分销商商品列表
+export const getDistributionGoodsGoodsPageApi = (data) => RuanRequest('/dtsDistributionGoods/goodsPage', data)
+
+// 分销员选择分销商品
+export const updateDistributionSelectedGoodsApi = (data) => RuanRequest(`/dtsDistributionSelectedGoods/checked/${data.id}`, data, 'get')
+
+// 查询用户分销员的ID
+export const getDistributionIdApi = (data) => RuanRequest('/dtsDistribution/distributionId', data, 'get')
+
+// 查询分销员业绩
+export const getDistributionPerformanceApi = (data) => RuanRequest('/dtsDistribution/distributionPerformance', data, 'get')
+

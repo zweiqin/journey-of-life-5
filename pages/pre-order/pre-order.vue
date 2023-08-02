@@ -70,7 +70,7 @@
 		</view>
 
 		<view v-if="calcOrderMsg" class="footer">
-			{{ $store.state.app.isInMiniProgram }}合计：<text class="footer-text">￥{{ calcOrderMsg.actualPrice }}</text>
+			合计：<text class="footer-text">￥{{ calcOrderMsg.actualPrice }}</text>
 			<button class="uni-btn" @click="handleToPay">提交订单</button>
 		</view>
 	</view>

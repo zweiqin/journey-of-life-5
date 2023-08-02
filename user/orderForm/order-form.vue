@@ -125,7 +125,6 @@ import {
 	orderRefundApi
 } from '../../api/order'
 import { getOrderRefundsReasonApi } from '../../api/user'
-import { payOrderGoodsApi } from '../../api/goods'
 import { getUserId, payFn } from '../../utils'
 import { J_PAY_ORDER } from '../../constant'
 

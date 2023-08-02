@@ -156,8 +156,6 @@ import {
 	receiveGoodsApi,
 	orderRefundApi
 } from '../../../api/order'
-import { payOrderGoodsApi } from '../../../api/goods'
-import { J_USER_INFO } from '../../../constant'
 import { getUserId, payFn } from '../../../utils'
 import GrouponRules from '../../marketing-tools/group-buying/components/GrouponRules.vue'
 

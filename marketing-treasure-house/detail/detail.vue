@@ -31,7 +31,6 @@ import CasePresentation from './cpns/CasePresentation.vue'
 import ProductPresentation from './cpns/ProductPresentation.vue'
 import OpFooter from './cpns/OpFooter.vue'
 import Evaluate from './cpns/Evaluate.vue'
-import { tempData } from '../data'
 import { queryTalentDetailApi } from '../../api/marketing-treasure-house'
 
 export default {
@@ -60,7 +59,6 @@ export default {
 				}
 			],
 			currentNav: 0,
-			tempData: Object.freeze(tempData),
 			detailInfo: null
 		}
 	},

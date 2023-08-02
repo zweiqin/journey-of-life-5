@@ -33,7 +33,6 @@ const request = (base_url) => function (url, data = {}, method = 'post', cb) {
 							icon: 'none'
 						})
 					}
-
 					reject(res.data.errmsg)
 				} else if (res.data.errno == 501) {
 					uni.showModal({

@@ -188,7 +188,6 @@ import { J_PAY_TYPE, J_USER_INFO, J_BRAND_ID } from '../../../constant'
 import { payFn } from '../../../utils/pay'
 import { getUserId } from '../../../utils'
 import { uploadFle, sendRedEnvelopeApi, addWrapRedReleaseApi } from '../../../api/user'
-import { payOrderGoodsApi } from '../../../api/goods'
 
 export default {
 	name: 'RedEnvelopeDistribution',

@@ -54,7 +54,7 @@
 				<view>
 					<tui-button
 						type="danger" width="180rpx" height="58rpx" style="border-radius: 50rpx;"
-						@click="handleToPay('mall')"
+						@click="handleToPay()"
 					>
 						立即结算
 					</tui-button>
@@ -106,7 +106,6 @@ export default {
 		return {
 			visibleDrawer: false,
 
-			type: '',
 			opStatus: EDIT,
 			opList: [],
 			shopCarList: [],
@@ -181,7 +180,7 @@ export default {
 		},
 
 		// 去结算
-		handleToPay(type) {
+		handleToPay() {
 			uni.showLoading()
 			const op = []
 			for (const item of this.shopCarList) {
@@ -199,7 +198,7 @@ export default {
 			if (op.length < 1) {
 				return this.$showToast('请先选择商品')
 			}
-			if (type === 'reservation') {
+			if (this.currentTab === 2) {
 				if (op.find((item) => item.brandId === 1001079)) {
 					return this.$showToast('无法预约巨蜂自营的商品')
 				}
@@ -210,7 +209,7 @@ export default {
 			})
 			uni.hideLoading()
 			uni.navigateTo({
-				url: `/user/sever/pay-shop-card?orderType=${this.currentTab}&type=${type}`
+				url: `/user/sever/pay-shop-card?orderType=${this.currentTab}`
 			})
 		}
 	}

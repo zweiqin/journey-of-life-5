@@ -100,26 +100,26 @@ export default {
 	},
 
 	methods: {
-		handleToReservation() {
-			uni.showLoading()
-			getShopCarApi({
-				userId: getUserId(),
-				brandId: this.brandDetail.id,
-				type: 2
-			})
-				.then(({ data }) => {
-					console.log(data)
-					uni.hideLoading()
-					if (data.cartList && data.cartList.length) {
-						this.go(`/user/sever/shop-car?isBack=1&orderType=2`)
-					} else {
-						this.$showToast('请先添加该店铺的商品到购物车')
-					}
-				})
-				.catch(() => {
-					uni.hideLoading()
-				})
-		},
+		// handleToReservation() {
+		// 	uni.showLoading()
+		// 	getShopCarApi({
+		// 		userId: getUserId(),
+		// 		brandId: this.brandDetail.id,
+		// 		type: 2
+		// 	})
+		// 		.then(({ data }) => {
+		// 			console.log(data)
+		// 			uni.hideLoading()
+		// 			if (data.cartList && data.cartList.length) {
+		// 				this.go(`/user/sever/shop-car?isBack=1&orderType=2`)
+		// 			} else {
+		// 				this.$showToast('请先添加该店铺的商品到购物车')
+		// 			}
+		// 		})
+		// 		.catch(() => {
+		// 			uni.hideLoading()
+		// 		})
+		// },
 		handleReservation(e) {
 			uni.setStorageSync(J_RESERVATION_PAY_GOODS, {
 				cardsInfo: [ {

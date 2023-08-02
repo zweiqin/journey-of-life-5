@@ -6,14 +6,14 @@
 				: '#fff'
 		}"
 	>
-		<view style="width: 100%;display: flex;justify-content: center;">
+		<!-- <view style="width: 100%;display: flex;justify-content: center;">
 			<tui-tabs
-				style="width: 686upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="105" :padding="32"
-				item-width="229rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
-				:tabs="[{ name: '巨蜂自营' }, { name: '本地生活' }, { name: '预约' }]" :current-tab="currentTab"
-				@change="handleChangeTab"
+			style="width: 686upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="105" :padding="32"
+			item-width="229rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
+			:tabs="[{ name: '巨蜂自营' }, { name: '本地生活' }, { name: '预约' }]" :current-tab="currentTab"
+			@change="handleChangeTab"
 			></tui-tabs>
-		</view>
+			</view> -->
 
 		<scroll-view v-if="shopCarInfo.brandCartgoods.length" class="scroll-wrapper" scroll-y="true">
 			<view v-for="data in shopCarInfo.brandCartgoods" v-if="data" :key="data.brandId" class="goods-pane">

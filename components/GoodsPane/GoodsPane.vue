@@ -14,12 +14,15 @@
 				<text class="goods-pane-desc">{{ desc }}</text>
 			</view>
 			<view class="goods-pane-footer">
-				<text class="goods-pane-price">￥{{ price }}</text>
-				<!-- <view ref="numbersRef" class="numbers">
-					<view class="item" @click="changeNumber(-1)">-</view>
-					<view class="currentNumber">{{ goodsNumber }}</view>
-					<view class="item" @click="changeNumber(1)">+</view>
-					</view> -->
+				<view style="display: flex;align-items: center;">
+					<text style="color: #fa5151;font-size: 28upx;">￥{{ price }}</text>
+					<view
+						v-if="supportVoucher"
+						style="flex: 1;width: fit-content;margin-top: 8upx;margin-left: 18upx;padding: 4upx 8upx;border: 0.25px solid #51cc46;border-radius: 12upx;font-size: 28upx;font-weight: bold;color: #51cc46;"
+					>
+						支持代金券
+					</view>
+				</view>
 
 				<view>
 					<view v-if="readOnly">
@@ -29,7 +32,7 @@
 					</view>
 					<view v-else style="margin-top: 12upx;;padding-right: 28upx;">
 						<text>X</text>
-						<text style="margin-left: 4upx;;font-size: 36upx;font-weight: bold;">{{ number }}</text>
+						<text style="margin-left: 4upx;font-size: 36upx;font-weight: bold;">{{ number }}</text>
 					</view>
 				</view>
 			</view>
@@ -39,9 +42,11 @@
 
 <script>
 export default {
+	name: 'GoodsPane',
 	props: {
 		name: String,
 		price: [String, Number],
+		supportVoucher: Boolean,
 		orderType: [String, Number],
 		imgUrl: String,
 		desc: String,
@@ -56,23 +61,6 @@ export default {
 		}
 	},
 	methods: {
-		handleAddCar() {
-			this.$refs.addCarRef.$el.style.flex = '0'
-			this.$refs.numbersRef.$el.style.opacity = '1'
-			if (!this.goodsNumber) {
-				this.goodsNumber = 1
-			}
-		},
-
-		changeNumber(number) {
-			this.goodsNumber = number + this.goodsNumber
-			if (this.goodsNumber <= 0) {
-				this.$refs.addCarRef.$el.style.flex = ''
-				this.$refs.numbersRef.$el.style.opacity = '0'
-				this.goodsNumber = 0
-			}
-		},
-
 		handleToView() {
 			if (this.orderType == 0) {
 				uni.navigateTo({
@@ -93,8 +81,11 @@ export default {
 @import "../../style/mixin.less";
 
 .goods-pane {
-	.flex();
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 	width: 100%;
+	word-break: break-all;
 
 	.goods-pane-right {
 		flex: 1;
@@ -120,44 +111,10 @@ export default {
 		}
 
 		.goods-pane-footer {
-			.flex();
-
-			.goods-pane-price {
-				color: #fa5151;
-				font-size: 28upx;
-			}
-
-			.numbers {
-				.flex(center, flex-end);
-				opacity: 0;
-				flex: 1;
-				font-size: 36upx;
-				overflow: hidden;
-				transition: all 350ms;
-
-				.currentNumber {
-					color: #fa5151;
-					margin: 0 5px;
-				}
-
-				.item {
-					width: 48upx;
-					height: 48upx;
-					border-radius: 50%;
-					color: #fff;
-					text-align: center;
-					line-height: 44upx;
-
-					&:first-child {
-						border: 1.5px solid #fa5151;
-						color: #fa5151;
-					}
-
-					&:last-child {
-						background-color: #fa5151;
-					}
-				}
-			}
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: wrap;
 
 			.add-car {
 				padding: 14upx 24upx;

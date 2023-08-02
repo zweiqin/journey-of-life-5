@@ -200,7 +200,6 @@ import {
 import { getVerificationCodeHxCodeApi, getOrderRefundsReasonApi } from '../../api/user'
 import { getUserId, payFn } from '../../utils'
 import { orderOpButtons } from './config'
-import { payOrderGoodsApi } from '../../api/goods'
 import { J_USER_INFO } from '../../constant'
 
 export default {

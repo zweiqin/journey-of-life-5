@@ -3,12 +3,6 @@
 		<HeaderTool @menu-click="handleClickMenu"></HeaderTool>
 		<UserInfo ref="userInfoRef"></UserInfo>
 
-		<!-- 账户余额 -->
-		<!-- <Pane v-if="isLogin()" title="账户余额">
-			<text slot="title" class="balance-text">￥{{ userInfo.account || 0 }}</text>
-			<button slot="right" class="bee-btn" @click="go('/user/otherServe/withdrawal/index?type=0')">去提现</button>
-		</Pane> -->
-
 		<!-- 我的服务 -->
 		<Pane title="我的工具" :menu-data="myTools" :permission-data="myToolsList" @menu-click="handleClickMenu"></Pane>
 
@@ -30,9 +24,7 @@
 		<tui-modal :show="isShow" title="提示" content="您的会员等级不够，是否前去升级？" @click="handleUp"></tui-modal>
 
 		<!-- 特殊code的 menu 操作 -->
-		<PromotioCcodePopup ref="codeRef"></PromotioCcodePopup>
-		<!-- 特殊invitationCode的 menu 操作 -->
-		<InvitationCodePopup ref="invitationCodeRef"></InvitationCodePopup>
+		<CodePopup ref="codeRef"></CodePopup>
 	</view>
 </template>
 
@@ -43,8 +35,6 @@ import Pane from './components/Pane.vue'
 import { myTools, myServe, myStore, marketingTools } from './config'
 import showModelMixin from '../../mixin/showModel'
 import { J_USER_INFO } from '../../constant'
-import PromotioCcodePopup from './components/PromotioCcodePopup.vue'
-import InvitationCodePopup from './components/InvitationCodePopup.vue'
 import { refrshUserInfoApi, getRolePermissionMenuApi } from '../../api/user'
 import { getUserId } from '../../utils'
 
@@ -53,9 +43,7 @@ export default {
 	components: {
 		HeaderTool,
 		UserInfo,
-		Pane,
-		PromotioCcodePopup,
-		InvitationCodePopup
+		Pane
 	},
 	mixins: [ showModelMixin() ],
 	data() {
@@ -74,9 +62,7 @@ export default {
 		}
 	},
 
-	onLoad() {
-		
-	},
+	onLoad() {},
 
 	onShow() {
 		// console.log(this.myTools, this.myServe, this.myStore, this.marketingTools)
@@ -181,11 +167,11 @@ export default {
 		// 特殊的menu处理
 		handleSpecificMenu(type) {
 			switch (type) {
-				case 'code':
-					this.$refs.codeRef.getCode()
+				case 'Promotion':
+					this.$refs.codeRef.getCode('Promotion')
 					break
-				case 'invitationCode':
-					this.$refs.invitationCodeRef.getCode()
+				case 'Invitation':
+					this.$refs.codeRef.getCode('Invitation')
 					break
 			}
 		}

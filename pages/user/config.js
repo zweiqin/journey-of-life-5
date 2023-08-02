@@ -70,16 +70,21 @@ export const myServe = [
 	{
 		name: '推广码',
 		icon: require('../../static/user-center/menus/tuiguangma.png'),
-		type: 'code',
+		type: 'Promotion',
 		role: [6, 4, 3, 2],
 		showRole: [6, 4, 3, 2]
 	},
 	{
 		name: '邀请码', // 仅跳转，无绑定
 		icon: require('../../static/user-center/menus/tuiguangma.png'),
-		type: 'invitationCode',
+		type: 'Invitation',
 		role: [11, 10, 7, 5, 6, 4, 3, 2],
 		showRole: [11, 10, 7, 5]
+	},
+	{
+		name: '我的分销',
+		icon: require('../../static/user-center/menus/shenqingjilu.png'),
+		url: '/user/sever/my-distribution/index'
 	},
 	{
 		name: '智能画册',
@@ -164,6 +169,12 @@ export const myStore = [
 		name: '商品分类',
 		icon: require('../../static/user-center/menus/shangpinguanli.png'),
 		url: '/user/digital-store/goods-classification/index',
+		role: [ 6 ]
+	},
+	{
+		name: '分销产品',
+		icon: require('../../static/user-center/menus/shangpinguanli.png'),
+		url: '/user/digital-store/distribute-products/index',
 		role: [ 6 ]
 	},
 	{

@@ -27,7 +27,6 @@
 
 <script>
 import { getVoucherConfigApi, rechargePrePayApi } from '../../../api/user'
-import { payOrderGoodsApi } from '../../../api/goods'
 import { getUserId } from '../../../utils'
 import { payFn } from '../../../utils/pay'
 import { J_PAY_TYPE } from '../../../constant'

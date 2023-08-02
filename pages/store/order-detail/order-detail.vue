@@ -86,7 +86,7 @@
 <script>
 import { getVoucherNumberApi } from '../../../api/user'
 import { payShopCarApi, updateShopCarCountApi } from '../../../api/cart'
-import { submitOrderApi, payOrderGoodsApi, firstAddCar } from '../../../api/goods'
+import { submitOrderApi, firstAddCar } from '../../../api/goods'
 import { getUserId, payFn } from '../../../utils'
 import { getAddressListApi } from '../../../api/address'
 import { J_ONE_PAY_GOODS, J_SELECT_ADDRESS } from '../../../constant'

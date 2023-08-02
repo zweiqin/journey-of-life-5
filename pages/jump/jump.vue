@@ -27,7 +27,7 @@
 import { J_USER_INFO, J_NEW_BIND_TYPE, J_NEW_BIND_CODE, J_NEW_BIND_ID } from '../../constant'
 // import { bindUserSaoMaApi, bindSaoMaBrandApi } from '../../api/user'
 import { getOrderDetailApi } from '../../api/order'
-import { updateUserBindingUserApi, updateSetHxCodeApi } from '../../api/user'
+import { updateUserBindingUserApi, updateSetHxCodeApi, getIsDistributionApi } from '../../api/user'
 import { getUserId } from '../../utils'
 
 export default {
@@ -151,41 +151,41 @@ export default {
 				this.code = this.code.split('-')[1]
 				console.log(this.code)
 				await getOrderDetailApi({
-					userId: getUserId(),
+					userId: this.userId,
 					orderId: this.orderId
 				}).then(({ data }) => {
 					this.orderInfo = data
 				})
 				return this.viewType = 'verification'
-
-				// updateSetHxCodeApi({ code: this.code })
-				// 	.then((res) => {
-				// 		this.$showToast('核销成功', 'success')
-				// 	})
-				// 	.finally((e) => {
-				// 		setTimeout(() => {
-				// 			this.$switchTab('/pages/user/user')
-				// 		}, 2000)
-				// 	})
 			} else if (this.type === 'invitation') {
-				setTimeout(() => {
-					this.$switchTab('/pages/user/user')
-				}, 1000)
+				setTimeout(() => { this.$switchTab('/pages/user/user') }, 1000)
 			} else if (this.type === 'bindingBranchOffice' || this.type === 'bindingStore' || this.type === 'bindingPlanner') {
 				updateUserBindingUserApi({ userCode: this.code, userId: this.userId })
 					.then((res) => {
 						this.$showToast('绑定成功', 'success')
 					})
 					.finally((e) => {
-						setTimeout(() => {
-							this.$switchTab('/pages/user/user')
-						}, 2000)
+						setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
+					})
+			} else if (this.type === 'bindDistributors') {
+				getIsDistributionApi({ userId: this.userId })
+					.then((res) => {
+						if (res.data === 0) {
+							uni.redirectTo({
+								url: `/user/sever/my-distribution/distributor-application-form?code=${this.otherSideUserId}`
+							})
+						} else {
+							this.$showToast('已存在绑定的分销商')
+							setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
+						}
+					})
+					.catch((e) => {
+						setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
 					})
 			}
 			// else if (this.type === 'bindingPlanner') {
 			// 	// http://localhost:8989/#/pages/jump/jump?userId=277&type=bindingPlanner&code=JFFPLXER
 			// 	if (this.userInfo.roleIds === 10) {
-			// 		// this.go(`/user/xxx?code=${this.code}`)
 			// 		uni.redirectTo({
 			// 			url: `/user/xxx?code=${this.code}`
 			// 		})
@@ -195,9 +195,7 @@ export default {
 			// 				this.$showToast('绑定策划师成功', 'success')
 			// 			})
 			// 			.finally((e) => {
-			// 				setTimeout(() => {
-			// 					this.$switchTab('/pages/user/user')
-			// 				}, 2000)
+			// 				setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
 			// 			})
 			// 	}
 			// } else if (this.type === 'bindingStore') {
@@ -208,22 +206,18 @@ export default {
 			// 				this.$switchTab('/pages/user/user')
 			// 			})
 			// 			.finally((e) => {
-			// 				setTimeout(() => {
-			// 					this.$switchTab('/pages/user/user')
-			// 				}, 2000)
+			// 				setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
 			// 			})
 			// 	}
 			// }
 		},
 		handleVerification() {
-			updateSetHxCodeApi({ code: this.code, userId: getUserId() })
+			updateSetHxCodeApi({ code: this.code, userId: this.userId })
 				.then((res) => {
 					this.$showToast('核销成功', 'success')
 				})
 				.finally((e) => {
-					setTimeout(() => {
-						this.$switchTab('/pages/user/user')
-					}, 2000)
+					setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
 				})
 		}
 	}

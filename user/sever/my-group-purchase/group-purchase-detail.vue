@@ -243,7 +243,6 @@ import {
 import { getOrderRefundsReasonApi, getGrouponDetailApi } from '../../../api/user'
 import { getUserId, payFn } from '../../../utils'
 import { orderOpButtons } from '../../orderForm/config'
-import { payOrderGoodsApi } from '../../../api/goods'
 import GrouponRules from '../../marketing-tools/group-buying/components/GrouponRules.vue'
 
 export default {

@@ -4,8 +4,8 @@
 		<view class="header">
 			<view style="display: flex;align-items: center;">
 				<JBack width="50" dark height="50" style="margin-top: 8upx"></JBack>
-				<h2 v-if="type === 'mall'">确认订单</h2>
-				<h2 v-else-if="type === 'reservation'">确认预约</h2>
+				<h2 v-if="orderType === '0' || orderType === '1'">确认订单</h2>
+				<h2 v-else-if="orderType === '2'">确认预约</h2>
 			</view>
 			<view style="text-align: right;">
 				<tui-button
@@ -19,7 +19,7 @@
 		</view>
 
 		<!-- 收货信息 -->
-		<view v-if="type === 'mall'">
+		<view v-if="orderType === '0' || orderType === '1'">
 			<view v-if="defaultAddress" class="consignee-info">
 				<view class="pane">
 					<view class="name">
@@ -48,10 +48,11 @@
 					<JIcon class="icon" width="30" height="30" type="full-store"></JIcon>
 					{{ brand.brandName }}
 				</view>
-				<Goods
+				<GoodsPane
 					v-for="item in brand.brandCartgoods" :key="item.id" :name="item.goodsName" :price="item.price"
 					:img-url="common.seamingImgUrl(item.picUrl)" :desc="item.desc" show-num-only :number="item.number"
-				></Goods>
+					:support-voucher="item.supportVoucher"
+				></GoodsPane>
 
 				<!-- <view v-if="brand.brandId === 1001079" class="line-pane"> -->
 				<view class="line-pane">
@@ -82,8 +83,8 @@
 				</text>
 			</view>
 			<button class="uni-btn pay-btn" @click="handleToPay">
-				<text v-if="type === 'mall'">立即支付</text>
-				<text v-else-if="type === 'reservation'">确认预约</text>
+				<text v-if="orderType === '0' || orderType === '1'">立即支付</text>
+				<text v-else-if="type === '2'">确认预约</text>
 			</button>
 		</view>
 
@@ -93,22 +94,17 @@
 </template>
 
 <script>
-import Goods from '../../pages/store/goods-pane.vue'
 import { J_TWO_PAY_GOODS, J_SELECT_ADDRESS, J_USER_INFO } from '../../constant'
 import { getAddressListApi } from '../../api/address'
 import { getUserId, payFn } from '../../utils'
 import { payAllShopCarApi, payAllGoodsSubmit } from '../../api/cart'
 import { getVoucherNumberApi } from '../../api/user'
-import { payOrderGoodsApi } from '../../api/goods'
 
 export default {
 	name: 'PayShopCard',
-	components: {
-		Goods
-	},
+	components: {},
 
 	onLoad(options) {
-		this.type = options.type || 'mall' // mall商城和本地生活、reservation预约
 		this.orderType = options.orderType
 		this.getGoods()
 		this.getAddress()
@@ -127,7 +123,6 @@ export default {
 
 	data() {
 		return {
-			type: '',
 			orderType: '',
 			goodsList: [],
 			isNoAddress: false,
@@ -147,7 +142,7 @@ export default {
 		},
 		// 获取地址信息
 		getAddress() {
-			if (this.type === 'mall') {
+			if (this.orderType === '0' || this.orderType === '1') {
 				getAddressListApi({
 					userId: getUserId()
 				})
@@ -162,7 +157,7 @@ export default {
 							this.handleBuildPayCount()
 						}
 					})
-			} else if (this.type === 'reservation') {
+			} else if (this.orderType === '2') {
 				this.defaultAddress = {
 					isDefault: true,
 					detailedAddress: '--',
@@ -192,8 +187,9 @@ export default {
 				if (this.goodsList[index].useVoucher) {
 					this.$set(this.goodsList, index, { ...currentBrand, useVoucher: !currentBrand.useVoucher })
 					this.handleBuildPayCount()
+				} else if (this.goodsList[index].brandCartgoods.every((item) => !item.supportVoucher)) {
+					return this.$showToast('商品不支持代金券')
 				} else if (this.payOrderInfo && this.payOrderInfo.actualPrice) {
-					// if (Number(this.payOrderInfo.actualPrice) < Number(this.voucherNumber)) {
 					if (Number(this.voucherNumber)) {
 						if (!this.payOrderInfo.brandCartgoods || !this.payOrderInfo.brandCartgoods.length) {
 							return this.$showToast('获取订单商品失败')
@@ -201,10 +197,11 @@ export default {
 						let usedVoucherNumber = 0
 						this.goodsList.filter((item) => item.useVoucher).forEach((item) => {
 							const tempPayObj = this.payOrderInfo.brandCartgoods.find((i) => i.brandId == item.brandId)
-							if (tempPayObj) usedVoucherNumber += Number(tempPayObj.brandGoodsTotalPrice)
+							// if (tempPayObj) usedVoucherNumber += Number(tempPayObj.brandGoodsTotalPrice)
+							if (tempPayObj) usedVoucherNumber = tempPayObj.cartList.reduce((total, value, index, arr) => value.supportVoucher ? value.price * value.number : 0, usedVoucherNumber)
 						})
 						const remainVoucherNumber = Number(this.voucherNumber) - usedVoucherNumber
-						if ((remainVoucherNumber <= 0) || (remainVoucherNumber < this.payOrderInfo.brandCartgoods.find((i) => i.brandId == this.goodsList[index].brandId).brandGoodsTotalPrice)) return this.$showToast('代金券数量不足')
+						if ((remainVoucherNumber <= 0) || (remainVoucherNumber < this.payOrderInfo.brandCartgoods.find((i) => i.brandId == this.goodsList[index].brandId).cartList.reduce((total, value, index, arr) => value.supportVoucher ? value.price * value.number : 0, 0))) return this.$showToast('代金券数量不足')
 						this.$set(this.goodsList, index, { ...currentBrand, useVoucher: !currentBrand.useVoucher })
 						this.handleBuildPayCount()
 					} else {
@@ -261,11 +258,11 @@ export default {
 				this.$showToast('请选择收货地址')
 				return
 			}
-			if (this.type === 'mall') {
+			if (this.orderType === '0' || this.orderType === '1') {
 				payAllGoodsSubmit(this.getPostData()).then(({ data }) => {
 					payFn({ ...data }, 1)
 				})
-			} else if (this.type === 'reservation') {
+			} else if (this.orderType === '2') {
 				payAllGoodsSubmit(this.getPostData()).then(({ data }) => {
 					// { "orderId": 566, "orderSn": "20230603506567" }
 					this.$showToast('预约成功')
@@ -375,8 +372,9 @@ export default {
 		.goods-pane {
 			margin-bottom: 40upx;
 		}
+
 		.radio-use-voucher {
-			/deep/ .uni-radio-input-disabled{
+			/deep/ .uni-radio-input-disabled {
 				background-color: #ffffff;
 			}
 		}
@@ -404,12 +402,14 @@ export default {
 	}
 
 	.footer {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		position: fixed;
 		bottom: -1px;
 		left: 0;
 		width: 100%;
 		height: 112upx;
-		.flex(center, flex-end);
 		padding: 0 20upx;
 		box-sizing: border-box;
 		background: #fff;

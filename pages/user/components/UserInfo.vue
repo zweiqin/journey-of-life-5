@@ -24,20 +24,25 @@
 
 		<view class="total">
 			<view class="totalHeader">
-				<span>我的钱包</span><span>进入钱包<img src="./image/right.png" alt=""></span>
+				<span>我的钱包</span>
 			</view>
 			<view v-if="isLogin()" class="totalItemBox">
 				<view class="item" @click="go('/user/otherServe/withdrawal/index?type=0')">
 					<p>{{ userInfo.account && userInfo.account > 0 ? userInfo.account : "0.00" }}</p>
-					<p>账户余额</p>
+					<view style="margin-top: 15rpx;font-size: 26rpx;color: #979797;">账户余额 ></view>
+					<!-- <view style="font-size: 24upx;color: #999999;">去提现 ></view> -->
 				</view>
-				<view class="item" @click="(userInfo.roleIds !== 11) && (userInfo.roleIds !== 10) && go('/user/otherServe/voucher/index')">
+				<view
+					class="item"
+					@click="(userInfo.roleIds !== 11) && (userInfo.roleIds !== 10) && go('/user/otherServe/voucher/index')"
+				>
 					<p>{{ userInfo.voucherNumber ? transformNumber(userInfo.voucherNumber) : '0.00' }}</p>
-					<p>代金券</p>
+					<view style="margin-top: 15rpx;font-size: 26rpx;color: #979797;">代金券 ></view>
 				</view>
 				<view class="item" @click="go('/user/otherServe/withdrawal/index?type=1')">
 					<p>{{ userInfo.commission || '0.00' }}</p>
-					<p>收入佣金</p>
+					<view style="margin-top: 15rpx;font-size: 26rpx;color: #979797;">收入佣金 ></view>
+					<!-- <view style="font-size: 24upx;color: #999999;">去提现 ></view> -->
 				</view>
 			</view>
 		</view>
@@ -84,8 +89,6 @@ export default {
 
 <style lang="less" scoped>
 .user-info-wrapper {
-	font-family: 思源黑体;
-
 	.default-info {
 		display: flex;
 		align-items: center;
@@ -150,24 +153,11 @@ export default {
 			display: flex;
 			justify-content: space-between;
 
-			>span:nth-of-type(1) {
+			span {
 				font-size: 28rpx;
 				font-weight: bold;
 				line-height: 51rpx;
 				color: #3D3D3D;
-			}
-
-			>span:nth-of-type(2) {
-				display: flex;
-				align-items: center;
-				font-size: 24rpx;
-				line-height: 51rpx;
-				color: rgba(117, 117, 117, 0.81);
-
-				>img {
-					width: 24rpx;
-					height: 24rpx;
-				}
 			}
 		}
 
@@ -180,17 +170,12 @@ export default {
 				display: flex;
 				flex-direction: column;
 				align-items: center;
+				text-align: center;
 
 				>p:nth-of-type(1) {
 					margin-top: 18rpx;
 					font-weight: 900;
 					font-size: 36rpx;
-				}
-
-				>p:nth-of-type(2) {
-					margin-top: 15rpx;
-					font-size: 24rpx;
-					color: #979797;
 				}
 			}
 		}

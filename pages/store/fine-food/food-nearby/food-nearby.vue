@@ -13,8 +13,7 @@
 					<view class="control">
 						<view class="item">
 							<BeeIcon
-								:size="24" :src="
-									require('../../../../static/brand/find-food/food-nearby/location.png')
+								:size="24" :src="require('../../../../static/brand/find-food/food-nearby/location.png')
 								"
 							></BeeIcon>
 							<text>位置</text>
@@ -25,14 +24,17 @@
 
 			<view class="menus-wrapper">
 				<view
-					v-for="item in list" :key="item.text" class="item"
-					:class="{ active: currentMenu === item.id }" @click="handleChooseMenu(item)"
+					v-for="item in list" :key="item.text" class="item" :class="{ active: currentMenu === item.id }"
+					@click="handleChooseMenu(item)"
 				>
 					<text>{{ item.storeName }}</text>
 				</view>
 			</view>
 
-			<FilterPane></FilterPane>
+			<BeeStoreFilter
+				style="margin: 0;padding: 24upx 28upx 20upx;" @confirm="handleConfirmType"
+				@select-distance="handleSelectDistance"
+			></BeeStoreFilter>
 		</view>
 
 		<view class="brand-list">
@@ -48,14 +50,10 @@
 
 <script>
 import loadData from '../../../../mixin/loadData'
-import { getSroreListApi } from '../../../../api/store'
 import { getSubMenuByPidApi, filterBrandByMenuIdApi } from '../../../../api/brand'
-import FilterPane from './cpns/FilterPane.vue'
 import { menus, navs } from './data'
 export default {
-	components: {
-		FilterPane
-	},
+	name: 'FoodNearby',
 	mixins: [
 		loadData({
 			api: filterBrandByMenuIdApi,
@@ -77,33 +75,36 @@ export default {
 			navs,
 			list: [],
 			title: '',
-			id: ''
+			id: '',
+			queryParam: {
+				dressing: '',
+				distance: ''
+			}
 		}
 	},
 
 	onLoad(options) {
-		// this.getNavsList()
 		this.title = options.name
 		this.id = options.id
 		this.getMenus()
 	},
 
 	methods: {
-		handleChooseMenu(item) {
-			this.currentMenu = item.id
-			this.$data._query.dressing = this.currentMenu
+		getBrandList() {
+			this.$data._query = {
+				...this.$data._query,
+				...this.queryParam,
+				areaId: this.$store.state.location.locationInfo.adcode,
+				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+			}
 			this._loadData()
 		},
-		// 导航栏
-		async getNavsList() {
-			const data = navs
-			console.log('数据', data)
-			const nid = data[0].id
-			console.log('类id', nid)
-			this.nid = nid
-			const list = data[0].list
-			console.log('list', list)
-			this.list = list
+
+		handleChooseMenu(item) {
+			this.currentMenu = item.id
+			this.queryParam.dressing = this.currentMenu
+			this._loadData()
 		},
 
 		// 获取当前页面的分类
@@ -111,16 +112,20 @@ export default {
 			const { data } = await getSubMenuByPidApi({
 				dressing: this.id
 			})
-
 			this.list = data
 			this.currentMenu = data[0].id
-			this.$data._query.dressing = this.currentMenu
-			this.$data._query = {
-				...this.$data._query,
-				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
-				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
-			}
-			this._loadData()
+			this.queryParam.dressing = this.currentMenu
+			this.getBrandList()
+		},
+
+		handleConfirmType(e) {
+			this.queryParam.dressing = e.id
+			this.getBrandList()
+		},
+
+		handleSelectDistance(e) {
+			this.queryParam.distance = e
+			this.getBrandList()
 		}
 	}
 }
@@ -250,7 +255,7 @@ export default {
 
 	}
 
-	.no-data{
+	.no-data {
 		text-align: center;
 		color: #747474;
 		height: 200upx;

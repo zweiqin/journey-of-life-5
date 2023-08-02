@@ -98,7 +98,6 @@ import {
 	J_USER_INFO,
 	J_PAY_TYPE
 } from '../../constant'
-import { payOrderGoodsApi } from '../../api/goods'
 
 export default {
 	name: 'UserUp',
@@ -168,6 +167,8 @@ export default {
 					} else {
 						return this.$showToast('未查询到申请记录')
 					}
+				} else if ((this.userInfo.roleIds === 6 || this.userInfo.roleIds === 2) && (selectedPackage.roleIds === 4 || selectedPackage.roleIds === 3)) {
+					this.go(`/user/marketing-tools/marketing-planner?packageId=${this.selectedPackageId}`)
 				// } else if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 6) {
 				} else if ((this.userInfo.roleIds === 10 || this.userInfo.roleIds === 5 || this.userInfo.roleIds === 4 || this.userInfo.roleIds === 3 || this.userInfo.roleIds === 2) && selectedPackage.roleIds === 6) {
 					if (result) return this.$showToast('已提交申请，请等待审核！')

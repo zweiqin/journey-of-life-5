@@ -17,7 +17,6 @@
 
 <script>
 import { RuanRequest, getUserId, payFn } from '../../../utils'
-import { payOrderGoodsApi } from '../../../api/goods'
 export default {
 	name: 'Amount',
 	props: {

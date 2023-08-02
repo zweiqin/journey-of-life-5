@@ -1,7 +1,7 @@
 <template>
 	<view class="recharge-page">
 		<JBack dark width="50" height="50"></JBack>
-		<view>
+		<view v-if="withdrawalForm.type === 0 || withdrawalForm.type === 1">
 			<tui-list-view title="" color="#777" margin-top="20rpx">
 				<tui-list-cell arrow @click="getBankCardList">
 					提现方式&nbsp;&nbsp;&nbsp;&nbsp;{{ tempwithdrawBankName }}
@@ -47,8 +47,7 @@ import { J_USER_INFO } from '../../../constant'
 export default {
 	name: 'Withdrawal',
 	onLoad(options) {
-		this.withdrawalForm.type = options.type * 1 // 0余额1佣金2订单金额
-		// if (this.withdrawalForm.type === 0)
+		this.withdrawalForm.type = options.type * 1 // 0余额1佣金2分销
 		this.handleDebounce = handleDebounce(this.getCommission, 500)
 	},
 
@@ -81,10 +80,7 @@ export default {
 				this.errMsg = '提现金额不能等于零'
 			} else if (value < 1) {
 				this.errMsg = '提现金额不能小于1元'
-			} else if (
-				(value + '').includes('.') &&
-				(value + '').split('.')[1].length > 2
-			) {
+			} else if ((value + '').includes('.') && (value + '').split('.')[1].length > 2) {
 				this.errMsg = '提现金额错误'
 			} else {
 				this.errMsg = ''
@@ -134,7 +130,7 @@ export default {
 			if (this.errMsg) return
 			if (!this.withdrawalAmount) return this.$showToast('请输入提现金额')
 			if (this.withdrawalAmount < 1) return this.$showToast('提现金额不能小于1元')
-			if (!this.withdrawalForm.withdrawBankId) return this.$showToast('请选择提现方式')
+			if ((this.withdrawalForm.type === 0 || this.withdrawalForm.type === 1) && !this.withdrawalForm.withdrawBankId) return this.$showToast('请选择提现方式')
 			if (!this.withdrawalForm.withdrawCharge) return this.$showToast('手续费错误')
 			addWithdrawalApplyApi({
 				...this.withdrawalForm,

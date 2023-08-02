@@ -76,27 +76,7 @@
 						<view v-if="currentIncomeOrFansTab === 0">
 							<view v-if="branchListIncome && branchListIncome.length">
 								<view v-for="item in branchListIncome" :key="item.id" style="padding: 24upx;background-color: #ffffff;">
-									<view style="display: flex;justify-content: space-between;align-items: center;font-size: 26upx;color: #999999;">
-										<view>
-											类型：
-											<text v-if="item.type === 1">用户余额</text>
-											<text v-else-if="item.type === 2">代金券</text>
-											<text v-else-if="item.type === 3">积分</text>
-											<text v-else-if="item.type === 4">佣金</text>
-											<text v-else-if="item.type === 5">提现</text>
-										</view>
-										<view>来源：{{ item.name || '未知' }}</view>
-									</view>
-									<view style="display: flex;justify-content: space-between;align-items: flex-end;margin-top: 12upx;">
-										<view>
-											金额浮动：
-											<text v-if="!item.addOr" style="color: #23aa5b;font-weight: bold;">-{{ item.account || 0 }}</text>
-											<text v-else style="color: #ff0e0e;font-weight: bold;">+{{ item.account || 0 }}</text>
-										</view>
-										<view style="font-size: 26upx;color: #999999;">
-											{{ new Date(item.createTime).toLocaleString() || '--' }}
-										</view>
-									</view>
+									<IncomeRecord :data="item" show-type="1"></IncomeRecord>
 								</view>
 							</view>
 							<view v-else>
@@ -214,27 +194,7 @@
 						<view v-if="currentIncomeOrFansTab === 0">
 							<view v-if="plannerListIncome && plannerListIncome.length">
 								<view v-for="item in plannerListIncome" :key="item.id" style="padding: 24upx;background-color: #ffffff;">
-									<view style="display: flex;justify-content: space-between;align-items: center;font-size: 26upx;color: #999999;">
-										<view>
-											类型：
-											<text v-if="item.type === 1">用户余额</text>
-											<text v-else-if="item.type === 2">代金券</text>
-											<text v-else-if="item.type === 3">积分</text>
-											<text v-else-if="item.type === 4">佣金</text>
-											<text v-else-if="item.type === 5">提现</text>
-										</view>
-										<view>来源：{{ item.name || '未知' }}</view>
-									</view>
-									<view style="display: flex;justify-content: space-between;align-items: flex-end;margin-top: 12upx;">
-										<view>
-											金额浮动：
-											<text v-if="!item.addOr" style="color: #23aa5b;font-weight: bold;">-{{ item.account || 0 }}</text>
-											<text v-else style="color: #ff0e0e;font-weight: bold;">+{{ item.account || 0 }}</text>
-										</view>
-										<view style="font-size: 26upx;color: #999999;">
-											{{ new Date(item.createTime).toLocaleString() || '--' }}
-										</view>
-									</view>
+									<IncomeRecord :data="item" show-type="1"></IncomeRecord>
 								</view>
 							</view>
 							<LoadMore v-show="plannerListIncome.length" :status="status"></LoadMore>
@@ -425,27 +385,7 @@
 						<view v-if="currentIncomeOrFansTab === 0">
 							<view v-if="brandListIncome && brandListIncome.length">
 								<view v-for="item in brandListIncome" :key="item.id" style="padding: 24upx;background-color: #ffffff;">
-									<view style="display: flex;justify-content: space-between;align-items: center;font-size: 26upx;color: #999999;">
-										<view>
-											类型：
-											<text v-if="item.type === 1">用户余额</text>
-											<text v-else-if="item.type === 2">代金券</text>
-											<text v-else-if="item.type === 3">积分</text>
-											<text v-else-if="item.type === 4">佣金</text>
-											<text v-else-if="item.type === 5">提现</text>
-										</view>
-										<view>来源：{{ item.name || '未知' }}</view>
-									</view>
-									<view style="display: flex;justify-content: space-between;align-items: flex-end;margin-top: 12upx;">
-										<view>
-											金额浮动：
-											<text v-if="!item.addOr" style="color: #23aa5b;font-weight: bold;">-{{ item.account || 0 }}</text>
-											<text v-else style="color: #ff0e0e;font-weight: bold;">+{{ item.account || 0 }}</text>
-										</view>
-										<view style="font-size: 26upx;color: #999999;">
-											{{ new Date(item.createTime).toLocaleString() || '--' }}
-										</view>
-									</view>
+									<IncomeRecord :data="item" show-type="1"></IncomeRecord>
 								</view>
 							</view>
 							<view v-else>
@@ -523,27 +463,7 @@
 					<view>
 						<view v-if="userRevenueRecords && userRevenueRecords.length">
 							<view v-for="item in userRevenueRecords" :key="item.id" style="padding: 24upx;background-color: #ffffff;">
-								<view style="display: flex;justify-content: space-between;align-items: center;font-size: 26upx;color: #999999;">
-									<view>
-										类型：
-										<text v-if="item.type === 1">用户余额</text>
-										<text v-else-if="item.type === 2">代金券</text>
-										<text v-else-if="item.type === 3">积分</text>
-										<text v-else-if="item.type === 4">佣金</text>
-										<text v-else-if="item.type === 5">提现</text>
-									</view>
-									<view>来源：{{ item.name || '未知' }}</view>
-								</view>
-								<view style="display: flex;justify-content: space-between;align-items: flex-end;margin-top: 12upx;">
-									<view>
-										金额浮动：
-										<text v-if="!item.addOr" style="color: #23aa5b;font-weight: bold;">-{{ item.account || 0 }}</text>
-										<text v-else style="color: #ff0e0e;font-weight: bold;">+{{ item.account || 0 }}</text>
-									</view>
-									<view style="font-size: 26upx;color: #999999;">
-										{{ new Date(item.createTime).toLocaleString() || '--' }}
-									</view>
-								</view>
+								<IncomeRecord :data="item" show-type="1"></IncomeRecord>
 							</view>
 						</view>
 						<view v-else>

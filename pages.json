@@ -518,6 +518,30 @@
 				// 	}
 				// },
 				{
+					"path": "sever/my-distribution/index",
+					"style": {
+						"navigationBarTitleText": "我的分销"
+					}
+				},
+				{
+					"path": "sever/my-distribution/distributor-application-form",
+					"style": {
+						"navigationBarTitleText": "分销员申请表单"
+					}
+				},
+				{
+					"path": "sever/my-distribution/distribution-goods",
+					"style": {
+						"navigationBarTitleText": "分销商品"
+					}
+				},
+				{
+					"path": "sever/my-distribution/distribution-performance",
+					"style": {
+						"navigationBarTitleText": "分销业绩"
+					}
+				},
+				{
 					"path": "sever/smart-album/index",
 					"style": {
 						"navigationBarTitleText": "智能画册",
@@ -662,6 +686,13 @@
 					"path": "digital-store/goods-management/goods-form",
 					"style": {
 						"navigationBarTitleText": "商品表单",
+						"usingComponents": {}
+					}
+				},
+				{
+					"path": "digital-store/distribute-products/index",
+					"style": {
+						"navigationBarTitleText": "分销产品",
 						"usingComponents": {}
 					}
 				},
