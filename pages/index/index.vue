@@ -28,7 +28,20 @@
 		</view>
 		<view class="goods-list">
 			<view class="pane">
-				<scroll-view scroll-x="true">
+				<view class="menus-wrapper">
+					<view
+						v-for="(item,index) in menus" v-if="index < 7" :key="item.id" class="item" :class="{ active: currentFilterMenuId === item.id }"
+						@click="handleChooseMenu(item)"
+					>
+						<BeeIcon :size="40" :src="item.icon"></BeeIcon>
+						<text>{{ item.name }}</text>
+					</view>
+					<view class="item" @click="goToMore()">
+						<BeeIcon :size="40" :src="require('../../static/index/menus/gengduo.png')"></BeeIcon>
+						<text>更多</text>
+					</view>
+				</view>
+			<!-- 	<scroll-view scroll-x="true">
 					<view class="menus-wrapper">
 						<view
 							v-for="item in menus" :key="item.id" class="item" :class="{ active: currentFilterMenuId === item.id }"
@@ -38,7 +51,7 @@
 							<text>{{ item.name }}</text>
 						</view>
 					</view>
-				</scroll-view>
+				</scroll-view> -->
 
 				<scroll-view scroll-x="true">
 					<view class="sub-menus">
@@ -50,8 +63,8 @@
 						</view>
 					</view>
 				</scroll-view>
-
-				<GoodsFilter :scroll-top="scrollTop"></GoodsFilter>
+				
+				<!-- <GoodsFilter :scroll-top="scrollTop"></GoodsFilter> -->
 				<view class="goods-wrapper">
 					<NewGoods v-for="item in goodsList" :key="item.id" :data="item"></NewGoods>
 				</view>
@@ -68,6 +81,7 @@
 </template>
 
 <script>
+import tuiDropdownList from "@/components/thorui/tui-dropdown-list/tui-dropdown-list.vue"
 import { menusData } from './data'
 import Menus from './cpns/Menus'
 import Synthesize from './cpns/Synthesize.vue'
@@ -76,7 +90,7 @@ import { goodsListApi } from '../../api/goods'
 
 export default {
 	name: 'Index',
-	components: { Menus, Synthesize },
+	components: { Menus, Synthesize, tuiDropdownList },
 	data() {
 		return {
 			menusData: Object.freeze(menusData),
@@ -189,6 +203,11 @@ export default {
 		this.getSubMenus()
 	},
 	methods: {
+		goToMore() {
+			uni.navigateTo({
+				url: '/pages/index/selectCommodity/selectCommodity'
+			})
+		},
 		getGoodsList(isLoadMore) {
 			uni.showLoading({
 				title: '加载中'
@@ -342,31 +361,36 @@ export default {
 	}
 
 	.menus-wrapper {
-		white-space: nowrap;
+		// white-space: nowrap;
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		justify-content: space-between;
 		// overflow: scroll;
 		// padding: 20upx 20upx 10upx 20upx;
+		margin-bottom: 20rpx;
+		border-radius: 20upx;
+		background-color: #fff;
 
 		.item {
-			width: 120upx;
+			// margin-top: 10rpx;
+			width: 160upx;
 			height: 160upx;
 			display: flex;
 			align-items: center;
 			justify-content: center;
 			flex-direction: column;
-			font-size: 24upx;
+			font-size: 30rpx;
+			color: #3d3d3d;
 			padding: 16upx 12upx;
 			box-sizing: border-box;
-			margin-right: 12upx;
+			// margin-right: 12upx;
 			border-radius: 10upx;
 			flex-shrink: 0;
 			transition: all 350ms;
-			background-color: #fff;
 
 			&.active {
-				box-shadow: 0px 2px 5px 0px rgba(175, 175, 175, 0.6);
+				// box-shadow: 0px 2px 5px 0px rgba(175, 175, 175, 0.6);
 			}
 		}
 	}

@@ -13,7 +13,7 @@
 					<BeeIcon :size="24" color="#fff" name="arrowleft"></BeeIcon>
 				</BeeBack>
 
-				<view class="share-container">
+				<view class="share-container" @click="isMoreFunction = true">
 					<BeeIcon :size="24" :src="require('../../../static/brand/detail/share.png')"></BeeIcon>
 				</view>
 			</view>
@@ -74,11 +74,12 @@
 		></OpFooter>
 
 		<JSpecification ref="specificationRef" v-model="showSpecification" :data="goodsDetail" :bottom="120"></JSpecification>
-
+		<MoreFunctions v-if="isMoreFunction" :goods-id="goodsId" @clossMore="_clossMore"></MoreFunctions>
 	</view>
 </template>
 
 <script>
+import MoreFunctions from '@/components/MoreFunctions/MoreFunctions.vue'
 import Evaluate from './cpns/Evaluate.vue'
 import RecommendPane from './cpns/RecommendPane'
 import RecommendCity from './cpns/RecommendCity.vue'
@@ -91,7 +92,7 @@ import { J_ONE_PAY_GOODS, J_RESERVATION_PAY_GOODS } from '../../../constant'
 
 export default {
 	name: 'GoodsDetail',
-	components: { Evaluate, RecommendPane, RecommendCity, OpFooter, UParse: uParse },
+	components: { Evaluate, RecommendPane, RecommendCity, OpFooter, UParse: uParse,MoreFunctions },
 	data() {
 		return {
 			orderType: '',
@@ -102,7 +103,8 @@ export default {
 			spData: [],
 			showSpecification: false,
 			grouponRulesId: '',
-			grouponLinkId: ''
+			grouponLinkId: '',
+			isMoreFunction: false,
 		}
 	},
 	onLoad(options) {
@@ -253,6 +255,9 @@ export default {
 					this.showSpecification = true
 				}
 			})
+		},
+		_clossMore() {
+			this.isMoreFunction = false
 		}
 	}
 }

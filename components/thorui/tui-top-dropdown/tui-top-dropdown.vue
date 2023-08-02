@@ -43,7 +43,7 @@ export default {
 		},
 		//高度 rpx
 		height: {
-			type: Number,
+			type: [Number,String],
 			default: 580
 		},
 		//移动距离 需要计算

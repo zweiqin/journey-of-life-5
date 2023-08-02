@@ -73,12 +73,12 @@
 			console.log(this.isBox)
 		},
 		computed: {
-			maskStyle() {
-				return {
-					opacity: this.value ? 1 : 0,
-					zIndex: this.value ? 12 : -1
-				}
-			},
+			// maskStyle() {
+			// 	return {
+			// 		opacity: this.value ? 1 : 0,
+			// 		zIndex: this.value ? 12 : -1
+			// 	}
+			// },
 		},
 		methods: {
 			clossMore() {
