@@ -31,17 +31,17 @@
 			return {
 				options: {},
 				SenderData: {
-					area: "广东省广州市",
-					detailedArea: "翻斗花园一单元一号",
-					name: "翻斗花园突击手牛爷爷",
-					mobile: "132****0927",
+					area: "请完善地区信息",
+					detailedArea: "",
+					name: "请完善个人信息",
+					mobile: "",
 				},
 				collecterData: {
-					area: "广东省广州市",
-					detailedArea: "翻斗花园一单元一号",
-					name: "翻斗花园突击手牛爷爷",
-					mobile: "132****0927",
-				}
+					area: "请完善地区信息",
+					detailedArea: "",
+					name: "请完善收件人信息",
+					mobile: "",
+				},
 			};
 		},
 		methods: {
