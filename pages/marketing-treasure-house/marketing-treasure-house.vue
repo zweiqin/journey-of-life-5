@@ -79,8 +79,8 @@ export default {
 		}
 		this.getArticleList()
 	},
-	onPageScroll(scrollTop) {
-		this.scrollTop = scrollTop.scrollTop
+	onPageScroll(e) {
+		this.scrollTop = e.scrollTop
 	},
 	onReachBottom() {
 		if (this.allList.length >= this.total) {

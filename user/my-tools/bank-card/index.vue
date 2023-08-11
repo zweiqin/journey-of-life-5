@@ -72,11 +72,8 @@ export default {
 				.then(({ data }) => {
 					this.getBankCardList()
 				})
-				.catch(() => {
-				})
 		}
-	},
-	onReachBottom() { }
+	}
 }
 </script>
 

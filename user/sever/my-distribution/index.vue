@@ -60,7 +60,7 @@ export default {
 					this.isDistributor = true
 				}
 			})
-			.catch((e) => {
+			.catch(() => {
 				uni.hideLoading()
 				setTimeout(() => {
 					uni.navigateBack()

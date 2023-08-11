@@ -44,8 +44,6 @@
 					</view>
 				</view>
 				<!-- <image src="@/static/index/earn-money/xiangxiajiantou.png" mode=""></image> -->
-				<!-- 月签到组件，后期需要时再做更改 由钟sir开发滴组件 -->
-				<!-- <YoulanSignIn type="sign" @change="signDate" /> -->
 			</view>
 			<view class="main">
 				<view class="integral">
@@ -74,14 +72,9 @@ import {
 	getUserId,
 	transformNumber
 } from '@/utils'
-import youlanSignIn from '../../../components/youlan-SignIn/youlan-SignIn.vue'
-import JCalendar from '../../../components/j-calendar/j-calendar.vue'
 export default {
 	name: 'DailyAttendance',
-	components: {
-		YoulanSignIn: youlanSignIn,
-		JCalendar
-	},
+	components: {},
 	props: {},
 	data() {
 		return {
@@ -91,9 +84,6 @@ export default {
 			weekName: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
 			weekList: []
 		}
-	},
-	computed: {
-
 	},
 	created() {
 		// 获取当前星期的日期
@@ -110,9 +100,6 @@ export default {
 				this.SignDetails = res.data
 				console.log(res.data)
 			})
-				.catch((err) => {
-					console.log(err)
-				})
 			// 获取当前签到的信息，一个星期签到了多少天等等。。。。,并将这些数据整合到一个数组里面
 			getUserSignInListApi({
 				userId: getUserId()
@@ -128,9 +115,6 @@ export default {
 				})
 				console.log(this.weekList)
 			})
-				.catch((err) => {
-					console.log(err)
-				})
 		},
 		handleBack() {
 			this.$switchTab('/pages/index/index')

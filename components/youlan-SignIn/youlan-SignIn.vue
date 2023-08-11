@@ -2,13 +2,13 @@
 	<view class="calendar-box">
 		<!-- <view class="top">
 			<view>
-				<h4>已连续签到 <span> 9 </span> 天</h4>
-				<p>今日获得+7积分</p>
+			<h4>已连续签到 <span> 9 </span> 天</h4>
+			<p>今日获得+7积分</p>
 			</view>
 			<view class="rig">
-				<span>补签</span>
+			<span>补签</span>
 			</view>
-		</view> -->
+			</view> -->
 		<view class="miss_box">
 			<view class="month">
 				<!-- <view @click="lastMonth">上月</view> -->
@@ -19,24 +19,32 @@
 			</view>
 			<view style="padding: 0 28rpx;">
 				<view class="week" style="border-bottom: 1px solid #D8D8D8;">
-					<view :style="'color:' + (weeks == weeked ? bgweek : '') + ';'" v-for="weeks in weekArr" :key="weeks">{{ weeks
-					}}
+					<view v-for="weeks in weekArr" :key="weeks" :style="'color:' + (weeks == weeked ? bgweek : '') + ';'">
+						{{ weeks
+						}}
 					</view>
 				</view>
 				<!-- 日期显示/选择区 -->
 				<view class="day">
-					<view :class="[{ 'checkday': days.date == '' }, { 'choose': days.date == localDate || days.flag }]"
+					<view
+						v-for="(days, index) in dayArr" :key="index"
+						:class="[{ 'checkday': days.date == '' }, { 'choose': days.date == localDate || days.flag }]"
 						:style="'background:' + (days.date == localDate || days.flag ? bgday : '') + ';'"
-						v-for="(days, index) in dayArr" :key="index" @click="signToday(days, index)">
+						@click="signToday(days, index)"
+					>
 						{{ days.day }}
 						<view :class="[{ 'circle': days.flag }, { 'repair': days.day < day }, { 'sign': days.day == day }]"></view>
 					</view>
 				</view>
 			</view>
 			<view class="but">
-				<button :disabled='thisMonth == month ? false : true'
+				<button
+					:disabled="thisMonth == month ? false : true"
 					:style="'background:' + (thisMonth == month ? bgday : '#666') + ';'"
-					@click="daySign(dayArr[aheadDay + day - 1])">签到</button>
+					@click="daySign(dayArr[aheadDay + day - 1])"
+				>
+					签到
+				</button>
 			</view>
 			<view class="rule-list">
 				<view>签到规则</view>
@@ -48,7 +56,7 @@
 </template>
 
 <script>
-import { addUserSignInApi, getUserSignInListApi, getUserSigninContinuousApi } from "@/api/user"
+import { addUserSignInApi, getUserSignInListApi, getUserSigninContinuousApi } from '@/api/user'
 import { getUserId, transformNumber } from '@/utils'
 export default {
 	props: {
@@ -87,56 +95,54 @@ export default {
 		}
 	},
 	created() {
-		getUserSignInListApi({userId: getUserId()}).then(res => {
+		getUserSignInListApi({ userId: getUserId() }).then((res) => {
 			console.log(res)
-		}).catch(err => {
-			console.log(err)
 		})
 	},
 	mounted() {
-		let that = this;
+		const that = this
 		// 初始日期
-		that.initDate();
+		that.initDate()
 		// 今天日期
-		that.localDate = that.year + '-' + that.formatNum(that.month) + '-' + that.formatNum(that.day);
+		that.localDate = that.year + '-' + that.formatNum(that.month) + '-' + that.formatNum(that.day)
 		// 中英切换
-		if (that.lang != 'zh') that.weekArr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+		if (that.lang != 'zh') that.weekArr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 		// 今天周几
-		that.weeked = that.weekArr[new Date().getDay()];
+		that.weeked = that.weekArr[new Date().getDay()]
 		// 签到功能
 		if (that.type != 'calendar') {
-			for (let i in that.dayArr) {
-				that.$set(that.dayArr[i], 'flag', false);
+			for (const i in that.dayArr) {
+				that.$set(that.dayArr[i], 'flag', false)
 			}
 		}
 	},
 	methods: {
 		// 选择年月
 		changeDate(e) {
-			let that = this;
-			that.year = parseInt(e.detail.value.split('-')[0]);
-			that.month = parseInt(e.detail.value.split('-')[1]);
-			that.initDate();
+			const that = this
+			that.year = parseInt(e.detail.value.split('-')[0])
+			that.month = parseInt(e.detail.value.split('-')[1])
+			that.initDate()
 		},
 		// 今日签到
 		daySign(obj) {
 			// 今天日期加上前方空白日期数量
-			let index = this.aheadDay + this.day - 1
-			this.$set(this.dayArr[index], 'flag', true);
-			this.$emit('change', obj.date);
+			const index = this.aheadDay + this.day - 1
+			this.$set(this.dayArr[index], 'flag', true)
+			this.$emit('change', obj.date)
 			uni.showToast({
 				title: '已签到',
 				icon: 'success'
-			});
+			})
 		},
 		// 点击补签
 		signToday(obj, index) {
-			let that = this;
+			const that = this
 			// 指定签到类型可访问
-			if (that.type == 'calendar') return;
+			if (that.type == 'calendar') return
 			// 限制本月可进行签到
-			if ((new Date().getMonth() + 1) != parseInt(obj.date.split('-')[1])) return;
-			console.log(obj,that.day)
+			if ((new Date().getMonth() + 1) != parseInt(obj.date.split('-')[1])) return
+			console.log(obj, that.day)
 			// 禁用非本月点击签到且限制签到日期小于本日
 			if (obj.date != '' && obj.day < that.day) {
 				// 开启已签到提醒
@@ -144,87 +150,87 @@ export default {
 					uni.showToast({
 						title: '已签到',
 						icon: 'none'
-					});
+					})
 				} else {
 					uni.showToast({
 						title: that.day > obj.day ? '补签成功' : '签到成功',
 						icon: 'success'
-					});
-					that.$set(that.dayArr[index], 'flag', true);
-					that.$emit('change', obj.date);
+					})
+					that.$set(that.dayArr[index], 'flag', true)
+					that.$emit('change', obj.date)
 				}
 			}
 		},
 		// 初始化日期
 		initDate() {
-			let that = this;
-			that.dayArr = [];
+			const that = this
+			that.dayArr = []
 			// 当前月总天数
-			let totalDay = new Date(that.year, that.month, 0).getDate();
+			const totalDay = new Date(that.year, that.month, 0).getDate()
 			// 遍历总天数将日期逐个添加至数组
 			for (let i = 1; i <= totalDay; i++) {
 				// 得到需补充天数
-				let value = (new Date(that.year, that.month - 1, i)).getDay();
+				const value = new Date(that.year, that.month - 1, i).getDay()
 				// 补充前面空白日期
 				if (i == 1 && value != 0) {
-					that.addBefore(value);
-					that.aheadDay = value;
+					that.addBefore(value)
+					that.aheadDay = value
 				}
 				// 添加本月日期
-				let obj = {};
-				obj.date = that.year + '-' + that.formatNum(that.month) + '-' + that.formatNum(i);
-				obj.day = i;
-				that.dayArr.push(obj);
+				const obj = {}
+				obj.date = that.year + '-' + that.formatNum(that.month) + '-' + that.formatNum(i)
+				obj.day = i
+				that.dayArr.push(obj)
 				// 补充后面空白日期
-				if (i == totalDay && value != 6) that.addAfter(value);
+				if (i == totalDay && value != 6) that.addAfter(value)
 			}
 		},
 		// 补充前面空白日期
 		addBefore(value) {
-			let that = this;
-			let totalDay = new Date(that.year, that.month - 1, 0).getDate();
+			const that = this
+			const totalDay = new Date(that.year, that.month - 1, 0).getDate()
 			for (let i = 0; i < value; i++) {
-				let obj = {};
-				obj.date = '';
-				obj.day = totalDay - (value - i) + 1;
-				that.dayArr.push(obj);
+				const obj = {}
+				obj.date = ''
+				obj.day = totalDay - (value - i) + 1
+				that.dayArr.push(obj)
 			}
 		},
 		// 补充后空白日期
 		addAfter(value) {
-			let that = this;
+			const that = this
 			for (let i = 0; i < (6 - value); i++) {
-				let obj = {};
-				obj.date = '';
-				obj.day = i + 1;
-				that.dayArr.push(obj);
+				const obj = {}
+				obj.date = ''
+				obj.day = i + 1
+				that.dayArr.push(obj)
 			}
 		},
 		// 格式化日期位数
 		formatNum(num) {
-			return num < 10 ? ('0' + num) : num;
+			return num < 10 ? '0' + num : num
 		},
 		// 上一个月
 		lastMonth() {
-			let that = this;
+			const that = this
 			if (that.month == 1) {
-				that.year -= 1;
-				that.month = 12;
+				that.year -= 1
+				that.month = 12
 			} else {
-				that.month -= 1;
+				that.month -= 1
 			}
-			that.initDate();
+			that.initDate()
 		},
 		// 下一个月
 		nextMonth() {
-			let that = this;
+			const that = this
 			if (that.month == 12) {
-				that.year += 1;
-				that.month = 1;
+				that.year += 1
+				that.month = 1
 			} else {
-				that.month += 1;
+				that.month += 1
 			}
-			that.initDate();
+			that.initDate()
 		}
 	}
 }
@@ -235,7 +241,6 @@ export default {
 	width: 100%;
 	flex-direction: column;
 	justify-content: center;
-
 
 }
 

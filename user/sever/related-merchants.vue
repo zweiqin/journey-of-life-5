@@ -1,5 +1,5 @@
 <template>
-	<view class="merchants-list-container">
+	<view class="related-merchants-container">
 		<view style="padding: 30upx 20upx;color: #000000;">
 			<JHeader width="50" height="50" title="关联商家"></JHeader>
 		</view>
@@ -8,7 +8,7 @@
 			:tabs="[{ name: '已绑定' }, { name: '未绑定' }]" :current-tab="currentTab"
 			@change="(e) => currentTab = e.index"
 		></tui-tabs>
-		<view class="merchants-list" style="margin: 20upx 30upx;background-color: #fff;">
+		<view class="related-merchants" style="margin: 20upx 30upx;background-color: #fff;">
 
 			<view v-show="currentTab === 0">
 				<view v-if="merchantsList && merchantsList.length">
@@ -99,7 +99,6 @@ export default {
 				})
 		}
 	},
-	onPageScroll(e) { },
 	onReachBottom() {
 		if (this.currentTab === 0) {
 			if (this.query.page >= this.totalPages) {
@@ -117,7 +116,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.merchants-list-container {
+.related-merchants-container {
 	min-height: 100vh;
 	width: 100%;
 	background: #f6f6f6;

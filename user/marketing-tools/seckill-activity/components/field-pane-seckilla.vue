@@ -178,7 +178,7 @@ export default {
 					this.pidArr = res.data
 					this.mapTree(this.pidArr, '1')
 				})
-				.catch((e) => {
+				.catch(() => {
 					this.$showToast('所属分类列表获取失败')
 				})
 		},

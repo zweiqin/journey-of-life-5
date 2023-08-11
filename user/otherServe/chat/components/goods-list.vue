@@ -67,7 +67,6 @@ export default {
 			currentTab: 0
 		}
 	},
-	computed: {},
 	created() {
 		this.getShopList()
 	},
@@ -105,11 +104,8 @@ export default {
 
 <style lang="less" scoped>
 .goods-container {
-	flex: 1;
-	// background-color: rgb(239, 239, 239);
 	box-sizing: border-box;
 	padding: 10upx;
-	// background-color: #fff;
 
 	.tui-tabs-view {
 		/deep/ .tui-tabs-slider {
@@ -119,93 +115,93 @@ export default {
 
 	.scroll-wrapper {
 		height: calc(100vh - 240upx);
-	}
-}
 
-@import '../../../../style/mixin.less';
+		.goods-pane {
+			box-sizing: border-box;
+			background-color: #fff;
+			width: 99%;
+			padding: 20upx;
+			margin: 20upx auto;
+			border-bottom: 1upx solid #ccc;
+			border-radius: 20upx;
 
-.goods-pane {
-	box-sizing: border-box;
-	background-color: #fff;
-	width: 99%;
-	padding: 20upx;
-	margin: 20upx auto;
-	border-bottom: 1upx solid #ccc;
-	border-radius: 20upx;
+			.brand {
+				&-info {
+					display: flex;
+					align-items: center;
+					margin-bottom: 30upx;
+				}
 
-	.brand {
-		&-info {
-			.h-flex(flex-start);
-			margin-bottom: 30upx;
-		}
-
-		&-name {
-			font-size: 28upx;
-			margin: 0 32upx;
-			font-weight: 500;
-			color: #605D52;
-		}
-	}
-
-	.goods-list {
-		.item {
-			margin-bottom: 30upx;
-			.h-flex(flex-start);
-
-			.goods-info {
-				.h-flex(flex-start);
-				flex: 1;
-
-				.goods-name {
-					color: #3A3629;
+				&-name {
 					font-size: 28upx;
-					// font-weight: 500;
+					margin: 0 32upx;
+					color: #605D52;
 				}
+			}
 
-				.selected-star {
-					font-size: 24upx;
-					color: #8F8D85;
-					line-height: 2;
-					margin: 20upx 0 30upx 0;
-					width: 420upx;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-					border-radius: 24upx;
-					background: #F1F1F0;
-					text-indent: 0.8em;
-				}
+			.goods-list {
+				.item {
+					display: flex;
+					align-items: center;
+					margin-bottom: 30upx;
 
-				.goods-image {
-					width: 168upx;
-					height: 168upx;
-					object-fit: cover;
-					border-radius: 10upx;
-					flex-direction: 0;
-					margin: 0 22upx 0 26upx;
-				}
+					.goods-info {
+						display: flex;
+						align-items: center;
+						flex: 1;
 
-				.goods-wrapper {
-					flex: 1;
-				}
+						.goods-name {
+							color: #3A3629;
+							font-size: 28upx;
+						}
 
-				.goods-op {
-					.h-flex(space-between);
+						.selected-star {
+							font-size: 24upx;
+							color: #8F8D85;
+							line-height: 2;
+							margin: 20upx 0 30upx 0;
+							width: 420upx;
+							overflow: hidden;
+							text-overflow: ellipsis;
+							white-space: nowrap;
+							border-radius: 24upx;
+							background: #F1F1F0;
+							text-indent: 0.8em;
+						}
 
-					.goods-price {
-						color: #fa5151;
-						font-size: 28upx;
-						font-weight: 500;
-						color: #141000;
-					}
+						.goods-image {
+							width: 168upx;
+							height: 168upx;
+							object-fit: cover;
+							border-radius: 10upx;
+							flex-direction: 0;
+							margin: 0 22upx 0 26upx;
+						}
 
-					.uni-btn {
-						border: 1upx solid #3d3d3d;
-						padding: 0 28upx;
-						color: #3d3d3d;
-						line-height: 2.5;
-						font-size: 28upx;
-						margin-left: 30upx;
+						.goods-wrapper {
+							flex: 1;
+						}
+
+						.goods-op {
+							display: flex;
+							align-items: center;
+							justify-content: space-between;
+
+							.goods-price {
+								color: #fa5151;
+								font-size: 28upx;
+								color: #141000;
+							}
+
+							.uni-btn {
+								border: 1upx solid #3d3d3d;
+								padding: 0 28upx;
+								color: #3d3d3d;
+								line-height: 2.5;
+								font-size: 28upx;
+								margin-left: 30upx;
+							}
+						}
 					}
 				}
 			}

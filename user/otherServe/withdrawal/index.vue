@@ -68,8 +68,6 @@ export default {
 		}
 	},
 
-	computed: {},
-
 	onShow() {
 		this.userInfo = uni.getStorageSync(J_USER_INFO)
 	},
@@ -95,9 +93,6 @@ export default {
 				.then(({ data }) => {
 					this.withdrawalForm.withdrawCharge = data.withdrawCharge
 				})
-				.catch((e) => {
-					console.log(e)
-				})
 		},
 
 		getBankCardList() {
@@ -117,6 +112,11 @@ export default {
 				})
 				.catch((e) => {
 					uni.hideLoading()
+					if (e.data === '') {
+						setTimeout(() => {
+							this.go(`/user/my-tools/bank-card/bank-card-form`)
+						}, 2000)
+					}
 				})
 		},
 

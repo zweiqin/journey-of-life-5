@@ -51,26 +51,25 @@ export default {
 			})
 			uni.hideLoading()
 			commit(CHANGE_CHAT_LIST, result.data || [])
-			if (data) {
-				if (rootState.customerService.chatListData.length !== 0) {
-					uni.showModal({
-						title: '提示',
-						content: '已经与客服取得联系，是否继续与客服进行沟通？',
-						success(res) {
-							if (res.confirm) {
-								uni.redirectTo({
-									url: `/user/otherServe/chat/chat-detail?chat=${rootState.customerService.chatListData[0].toUserId}&name=${rootState.customerService.chatListData[0].toUsername}&avatar=${rootState.customerService.chatListData[0].toAvatarImage}`
-								})
-							} else {
-								dispatch('getCustomerServiceList')
-								// uni.navigateBack()
-							}
-						}
-					})
-				} else {
-					dispatch('getCustomerServiceList')
-				}
-			}
+			// if (data) {
+			// 	if (rootState.customerService.chatListData.length !== 0) {
+			// 		uni.showModal({
+			// 			title: '提示',
+			// 			content: '已经与客服取得联系，是否继续与客服进行沟通？',
+			// 			success(res) {
+			// 				if (res.confirm) {
+			// 					uni.redirectTo({
+			// 						url: `/user/otherServe/chat/chat-detail?chat=${rootState.customerService.chatListData[0].toUserId}&name=${rootState.customerService.chatListData[0].toUsername}&avatar=${rootState.customerService.chatListData[0].toAvatarImage}`
+			// 					})
+			// 				} else {
+			// 					dispatch('getCustomerServiceList')
+			// 				}
+			// 			}
+			// 		})
+			// 	} else {
+			// 		dispatch('getCustomerServiceList')
+			// 	}
+			// }
 		},
 
 		// 获取客服列表数据
@@ -103,7 +102,7 @@ export default {
 				// }))
 				// uni.redirectTo({ url: `/user/otherServe/chat/chat-detail?chat=${res.data.chatId}&name=${res.data.name}` }) // 进入聊天室（创建ws）
 				uni.redirectTo({
-					url: `/user/otherServe/chat/chat-detail?chat=${data.friendId}&name=${data.chatName}`
+					url: `/user/otherServe/chat/chat-detail?chat=${data.friendId}&name=${data.chatName}&avatar=${data.avatar}`
 				})
 			} catch (error) {
 				uni.showToast({

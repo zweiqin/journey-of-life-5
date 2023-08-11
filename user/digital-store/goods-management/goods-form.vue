@@ -39,11 +39,18 @@ export default {
 	onLoad(options) {
 		if (options.id) {
 			this.getGoodsDetail(options.id)
+		} else {
+			this.form.basicInfo.brandType = '1'
 		}
 	},
 	data() {
 		return {
 			applyStoreOne: [
+				{
+					label: '商品归属：',
+					field: 'brandType',
+					type: 'radio'
+				},
 				{
 					label: '商品编号：',
 					field: 'goodsSn',
@@ -191,6 +198,7 @@ export default {
 			],
 			form: {
 				basicInfo: {
+					brandType: '',
 					goodsSn: '',
 					name: '',
 					counterPrice: '',
@@ -232,6 +240,7 @@ export default {
 			const res = await getGoodsDetailApi(id)
 			uni.hideLoading()
 			if (res.errno === 0) {
+				this.form.basicInfo.brandType = String(res.data.info.brandType) || ''
 				this.form.basicInfo.goodsSn = res.data.info.goodsSn || ''
 				this.form.basicInfo.name = res.data.info.name || ''
 				this.form.basicInfo.counterPrice = res.data.info.counterPrice || ''

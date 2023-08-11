@@ -62,13 +62,11 @@
 <script>
 
 import youlanSignIn from '../../../components/youlan-SignIn/youlan-SignIn.vue'
-import JCalendar from '../../../components/j-calendar/j-calendar.vue'
 import { subs, items } from './data'
 export default {
 	name: 'Sign',
 	components: {
-		YoulanSignIn: youlanSignIn,
-		JCalendar
+		YoulanSignIn: youlanSignIn
 	},
 	props: {
 

@@ -328,7 +328,7 @@ export default {
 					this.categoryArr = res.data.data
 					this.mapTree(this.categoryArr, '1')
 				})
-				.catch((e) => {
+				.catch(() => {
 					this.$showToast('所属分类列表获取失败')
 				})
 		},

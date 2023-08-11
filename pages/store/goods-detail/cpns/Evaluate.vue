@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { getCommentCountApi } from '../../../../api/user'
+import { getCommentCountApi } from '../../../../api/order'
 export default {
 	name: 'Evaluate',
 	props: {
@@ -43,12 +43,6 @@ export default {
 				hasPicCount: '--'
 			}
 		}
-	},
-
-	computed: {
-	},
-
-	watch: {
 	},
 	created() {
 		// console.log(this.data)

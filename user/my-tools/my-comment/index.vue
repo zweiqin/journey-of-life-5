@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import { getUserCommentApi } from '../../../api/user'
-import { getUserId, getBrandId } from '../../../utils'
+import { getUserCommentApi } from '../../../api/order'
+import { getUserId } from '../../../utils'
 
 export default {
 	name: 'MyComment',
@@ -88,7 +88,6 @@ export default {
 				})
 		}
 	},
-	onPageScroll(e) { },
 	onReachBottom() {
 		if (this.query.page >= this.totalPages) {
 			this.status = 'no-more'

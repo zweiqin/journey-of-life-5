@@ -95,8 +95,6 @@ export default {
 					this.$showToast('删除成功')
 					this.getGrouponList()
 				})
-				.catch(() => {
-				})
 		}
 	},
 	onReachBottom() {

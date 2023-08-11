@@ -78,9 +78,9 @@
 				// console.log(this.currIndex)
 			}
 		},
-		onPageScroll(obj) {
+		onPageScroll(e) {
 			// 判断位置 完成吸顶效果
-			if (this.seletyuanH > obj.scrollTop) {
+			if (this.seletyuanH > e.scrollTop) {
 				// console.log(false)
 				this.isFixed = false
 			} else {

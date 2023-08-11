@@ -130,10 +130,10 @@ export default {
 		NavGationBar: navGationBar,
 		TabBar
 	},
-	onPageScroll(obj) {
+	onPageScroll(e) {
 		// console.log(this.yuanH)
-		if (obj.scrollTop >= 34) {
-			this.navOpacity = obj.scrollTop / 200
+		if (e.scrollTop >= 34) {
+			this.navOpacity = e.scrollTop / 200
 			this.isNavGaFixed = true
 		} else {
 			this.isNavGaFixed = false
@@ -141,7 +141,7 @@ export default {
 		// //#ifdef H5
 		// this.isTabFixed = true
 		// // #endif
-		if (this.yuanH > obj.scrollTop) {
+		if (this.yuanH > e.scrollTop) {
 			// console.log(false)
 			this.isTabFixed = false
 		} else {
@@ -149,7 +149,7 @@ export default {
 			this.isTabFixed = true
 		}
 
-		if (this.seletyuanH > obj.scrollTop) {
+		if (this.seletyuanH > e.scrollTop) {
 			// console.log(false)
 			this.isSelectFixed = false
 		} else {

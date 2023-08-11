@@ -63,9 +63,9 @@ export const myServe = [
 		url: '/user/sever/userUp'
 	},
 	{
-		name: '联系客服',
+		name: '客服中心',
 		icon: require('../../static/user-center/menus/lianxikefu.png'),
-		url: '/user/sever/customer-service/customer-service'
+		url: '/user/sever/service-center/service-center'
 	},
 	{
 		name: '推广码',

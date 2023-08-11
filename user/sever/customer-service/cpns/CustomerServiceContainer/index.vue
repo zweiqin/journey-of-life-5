@@ -43,7 +43,8 @@ export default {
 				// chatName: `客服与${uni.getStorageSync(J_USER_INFO).nickName}的聊天`,
 				chatName: item.displayName,
 				friendId: item.friendId,
-				friendUserType: 'ADMIN'
+				friendUserType: 'ADMIN',
+				avatar: item.avatar
 			})
 		}
 	}
@@ -55,18 +56,6 @@ export default {
 		width: 100%;
 		display: flex;
 		align-items: center;
-	}
-
-	.tui-line-left::after {
-		left: 15px !important;
-		content: "";
-		position: absolute;
-		border-bottom: 1px solid #eaeef1;
-		transform: scaleY(.5) translateZ(0);
-		transform-origin: 0 100%;
-		bottom: 0;
-		right: 0;
-		pointer-events: none;
 	}
 
 	.tui-avatar {

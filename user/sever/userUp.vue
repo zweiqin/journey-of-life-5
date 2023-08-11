@@ -126,7 +126,7 @@ export default {
 				this.userInfo = uni.getStorageSync(J_USER_INFO) || {},
 				uni.hideLoading()
 			})
-				.catch((e) => {
+				.catch(() => {
 					uni.hideLoading()
 				})
 		},

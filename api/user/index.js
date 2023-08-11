@@ -340,10 +340,6 @@ export const createGoodsBrandApi = (data) => RuanRequest('/dtsBrandUser/createGo
 // 商家编辑商品
 export const updateGoodsBrandApi = (data) => RuanRequest('/dtsBrandUser/updateGoods', data)
 
-/**
- * 优惠券管理
- */
-
 // 查询商家商品列表
 export const getBrandGoodsListApi = (data) => RuanRequest('/dtsGoods/brandGoods', data, 'get')
 
@@ -575,22 +571,6 @@ export const buildUserCrmSlbumApi = (data) => RuanRequest('/userCrmSlbum/create'
 export const userCrmSlbumDeleteApi = (data) => RuanRequest('/userCrmSlbum/delete', data, 'get')
 
 /**
- * 评论
- */
-
-// 发表评论
-export const addCommentPostApi = (data) => RuanRequest('/comment/post', data)
-
-// 评论数量
-export const getCommentCountApi = (data) => RuanRequest('/comment/count', data, 'get')
-
-// 评论列表
-export const getCommentListApi = (data) => RuanRequest('/comment/list', data, 'get')
-
-// 用户的评价列表
-export const getUserCommentApi = (data) => RuanRequest('/dtsComment/userComment', data, 'get')
-
-/**
  * 签到
  */
 
@@ -811,4 +791,29 @@ export const getDistributionIdApi = (data) => RuanRequest('/dtsDistribution/dist
 
 // 查询分销员业绩
 export const getDistributionPerformanceApi = (data) => RuanRequest('/dtsDistribution/distributionPerformance', data, 'get')
+
+/**
+ * 客服分类和建议
+ */
+
+// 查询客服问题分类
+export const getCustomerCategoryApi = (data) => RuanRequest('/dtsCustomerCategory/customerCategory', data, 'get')
+
+// 根据分类ID查询问题答案
+export const getCustomerSelectAnswerApi = (data) => RuanRequest('/dtsCustomerAnswer/selectAnswerOne', data, 'get')
+
+// 根据分类ID查询问题答案以及相关问题
+export const getCustomerAnswerSelectApi = (data) => RuanRequest('/dtsCustomerAnswer/selectAnswer', data, 'get')
+
+// 有用无用次数统计
+export const getCustomerAnswerStatisticsApi = (data) => RuanRequest('/dtsCustomerAnswer/statistics', data, 'get')
+
+// 用户建议类型
+export const getCustomerSelectReasonApi = (data) => RuanRequest('/dtsOrderRefundsReason/selectReason', data, 'get')
+
+// 查询客服热门问题分类
+export const getCustomerPopularApi = (data) => RuanRequest('/dtsCustomerCategory/customerPopular', data, 'get')
+
+// 用户发送消息的客服接口
+export const getcustomerSendingApi = (data) => RuanRequest('/dtsCustomerCategory/customerSending', data, 'get')
 

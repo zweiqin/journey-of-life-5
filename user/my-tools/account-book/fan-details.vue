@@ -80,9 +80,7 @@ export default {
 					})
 			}
 		}
-	},
-	onPageScroll(e) { },
-	onReachBottom() { }
+	}
 }
 </script>
 

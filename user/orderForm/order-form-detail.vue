@@ -193,7 +193,6 @@ import {
 	getOrderDetailApi,
 	orderCancelApi,
 	orderDeleteApi,
-	// sendCommentApi
 	addCommentPostApi,
 	orderRefundApi
 } from '../../api/order'
@@ -272,7 +271,7 @@ export default {
 					this.verificationCode = res.data.code
 					this.verificationCodeUrl = res.data.hxCode
 				})
-					.catch((e) => {
+					.catch(() => {
 						uni.hideToast()
 					})
 			})
@@ -297,7 +296,6 @@ export default {
 
 		// 点击操作按钮
 		handleOpOrder(goods, key) {
-			const _this = this
 			const mapMethods = {
 				cancel: {
 					text: '确定要取消当前订单吗？',
@@ -319,7 +317,7 @@ export default {
 				uni.showModal({
 					title: '提示',
 					content: mapMethods[key].text,
-					success(res) {
+					success: (res) => {
 						if (res.confirm) {
 							mapMethods[key]
 								.api({
@@ -327,12 +325,12 @@ export default {
 									orderId: goods.id
 								})
 								.then(() => {
-									_this.$showToast(mapMethods[key].success, 'success')
+									this.$showToast(mapMethods[key].success, 'success')
 									setTimeout(() => {
 										if ([ 'delete' ].includes(key)) {
 											uni.navigateBack()
 										} else if ([ 'cancel' ].includes(key)) {
-											_this.getOrderDetail()
+											this.getOrderDetail()
 										}
 									}, 2000)
 								})
@@ -352,20 +350,15 @@ export default {
 				uni.showModal({
 					title: '提示',
 					content: '确定提交评价吗',
-					success(res) {
+					success: (res) => {
 						if (res.confirm) {
-							if (!_this.evForm.star) {
-								_this.$showToast('请选择评分')
-								return
-							}
-							if (!_this.evForm.content) {
-								_this.$showToast('请填写评价')
-							}
-							_this.evForm.hasPicture = !!_this.evForm.picUrls.length
-							_this.evForm.picUrls = [ ..._this.evForm.picUrls ]
+							if (!this.evForm.star) return this.$showToast('请选择评分')
+							if (!this.evForm.content) return this.$showToast('请填写评价')
+							this.evForm.hasPicture = !!this.evForm.picUrls.length
+							this.evForm.picUrls = [ ...this.evForm.picUrls ]
 							const data = {
-								..._this.evForm,
-								// orderGoodsId: _this.commentGoodsId * 1,
+								...this.evForm,
+								// orderGoodsId: this.commentGoodsId * 1,
 								type: 0,
 								valueId: this.commentGoodsId
 							}
@@ -378,7 +371,7 @@ export default {
 									uni.navigateBack()
 								}, 1000)
 							})
-							_this.getOrderDetail()
+							this.getOrderDetail()
 						}
 					}
 				})

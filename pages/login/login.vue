@@ -66,8 +66,7 @@ export default {
 				username: '',
 				password: ''
 			},
-			isShowPwd: false,
-			isTabbar: false
+			isShowPwd: false
 		}
 	},
 	methods: {
@@ -118,7 +117,6 @@ export default {
 			const local = 'https://h5.jfcmei.com/#/pages/login/login'
 			const code = getUrlCode().code
 			// console.log('获取code', code)
-			// alert('获取code', code)
 			if (code === null || code === undefined || code === '') {
 				window.location.href =
 					'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
@@ -137,7 +135,7 @@ export default {
 				if (!data.status) {
 					uni.showModal({
 						title: '提示',
-						content: '您还未登录，请先登录',
+						content: '您还未绑定手机号，请先绑定',
 						success: ({ confirm }) => {
 							if (confirm) {
 								uni.navigateTo({
@@ -156,7 +154,7 @@ export default {
 									.then((res) => {
 										uni.hideLoading()
 										this.$showToast('正在跳转...')
-										this.handleLoginSuccess()
+										this.handleLoginSuccess('WX')
 									})
 									.catch(() => {
 										uni.removeStorageSync(J_USER_ID, data.userInfo.userId)
@@ -169,33 +167,42 @@ export default {
 					})
 				} else {
 					this.$showToast('登录成功', 'success')
-					this.handleLoginSuccess()
+					this.handleLoginSuccess('WX')
 				}
 			}
 			// #endif
 		},
 
-		handleLoginSuccess() {
-			setTimeout(() => {
-				if (uni.getStorageSync(J_NEW_BIND_TYPE)) {
-					uni.redirectTo({ url: '/pages/jump/jump' })
-				} else if (this.isTabbar) {
-					this.$switchTab(this.redirect || '/pages/index/index')
-				} else if (this.redirect) {
-					uni.redirectTo({
-						url: this.redirect
-					})
-				} else {
-					this.$switchTab('/pages/index/index')
-				}
-			}, 2000)
+		handleLoginSuccess(type) {
+			if (type === 'WX') {
+				setTimeout(() => {
+					if (uni.getStorageSync(J_NEW_BIND_TYPE)) {
+						window.location.replace('https://h5.jfcmei.com/#/pages/jump/jump')
+					} else if (this.redirect) {
+						window.location.replace(`https://h5.jfcmei.com/#${this.redirect}`)
+					} else {
+						window.location.replace('https://h5.jfcmei.com/#/pages/store/store')
+					}
+				}, 2000)
+			} else {
+				setTimeout(() => {
+					if (uni.getStorageSync(J_NEW_BIND_TYPE)) {
+						uni.redirectTo({ url: '/pages/jump/jump' })
+					} else if (this.redirect) {
+						uni.redirectTo({
+							url: this.redirect
+						})
+					} else {
+						this.$switchTab('/pages/store/store')
+					}
+				}, 2000)
+			}
 		}
 	},
 
 	onLoad(options) {
 		this.type = options.type
 		this.redirect = options.redirect
-		this.isTabbar = !!options.tabbar
 		if (this.type === 'register') {
 			this.$showToast('注册成功', 'success')
 		} else if (uni.getStorageSync(J_NEW_BIND_TYPE)) {
@@ -210,9 +217,7 @@ export default {
 	onShow() {
 		// #ifdef H5
 		const code = getUrlCode().code
-		if (code) {
-			this.handleWXLogin()
-		}
+		if (code) this.handleWXLogin()
 		// #endif
 	}
 }

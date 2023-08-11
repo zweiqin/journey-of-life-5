@@ -239,7 +239,6 @@ export default {
 					api: receiveGoodsApi
 				}
 			}
-			const _this = this
 			if (
 				goods.handleOption[key] &&
 				['cancel', 'delete', 'confirm'].includes(key)
@@ -247,7 +246,7 @@ export default {
 				uni.showModal({
 					title: '提示',
 					content: mapMethods[key].text,
-					success(res) {
+					success: (res) => {
 						if (res.confirm) {
 							mapMethods[key]
 								.api({
@@ -255,8 +254,8 @@ export default {
 									orderId: goods.orderId
 								})
 								.then(() => {
-									_this.grouponQuery.page = 1
-									_this.getGrouponMyList()
+									this.grouponQuery.page = 1
+									this.getGrouponMyList()
 								})
 						}
 					}
@@ -311,9 +310,6 @@ export default {
 					console.log(data)
 					this.grouponRules = data[0] || {}
 					this.drawerVisible = true
-				})
-				.catch((e) => {
-					console.log(e)
 				})
 		}
 	},

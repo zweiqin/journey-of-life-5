@@ -137,18 +137,12 @@ export default {
 				this.CouponSystemTemplate = res.data.filter((item) => item.type === 1 || item.type === 2)
 				this.redSystemTemplate = res.data.filter((item) => item.type === 0)
 			})
-			.catch((err) => {
-				console.log(err)
-			})
 	},
 	onShow() {
 		getCouponMagicListApi({ userId: getUserId(), type: 0 }) // 0优惠券，1红包
 			.then((res) => {
 				// this.redListData = res.data.filter((item) => item.typeRoll === 2)
 				this.CouponListData = res.data.filter((item) => item.typeRoll === 0 || item.typeRoll === 1)
-			})
-			.catch((err) => {
-				console.log(err)
 			})
 	},
 

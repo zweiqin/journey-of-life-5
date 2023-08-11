@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { getBrandCouponListApi, updateCouponRevokeApi } from '../../../api/user'
+import { updateCouponRevokeApi } from '../../../api/user'
 import { getUserId, getBrandId } from '../../../utils'
 
 export default {

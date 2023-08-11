@@ -62,10 +62,12 @@ export default {
 		}
 	},
 
-	onLoad() {},
-
 	onShow() {
 		// console.log(this.myTools, this.myServe, this.myStore, this.marketingTools)
+		uni.pageScrollTo({
+			scrollTop: this.$store.getters.userScrollTop,
+			duration: 0
+		})
 		this.$forceUpdate()
 		this.userInfo = uni.getStorageSync(J_USER_INFO)
 		this.$nextTick(() => {
@@ -175,6 +177,9 @@ export default {
 					break
 			}
 		}
+	},
+	onPageScroll(e) {
+		this.$store.dispatch('app/changeUserPageScroll', { field: 'userScrollTop', scrollTop: e.scrollTop })
 	}
 }
 
@@ -190,30 +195,5 @@ export default {
 	// background: linear-gradient(180deg, #FFE5CC 5%, #FFF9F0 16%, #F6F6F6 23%);
 	padding: 30upx 30upx 130upx;
 	box-sizing: border-box;
-
-	.balance-text {
-		font-size: 28upx;
-		font-weight: bold;
-		color: #FF0000;
-	}
-
-	.bee-btn {
-		width: 160upx;
-		height: 58upx;
-		border-radius: 10upx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		line-height: 1.5;
-		box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.2);
-		background-color: #FF0000;
-		color: #fff;
-		font-weight: bold;
-		transition: all 350ms;
-
-		&:active {
-			background-color: #ff7878;
-		}
-	}
 }
 </style>

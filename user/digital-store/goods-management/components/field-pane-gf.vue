@@ -152,8 +152,9 @@
 					<view class="input-wrapper">商品参数：</view>
 					<view>
 						<tui-button
-							type="danger" width="120rpx"
-							height="50rpx" margin="0 10rpx 0 0" style="border-radius: 50rpx;" @click="handleAttributeShow"
+							type="danger" width="120rpx" height="50rpx" margin="0 10rpx 0 0"
+							style="border-radius: 50rpx;"
+							@click="handleAttributeShow"
 						>
 							添加
 						</tui-button>
@@ -190,8 +191,9 @@
 					<view class="input-wrapper">优惠券：</view>
 					<view>
 						<tui-button
-							type="danger" width="120rpx"
-							height="50rpx" margin="0 10rpx 0 0" style="border-radius: 50rpx;" @click="handleGoodsCouponsShow"
+							type="danger" width="120rpx" height="50rpx" margin="0 10rpx 0 0"
+							style="border-radius: 50rpx;"
+							@click="handleGoodsCouponsShow"
 						>
 							添加
 						</tui-button>
@@ -251,7 +253,24 @@
 						></textarea>
 
 						<tui-radio-group
-							v-if="item.type === 'radio'" v-model="form[item.field]" style="display: flex;"
+							v-if="(item.type === 'radio') && (item.field === 'brandType')" v-model="form[item.field]" style="display: flex;"
+							@change="handleInput(item.field, $event)"
+						>
+							<tui-label
+								v-for="(part, index) in [{ name: '商城商品', value: '0' }, { name: '本地生活商品', value: '1' }]"
+								:key="index"
+							>
+								<tui-list-cell padding="16upx">
+									<view>
+										<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
+										</tui-radio>
+										<text class="tui-text">{{ part.name }}</text>
+									</view>
+								</tui-list-cell>
+							</tui-label>
+						</tui-radio-group>
+						<tui-radio-group
+							v-else-if="item.type === 'radio'" v-model="form[item.field]" style="display: flex;"
 							@change="(e) => { }"
 						>
 							<tui-label
@@ -442,7 +461,7 @@
 </template>
 
 <script>
-import { getGoodsTypeApi, getBrandGoodsListApi } from '.././../../../api/user'
+import { getGoodsTypeApi, getBrandCouponListApi } from '.././../../../api/user'
 // import { getIndexCategoryListApi } from '.././../../../api/goods'
 import { getUserId, getBrandId } from '../../../../utils'
 
@@ -520,32 +539,52 @@ export default {
 		}
 	},
 
-	mounted() {
-		// console.log(this.$refs)
-	},
-
 	methods: {
 		getGoodsType() {
-			getGoodsTypeApi()
-				.then((res) => {
-					this.categoryArr = res.data.data
-					this.mapTree(this.categoryArr, '1')
-				})
-				.catch((e) => {
-					this.$showToast('所属分类列表获取失败')
-				})
+			if (this.form.brandType === '0') {
+				getGoodsTypeApi({ brandId: 1001079 })
+					.then((res) => {
+						this.categoryArr = res.data.data
+						this.mapTree(this.categoryArr, '1')
+					})
+					.catch(() => {
+						this.$showToast('所属分类列表获取失败')
+					})
+			} else if (this.form.brandType === '1') {
+				getGoodsTypeApi({ brandId: getBrandId() })
+					.then((res) => {
+						this.categoryArr = res.data.data
+						this.mapTree(this.categoryArr, '1')
+					})
+					.catch(() => {
+						this.$showToast('所属分类列表获取失败')
+					})
+			}
 		},
 		getBrandCouponList() {
-			getBrandGoodsListApi({ brandId: getBrandId() }) // getBrandId()
-				.then((res) => {
-					this.goodsCouponsList = res.data.map((item) => ({
-						value: item.id,
-						text: `${item.name}：${item.desc}`
-					}))
-				})
-				.catch((e) => {
-					this.$showToast('优惠券列表获取失败')
-				})
+			if (this.form.brandType === '0') {
+				getBrandCouponListApi({ brandId: 1001079 })
+					.then((res) => {
+						this.goodsCouponsList = res.data.map((item) => ({
+							value: item.id,
+							text: `${item.name}：${item.desc}`
+						}))
+					})
+					.catch(() => {
+						this.$showToast('优惠券列表获取失败')
+					})
+			} else if (this.form.brandType === '1') {
+				getBrandCouponListApi({ brandId: getBrandId() })
+					.then((res) => {
+						this.goodsCouponsList = res.data.map((item) => ({
+							value: item.id,
+							text: `${item.name}：${item.desc}`
+						}))
+					})
+					.catch(() => {
+						this.$showToast('优惠券列表获取失败')
+					})
+			}
 		},
 		mapTree(data, level) {
 			data.forEach((items) => {
@@ -740,6 +779,7 @@ export default {
 			this.tempGoodsCoupons = e.options.text
 		},
 		handleGoodsCouponsShow() {
+			this.tempGoodsCouponsType = ''
 			this.goodsCouponsForm = { couponId: '', buyNumber: '', type: '', isTimeBox: '', startTime: '', endTime: '' }
 			this.goodsCouponsVisiable = true
 		},
@@ -769,6 +809,17 @@ export default {
 				this.categoryIdName = e.result.replaceAll('无', '')
 			} else if (field === 'startTime' || field === 'endTime') {
 				this.form[field] = e.result
+			} else if (field === 'brandType') {
+				this.form[field] = e.detail.value
+				this.form.categoryId = ''
+				this.categoryIdName = ''
+				this.categoryArr = []
+				this.goodsCouponsForm = { couponId: '', buyNumber: '', type: '', isTimeBox: '', startTime: '', endTime: '' }
+				this.tempGoodsCouponsType = ''
+				this.form.goodsCoupons = []
+				this.goodsCouponsList = []
+				this.getGoodsType()
+				this.getBrandCouponList()
 			} else {
 				this.form[field] = e.detail.value
 			}

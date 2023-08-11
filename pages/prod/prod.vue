@@ -218,7 +218,7 @@ import {
 	getCarShopNumberApi,
 	goodsListApi
 } from '../../api/goods'
-import { getCommentCountApi } from '../../api/user'
+import { getCommentCountApi } from '../../api/order'
 import { getUserId } from '../../utils'
 
 export default {
@@ -292,7 +292,6 @@ export default {
 			deep: true
 		}
 	},
-	mounted() { },
 
 	methods: {
 		// 回退
@@ -543,7 +542,6 @@ export default {
 	onPageScroll(e) {
 		this.showTopNav = !!e.scrollTop
 		this.scrollTop = e.scrollTop
-
 		this.$nextTick(() => {
 			if (this.detailPosition) {
 				if (e.scrollTop < this.evalPosition - 60) {

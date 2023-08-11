@@ -188,7 +188,6 @@ export default {
 			}
 		}
 	},
-	onPageScroll(e) { },
 	onReachBottom() {
 		if (this.currentTab === 1) {
 			if (this.query.page >= this.totalPages) {

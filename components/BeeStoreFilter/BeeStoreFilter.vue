@@ -3,7 +3,7 @@
 		<view>
 			<tui-dropdown-list :show="dropdownShow" :top="55" background-color="#ffffff" @close="dropdownShow = false">
 				<template #selectionbox>
-					<view class="synthesize item" style="height: auto;color: #fa5151;" @click="dropdownShow = !dropdownShow">
+					<view class="item" style="height: auto;color: #fa5151;" @click="dropdownShow = !dropdownShow">
 						<view class="title">距离</view>
 						<BeeIcon :src="require('../GoodsFilter/icons/red-arrow.png')" :size="14"></BeeIcon>
 						<text style="font-size: 26upx;">{{ dropdownName || '' }}</text>
@@ -64,52 +64,49 @@
 		</view>
 
 		<view class="right">
-			<!-- <view class="menus item">
-				<view class="title">品类</view>
-				<BeeIcon :src="require('./image/code.png')" :size="14"></BeeIcon>
-				</view> -->
-
-			<view class="synthesize item" @click="handleClickFilter">
-				<view class="title">筛选</view>
-				<BeeIcon :src="require('./image/filter.png')" :size="14"></BeeIcon>
-				<text style="margin-left: 10upx;font-size: 26upx;">{{ currentTypeName || '' }}</text>
-			</view>
-			<tui-drawer mode="right" :visible="drawerVisible" @close="closeDrawer">
-				<view
-					style="position: relative;width: 350upx;height: calc(100vh - 112upx);padding: 12upx;overflow-y: auto;box-sizing: border-box;"
-				>
-					<view style="margin: 20upx 0;color: #bbbec0;">请选择商家类型：</view>
-					<view style="display: flex;justify-content: space-between;flex-wrap: wrap;">
-						<view style="width: 100%;">
+			<view v-if="isShowFilter">
+				<view class="item" @click="handleClickFilter">
+					<view class="title">筛选</view>
+					<BeeIcon :src="require('./image/filter.png')" :size="14"></BeeIcon>
+					<text style="margin-left: 10upx;font-size: 26upx;">{{ currentTypeName || '' }}</text>
+				</view>
+				<tui-drawer mode="right" :visible="drawerVisible" @close="closeDrawer">
+					<view
+						style="position: relative;width: 350upx;height: calc(100vh - 112upx);padding: 12upx;overflow-y: auto;box-sizing: border-box;"
+					>
+						<view style="margin: 20upx 0;color: #bbbec0;">请选择商家类型：</view>
+						<view style="display: flex;justify-content: space-between;flex-wrap: wrap;">
+							<view style="width: 100%;">
+								<view
+									style="width: fit-content;margin: 10upx 0;padding: 11upx;color: #202124;"
+									:style="{ 'border': currentTypeId === '' ? '1upx solid #4285f4' : '1upx solid #f8eddf', 'backgroundColor': currentTypeId === '' ? '#97e0fd' : '#f8eddf' }"
+									@click="handleClickType({ id: '', storeName: '全部' })"
+								>
+									全部
+								</view>
+							</view>
 							<view
+								v-for="item in storeTypeList" :key="item.id"
 								style="width: fit-content;margin: 10upx 0;padding: 11upx;color: #202124;"
-								:style="{ 'border': currentTypeId === '' ? '1upx solid #4285f4' : '1upx solid #f8eddf', 'backgroundColor': currentTypeId === '' ? '#97e0fd' : '#f8eddf' }"
-								@click="handleClickType({ id: '', storeName: '全部' })"
+								:style="{ 'border': currentTypeId === item.id ? '1upx solid #4285f4' : '1upx solid #f8eddf', 'backgroundColor': currentTypeId === item.id ? '#97e0fd' : '#f8eddf' }"
+								@click="handleClickType(item)"
 							>
-								全部
+								{{ item.storeName }}
 							</view>
 						</view>
 						<view
-							v-for="item in storeTypeList" :key="item.id"
-							style="width: fit-content;margin: 10upx 0;padding: 11upx;color: #202124;"
-							:style="{ 'border': currentTypeId === item.id ? '1upx solid #4285f4' : '1upx solid #f8eddf', 'backgroundColor': currentTypeId === item.id ? '#97e0fd' : '#f8eddf' }"
-							@click="handleClickType(item)"
+							style="position: sticky;bottom: -12upx;display: flex;justify-content: space-between;background-color: #ffffff;"
 						>
-							{{ item.storeName }}
+							<tui-button margin="10upx 8upx" height="60rpx" type="warning" shape="circle" @click="closeDrawer">
+								取消
+							</tui-button>
+							<tui-button margin="10upx 8upx" height="60rpx" type="warning" shape="circle" @click="handleClickComfirm">
+								确定
+							</tui-button>
 						</view>
 					</view>
-					<view
-						style="position: sticky;bottom: -12upx;display: flex;justify-content: space-between;background-color: #ffffff;"
-					>
-						<tui-button margin="10upx 8upx" height="60rpx" type="warning" shape="circle" @click="closeDrawer">
-							取消
-						</tui-button>
-						<tui-button margin="10upx 8upx" height="60rpx" type="warning" shape="circle" @click="handleClickComfirm">
-							确定
-						</tui-button>
-					</view>
-				</view>
-			</tui-drawer>
+				</tui-drawer>
+			</view>
 		</view>
 	</view>
 </template>
@@ -118,6 +115,12 @@
 import { getStoreTypeAllListApi } from '../../api/user'
 export default {
 	name: 'BeeStoreFilter',
+	props: {
+		isShowFilter: {
+			type: Boolean,
+			default: true
+		}
+	},
 	data() {
 		return {
 			dropdownShow: false,

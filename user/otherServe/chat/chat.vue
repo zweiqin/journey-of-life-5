@@ -31,10 +31,6 @@
 import {
 	mapGetters
 } from 'vuex'
-import {
-	getUserId,
-	timestampToTime
-} from '../../../utils'
 export default {
 	name: 'Chat',
 	data() {

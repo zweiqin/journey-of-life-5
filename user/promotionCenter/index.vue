@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="promotionCenter">
-			<Ttitle title="推广中心"></Ttitle>
+			<JHeader width="50" height="50" title="推广中心"></JHeader>
 			<view class="last"></view>
 			<PromotionUser></PromotionUser>
 			<view class="last"></view>
@@ -176,8 +176,6 @@ export default {
 			commissionData: ''
 		}
 	},
-	computed: {},
-	watch: {},
 	methods: {
 		getDayNumber(e) {
 			this.day = e
@@ -265,8 +263,6 @@ export default {
 	// onPullDownRefresh() { uni.stopPullDownRefresh(); },
 	// 页面处理函数--监听用户上拉触底
 	// onReachBottom() {},
-	// 页面处理函数--监听页面滚动(not-nvue)
-	// onPageScroll(event) {},
 	// 页面处理函数--用户点击右上角分享
 	// onShareAppMessage(options) {},
 }

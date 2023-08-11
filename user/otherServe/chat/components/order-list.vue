@@ -213,21 +213,6 @@ export default {
 	color: #3d3d3d;
 	// padding: 60upx 0;
 
-	.header {
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		color: #000;
-		padding: 0 32upx;
-		box-sizing: border-box;
-
-		h2 {
-			font-weight: normal;
-			font-size: 32upx;
-			margin-top: -8upx;
-		}
-	}
-
 	.navs {
 		display: flex;
 		justify-content: space-between;

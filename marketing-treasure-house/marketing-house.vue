@@ -86,8 +86,8 @@ export default {
 			})
 		}
 	},
-	onPageScroll(scrollTop) {
-		this.scrollTop = scrollTop.scrollTop
+	onPageScroll(e) {
+		this.scrollTop = e.scrollTop
 	}
 }
 </script>

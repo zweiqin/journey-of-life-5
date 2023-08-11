@@ -28,7 +28,7 @@
 		<!-- 轮播图 -->
 		<swiper
 			v-if="brandDetail.bgUrl && JSON.parse(brandDetail.bgUrl).length" class="swiper" :indicator-dots="true"
-			:autoplay="true" :interval="3000" :duration=                                                            "1000"
+			:autoplay="true" :interval="3000" :duration="1000"
 		>
 			<swiper-item v-for="(img, index) in JSON.parse(brandDetail.bgUrl)" :key="index">
 				<tui-lazyload-img
@@ -38,7 +38,7 @@
 			</swiper-item>
 		</swiper>
 		<view class="main">
-			<!-- 商品信息栏 -->
+			<!-- 商家信息栏 -->
 			<view style="margin-top: -26upx;border-radius: 30upx 30upx 0 0;overflow: hidden;">
 				<BrandInfo :brand-detail="brandDetail" @follow="handleFollowBrand" @navgation="handleNavigate"></BrandInfo>
 			</view>
@@ -190,8 +190,6 @@ export default {
 		// this._loadData()
 	},
 
-	watch: {},
-
 	methods: {
 		async getBrandDetail() {
 			const { data } = await getBrandDetailApi({
@@ -258,9 +256,9 @@ export default {
 			navigationAddress(`${this.brandDetail.longitude},${this.brandDetail.latitude}`)
 		}
 	},
-	onPageScroll(obj) {
-		if (obj.scrollTop >= 34) {
-			this.navOpacity = obj.scrollTop / 200
+	onPageScroll(e) {
+		if (e.scrollTop >= 34) {
+			this.navOpacity = e.scrollTop / 200
 			this.isNavGaFixed = true
 		} else {
 			this.navOpacity = 0
@@ -269,7 +267,7 @@ export default {
 		// //#ifdef H5
 		// this.isTabFixed = true
 		// // #endif
-		if (this.yuanH > obj.scrollTop) {
+		if (this.yuanH > e.scrollTop) {
 			this.isTabFixed = false
 		} else {
 			this.isTabFixed = true

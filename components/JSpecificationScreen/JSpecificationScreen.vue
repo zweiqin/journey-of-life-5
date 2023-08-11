@@ -129,10 +129,6 @@ export default {
 		}
 	},
 
-	computed: {
-
-	},
-
 	watch: {
 		number() {
 			this.getSpStr()

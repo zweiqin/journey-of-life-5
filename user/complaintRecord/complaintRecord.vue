@@ -48,9 +48,6 @@ export default {
 			ComplainList: null
 		}
 	},
-	computed: {
-
-	},
 	created() {
 		getComplainList().then((res) => {
 			this.ComplainList = res.data
@@ -62,7 +59,6 @@ export default {
 	methods: {
 		handleBack() {
 			uni.navigateBack()
-			// new Date().
 		},
 		isSuucess(status) {
 			return status == 0 ? require('./image/loading.png') : status == 1 ? require('./image/succes.png') : require('./image/danger.png')

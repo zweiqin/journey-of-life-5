@@ -37,7 +37,7 @@
 						:placeholder="item.placeholder" @input="handleInput(item.field, $event)"
 					></textarea>
 
-					<tui-radio-group v-if="item.type === 'radio'" v-model="radioLevel" style="display: flex;" @change="(e) => pickerLayer = e.detail.value">
+					<tui-radio-group v-if="(item.type === 'radio') && (item.field === 'brandgenreLevel')" v-model="radioLevel" style="display: flex;" @change="(e) => pickerLayer = e.detail.value">
 						<tui-label v-for="(part, index) in [{ name: '一级', value: '1' }, { name: '二级', value: '2' }, { name: '三级', value: '3' }]" :key="index">
 							<tui-list-cell padding="16upx">
 								<view>
@@ -48,6 +48,18 @@
 							</tui-list-cell>
 						</tui-label>
 					</tui-radio-group>
+
+					<!-- <tui-radio-group v-if="(item.type === 'radio') && (item.field === 'brandType')" style="display: flex;" @change="handleInput(item.field, $event)">
+						<tui-label v-for="(part, index) in [{ name: '商城商家', value: '0' }, { name: '本地生活商家', value: '1' }]" :key="index">
+						<tui-list-cell padding="16upx">
+						<view>
+						<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
+						</tui-radio>
+						<text class="tui-text">{{ part.name }}</text>
+						</view>
+						</tui-list-cell>
+						</tui-label>
+						</tui-radio-group> -->
 
 					<view
 						v-if="item.type === 'type' && item.field === 'brandgenre'"
@@ -222,7 +234,7 @@ export default {
 			} else if (field === 'areaId') {
 				this.areaIdName = e.area
 				this.form[field] = e.township.code
-			} else if (field === 'code' || field === 'name' || field === 'desc' || field === 'address' || field === 'explain' || field === 'phone') {
+			} else if (field === 'code' || field === 'name' || field === 'desc' || field === 'address' || field === 'explain' || field === 'phone' || field === 'brandType') {
 				this.form[field] = e.detail.value
 			} else if (field === 'lonAndLatString') {
 				uni.chooseLocation({

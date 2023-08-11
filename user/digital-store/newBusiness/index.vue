@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="newBusiness">
-			<Ttitle title="业务管理"></Ttitle>
+			<JHeader width="50" height="50" title="业务管理"></JHeader>
 			<view style="margin-top: 20upx"></view>
 			<BusinessSearch></BusinessSearch>
 			<view class="head">
@@ -47,8 +47,6 @@ export default {
 	data() {
 		return { status, businessHead, value: 5, bussinessList: [] }
 	},
-	computed: {},
-	watch: {},
 	methods: {
 		addUser(e) {
 			// uni.navigateTo({ url: `./addUser/index?type=${e}` });
@@ -96,8 +94,6 @@ export default {
 	// onPullDownRefresh() { uni.stopPullDownRefresh(); },
 	// 页面处理函数--监听用户上拉触底
 	// onReachBottom() {},
-	// 页面处理函数--监听页面滚动(not-nvue)
-	// onPageScroll(event) {},
 	// 页面处理函数--用户点击右上角分享
 	// onShareAppMessage(options) {},
 }

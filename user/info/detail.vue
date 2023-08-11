@@ -107,11 +107,6 @@
 			</uni-popup-dialog>
 		</uni-popup>
 
-		<!-- <JUploadAvatar
-			@close="handleCloseUpload"
-			ref="jUploadAvatarRef"
-			@success="handleUpDateAvatar"
-			></JUploadAvatar> -->
 	</view>
 </template>
 
@@ -241,7 +236,6 @@ export default {
 
 		// 点击更换头像
 		handleChangeAvatar() {
-			// this.$refs.jUploadAvatarRef.$el.style.left = '0'
 			const _this = this
 			uni.chooseImage({
 				count: 1,
@@ -254,11 +248,6 @@ export default {
 					_this.$showToast('图片上传失败')
 				}
 			})
-		},
-
-		// 点击关闭
-		handleCloseUpload() {
-			this.$refs.jUploadAvatarRef.$el.style.left = '-100%'
 		},
 
 		// 更换头像

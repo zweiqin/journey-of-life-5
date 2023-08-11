@@ -83,6 +83,12 @@ export default {
 					type: 'input',
 					placeholder: '请填写门店名称'
 				},
+				// {
+				// 	label: '门店归属：',
+				// 	field: 'brandType',
+				// 	type: 'radio',
+				// 	placeholder: '请选择门店归属'
+				// },
 				{
 					label: '门店类型层级：',
 					field: 'brandgenreLevel',
@@ -148,6 +154,14 @@ export default {
 				{
 					label: '法人身份证国徽面',
 					field: 'idcardConsUrl'
+				},
+				{
+					label: '食品生产许可证',
+					field: 'productionLicense'
+				},
+				{
+					label: '食品经营许可证',
+					field: 'healthPermit'
 				}
 			],
 			form: {

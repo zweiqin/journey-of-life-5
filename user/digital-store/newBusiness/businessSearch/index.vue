@@ -13,8 +13,6 @@ export default {
 	data() {
 		return { searchText: '', importInput: '' }
 	},
-	computed: {},
-	watch: {},
 
 	// 组件周期函数--监听组件挂载完毕
 	mounted() {

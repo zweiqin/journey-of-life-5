@@ -150,7 +150,7 @@ export default {
 							this.checkSeckillResult(taskId)
 						}
 					})
-					.catch((err) => {
+					.catch(() => {
 						this.seckillTimer && clearTimeout(this.seckillTimer)
 						uni.hideLoading()
 					})

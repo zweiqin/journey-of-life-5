@@ -55,8 +55,7 @@
 </template>
 
 <script>
-import { getCommentCountApi, getCommentListApi } from '../../../api/user'
-// import { getUserId, getBrandId } from '../../../utils'
+import { getCommentCountApi, getCommentListApi } from '../../../api/order'
 
 export default {
 	name: 'CommentList',
@@ -125,7 +124,6 @@ export default {
 				})
 		}
 	},
-	onPageScroll(e) { },
 	onReachBottom() {
 		if (this.query.page >= this.totalPages) {
 			this.status = 'no-more'

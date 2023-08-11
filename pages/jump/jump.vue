@@ -179,7 +179,7 @@ export default {
 							setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
 						}
 					})
-					.catch((e) => {
+					.catch(() => {
 						setTimeout(() => { this.$switchTab('/pages/user/user') }, 2000)
 					})
 			}

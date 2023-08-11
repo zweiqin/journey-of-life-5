@@ -143,9 +143,7 @@ export default {
 				this.getFanList(2)
 			}
 		}
-	},
-	onPageScroll(e) { },
-	onReachBottom() { }
+	}
 }
 </script>
 

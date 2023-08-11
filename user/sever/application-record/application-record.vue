@@ -81,7 +81,7 @@ export default {
 				this.applicationRecordList = res.data
 				uni.hideLoading()
 			})
-			.catch((e) => {
+			.catch(() => {
 				uni.hideLoading()
 			})
 	},

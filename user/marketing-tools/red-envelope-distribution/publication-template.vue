@@ -281,9 +281,6 @@ export default {
 					}, 2000)
 				}
 			})
-				.catch((errors) => {
-					console.log(errors)
-				})
 		},
 		// chooseImg() {
 		// 	const _this = this

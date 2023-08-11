@@ -121,7 +121,7 @@ export default {
 					this.status = 'none'
 					this.loadingStatus = 'noMore'
 				})
-				.catch((err) => {
+				.catch(() => {
 					this.status = 'none'
 					this.loadingStatus = 'noMore'
 				})
@@ -139,8 +139,7 @@ export default {
 					uni.hideLoading()
 				})
 		}
-	},
-	onReachBottom() { }
+	}
 }
 </script>
 

@@ -107,12 +107,14 @@ export default {
 			startAddress: {},
 			couponId: 0,
 			grouponRulesId: '',
-			grouponLinkId: ''
+			grouponLinkId: '',
+			distributionId: ''
 		}
 	},
 	onLoad(options) {
 		this.grouponRulesId = options.rulesId || ''
 		this.grouponLinkId = options.linkId || ''
+		this.distributionId = options.distributionId || ''
 		this.orderType = options.orderType
 		this.getOrderInfo()
 	},
@@ -161,7 +163,8 @@ export default {
 				productId: this.orderInfo.selectedProduct.product.id,
 				number: this.orderInfo.number,
 				useVoucher: this.opForm.useVoucher,
-				type: this.orderType
+				type: this.orderType,
+				distributionId: this.distributionId
 			}
 			firstAddCar(data)
 				.then(({ data }) => {

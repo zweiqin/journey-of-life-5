@@ -72,8 +72,6 @@ export default {
 		}
 	},
 
-	computed: {},
-
 	watch: {
 		brandId: {
 			handler(newVal) {
@@ -84,9 +82,6 @@ export default {
 			immediate: true,
 			deep: true
 		}
-	},
-
-	created() {
 	},
 
 	methods: {

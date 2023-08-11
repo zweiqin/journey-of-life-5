@@ -11,5 +11,6 @@ export default {
 	wsHandle: (state) => state.customerService.wsHandle,
 
 	// app
-	statusBarHeight: (state) => state.app.systermInfo.statusBarHeight || 0
+	statusBarHeight: (state) => state.app.systermInfo.statusBarHeight || 0,
+	userScrollTop: (state) => state.app.userScrollTop
 }

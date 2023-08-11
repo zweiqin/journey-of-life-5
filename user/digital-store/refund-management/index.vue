@@ -150,9 +150,7 @@ export default {
 			}
 			this.isShowCheckRefundDialog = false
 		}
-	},
-	onPageScroll(e) { },
-	onReachBottom() { }
+	}
 }
 </script>
 

@@ -71,9 +71,7 @@ export default {
 					uni.hideLoading()
 				})
 		}
-	},
-	onPageScroll(e) { },
-	onReachBottom() { }
+	}
 }
 </script>
 

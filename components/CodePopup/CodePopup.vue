@@ -36,7 +36,7 @@
 				<image src="/static/images/user/ju-icon-p.png" class="big-icon" />
 			</view>
 
-			<view v-if="code" class="images">
+			<view class="images">
 				<view class="zhiwen">
 					<image src="/static/images/user/zhi.png" alt="" />
 					<text>长按扫码</text>
@@ -144,7 +144,7 @@ export default {
 					url: tempUrl
 				}).then(({ data }) => {
 					this.code = data.code
-					this.codeUrl = data.qrCode
+					this.codeUrl = data.qrcode
 					uni.hideLoading()
 				})
 			}

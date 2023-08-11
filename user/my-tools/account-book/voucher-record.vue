@@ -1,9 +1,9 @@
 <template>
-	<view class="wrap-record-container">
+	<view class="voucher-record-container">
 		<view style="padding: 30upx 20upx;color: #000000;">
 			<JHeader width="50" height="50" title="代金券记录"></JHeader>
 		</view>
-		<view class="wrap-record">
+		<view class="voucher-record">
 
 			<view v-if="voucherRecordList && voucherRecordList.length">
 				<view v-for="item in voucherRecordList" :key="item.id" style="padding: 24upx;background-color: #ffffff;">
@@ -47,14 +47,12 @@ export default {
 					uni.hideLoading()
 				})
 		}
-	},
-	onPageScroll(e) { },
-	onReachBottom() { }
+	}
 }
 </script>
 
 <style lang="less" scoped>
-.wrap-record-container {
+.voucher-record-container {
 	min-height: 100vh;
 	width: 100%;
 	background: #f6f6f6;

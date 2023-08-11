@@ -128,12 +128,12 @@
 				"navigationBarTitleText": "绑定手机号"
 			}
 		},
-		{
-			"path": "pages/prod-classify/prod-classify",
-			"style": {
-				"onReachBottomDistance": 0
-			}
-		},
+		// {
+		// 	"path": "pages/prod-classify/prod-classify",
+		// 	"style": {
+		// 		"onReachBottomDistance": 0
+		// 	}
+		// },
 		{
 			"path": "pages/recent-news/recent-news",
 			"style": {
@@ -207,17 +207,15 @@
 				"navigationBarTitleText": "投诉",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/index/selectCommodity/selectCommodity",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false
+			}
 		}
-	    ,{
-            "path" : "pages/index/selectCommodity/selectCommodity",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"tabBar": {
 		"selectedColor": "#FA5151",
 		"color": "#777777",
@@ -618,6 +616,12 @@
 					"path": "sever/regional-agent",
 					"style": {
 						"navigationBarTitleText": "申请区域代理"
+					}
+				},
+				{
+					"path": "sever/service-center/service-center",
+					"style": {
+						"navigationBarTitleText": "客服中心"
 					}
 				},
 				{

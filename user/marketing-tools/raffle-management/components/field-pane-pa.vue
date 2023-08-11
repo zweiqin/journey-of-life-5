@@ -10,8 +10,7 @@
 							class="input-wrapper" :style="{
 								'flex-direction': item.type === 'textarea' ? 'column' : '',
 								'align-items': item.type === 'textarea' ? 'flex-start' : ''
-							}"
-							style="justify-content: flex-start;"
+							}" style="justify-content: flex-start;"
 						>
 							<view class="sub-title">{{ item.label }}</view>
 							<tui-input v-model="form[item.field]" label="" type="number" :placeholder="item.placeholder">
@@ -41,8 +40,7 @@
 
 						<tui-radio-group
 							v-if="item.type === 'radio'" v-model="form[item.field]"
-							style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;"
-							@change="(e) => {}"
+							style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;" @change="(e) => { }"
 						>
 							<tui-label
 								v-for="(part, index) in [{ name: '红包', value: '1' }, { name: '积分', value: '2' }, { name: '体验金', value: '3' }, { name: '谢谢惠顾', value: '4' }]"
@@ -67,7 +65,8 @@
 						<view v-if="item.type === 'picker' && item.field === 'pointsPrizeId'" style="flex: 1;">
 							<input
 								:value="tempPrizeName" class="input" :disabled="true" type="text"
-								:placeholder="item.placeholder" @click="isShowPrizePopup = true"
+								:placeholder="item.placeholder"
+								@click="isShowPrizePopup = true"
 							/>
 						</view>
 
@@ -230,8 +229,8 @@ export default {
 		}
 	}
 
-/deep/ .tui-popup-class.tui-bottom-popup {
-	height: 85vh !important;
-}
+	/deep/ .tui-popup-class.tui-bottom-popup {
+		height: 85vh !important;
+	}
 }
 </style>

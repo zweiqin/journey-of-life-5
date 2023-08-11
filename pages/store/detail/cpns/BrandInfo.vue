@@ -1,16 +1,29 @@
 <template>
 	<view v-if="brandDetail" class="brand-info-container">
-		<view class="brand-name">{{ brandDetail.name }}</view>
-		<view class="rate">
-			<BeeIcon :src="require('../../../../components/BeeBrandPane/images/star.png')" :size="14"></BeeIcon>
-			<text>{{ brandDetail.starTotal || 0 }}</text>
-			<text>月售 {{ brandDetail.salesVolume }}</text>
-			<text>人均{{ brandDetail.perCapita || '：--' }}</text>
+		<view style="display: flex;justify-content: space-between;align-items: center;">
+			<view>
+				<view style="font-weight: bold;color: #000;font-size: 32upx;">{{ brandDetail.name }}</view>
+				<view class="rate">
+					<BeeIcon :src="require('../../../../components/BeeBrandPane/images/star.png')" :size="14"></BeeIcon>
+					<text>{{ brandDetail.starTotal || 0 }}</text>
+					<text>月售 {{ brandDetail.salesVolume }}</text>
+					<text>人均{{ brandDetail.perCapita || '：--' }}</text>
+				</view>
+			</view>
+			<view
+				style="display: flex;flex-direction: column;align-items: center;"
+				@click="handleToConnectStore"
+			>
+				<tui-icon name="people-fill" :size="48" unit="rpx" color="#9aedbe"></tui-icon>
+				<text style="font-size: 26upx;color: #8e8e8e;">联系商家</text>
+			</view>
 		</view>
 		<view v-if="brandDetail.businessSlogan || brandDetail.voucherNum || brandDetail.supportVoucher" class="tags">
 			<view v-if="brandDetail.voucherNum" class="tag">补贴代金券{{ brandDetail.voucherNum * 2 || 0 }}%</view>
 			<view v-if="brandDetail.supportVoucher" class="tag">支持代金券</view>
-			<block v-if="brandDetail.businessSlogan"><view v-for="item in brandDetail.businessSlogan.split(',')" :key="item" class="tag">{{ item }}</view></block>
+			<block v-if="brandDetail.businessSlogan">
+				<view v-for="item in brandDetail.businessSlogan.split(',')" :key="item" class="tag">{{ item }}</view>
+			</block>
 		</view>
 		<!-- <scroll-view v-if="brandDetail.bgUrl" scroll-x="true">
 			<view class="goods-list">
@@ -58,10 +71,17 @@
 
 <script>
 export default {
+	name: 'BrandInfo',
 	props: {
 		brandDetail: {
 			type: Object,
 			required: true
+		}
+	},
+	methods: {
+		handleToConnectStore() {
+			if (!this.brandDetail.userId || !this.brandDetail.name) return this.$showToast('缺少商家信息')
+			this.go(`/user/otherServe/chat/chat-detail?chat=${this.brandDetail.userId}&name=${this.brandDetail.name}&avatar=${this.brandDetail.picUrl}`)
 		}
 	}
 }
@@ -73,12 +93,6 @@ export default {
 	box-sizing: border-box;
 	background-color: #fff;
 	border-radius: 40upx 40upx 0 0;
-
-	.brand-name {
-		font-weight: bold;
-		color: #000;
-		font-size: 32upx;
-	}
 
 	.rate {
 		display: flex;
@@ -154,37 +168,38 @@ export default {
 		align-items: center;
 		width: 100%;
 		margin-top: 18upx;
-	.address-detail-info {
-		flex: 1;
-		width: 0;
-		font-size: 26upx;
 
-		.address-text {
-			overflow: hidden;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-			color: #000000;
-			font-weight: 500;
+		.address-detail-info {
+			flex: 1;
+			width: 0;
+			font-size: 26upx;
+
+			.address-text {
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				color: #000000;
+				font-weight: 500;
+			}
 		}
 	}
-	}
 
-.op-menus {
-	display: flex;
-	align-items: center;
-
-	.item {
+	.op-menus {
 		display: flex;
 		align-items: center;
-		flex-direction: column;
-		margin-left: 30upx;
 
-		text {
-			font-size: 24upx;
-			margin-top: 4upx;
-			white-space: nowrap;
+		.item {
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			margin-left: 30upx;
+
+			text {
+				font-size: 24upx;
+				margin-top: 4upx;
+				white-space: nowrap;
+			}
 		}
 	}
-}
 }
 </style>

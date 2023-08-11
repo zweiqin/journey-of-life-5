@@ -138,9 +138,6 @@ export default {
 					console.log(data)
 					this.checkCard = data
 				})
-				.catch((e) => {
-					console.log(e)
-				})
 		},
 		handleChooseCheckCard() {
 			this.form.bankName = this.checkCard.cardName
@@ -157,7 +154,7 @@ export default {
 						text: `${item.cardName}（${item.abbreviation}）`
 					}))
 				})
-				.catch((e) => {
+				.catch(() => {
 					this.$showToast('银行列表获取失败')
 				})
 		},

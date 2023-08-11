@@ -22,9 +22,9 @@
 				</view>
 			</view>
 
-			<view class="menus-wrapper">
+			<view v-if="list && list.length" class="menus-wrapper">
 				<view
-					v-for="item in list" :key="item.text" class="item" :class="{ active: currentMenu === item.id }"
+					v-for="item in list" :key="item.text" class="item" :class="{ active: queryParam.dressing === item.id }"
 					@click="handleChooseMenu(item)"
 				>
 					<text>{{ item.storeName }}</text>
@@ -32,7 +32,7 @@
 			</view>
 
 			<BeeStoreFilter
-				style="margin: 0;padding: 24upx 28upx 20upx;" @confirm="handleConfirmType"
+				:is-show-filter="false" style="margin: 0;padding: 24upx 28upx 20upx;"
 				@select-distance="handleSelectDistance"
 			></BeeStoreFilter>
 		</view>
@@ -70,7 +70,6 @@ export default {
 	],
 	data() {
 		return {
-			currentMenu: 1001002,
 			menus: Object.freeze(menus),
 			navs,
 			list: [],
@@ -102,9 +101,8 @@ export default {
 		},
 
 		handleChooseMenu(item) {
-			this.currentMenu = item.id
-			this.queryParam.dressing = this.currentMenu
-			this._loadData()
+			this.queryParam.dressing = item.id
+			this.getBrandList()
 		},
 
 		// 获取当前页面的分类
@@ -113,13 +111,7 @@ export default {
 				dressing: this.id
 			})
 			this.list = data
-			this.currentMenu = data[0].id
-			this.queryParam.dressing = this.currentMenu
-			this.getBrandList()
-		},
-
-		handleConfirmType(e) {
-			this.queryParam.dressing = e.id
+			data && data.length ? this.queryParam.dressing = data[0].id : this.queryParam.dressing = this.id
 			this.getBrandList()
 		},
 

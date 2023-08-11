@@ -92,7 +92,7 @@ import { J_ONE_PAY_GOODS, J_RESERVATION_PAY_GOODS } from '../../../constant'
 
 export default {
 	name: 'GoodsDetail',
-	components: { Evaluate, RecommendPane, RecommendCity, OpFooter, UParse: uParse,MoreFunctions },
+	components: { Evaluate, RecommendPane, RecommendCity, OpFooter, UParse: uParse, MoreFunctions },
 	data() {
 		return {
 			orderType: '',
@@ -104,13 +104,15 @@ export default {
 			showSpecification: false,
 			grouponRulesId: '',
 			grouponLinkId: '',
-			isMoreFunction: false,
+			distributionId: '',
+			isMoreFunction: false
 		}
 	},
 	onLoad(options) {
 		this.goodsId = options.goodsId
 		this.grouponRulesId = options.rulesId || ''
 		this.grouponLinkId = options.linkId || ''
+		this.distributionId = options.distributionId || ''
 		this.orderType = options.orderType || ''
 		this.getGoodsDetail()
 	},
@@ -188,7 +190,7 @@ export default {
 					selectedProduct: goodsInfo,
 					brandId: this.goodsDetail.brand.id
 				})
-				this.go(`/pages/store/order-detail/order-detail?orderType=${this.orderType}&rulesId=${this.grouponRulesId}&linkId=${this.grouponLinkId}`)
+				this.go(`/pages/store/order-detail/order-detail?orderType=${this.orderType}&rulesId=${this.grouponRulesId}&linkId=${this.grouponLinkId}&distributionId=${this.distributionId}`)
 			} else if (this.orderType == 2) {
 				if (!this.goodsDetail || !this.goodsDetail.info || !this.goodsDetail.brand) return this.$showToast('缺少商品信息')
 				uni.setStorageSync(J_RESERVATION_PAY_GOODS, {
@@ -230,7 +232,8 @@ export default {
 						'checked': 1,
 						'number': 1,
 						'productId': this.goodsDetail.productList[0].id,
-						'type': this.orderType
+						'type': this.orderType,
+						'distributionId': this.distributionId
 					})
 					this.$showToast('购物车添加成功')
 				} else {

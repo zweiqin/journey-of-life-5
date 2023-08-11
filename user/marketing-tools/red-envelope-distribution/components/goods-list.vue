@@ -51,7 +51,6 @@ import { getUserId, getBrandId } from '../../../../utils'
 
 export default {
 	name: 'GoodsList',
-	components: {},
 
 	data() {
 		return {
@@ -69,8 +68,6 @@ export default {
 			opGoodsList: []
 		}
 	},
-
-	computed: { },
 
 	created() {
 		this.getGoodsList()

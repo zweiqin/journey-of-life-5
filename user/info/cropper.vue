@@ -28,7 +28,6 @@ export default {
 		},
 
 		handleConfirm(e) {
-			const _this = this
 			const userInfo = uni.getStorageSync(J_USER_INFO)
 			uni.showLoading({
 				title: '图片上传中...'
@@ -63,8 +62,7 @@ export default {
 								this.$forceUpdate()
 							})
 						})
-						.catch((err) => {
-							console.log(err)
+						.catch(() => {
 							uni.hideLoading()
 						})
 
@@ -83,9 +81,3 @@ export default {
 	}
 }
 </script>
-
-<style lang="less" scoped>
-/deep/ .tui-op__btn {
-  color: #fff;
-}
-</style>

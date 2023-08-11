@@ -52,7 +52,7 @@
 
 		<view class="brand">
 			<BeeStoreFilter
-				style="margin: 0;padding: 24upx 28upx 20upx;" @confirm="handleConfirmType"
+				:is-show-filter="false" style="margin: 0;padding: 24upx 28upx 20upx;"
 				@select-distance="handleSelectDistance"
 			></BeeStoreFilter>
 			<view class="brand-list-wrapper">
@@ -97,7 +97,6 @@ export default {
 		return {
 			menusData: Object.freeze(menusData),
 			currentNavs: 0,
-			id: '',
 			queryParam: {
 				dressing: '',
 				distance: ''
@@ -105,7 +104,7 @@ export default {
 		}
 	},
 	onLoad(options) {
-		this.id = options.id
+		this.queryParam.dressing = options.id
 		this.getBrandList()
 		this.getMenus(options.id)
 	},
@@ -132,11 +131,6 @@ export default {
 				typeId: id
 			})
 			this.menusData = data
-		},
-
-		handleConfirmType(e) {
-			this.queryParam.dressing = e.id
-			this.getBrandList()
 		},
 
 		handleSelectDistance(e) {

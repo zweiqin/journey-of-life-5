@@ -63,3 +63,15 @@ export const receiveGoodsApi = (data) => RuanRequest('/order/confirm', data)
  */
 
 export const sendCommentApi = (data) => RuanRequest('/order/comment', data)
+
+// 发表评论
+export const addCommentPostApi = (data) => RuanRequest('/comment/post', data)
+
+// 评论数量
+export const getCommentCountApi = (data) => RuanRequest('/comment/count', data, 'get')
+
+// 评论列表
+export const getCommentListApi = (data) => RuanRequest('/comment/list', data, 'get')
+
+// 用户的评价列表
+export const getUserCommentApi = (data) => RuanRequest('/dtsComment/userComment', data, 'get')

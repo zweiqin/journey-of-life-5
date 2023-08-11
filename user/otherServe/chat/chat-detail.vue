@@ -5,10 +5,9 @@
 			<view class="kefu-conatiner">
 				<image class="back-icon" src="../../../static/images/store/chevron-states.png" mode="" @click="handleBack" />
 				<!-- <image class="avatar" src="/static/logo.png" mode="" /> -->
-				<image class="avatar" :src="avatar" mode="" />
+				<image class="avatar" :src="common.seamingImgUrl(avatar)" mode="" />
 				<text class="kefu-name">{{ name }}</text>
 			</view>
-			<!-- <view class="tip">回复中...</view> -->
 		</view>
 
 		<scroll-view
@@ -18,15 +17,6 @@
 		>
 			<view id="scroll-view-chat" @click="isShowBubblePopup = false">
 				<view v-for="item in groupMessages" :key="item.message.id" class="message-wrapper">
-					<!-- <view v-if="item.event === '1'" class="message-slot">
-						<view class="time-wrapper"> <text class="time">10:26</text> </view>
-						<view class="kefu-wrapper">
-						<view class="words">您好！有什么可以帮到您的吗？</view>
-						</view>
-						<view class="my-wrapper">
-						<view class="words">没有，再见</view>
-						</view>
-						</view> -->
 					<view class="message-slot">
 						<view v-if="item.message.isGroup === false">
 							<view class="time-wrapper">
@@ -34,6 +24,126 @@
 									{{ timestampToTime(item.message.sendTime) }}
 								</text>
 							</view>
+							<view v-if="item.message.type === 'serviceAssistant'">
+								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
+									<view class="words">{{ item.message.content }}</view>
+								</view>
+								<view v-else class="kefu-wrapper">
+									<view class="words">
+										<view>{{ item.message.content }}</view>
+										<view v-if="popularData">
+											<view style="padding: 20upx;color: #2d73de;text-align: center;border-bottom: 4upx solid #2d73de;">
+												热门问题
+											</view>
+											<view v-if="popularData.children && popularData.children.length">
+												<view
+													v-for="(part, count) in popularData.children" :key="part.id"
+													style="padding: 8upx;color: #4d89ff;" @click="handleClickQuestion(part)"
+												>
+													{{ `${count + 1}、${part.name}` }}
+												</view>
+											</view>
+										</view>
+									</view>
+								</view>
+							</view>
+
+							<view v-if="item.message.type === 'serviceAnswer'">
+								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
+									<view class="words">待定</view>
+								</view>
+								<view v-else class="kefu-wrapper">
+									<view class="words">
+										<view>{{ item.message.content.describe }}</view>
+										<view v-if="item.message.content.picUrl" style="margin-top: 50upx;text-align: center;">
+											<BeeAvatar
+												:width="192" :height="192" radius="10upx"
+												:src="common.seamingImgUrl(item.message.content.picUrl)"
+											></BeeAvatar>
+										</view>
+										<view v-if="item.message.content.categoryList && item.message.content.categoryList.length">
+											<view>您可以直接点击以下问题直接咨询</view>
+											<view>
+												<view
+													v-for="(part, count) in item.message.content.categoryList" :key="part.id"
+													style="display: flex;justify-content: space-between;align-items: center;padding: 4upx;border-top: 2upx solid #f0efef;"
+													@click="handleClickQuestion(part)"
+												>
+													<view>{{ `${count + 1}、${part.name}` }}</view>
+													<view>
+														<tui-icon name="arrowright" :size="18" color="#cccccc"></tui-icon>
+													</view>
+												</view>
+											</view>
+										</view>
+										<view
+											style="display: flex;justify-content: space-evenly;margin-top: 14upx;padding-top: 12upx;border-top: 2upx solid #e9e9e9;"
+										>
+											<tui-button
+												width="260rpx" height="72rpx" :size="28" plain
+												link
+												:type="item.message.content.statisticsSelect === 0 ? 'danger' : 'gray'" shape="circle"
+												@click="handleClickStatistics(0, item)"
+											>
+												<view>
+													<tui-icon
+														name="agree-fill" :size="18"
+														:color="item.message.content.statisticsSelect === 0 ? '#eb0909' : '#999999'"
+													></tui-icon>
+													<text style="margin-left: 10upx;">
+														有用（{{ item.message.content.statistics
+															? item.message.content.statistics.split(':')[0] : '0' }}）
+													</text>
+												</view>
+											</tui-button>
+											<tui-button
+												width="260rpx" height="72rpx" :size="28" plain
+												link
+												:type="item.message.content.statisticsSelect === 1 ? 'danger' : 'gray'" shape="circle"
+												@click="handleClickStatistics(1, item)"
+											>
+												<view>
+													<tui-icon
+														name="oppose-fill" :size="18"
+														:color="item.message.content.statisticsSelect === 1 ? '#eb0909' : '#999999'"
+													></tui-icon>
+													<text style="margin-left: 10upx;">
+														无用（{{ item.message.content.statistics
+															? item.message.content.statistics.split(':')[1] : '0' }}）
+													</text>
+												</view>
+											</tui-button>
+										</view>
+									</view>
+								</view>
+							</view>
+
+							<view v-if="item.message.type === 'serviceReply'">
+								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
+									<view class="words">待定</view>
+								</view>
+								<view v-else class="kefu-wrapper">
+									<view class="words">
+										<view v-if="item.message.content && item.message.content.length">
+											<view>您是不是想问（可以点击以下问题咨询）：</view>
+											<view style="margin-top: 16upx;">
+												<view
+													v-for="(part, count) in item.message.content" :key="part.id"
+													style="display: flex;justify-content: space-between;align-items: center;padding: 4upx;border-top: 2upx solid #f0efef;"
+													@click="handleClickQuestion(part)"
+												>
+													<view>{{ `${count + 1}、${part.name}` }}</view>
+													<view>
+														<tui-icon name="arrowright" :size="18" color="#cccccc"></tui-icon>
+													</view>
+												</view>
+											</view>
+										</view>
+										<view v-else>我还在学习中，可以换个方式和我讲讲吗？</view>
+									</view>
+								</view>
+							</view>
+
 							<view v-if="item.message.type === 'text'">
 								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
 									<view class="words">{{ item.message.content }}</view>
@@ -47,16 +157,16 @@
 								<view v-if="item.message.fromUser.id === userInfo.userId" class="my-wrapper">
 									<view class="image">
 										<image
-											style="width: 350upx;" class="img" :src="common.seamingImgUrl(item.message.content)" mode="widthFix"
-											@click="preview(common.seamingImgUrl(item.message.content))"
+											style="width: 350upx;" class="img" :src="common.seamingImgUrl(item.message.content)"
+											mode="widthFix" @click="preview(common.seamingImgUrl(item.message.content))"
 										/>
 									</view>
 								</view>
 								<view v-else class="kefu-wrapper">
 									<view class="image">
 										<image
-											style="width: 350upx;" class="img" :src="common.seamingImgUrl(item.message.content)" mode="widthFix"
-											@click="preview(common.seamingImgUrl(item.message.content))"
+											style="width: 350upx;" class="img" :src="common.seamingImgUrl(item.message.content)"
+											mode="widthFix" @click="preview(common.seamingImgUrl(item.message.content))"
 										/>
 									</view>
 								</view>
@@ -117,21 +227,35 @@
 
 		<view class="op-footer">
 			<view class="send-wrapper">
-				<input v-model="words" type="text" placeholder="请输入..." confirm-type="send" @confirm="handleSendMessage" />
+				<tui-input
+					v-model="words" label="" placeholder="请输入..." type="text"
+					confirm-type="发送" padding="0"
+					style="width: 100%;" @confirm="handleSendMessage"
+				>
+					<template #right>
+						<tui-button type="warning" width="120rpx" height="50rpx" shape="circle" @click="handleSendMessage">
+							发送
+						</tui-button>
+					</template>
+				</tui-input>
 			</view>
 
 			<view class="upload-container">
 				<tui-bubble-popup
 					ref="refBubblePopup" :show="isShowBubblePopup" :mask="false" position="absolute"
-					direction="bottom"
-					width="180rpx" right="0" top="0rpx" translate-y="-110%"
-					triangle-right="28rpx" triangle-bottom="-22rpx"
+					direction="bottom" width="180rpx" right="0" top="0rpx"
+					translate-y="-110%" triangle-right="28rpx"
+					triangle-bottom="-22rpx"
 				>
 					<view class="tui-menu-item" @click="handleSendImg">发送图片</view>
 					<view class="tui-menu-item" @click="handlePopup('Order')">发送订单</view>
 					<view class="tui-menu-item" @click="handlePopup('Goods')">发送商品</view>
+					<view v-if="!Number(chat)" class="tui-menu-item" @click="handlePopup('Person')">转人工</view>
 				</tui-bubble-popup>
-				<image class="upload" src="../../../static/images/icon/add.png" mode="" @click="isShowBubblePopup = !isShowBubblePopup" />
+				<image
+					class="upload" src="../../../static/images/icon/add.png" mode=""
+					@click="isShowBubblePopup = !isShowBubblePopup"
+				/>
 			</view>
 		</view>
 		<tui-bottom-popup :show="isShowOrderPopup" @close="handleClosePopup('Order')">
@@ -140,6 +264,9 @@
 		<tui-bottom-popup :show="isShowGoodsPopup" @close="handleClosePopup('Goods')">
 			<GoodsList v-if="isShowGoodsPopup" @send="handleSend"></GoodsList>
 		</tui-bottom-popup>
+		<tui-bottom-popup :show="isShowPersonPopup" @close="handleClosePopup('Person')">
+			<PersonList v-if="isShowPersonPopup" @send="handleSend"></PersonList>
+		</tui-bottom-popup>
 		<tui-toast ref="toast"></tui-toast>
 	</view>
 </template>
@@ -147,9 +274,7 @@
 <script>
 import OrderList from './components/order-list.vue'
 import GoodsList from './components/goods-list.vue'
-import {
-	BASE_WS_API
-} from '../../../config'
+import PersonList from './components/person-list.vue'
 import {
 	getUserId,
 	timestampToTime
@@ -157,10 +282,11 @@ import {
 import {
 	J_USER_INFO
 } from '../../../constant'
+import { getCustomerPopularApi, getCustomerAnswerSelectApi, getCustomerAnswerStatisticsApi, getcustomerSendingApi } from '../../../api/user'
 
 export default {
 	name: 'ChatDetail',
-	components: { OrderList, GoodsList },
+	components: { OrderList, GoodsList, PersonList },
 	data() {
 		return {
 			isRefresherTriggered: false,
@@ -173,62 +299,53 @@ export default {
 			scrollTop: '',
 			isShowBubblePopup: false,
 			isShowOrderPopup: false,
-			isShowGoodsPopup: false
+			isShowGoodsPopup: false,
+
+			// 客服助手
+			popularData: '',
+			isShowPersonPopup: false
 		}
 	},
 	onLoad(options) {
-		this.chat = options.chat
-		this.name = options.name
-		this.avatar = options.avatar
-		this.$store.dispatch('customerService/queryChatMessage', {
-			foUserId: getUserId(),
-			toUserId: this.chat
-		}).then((res) => {
-			console.log(res)
-			const tempDate = Date.now()
-			this.groupMessages = res.map((item) => ({
-				event: '',
-				message: {
-					id: item.sendTime,
-					status: 'succeed',
-					type: item.msgType,
-					sendTime: item.sendTime,
-					content: item.contentText,
-					toContactId: item.toUserId,
-					fileSize: 0,
-					fileName: '',
-					fromUser: {
-						id: item.fromUserId,
-						displayName: item.fromUserName,
-						avatar: item.fromAvatarImage
-					},
-					isGroup: false
-				}
-			})).concat([ {
-				event: '',
-				message: {
-					id: tempDate,
-					status: 'succeed',
-					type: 'text',
-					sendTime: tempDate,
-					content: '您好，请问有什么能够帮到您？',
-					toContactId: getUserId(),
-					fileSize: 0,
-					fileName: '',
-					fromUser: {
-						id: this.chat,
-						displayName: '客服',
-						avatar: '/static/logo.png'
-					},
-					isGroup: false
-				}
-			} ])
-			this.scrollToBottom()
-			this.$store.dispatch('customerService/joinCustomerServiceChat', {
-				ref: this,
-				wsHandle: ''
+		if (options.chat === 'serviceAssistant') {
+			this.chat = options.chat
+			this.name = '客服助手'
+			this.avatar = require('../../../static/images/icon/kefu.png')
+			uni.showLoading({
+				title: '加载中'
 			})
-		})
+			getCustomerPopularApi({ categoryId: 5 })
+				.then((res) => {
+					uni.hideLoading()
+					this.popularData = res.data
+					const tempDate = Date.now()
+					this.groupMessages = [ {
+						event: '',
+						message: {
+							id: tempDate,
+							status: 'succeed',
+							type: 'serviceAssistant',
+							sendTime: tempDate,
+							content: '您好，很高兴为您服务，我是智能客服助手。您可以通过下方问题列表、输入框旁的按钮、以及在输入框内输入关键词快速获得帮助。',
+							toContactId: getUserId(),
+							fileSize: 0,
+							fileName: '',
+							fromUser: {
+								id: 0,
+								displayName: '客服',
+								avatar: '/static/logo.png'
+							},
+							isGroup: false
+						}
+					} ]
+					this.scrollToBottom()
+				})
+				.catch((e) => {
+					uni.hideLoading()
+				})
+		} else {
+			this.initWSChat({ chat: options.chat, name: options.name, avatar: options.avatar })
+		}
 	},
 	beforeDestroy() {
 		this.$store.dispatch('customerService/joinCustomerServiceChat', {
@@ -240,6 +357,61 @@ export default {
 	},
 	methods: {
 		timestampToTime,
+		initWSChat(options) {
+			this.chat = options.chat
+			this.name = options.name
+			this.avatar = options.avatar
+			this.$store.dispatch('customerService/queryChatMessage', {
+				foUserId: getUserId(),
+				toUserId: this.chat
+			}).then((res) => {
+				console.log(res)
+				const tempDate = Date.now()
+				this.groupMessages = res.map((item) => ({
+					event: '',
+					message: {
+						id: item.sendTime,
+						status: 'succeed',
+						type: item.msgType,
+						sendTime: item.sendTime,
+						content: item.contentText,
+						toContactId: item.toUserId,
+						fileSize: 0,
+						fileName: '',
+						fromUser: {
+							id: item.fromUserId,
+							displayName: item.fromUserName,
+							avatar: item.fromAvatarImage
+						},
+						isGroup: false
+					}
+				})).concat(this.groupMessages)
+					.concat([ {
+						event: '',
+						message: {
+							id: tempDate,
+							status: 'succeed',
+							type: 'text',
+							sendTime: tempDate,
+							content: '您好，请问有什么能够帮到您？',
+							toContactId: getUserId(),
+							fileSize: 0,
+							fileName: '',
+							fromUser: {
+								id: this.chat,
+								displayName: '客服',
+								avatar: '/static/logo.png'
+							},
+							isGroup: false
+						}
+					} ])
+				this.scrollToBottom()
+				this.$store.dispatch('customerService/joinCustomerServiceChat', {
+					ref: this,
+					wsHandle: ''
+				})
+			})
+		},
 		// onOpenInfo() {
 		// 	console.log('onOpenInfo连接成功')
 		// },
@@ -306,6 +478,72 @@ export default {
 			console.log('onOpen连接成功')
 		},
 
+		handleClickQuestion(obj) {
+			uni.showLoading({
+				title: '请稍等~'
+			})
+			getCustomerAnswerSelectApi({ categoryId: obj.id })
+				.then((res) => {
+					uni.hideLoading()
+					const tempDate = Date.now()
+					this.groupMessages = this.groupMessages.concat([{
+						event: '',
+						message: {
+							id: tempDate,
+							status: 'succeed',
+							type: 'serviceAssistant',
+							sendTime: tempDate,
+							content: `【问题】${obj.name}`,
+							toContactId: 0,
+							fileSize: 0,
+							fileName: '',
+							fromUser: {
+								id: this.userInfo.userId,
+								displayName: this.userInfo.nickName,
+								avatar: this.userInfo.avatarUrl
+							},
+							isGroup: false
+						}
+					}, {
+						event: '',
+						message: {
+							id: tempDate,
+							status: 'succeed',
+							type: 'serviceAnswer',
+							sendTime: tempDate + 1,
+							content: {
+								...res.data,
+								'statisticsSelect': '',
+								'questionSelectId': obj.id
+							},
+							toContactId: getUserId(),
+							fileSize: 0,
+							fileName: '',
+							fromUser: {
+								id: 0,
+								displayName: '客服',
+								avatar: '/static/logo.png'
+							},
+							isGroup: false
+						}
+					}])
+					this.scrollToBottom()
+				})
+				.catch((e) => {
+					uni.hideLoading()
+				})
+		},
+		handleClickStatistics(type, item) {
+			getCustomerAnswerStatisticsApi({ feedbackId: item.message.content.id, type })
+				.then((result) => {
+					item.message.content = { ...item.message.content, statisticsSelect: type }
+					getCustomerAnswerSelectApi({ categoryId: item.message.content.questionSelectId })
+						.then((res) => {
+							item.message.content = { ...item.message.content, statistics: res.data.statistics }
+						})
+				})
+		},
+
 		send(sendMsg) {
 			if (typeof sendMsg === 'string') {
 				// send(sendMsg)
@@ -341,7 +579,6 @@ export default {
 
 		// 点击发送消息
 		handleSendMessage() {
-			// console.log(this, this.words)
 			if (!this.words) {
 				return uni.showToast({
 					title: '请输入消息',
@@ -350,44 +587,82 @@ export default {
 				})
 			}
 			const tempDate = Date.now()
-			// this.send({
-			// 	event: '',
-			// 	message: {
-			// 		id: tempDate,
-			// 		status: 'succeed',
-			// 		type: 'text',
-			// 		sendTime: tempDate,
-			// 		content: this.words,
-			// 		toContactId: this.chat,
-			// 		fileSize: 0,
-			// 		fileName: '',
-			// 		fromUser: {
-			// 			id: this.userInfo.userId,
-			// 			displayName: this.userInfo.nickName,
-			// 			avatar: this.userInfo.avatarUrl
-			// 		},
-			// 		isGroup: true
-			// 	}
-			// })
-			this.$store.dispatch('customerService/addChatMessage', {
-				userId: this.userInfo.userId,
-				messageDetails: {
-					contentText: this.words,
-					fromAvatarImage: this.userInfo.avatarUrl,
-					fromUserName: this.userInfo.nickName,
-					fromUserId: this.userInfo.userId,
-					sendTime: tempDate,
-					toUserId: this.chat,
-					toUsername: '',
-					toAvatarImage: '',
-					msgType: 'text',
-					exp: ''
-				}
-			}).then((res) => {
-				this.send({
-					status: 13140,
-					message: '发送消息',
-					data: {
+			if (this.chat === 'serviceAssistant') {
+				this.groupMessages = this.groupMessages.concat([ {
+					event: '',
+					message: {
+						id: tempDate,
+						status: 'succeed',
+						type: 'serviceAssistant',
+						sendTime: tempDate,
+						content: this.words,
+						toContactId: 0,
+						fileSize: 0,
+						fileName: '',
+						fromUser: {
+							id: this.userInfo.userId,
+							displayName: this.userInfo.nickName,
+							avatar: this.userInfo.avatarUrl
+						},
+						isGroup: false
+					}
+				} ])
+				uni.showLoading({
+					title: '请稍等~'
+				})
+				getcustomerSendingApi({ keywords: this.words })
+					.then((res) => {
+						uni.hideLoading()
+						const tempDate = Date.now()
+						this.groupMessages = this.groupMessages.concat([ {
+							event: '',
+							message: {
+								id: tempDate,
+								status: 'succeed',
+								type: 'serviceReply',
+								sendTime: tempDate + 1,
+								content: res.data,
+								toContactId: getUserId(),
+								fileSize: 0,
+								fileName: '',
+								fromUser: {
+									id: 0,
+									displayName: '客服',
+									avatar: '/static/logo.png'
+								},
+								isGroup: false
+							}
+						} ])
+						this.scrollToBottom()
+						this.words = ''
+					})
+					.catch((e) => {
+						this.words = ''
+						uni.hideLoading()
+					})
+			} else {
+				// this.send({
+				// 	event: '',
+				// 	message: {
+				// 		id: tempDate,
+				// 		status: 'succeed',
+				// 		type: 'text',
+				// 		sendTime: tempDate,
+				// 		content: this.words,
+				// 		toContactId: this.chat,
+				// 		fileSize: 0,
+				// 		fileName: '',
+				// 		fromUser: {
+				// 			id: this.userInfo.userId,
+				// 			displayName: this.userInfo.nickName,
+				// 			avatar: this.userInfo.avatarUrl
+				// 		},
+				// 		isGroup: true
+				// 	}
+				// })
+				this.$store.dispatch('customerService/addChatMessage', {
+					userId: this.userInfo.userId,
+					messageDetails: {
 						contentText: this.words,
 						fromAvatarImage: this.userInfo.avatarUrl,
 						fromUserName: this.userInfo.nickName,
@@ -399,9 +674,26 @@ export default {
 						msgType: 'text',
 						exp: ''
 					}
+				}).then((res) => {
+					this.send({
+						status: 13140,
+						message: '发送消息',
+						data: {
+							contentText: this.words,
+							fromAvatarImage: this.userInfo.avatarUrl,
+							fromUserName: this.userInfo.nickName,
+							fromUserId: this.userInfo.userId,
+							sendTime: tempDate,
+							toUserId: this.chat,
+							toUsername: '',
+							toAvatarImage: '',
+							msgType: 'text',
+							exp: ''
+						}
+					})
+					this.words = ''
 				})
-				this.words = ''
-			})
+			}
 		},
 
 		// 点击选择图片
@@ -497,6 +789,8 @@ export default {
 				this.isShowOrderPopup = true
 			} else if (meaning === 'Goods') {
 				this.isShowGoodsPopup = true
+			} else if (meaning === 'Person') {
+				this.isShowPersonPopup = true
 			}
 		},
 		handleClosePopup(meaning) {
@@ -504,50 +798,21 @@ export default {
 				this.isShowOrderPopup = false
 			} else if (meaning === 'Goods') {
 				this.isShowGoodsPopup = false
+			} else if (meaning === 'Person') {
+				this.isShowPersonPopup = false
 			}
 		},
 		handleSend(obj) {
 			this.isShowGoodsPopup = false
 			this.isShowOrderPopup = false
-			const tempDate = Date.now()
-			this.$store.dispatch('customerService/addChatMessage', {
-				userId: this.userInfo.userId,
-				messageDetails: {
-					contentText: obj.msg,
-					fromAvatarImage: this.userInfo.avatarUrl,
-					fromUserName: this.userInfo.nickName,
-					fromUserId: this.userInfo.userId,
-					sendTime: tempDate,
-					toUserId: this.chat,
-					toUsername: '',
-					toAvatarImage: '',
-					msgType: obj.meaning,
-					exp: ''
-				}
-			}).then((res) => {
-				// this.send({
-				// 	event: '',
-				// 	message: {
-				// 		id: tempDate,
-				// 		status: 'succeed',
-				// 		type: obj.meaning,
-				// 		sendTime: tempDate,
-				// 		content: obj.msg,
-				// 		toContactId: this.chat,
-				// 		fileSize: 0,
-				// 		fileName: '',
-				// 		fromUser: {
-				// 			id: this.userInfo.userId,
-				// 			displayName: this.userInfo.nickName,
-				// 			avatar: this.userInfo.avatarUrl
-				// 		},
-				// 		isGroup: true
-				// 	}
-				// })
-				this.send({
-					status: 13140,
-					message: '发送消息',
-					data: {
+			this.isShowPersonPopup = false
+			if (obj.meaning === 'person') {
+				this.initWSChat({ chat: obj.msg.friendId, name: obj.msg.displayName, avatar: obj.msg.avatar })
+			} else {
+				const tempDate = Date.now()
+				this.$store.dispatch('customerService/addChatMessage', {
+					userId: this.userInfo.userId,
+					messageDetails: {
 						contentText: obj.msg,
 						fromAvatarImage: this.userInfo.avatarUrl,
 						fromUserName: this.userInfo.nickName,
@@ -559,20 +824,53 @@ export default {
 						msgType: obj.meaning,
 						exp: ''
 					}
+				}).then((res) => {
+					// this.send({
+					// 	event: '',
+					// 	message: {
+					// 		id: tempDate,
+					// 		status: 'succeed',
+					// 		type: obj.meaning,
+					// 		sendTime: tempDate,
+					// 		content: obj.msg,
+					// 		toContactId: this.chat,
+					// 		fileSize: 0,
+					// 		fileName: '',
+					// 		fromUser: {
+					// 			id: this.userInfo.userId,
+					// 			displayName: this.userInfo.nickName,
+					// 			avatar: this.userInfo.avatarUrl
+					// 		},
+					// 		isGroup: true
+					// 	}
+					// })
+					this.send({
+						status: 13140,
+						message: '发送消息',
+						data: {
+							contentText: obj.msg,
+							fromAvatarImage: this.userInfo.avatarUrl,
+							fromUserName: this.userInfo.nickName,
+							fromUserId: this.userInfo.userId,
+							sendTime: tempDate,
+							toUserId: this.chat,
+							toUsername: '',
+							toAvatarImage: '',
+							msgType: obj.meaning,
+							exp: ''
+						}
+					})
+					uni.showToast({
+						title: '发送成功'
+					})
+					uni.hideLoading()
 				})
-				uni.showToast({
-					title: '图片上传成功'
-				})
-				uni.hideLoading()
-			})
+			}
 		},
 
 		// 回退
 		handleBack() {
 			uni.navigateBack()
-			// uni.navigateTo({
-			// 	url: '/user/chat/chat'
-			// })
 		},
 
 		handleScrolltoupper(e) {
@@ -669,8 +967,8 @@ export default {
 			}
 
 			.avatar {
-				width: 80upx;
-				height: 80upx;
+				width: 60upx;
+				height: 60upx;
 				border-radius: 50%;
 				margin: 0 16upx 0 32upx;
 			}
@@ -679,17 +977,6 @@ export default {
 				color: #3a3629;
 				font-size: 28upx;
 			}
-		}
-
-		.tip {
-			text-align: center;
-			line-height: 56upx;
-			width: 140upx;
-			height: 56upx;
-			border-radius: 100upx;
-			background-color: #f3f3f2;
-			font-size: 24upx;
-			color: #8f8d85;
 		}
 	}
 
@@ -729,6 +1016,7 @@ export default {
 
 		.kefu-wrapper {
 			.words {
+				margin-right: 48upx;
 				float: left;
 				border-radius: 0px 24px 24px 24px;
 			}
@@ -750,6 +1038,8 @@ export default {
 		}
 
 		.my-wrapper {
+			margin-left: 48upx;
+
 			.words {
 				float: right;
 				background-color: #fff1ca;
@@ -794,12 +1084,9 @@ export default {
 			height: 80upx;
 			display: flex;
 			align-items: center;
-			padding: 20upx 30upx;
+			padding: 10upx 30upx;
 			box-sizing: border-box;
 
-			input {
-				width: 100%;
-			}
 		}
 
 		.upload-container {
@@ -816,14 +1103,15 @@ export default {
 				height: 64upx;
 				border-radius: 50%;
 				overflow: hidden;
-				margin-left: 32upx;
+				// margin-left: 32upx;
 				flex-shrink: 0;
 				background-color: #fff;
 			}
 		}
 	}
+
 	/deep/ .tui-popup-class.tui-bottom-popup {
-		height: 85vh!important;
+		height: 85vh !important;
 	}
 }
 </style>

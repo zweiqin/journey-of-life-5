@@ -42,9 +42,7 @@ export default {
 		handelClickBack() {
 			this.$switchTab('/pages/index/index')
 		}
-	},
-	onPageScroll(e) { },
-	onReachBottom() { }
+	}
 }
 </script>
 

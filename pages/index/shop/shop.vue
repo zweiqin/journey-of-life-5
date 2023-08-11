@@ -276,8 +276,6 @@ export default {
 		} else {
 			this.translatey = 358 - this.scrollTop * 2
 		}
-		// console.log(e.scrollTop)
-		// console.log(this.translatey)
 	},
 
 	onReachBottom() {

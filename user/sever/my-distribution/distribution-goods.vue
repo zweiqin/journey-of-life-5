@@ -5,44 +5,50 @@
 		</view>
 		<tui-tabs
 			item-width="50%" selected-color="#000000" bold slider-bg-color="#ff0000"
-			:tabs="[{ name: '已选择' }, { name: '未选择' }]" :current-tab="currentTab"
-			@change="handleChangeTab"
+			:tabs="[{ name: '已选择' }, { name: '未选择' }]" :current-tab="currentTab" @change="handleChangeTab"
 		></tui-tabs>
-		<view>
-			<tui-input v-model="query.goodsName" label="商品名称" placeholder="输入商品名称进行搜索" clearable>
-				<template #right>
-					<tui-button type="warning" width="120rpx" height="50rpx" shape="circle" @click="handleSearchGoods">搜索</tui-button>
-				</template>
-			</tui-input>
-		</view>
-		<view style="margin: 20upx 30upx;">
+		<view style="margin: 0 0 20upx;">
 			<view v-if="distributionGoods && distributionGoods.length">
-				<view v-for="item in distributionGoods" :key="item.id" style="padding-bottom: 35upx;">
-					<DistributedGoods :goods-data="item">
-						<view v-if="currentTab === 0" style="display: flex;justify-content: flex-end;padding: 0 20rpx 20rpx;">
+				<view style="margin-bottom: 4upx;">
+					<tui-input v-model="query.goodsName" label="商品名称" placeholder="输入商品名称进行搜索" clearable>
+						<template #right>
 							<tui-button
-								type="danger" width="180rpx" height="60rpx" style="border-radius: 50rpx;"
-								@click="handleDistributeGoods(item)"
+								type="warning" width="120rpx" height="50rpx" shape="circle"
+								@click="handleSearchGoods"
 							>
-								分销商品
+								搜索
 							</tui-button>
-							<tui-button
-								type="danger" width="180rpx" height="60rpx" margin="0 0 0 20upx"
-								style="border-radius: 50rpx;"
-								@click="handleSelectGoods(item, 1)"
-							>
-								取消选择
-							</tui-button>
-						</view>
-						<view v-else-if="currentTab === 1" style="display: flex;justify-content: flex-end;padding: 0 20rpx 20rpx;">
-							<tui-button
-								type="danger" width="180rpx" height="60rpx" style="border-radius: 50rpx;"
-								@click="handleSelectGoods(item, 0)"
-							>
-								立即选取
-							</tui-button>
-						</view>
-					</DistributedGoods>
+						</template>
+					</tui-input>
+				</view>
+				<view style="margin: 0 30upx;">
+					<view v-for="item in distributionGoods" :key="item.id" style="padding-bottom: 35upx;">
+						<DistributedGoods :goods-data="item">
+							<view v-if="currentTab === 0" style="display: flex;justify-content: flex-end;padding: 0 20rpx 20rpx;">
+								<tui-button
+									type="danger" width="180rpx" height="60rpx" style="border-radius: 50rpx;"
+									@click="handleDistributeGoods(item)"
+								>
+									分销商品
+								</tui-button>
+								<tui-button
+									type="danger" width="180rpx" height="60rpx" margin="0 0 0 20upx"
+									style="border-radius: 50rpx;"
+									@click="handleSelectGoods(item, 1)"
+								>
+									取消选择
+								</tui-button>
+							</view>
+							<view v-else-if="currentTab === 1" style="display: flex;justify-content: flex-end;padding: 0 20rpx 20rpx;">
+								<tui-button
+									type="danger" width="180rpx" height="60rpx" style="border-radius: 50rpx;"
+									@click="handleSelectGoods(item, 0)"
+								>
+									立即选取
+								</tui-button>
+							</view>
+						</DistributedGoods>
+					</view>
 				</view>
 			</view>
 			<view v-else>
@@ -85,7 +91,7 @@ export default {
 			totalPages: 0,
 			status: 'none',
 			distributeGoodsCode: '',
-			qrcodeUrl: 'https://h5.jfcmei.com/#/pages/prod/prod?goodsId=',
+			qrcodeUrl: 'https://h5.jfcmei.com/#/pages/store/goods-detail/goods-detail?orderType=1&goodsId=',
 			distributeGoodsOptions: '',
 			tempDistributeGoodsObj: {}
 		}
@@ -222,7 +228,6 @@ export default {
 			}
 		}
 	},
-	onPageScroll(e) { },
 	onReachBottom() {
 		// if (this.query.page >= this.totalPages) {
 		// 	this.status = 'no-more'
@@ -243,5 +248,10 @@ export default {
 	width: 100%;
 	background: #f6f6f6;
 
+}
+
+.generate-code-container {
+	position: absolute;
+	top: -10000upx;
 }
 </style>

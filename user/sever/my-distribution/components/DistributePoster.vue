@@ -96,7 +96,7 @@
 						<text>保存</text>
 					<!-- #endif -->
 					</button>
-					<button style="margin-left: 20upx;font-size: 26upx;" @click="$copy(`https://h5.jfcmei.com/#/pages/prod/prod?goodsId=${message.distributeGoodsOptions}`)">
+					<button style="margin-left: 20upx;font-size: 26upx;" @click="$copy(`https://h5.jfcmei.com/#/pages/store/goods-detail/goods-detail?orderType=1&goodsId=${message.distributeGoodsOptions}`)">
 						<text>复制链接</text>
 					</button>
 				</view>

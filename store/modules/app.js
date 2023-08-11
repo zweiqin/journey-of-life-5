@@ -1,11 +1,12 @@
-import { CHANGE_IS_IN_MINIPROGRAM, CHANGE_SYSTERM_INFO } from './type'
+import { CHANGE_IS_IN_MINIPROGRAM, CHANGE_SYSTERM_INFO, CHANGE_USER_PAGE_SCROLL } from './type'
 
 export default {
 	namespaced: true,
 	state() {
 		return {
 			isInMiniProgram: false,
-			systermInfo: {}
+			systermInfo: {},
+			userScrollTop: 0
 		}
 	},
 
@@ -18,6 +19,10 @@ export default {
 
 		[CHANGE_SYSTERM_INFO](state, system) {
 			state.systermInfo = system
+		},
+
+		[CHANGE_USER_PAGE_SCROLL](state, data) {
+			state[data.field] = data.scrollTop
 		}
 	},
 
@@ -35,6 +40,9 @@ export default {
 					}
 				})
 			})
+		},
+		changeUserPageScroll({ commit }, data) {
+			commit(CHANGE_USER_PAGE_SCROLL, data)
 		}
 	}
 }

@@ -51,7 +51,6 @@
 </template>
 
 <script>
-import { getGoodsTypeApi } from '.././../../../api/user'
 import { getUserId, getBrandId } from '../../../../utils'
 
 export default {
