@@ -1,12 +1,7 @@
 <template>
 	<view class="information-sentry-container">
 		<div class="header">
-			<img
-				class="back"
-				:src="common.seamingImgUrl('qt4o7j0jglkweyicy1fw.png')"
-				alt=""
-				@click="handleBack"
-			/>
+			<img class="back" :src="common.seamingImgUrl('qt4o7j0jglkweyicy1fw.png')" alt="" @click="handleBack" />
 			<h2
 				:style="{
 					flex: searchActive ? 'none' : 1
@@ -15,18 +10,10 @@
 				信息哨兵
 			</h2>
 			<view class="search" :class="{ active: searchActive }">
-				<img
-					class="icon"
-					:src="common.seamingImgUrl('lsomfvddr0bz7fdsltht.png')"
-					alt=""
-					@click="handleSearch"
-				/>
+				<img class="icon" :src="common.seamingImgUrl('lsomfvddr0bz7fdsltht.png')" alt="" @click="handleSearch" />
 
 				<input
-					ref="inputRef"
-					class="search-input"
-					placeholder="输入手机号昵称搜索"
-					type="text"
+					ref="inputRef" class="search-input" placeholder="输入手机号昵称搜索" type="text"
 					:value="query.search"
 					@input="handleSearchFn"
 				/>
@@ -35,10 +22,7 @@
 
 		<view class="navs">
 			<view
-				v-for="item in navs"
-				:key="item.label"
-				class="item"
-				:class="{ active: query.status === item.value }"
+				v-for="item in navs" :key="item.label" class="item" :class="{ active: query.status === item.value }"
 				@click="changeCurrentTab(item.value)"
 			>
 				{{ item.label }}
@@ -47,58 +31,39 @@
 
 		<view v-show="list.length" class="main">
 			<view v-show="query.status === 1">
-				<CollectPane
-					v-for="item in list"
-					:key="item.id"
-					:info="item"
-					@success="handleConversionSuccess"
-				></CollectPane>
+				<CollectPane v-for="item in list" :key="item.id" :info="item" @success="handleConversionSuccess"></CollectPane>
 			</view>
 
 			<view v-show="query.status === 2">
-				<ConversionPane
-					v-for="item in list"
-					:key="item.id"
-					:info="item"
-					@success="handleConversionSuccess"
-				></ConversionPane>
+				<ConversionPane v-for="item in list" :key="item.id" :info="item" @success="handleConversionSuccess">
+				</ConversionPane>
 			</view>
 
 			<view v-show="query.status === 3">
-				<PursueSalePane
-					v-for="item in list"
-					:key="item.id"
-					:info="item"
-					@success="handleConversionSuccess"
-				></PursueSalePane>
+				<PursueSalePane v-for="item in list" :key="item.id" :info="item" @success="handleConversionSuccess">
+				</PursueSalePane>
 			</view>
 
 			<view v-show="query.status === 4">
-				<StanPane
-					v-for="item in list"
-					:key="item.id"
-					:info="item"
-					@success="handleConversionSuccess"
-				></StanPane>
+				<StanPane v-for="item in list" :key="item.id" :info="item" @success="handleConversionSuccess"></StanPane>
 			</view>
 		</view>
 
-		<NoData v-show="!list.length"></NoData>
+		<view v-if="!list.length">
+			<tui-no-data
+				:img-url="common.seamingImgUrl('ncs28ma9a3ac5ufebzsw.png')" img-width="400" :fixed="false"
+				style="margin-top: 50upx;"
+			>
+				暂无数据
+			</tui-no-data>
+		</view>
 
 		<img
-			v-show="query.status !== 4"
-			class="add-icon"
-			:src="common.seamingImgUrl('8osmldqpu5nthwxlwha9.png')"
-			alt=""
+			v-show="query.status !== 4" class="add-icon" :src="common.seamingImgUrl('8osmldqpu5nthwxlwha9.png')" alt=""
 			@click="handleToAdd"
 		/>
 
-		<AddPopup
-			ref="addPopupRef"
-			:words="words"
-			:type="query.status"
-			:list="list"
-		></AddPopup>
+		<AddPopup ref="addPopupRef" :words="words" :type="query.status" :list="list"></AddPopup>
 	</view>
 </template>
 
@@ -110,7 +75,6 @@ import PursueSalePane from './components/pursue-sale-pane.vue'
 import StanPane from './components/stan-pane.vue'
 import { getMsgSentryListApi, getWordsApi } from '../../api/user'
 import { getUserId } from '../../utils'
-import NoData from '../../components/no-data'
 import { WORDS_LIST, J_SELECT_WORDS } from '../../constant'
 import AddPopup from './components/add-popup.vue'
 const { debounce } = require('../../utils/util')
@@ -122,7 +86,6 @@ export default {
 		ConversionPane,
 		PursueSalePane,
 		StanPane,
-		NoData,
 		AddPopup
 	},
 	data() {
@@ -224,80 +187,81 @@ export default {
 @import "../../style/var.less";
 
 .information-sentry-container {
-  padding: 40upx 34upx;
-  box-sizing: border-box;
-  .header {
-    .flex();
+	padding: 40upx 34upx;
+	box-sizing: border-box;
 
-    .back {
-      width: 48upx;
-    }
+	.header {
+		.flex();
 
-    h2 {
-      flex: 1;
-      font-weight: normal;
-      font-size: 32upx;
-      color: @c0;
-      margin-left: 34upx;
-      flex-shrink: 0;
-    }
+		.back {
+			width: 48upx;
+		}
 
-    .search {
-      position: relative;
-      width: 32upx;
-      display: flex;
-      align-items: center;
-      margin-left: 10px;
-      transition: all 350ms;
-      overflow: hidden;
+		h2 {
+			flex: 1;
+			font-weight: normal;
+			font-size: 32upx;
+			color: @c0;
+			margin-left: 34upx;
+			flex-shrink: 0;
+		}
 
-      &.active {
-        background-color: #efefef;
-        padding: 2px 10px;
-        border-radius: 20px;
-        overflow: auto;
-        flex: 1;
+		.search {
+			position: relative;
+			width: 32upx;
+			display: flex;
+			align-items: center;
+			margin-left: 10px;
+			transition: all 350ms;
+			overflow: hidden;
 
-        .icon {
-          margin-right: 10px;
-        }
+			&.active {
+				background-color: #efefef;
+				padding: 2px 10px;
+				border-radius: 20px;
+				overflow: auto;
+				flex: 1;
 
-        .search-input {
-          flex: 1;
-        }
-      }
+				.icon {
+					margin-right: 10px;
+				}
 
-      .icon {
-        width: 32upx;
-      }
+				.search-input {
+					flex: 1;
+				}
+			}
 
-      .search-input {
-        width: 0;
-      }
-    }
-  }
+			.icon {
+				width: 32upx;
+			}
 
-  .navs {
-    padding: 34upx;
-    .flex();
-    color: @c9;
-    font-size: 28upx;
+			.search-input {
+				width: 0;
+			}
+		}
+	}
 
-    .item {
-      transition: all 350ms;
+	.navs {
+		padding: 34upx;
+		.flex();
+		color: @c9;
+		font-size: 28upx;
 
-      &.active {
-        color: #ff8f1f;
-      }
-    }
-  }
+		.item {
+			transition: all 350ms;
 
-  .add-icon {
-    position: fixed;
-    right: 30px;
-    bottom: 30px;
-    width: 60px;
-    height: 60px;
-  }
+			&.active {
+				color: #ff8f1f;
+			}
+		}
+	}
+
+	.add-icon {
+		position: fixed;
+		right: 30px;
+		bottom: 30px;
+		width: 60px;
+		height: 60px;
+	}
 }
 </style>

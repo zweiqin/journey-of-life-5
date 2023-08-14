@@ -53,11 +53,11 @@
 					</view>
 				</view>
 				<tui-tabs
-					class="tabNav" :class="{ 'sticky-fixed': isTabFixed }" color="#000" selected-color="#000"
-					size="35" :is-fixed="isTabFixed" z-index="2"
+					:class="{ 'sticky-fixed': isTabFixed }" color="#000" selected-color="#000"
+					size="35" :is-fixed="isTabFixed"
 					slider-bg-color="#FB5D5D" bold
 					:tabs="[{ name: '商品' }, { name: '团购' }, { name: '预约' }, { name: '秒杀' }, { name: '抽奖' }]"
-					:current-tab="currentMenu" @change="handleChangeNavs"
+					:current-tab="currentMenu" style="z-index: 1;" @change="handleChangeNavs"
 				></tui-tabs>
 			</view>
 		</view>
@@ -104,10 +104,6 @@
 			@success="$refs.refStoreShopCart && $refs.refStoreShopCart.getShopList()"
 		></JSpecificationScreen>
 
-		<tui-modal
-			:show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
-			@click="_handleClickTuiModel($event, 'login', '/pages/user/user')"
-		></tui-modal>
 		<tui-toast ref="toast"></tui-toast>
 
 		<view v-if="currentMenu === 0 && brandDetail.id && brandDetail.name">
@@ -120,8 +116,7 @@
 import StoreShopCart from './cpns/StoreShopCart.vue'
 import BrandInfo from './cpns/BrandInfo'
 import { getBrandDetailApi } from '../../../api/brand'
-import { goodsListApi, collectionApi } from '../../../api/goods'
-import loadData from '../../../mixin/loadData'
+import { collectionApi } from '../../../api/goods'
 import AppraisePane from './cpns/AppraisePane.vue'
 // import RecommendList from './cpns/RecommendList.vue'
 import GrouponWrapper from './cpns/GrouponWrapper.vue'
@@ -129,7 +124,6 @@ import CouponList from './cpns/CouponList.vue'
 import Reservation from './cpns/Reservation.vue'
 import Seckill from './cpns/Seckill.vue'
 import Raffle from './cpns/Raffle.vue'
-import showModel from '../../../mixin/showModel'
 import { getUserId, navigationAddress } from '../../../utils'
 
 export default {
@@ -146,8 +140,6 @@ export default {
 		Raffle
 	},
 
-	mixins: [loadData({ api: goodsListApi }), showModel()],
-
 	data() {
 		return {
 			yuanH: uni.upx2px(800), // 用于tabNav判定初始位置的值
@@ -156,25 +148,6 @@ export default {
 			navOpacity: 0, // 控制导航栏透明度
 			isShowCouponListPopup: false,
 
-			menusData: [{
-				name: '商品',
-				value: 0
-			}, {
-				name: '团购',
-				value: 1
-			}, {
-				name: '优惠劵',
-				value: 2
-			}, {
-				name: '预约',
-				value: 3
-			}, {
-				name: '秒杀',
-				value: 4
-			}, {
-				name: '抽奖',
-				value: 5
-			}],
 			currentMenu: 0,
 			brandId: null,
 			brandDetail: {},
@@ -185,9 +158,6 @@ export default {
 	onLoad(options) {
 		this.brandId = options.brandId
 		this.getBrandDetail()
-		console.log(this.$data)
-		this.$data._query.brandId = this.brandId
-		// this._loadData()
 	},
 
 	methods: {
@@ -199,7 +169,11 @@ export default {
 				userId: getUserId()
 			})
 			this.brandDetail = data || {}
-			this.handleShareServe(true)
+			// #ifdef H5
+			this.$nextTick(() => {
+				this.handleShareServe(true)
+			})
+			// #endif
 		},
 
 		// 打开优惠券
@@ -230,13 +204,12 @@ export default {
 		// 分享
 		handleShareServe(isQuit) {
 			if (!this.isLogin()) return
-			const _this = this
 			const data = {
 				data: {
-					title: _this.brandDetail.name,
-					desc: _this.brandDetail.businessSlogan,
-					link: `https://h5.jfcmei.com//#/pages/store/detail/detail?brandId=${_this.brandDetail.id}`,
-					imageUrl: _this.brandDetail.picUrl
+					title: this.brandDetail.name,
+					desc: this.brandDetail.desc,
+					link: `https://h5.jfcmei.com/#/pages/store/detail/detail?brandId=${this.brandDetail.id}`,
+					imageUrl: this.common.seamingImgUrl(this.brandDetail.picUrl)
 				},
 				successCb: () => { },
 				failCb: () => { }

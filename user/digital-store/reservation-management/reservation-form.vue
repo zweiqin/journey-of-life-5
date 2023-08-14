@@ -118,8 +118,8 @@ export default {
 		submit() {
 			const data = {
 				...this.form.imgs,
-				...this.form.basicInfo
-			// brandId: getBrandId()
+				...this.form.basicInfo,
+				brandId: getBrandId()
 			}
 			console.log(data)
 			if (!data.brandId) {

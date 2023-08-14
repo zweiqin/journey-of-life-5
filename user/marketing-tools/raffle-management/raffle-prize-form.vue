@@ -111,8 +111,8 @@ export default {
 			const data = {
 				...this.form.imgs,
 				...this.form.basicInfo,
-				// brandId: getBrandId()
-				brandId: 1001207
+				brandId: getBrandId()
+			// brandId: 1001207
 			}
 			if (!data.type) {
 				this.$showToast('请选择奖品类型')

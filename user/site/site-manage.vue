@@ -11,7 +11,14 @@
 			</view>
 		</view>
 
-		<NoData v-if="!siteList.length" :img="false" text="还没有地址，快去添加吧~"></NoData>
+		<view v-if="!siteList.length">
+			<tui-no-data
+				:img-url="common.seamingImgUrl('ncs28ma9a3ac5ufebzsw.png')" img-width="400" :fixed="false"
+				style="margin-top: 50upx;"
+			>
+				暂无数据
+			</tui-no-data>
+		</view>
 		<view v-for="(item, id) in siteList" v-else :key="id" class="site-detail">
 			<view class="site-detail-frame">
 				<view class="site-detail-fram-text">
@@ -24,11 +31,6 @@
 					</view>
 					<view class="site-detail-allsite">
 						<view class="site-detail-pca">
-							<view class="site-detail-pca1">
-								<!-- <view class="province">广东省</view>
-									<view class="city">佛山市</view>
-									<view class="area">顺德区</view> -->
-							</view>
 							<image
 								v-if="!isSelect" class="compile" mode="widthFix" src="../../static/images/icon/compile.png"
 								@click="editAddress(item)"
@@ -71,13 +73,9 @@ import {
 } from '../../api/address'
 import { getUserId } from '../../utils'
 import { J_SELECT_ADDRESS } from '../../constant'
-import NoData from '../../components/no-data'
 
 export default {
 	name: 'SiteManage',
-	components: {
-		NoData
-	},
 	data() {
 		return {
 			manageok: 1,
@@ -275,22 +273,6 @@ export default {
 		.compile {
 			width: 32upx;
 			height: 32upx;
-		}
-
-		.site-detail-pca1 {
-			display: flex;
-		}
-
-		.province {
-			margin-right: 10upx;
-		}
-
-		.city {
-			margin-right: 10upx;
-		}
-
-		.area {
-			margin-right: 10upx;
 		}
 	}
 

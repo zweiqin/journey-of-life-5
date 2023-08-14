@@ -33,28 +33,9 @@
 						<view class="sub-title">{{ item.label }}</view>
 						<input
 							v-if="item.type === 'input'" :value="form[item.field]" class="input"
-							:disabled="item.field === 'username'"
-							:type="item.field === 'value' || item.field === 'phase' ? 'number' : 'text'" :placeholder="item.placeholder"
+							:type="item.field === 'probability' ? 'number' : 'text'" :placeholder="item.placeholder"
 							@input="handleInput(item.field, $event)"
 						/>
-
-						<tui-radio-group
-							v-if="item.type === 'radio'" v-model="form[item.field]"
-							style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;" @change="(e) => { }"
-						>
-							<tui-label
-								v-for="(part, index) in [{ name: '红包', value: '1' }, { name: '积分', value: '2' }, { name: '体验金', value: '3' }, { name: '谢谢惠顾', value: '4' }]"
-								:key="index"
-							>
-								<tui-list-cell padding="16upx">
-									<view>
-										<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
-										</tui-radio>
-										<text class="tui-text">{{ part.name }}</text>
-									</view>
-								</tui-list-cell>
-							</tui-label>
-						</tui-radio-group>
 
 						<tui-numberbox
 							v-if="item.type === 'numberbox'" :value="form[item.field]" :step="1" :min="1"
@@ -167,9 +148,9 @@ export default {
 
 		handleInput(field, e) {
 			console.log(field, e)
-			if (field === 'name' || field === 'value' || field === 'phase') {
+			if (field === 'probability') {
 				this.form[field] = e.detail.value
-			} else if (field === 'position') {
+			} else if (field === 'pointsPrizePhase' || field === 'minimumGuarantee' || field === 'frozen' || field === 'prizeDayMaxTimes' || field === 'userPrizeMonthMaxTimes') {
 				this.form[field] = e.value
 			}
 		}

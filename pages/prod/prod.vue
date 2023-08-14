@@ -71,9 +71,7 @@
 			<view class="salsed">
 				<text>月销100+</text>
 				<BeeWxShare ref="refBeeWxShare" @click="handleShareGoods">
-					<image
-						class="share-tran" src="../../static/images/detail/share-tran.png" mode=""
-					/>
+					<image class="share-tran" src="../../static/images/detail/share-tran.png" mode="" />
 				</BeeWxShare>
 			</view>
 
@@ -158,7 +156,6 @@
 		</view>
 
 		<UParse v-if="goodsDetail.info.detail" :content="goodsInfoDetail"></UParse>
-
 		<!-- 详情 -->
 
 		<!-- 为你推荐 -->
@@ -232,11 +229,11 @@ export default {
 			isMoreFunction: false,
 			subInfoConfig,
 			goodsInfoConfig,
+			goodsId: null,
 			goodsDetail: null,
 			showSpecification: false,
 			shopCarNumber: 0,
 			isCollect: false,
-			userId: null,
 			brandOtherGoods: null,
 			showTopNav: false,
 			evalPosition: 0,
@@ -251,7 +248,6 @@ export default {
 	},
 	onLoad(options) {
 		this.goodsId = options.goodsId * 1
-		this.userId = uni.getStorageSync(J_USER_ID)
 		this.getGoodsDetail()
 		uni.pageScrollTo({
 			scrollTop: 0,
@@ -261,9 +257,7 @@ export default {
 
 	computed: {
 		goodsInfoDetail() {
-			return this.goodsDetail.info.detail
-				? marked(this.goodsDetail.info.detail)
-				: ''
+			return this.goodsDetail ? this.goodsDetail.info.detail ? marked(this.goodsDetail.info.detail) : '' : ''
 		}
 	},
 
@@ -279,7 +273,6 @@ export default {
 			immediate: true,
 			deep: true
 		},
-
 		brandOtherGoods: {
 			handler(value) {
 				if (value && this.goodsDetail) {
@@ -301,7 +294,7 @@ export default {
 		// 获取商品详情
 		async getGoodsDetail() {
 			uni.showLoading()
-			const res = await getGoodsDetailApi(this.goodsId, this.userId)
+			const res = await getGoodsDetailApi(this.goodsId, uni.getStorageSync(J_USER_ID))
 			uni.hideLoading()
 			if (res.errno === 0) {
 				this.goodsDetail = res.data
@@ -311,7 +304,7 @@ export default {
 				// #endif
 				this.getBrandOtherGoods(res.data.brand.id)
 				this.getCommentCount(res.data.info.id)
-				if (this.userId) {
+				if (uni.getStorageSync(J_USER_ID)) {
 					this.getCarShopNumber()
 				}
 			}
@@ -335,8 +328,8 @@ export default {
 					link: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=' + this.goodsId,
 					imageUrl: (this.goodsDetail.shareImage && this.common.seamingImgUrl(this.goodsDetail.shareImage)) || (this.goodsDetail.info.picUrl && this.common.seamingImgUrl(this.goodsDetail.shareImage))
 				},
-				successCb: () => {},
-				failCb: () => {}
+				successCb: () => { },
+				failCb: () => { }
 			}
 			this.$refs.refBeeWxShare.share(data, isQuit, '/pages/prod/prod?goodsId' + this.goodsId)
 		},
@@ -386,20 +379,7 @@ export default {
 
 		// 获取商品规格参数
 		getSpacification() {
-			if (!this.userId) {
-				uni.showModal({
-					title: '提示',
-					content: '您还未登录，请先登录',
-					success: ({ confirm }) => {
-						if (confirm) {
-							uni.navigateTo({
-								url: '/pages/login/login'
-							})
-						}
-					}
-				})
-				return
-			}
+			if (!getUserId()) return
 			return new Promise((resolve, reject) => {
 				if (this.showSpecification) {
 					const goodsInfo = this.$refs.specificationRef.getVal()
@@ -417,7 +397,7 @@ export default {
 		// 获取购物车数量
 		async getCarShopNumber() {
 			const res = await getCarShopNumberApi({
-				userId: this.userId,
+				userId: getUserId(),
 				brandId: this.goodsDetail.brand.id
 			})
 			if (res.errno === 0) {
@@ -427,20 +407,7 @@ export default {
 
 		// 添加收藏
 		async handleCollect() {
-			if (!this.userId) {
-				uni.showModal({
-					title: '提示',
-					content: '您还未登录，请先登录',
-					success: ({ confirm }) => {
-						if (confirm) {
-							uni.navigateTo({
-								url: '/pages/login/login'
-							})
-						}
-					}
-				})
-				return
-			}
+			if (!getUserId()) return
 			const res = await collectionApi({
 				userId: getUserId(),
 				type: 0,
@@ -533,7 +500,7 @@ export default {
 
 	onPullDownRefresh() {
 		this.getGoodsDetail()
-		if (this.userId) {
+		if (getUserId()) {
 			this.getCarShopNumber()
 		}
 		uni.stopPullDownRefresh()

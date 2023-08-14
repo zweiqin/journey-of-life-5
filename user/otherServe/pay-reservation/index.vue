@@ -112,8 +112,8 @@
 <script>
 import { J_RESERVATION_PAY_GOODS, J_TWO_PAY_GOODS } from '../../../constant'
 import { getUserId } from '../../../utils'
-import { getShopCarListApi, deleteShopCarGoodsApi, payAllShopCarApi, addSubmitAppointmentApi } from '../../../api/cart'
-import { deleteCleanUpCartApi } from '../../../api/user'
+import { getShopCarListApi, deleteShopCarGoodsApi, payAllShopCarApi } from '../../../api/cart'
+import { deleteCleanUpCartApi, addSubmitAppointmentApi } from '../../../api/user'
 import { addShopCarApi, getGoodsDetailApi } from '../../../api/goods'
 
 export default {

@@ -107,11 +107,11 @@ export default {
 			// getApp().globalData.isInMiniprogram = true;
 			this.$store.commit(`app/${CHANGE_IS_IN_MINIPROGRAM}`, !!(options.miniProgram * 1))
 		}
-		// #ifdef H5
-		const script = document.createElement('script')
-		script.src = 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js'
-		document.body.appendChild(script)
-		// #endif
+		// // #ifdef H5
+		// const script = document.createElement('script')
+		// script.src = 'https://res.wx.qq.com/open/js/jweixin-1.4.0.js'
+		// document.body.appendChild(script)
+		// // #endif
 		this.getBrandList()
 		this.getCategoryList()
 	},

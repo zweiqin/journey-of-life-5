@@ -30,7 +30,9 @@
 
 			<Article :data="data" :status="loadingStatus"></Article>
 
-			<NoData v-show="isShowNoData" text="没有相关文章"></NoData>
+			<view v-if="isShowNoData">
+				<tui-no-data>暂无优惠券</tui-no-data>
+			</view>
 		</view>
 	</view>
 </template>
@@ -43,7 +45,6 @@ import {
 
 import { getIndustryInformationListApi } from '../../api/marketing-treasure-house'
 import Article from '../../pages/marketing-treasure-house/components/article-pane'
-import NoData from '../../components/no-data'
 import { debounce } from '../../utils'
 
 const mapUrl = {
@@ -59,8 +60,7 @@ const mapCatch = {
 export default {
 	name: 'SearchPage',
 	components: {
-		Article,
-		NoData
+		Article
 	},
 	data() {
 		return {

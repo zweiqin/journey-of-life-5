@@ -15,7 +15,14 @@
 				<view class="words">{{ item.say }}</view>
 			</view>
 
-			<NoData v-show="!list.length"></NoData>
+			<view v-if="!list.length">
+				<tui-no-data
+					:img-url="common.seamingImgUrl('ncs28ma9a3ac5ufebzsw.png')" img-width="400" :fixed="false"
+					style="margin-top: 50upx;"
+				>
+					暂无数据
+				</tui-no-data>
+			</view>
 		</view>
 
 		<view class="set-my-words" @click="handleShowMyWords">我要自定义话术</view>
@@ -44,13 +51,9 @@
 
 <script>
 import { addMyWordsApi, getWordsApi } from '../../api/user'
-import NoData from '../../components/no-data'
 import { J_SELECT_WORDS } from '../../constant'
 
 export default {
-	components: {
-		NoData
-	},
 	data() {
 		return {
 			list: [],

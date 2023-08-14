@@ -40,6 +40,23 @@ const wxShare = {
 					console.log('cancel')
 				}
 			})
+			// updateTimelineShareData需要遵守一些规则：是微信公众号菜单上进入的页面或者是扫码进入的页面
+			wx.updateTimelineShareData({
+				title: option.title, // 分享标题
+				link: option.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+				imgUrl: option.imgUrl, // 分享图标
+				success() {
+					// 设置成功
+				}
+			})
+			wx.onMenuShareTimeline({
+				title: option.title, // 分享标题
+				link: option.link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+				imgUrl: option.imgUrl, // 分享图标
+				success() {
+				// 用户点击了分享后执行的回调函数
+				}
+			})
 		})
 
 		wx.error(function (res) {
