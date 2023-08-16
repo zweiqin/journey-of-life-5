@@ -259,7 +259,9 @@
 			</view>
 		</view>
 		<tui-bottom-popup :show="isShowOrderPopup" @close="handleClosePopup('Order')">
-			<OrderList v-if="isShowOrderPopup" @send="handleSend"></OrderList>
+			<view style="height: 100%;overflow-y: auto;">
+				<OrderList v-if="isShowOrderPopup" @send="handleSend"></OrderList>
+			</view>
 		</tui-bottom-popup>
 		<tui-bottom-popup :show="isShowGoodsPopup" @close="handleClosePopup('Goods')">
 			<GoodsList v-if="isShowGoodsPopup" @send="handleSend"></GoodsList>

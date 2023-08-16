@@ -2,7 +2,7 @@
 	<view class="shop-car-container">
 
 		<scroll-view
-			refresher-enabled refresher-background="#3f3d3d" :scroll-y="true" style="height: 100%;"
+			refresher-enabled refresher-background="#3f3d3d" scroll-y style="height: 100%;"
 			scroll-with-animation @scrolltolower="handleScrolltolower"
 		>
 			<view class="shop-list">

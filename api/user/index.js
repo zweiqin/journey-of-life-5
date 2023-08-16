@@ -747,13 +747,13 @@ export const updatePrizeLotteryDrawApi = (data) => RuanRequest('/dtsPointsLuckDr
 export const deletePrizeLotteryDrawApi = (data) => RuanRequest(`/dtsPointsLuckDrawPrize/deleteLotteryDraw/${data.id}`, data, 'delete')
 
 // 奖品概率限制配置
-export const addPrizeConfigurationApi = (data) => RuanRequest('/dtsPointsLuckDrawPrize/configuration', data)
+export const addPrizeConfigurationApi = (data) => RuanRequest('/dtsPointsLuckDrawProbability/configuration', data)
 
 // 查看概率奖品限制配置
 export const getPrizeSelectConfigurationApi = (data) => RuanRequest('/dtsPointsLuckDrawProbability/selectConfiguration', data, 'get')
 
 // 修改奖品概率限制配置
-export const updatePrizeConfigurationApi = (data) => RuanRequest('/dtsPointsLuckDrawPrize/updateConfiguration', data)
+export const updatePrizeConfigurationApi = (data) => RuanRequest('/dtsPointsLuckDrawProbability/updateConfiguration', data)
 
 // 积分抽奖
 export const getPrizeLotteryDrawApi = (data) => RuanRequest('/dtsPointsLuckDrawPrize/lotteryDraw', data, 'get')

@@ -10,12 +10,12 @@
 			<!-- <PhotoSearch></PhotoSearch> -->
 		</view>
 		<view class="selectScollView">
-			<scroll-view scroll-y="true" class="superSelect">
+			<scroll-view scroll-y class="superSelect">
 				<view v-for="(item, index) in menus" :key="item.id" class="superSelectItem" @click="getSubItem(item, index)">
 					<span :class="{ isactive: submenusActive == index }">{{ item.name }}</span>
 				</view>
 			</scroll-view>
-			<scroll-view scroll-y="true" class="subSelect">
+			<scroll-view scroll-y class="subSelect">
 				<view v-for="item in submenus" class="subSelectItem" @click="goToShopList(item)">
 					<image :src="item.picUrl ? common.seamingImgUrl(item.picUrl) : require('@/static/index/menus/kongtupian.png')" mode=""></image>
 					<text>{{ item.name }}</text>

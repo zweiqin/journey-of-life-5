@@ -4,21 +4,22 @@
 			v-if="brandDetail.categoryList && brandDetail.categoryList.length"
 			style="display: flex;box-sizing: border-box;"
 		>
-			<view style="background-color: #f3f3f3;max-height: 90vh;overflow-y: auto;">
+			<view style="background-color: #f3f3f3;max-height: 85vh;" :style="{ overflowY }">
 				<view
 					v-for="item in brandDetail.categoryList" :key="item.serverNameOne"
-					style="max-width: 140upx;padding: 20upx 36upx;word-break: break-all;box-sizing: border-box;"
+					style="max-width: 144upx;padding: 20upx 28upx;word-break: break-all;box-sizing: border-box;"
 					:style="{ backgroundColor: item.id === currentTab ? '#ffffff' : 'transparent' }"
 					@click="(currentTab = item.id) && (currentGoods = brandDetail.categoryList.find(part => part.id === item.id).goodsList || [])"
 				>
 					{{ item.name }}
 				</view>
 			</view>
-			<view style="flex: 1;padding: 20upx;max-height: 90vh;overflow-y: auto;">
+			<view style="flex: 1;padding: 20upx;max-height: 85vh;" :style="{ overflowY }">
 				<view v-if="currentGoods && currentGoods.length">
 					<view v-for="item in currentGoods" :key="item.id">
 						<StoreGoods
-							:goods-data="item" @click-content="(e) => $emit('click-content', e)"
+							:goods-data="item" pic-height="210rpx" pic-mode="aspectFit"
+							@click-content="(e) => $emit('click-content', e)"
 							@add-car="(e) => $emit('add-car', e)"
 						></StoreGoods>
 					</view>
@@ -36,10 +37,15 @@
 
 <script>
 export default {
+	name: 'StoreGoodsList',
 	props: {
 		brandDetail: {
 			type: Object,
 			required: true
+		},
+		overflowY: {
+			type: String,
+			default: 'auto'
 		}
 	},
 
@@ -72,6 +78,7 @@ export default {
 <style lang="less" scoped>
 .store-goods-list-container {
 	width: 100%;
+	font-size: 32upx;
 
 	.no-data {
 		display: flex;

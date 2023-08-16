@@ -2,7 +2,7 @@
 	<view style="min-height: 200rpx;">
 		<view v-if="grouponList && grouponList.length">
 			<scroll-view
-				refresher-background="#3f3d3d" scroll-y="true" style="max-height: 85vh;min-height: 400rpx;"
+				refresher-background="#3f3d3d" scroll-y style="max-height: 85vh;min-height: 400rpx;"
 				@scrolltolower="handleScrolltolower"
 			>
 				<tui-waterfall :list-data="grouponList" :type="2">

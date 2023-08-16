@@ -16,6 +16,9 @@ export default {
 		// 	uni.setStorageSync('appType', 2)
 		// 	http.mpAuthLogin()
 		// }
+		// #ifdef H5
+		this.$store.dispatch('location/getCurrentLocation', (res) => {})
+		// #endif
 	},
 	onLaunch() {
 		this.connectSocket()
@@ -30,9 +33,6 @@ export default {
 		}
 	},
 	mounted() {
-		// #ifdef H5
-		this.$store.dispatch('location/getCurrentLocation', (res) => {})
-		// #endif
 		// #ifdef APP
 		// #endif
 		updateToken()

@@ -169,7 +169,7 @@
 		<!-- 优惠券选择 -->
 		<view v-if="userInfo.roleIds === 6 && brandId">
 			<tui-bottom-popup :show="isShowCouponPopup" @close="isShowCouponPopup = false">
-				<BrandCouponList :brand-id="brandId" btn-text="选择" @click-btn="(e) => handleSelectCoupon(e)">
+				<BrandCouponList :brand-id="brandId" btn-text="选择" @click-btn="handleSelectCoupon">
 				</BrandCouponList>
 			</tui-bottom-popup>
 		</view>

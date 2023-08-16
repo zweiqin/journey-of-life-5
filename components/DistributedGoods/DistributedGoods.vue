@@ -61,12 +61,6 @@ export default {
 		}
 	},
 
-	watch: {},
-
-	mounted() {
-		// console.log(this.$refs)
-	},
-
 	methods: {
 	}
 }

@@ -18,7 +18,7 @@
 			</view>
 			<view v-if="currentGoods && currentGoods.length" style="margin-top: 20upx;">
 				<scroll-view
-					refresher-background="#3f3d3d" scroll-y="true" style="max-height: 85vh;min-height: 400rpx;"
+					refresher-background="#3f3d3d" scroll-y style="max-height: 85vh;min-height: 400rpx;"
 					@scrolltolower="handleScrolltolower"
 				>
 					<tui-waterfall :list-data="currentGoods" :type="2">

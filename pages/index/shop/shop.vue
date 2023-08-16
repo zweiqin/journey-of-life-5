@@ -327,12 +327,6 @@ export default {
 }
 
 .menus-wrapper {
-	::-webkit-scrollbar {
-		width: 0;
-		height: 0 !important;
-		color: transparent;
-	}
-
 	position: relative;
 	z-index: 1001;
 	box-sizing: border-box;
@@ -366,14 +360,6 @@ export default {
 }
 
 .goods-wrapper {
-
-	/* 隐藏scroll-view滚动条*/
-	::-webkit-scrollbar {
-		width: 0;
-		height: 0 !important;
-		color: transparent;
-	}
-
 	// margin-top: 66rpx;
 	// padding: 18upx 20upx;
 	padding-bottom: 0;

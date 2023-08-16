@@ -2,8 +2,8 @@
 	<view v-if="goodsData" class="store-goods-container">
 		<view style="max-height: 440upx;min-height: 120upx;overflow: hidden;">
 			<tui-lazyload-img
-				class="goods-img" mode="widthFix"
-				width="210rpx" height="auto" :src="common.seamingImgUrl(goodsData.picUrl)" @click="$emit('click-content', goodsData)"
+				class="goods-img" :mode="picMode" :width="picWidth" :height="picHeight"
+				:src="common.seamingImgUrl(goodsData.picUrl)" @click="$emit('click-content', goodsData)"
 			></tui-lazyload-img>
 		</view>
 
@@ -13,7 +13,10 @@
 			</view>
 
 			<view @click="$emit('click-content', goodsData)">
-				<view v-if="showMsg" style="display: flex;justify-content: space-between;padding: 14upx 0 0;font-size: 26upx;color: #777777;">
+				<view
+					v-if="showMsg"
+					style="display: flex;justify-content: space-between;padding: 14upx 0 0;font-size: 26upx;color: #777777;"
+				>
 					<text>{{ goodsData.browse }}浏览量</text>
 					<text>销量 {{ goodsData.sales }}</text>
 				</view>
@@ -40,12 +43,24 @@
 </template>
 
 <script>
-import { getRandom } from '../../utils'
 export default {
+	name: 'StoreGoods',
 	props: {
 		goodsData: {
 			type: Object,
 			required: true
+		},
+		picMode: {
+			type: String,
+			default: 'widthFix'
+		},
+		picWidth: {
+			type: String,
+			default: '210rpx'
+		},
+		picHeight: {
+			type: String,
+			default: 'auto'
 		},
 		showIcon: {
 			type: Boolean,

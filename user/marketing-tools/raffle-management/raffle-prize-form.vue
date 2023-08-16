@@ -45,6 +45,12 @@ export default {
 					placeholder: '请选择奖品类型'
 				},
 				{
+					label: '优惠券：',
+					field: 'couponId',
+					type: 'input',
+					placeholder: '请选择优惠券'
+				},
+				{
 					label: '奖品名称：',
 					field: 'name',
 					type: 'input',
@@ -79,6 +85,7 @@ export default {
 				basicInfo: {
 					type: '',
 					name: '',
+					couponId: '',
 					value: '',
 					position: 1,
 					phase: ''
@@ -97,6 +104,7 @@ export default {
 			const res = await getPrizeLotteryDrawSelectApi({ id })
 			uni.hideLoading()
 			if (res.errno === 0) {
+				this.form.basicInfo.couponId = (res.data && res.data.couponId) || ''
 				this.form.basicInfo.name = (res.data && res.data.name) || ''
 				this.form.imgs.url = (res.data && res.data.url) || ''
 				this.form.basicInfo.value = (res.data && res.data.value) || ''
@@ -116,6 +124,10 @@ export default {
 			}
 			if (!data.type) {
 				this.$showToast('请选择奖品类型')
+				return
+			}
+			if (data.type === '5' && !data.couponId) {
+				this.$showToast('请选择优惠券')
 				return
 			}
 			if (!data.name) {

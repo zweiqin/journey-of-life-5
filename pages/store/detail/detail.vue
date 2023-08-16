@@ -62,10 +62,10 @@
 			</view>
 		</view>
 
-		<view class="main-area brand-pane">
+		<view class="brand-pane" :style="{ marginTop: isTabFixed ? '80upx' : '0' }">
 			<view v-show="currentMenu === 0" class="goods-list" style="width: 100%">
 				<StoreGoodsList
-					:brand-detail="brandDetail"
+					:brand-detail="brandDetail" :overflow-y="paneOverflowY"
 					@click-content="(e) => go(`/pages/store/goods-detail/goods-detail?orderType=1&goodsId=${e.id}`)"
 					@add-car="(e) => $refs.refJSpecificationScreen.open(e.id)"
 				></StoreGoodsList>
@@ -83,7 +83,7 @@
 
 			<GrouponWrapper v-if="currentMenu === 1" :brand-detail="brandDetail"></GrouponWrapper>
 
-			<Reservation v-if="currentMenu === 2" :brand-detail="brandDetail"></Reservation>
+			<Reservation v-if="currentMenu === 2" :brand-detail="brandDetail" :is-overflow-y="paneOverflowY === 'auto' ? true : false"></Reservation>
 
 			<Seckill v-if="currentMenu === 3" :brand-detail="brandDetail"></Seckill>
 
@@ -142,7 +142,7 @@ export default {
 
 	data() {
 		return {
-			yuanH: uni.upx2px(800), // 用于tabNav判定初始位置的值
+			yuanH: uni.upx2px(816), // 用于tabNav判定初始位置的值。455-47
 			isNavGaFixed: false, // 是否定位顶部导航栏
 			isTabFixed: false, // tab切换栏是否固定定位
 			navOpacity: 0, // 控制导航栏透明度
@@ -151,7 +151,8 @@ export default {
 			currentMenu: 0,
 			brandId: null,
 			brandDetail: {},
-			isFirstShowCoupon: false
+			isFirstShowCoupon: false,
+			paneOverflowY: 'hidden'
 		}
 	},
 
@@ -206,7 +207,7 @@ export default {
 			if (!this.isLogin()) return
 			const data = {
 				data: {
-					title: this.brandDetail.name,
+					title: `巨蜂本地生活商圈 - ${this.brandDetail.name}`,
 					desc: this.brandDetail.desc,
 					link: `https://h5.jfcmei.com/#/pages/store/detail/detail?brandId=${this.brandDetail.id}`,
 					imageUrl: this.common.seamingImgUrl(this.brandDetail.picUrl)
@@ -237,14 +238,21 @@ export default {
 			this.navOpacity = 0
 			this.isNavGaFixed = false
 		}
-		// //#ifdef H5
-		// this.isTabFixed = true
-		// // #endif
-		if (this.yuanH > e.scrollTop) {
+		if (e.scrollTop < this.yuanH) {
 			this.isTabFixed = false
+			this.paneOverflowY = 'hidden'
 		} else {
 			this.isTabFixed = true
+			this.paneOverflowY = 'auto'
 		}
+		// if (this.currentMenu === 0 || this.currentMenu === 2) {
+		// 	uni.createSelectorQuery().in(this)
+		// 		.select('.brand-pane')
+		// 		.boundingClientRect((data) => {
+		// 			console.log(data.top)
+		// 		})
+		// 		.exec()
+		// }
 	}
 }
 </script>
@@ -374,7 +382,6 @@ export default {
 		background-color: #fff;
 		padding: 4upx 20upx 0 20upx;
 		box-sizing: border-box;
-		margin-top: 0;
 
 		.goods-list {
 			margin-top: 20upx;

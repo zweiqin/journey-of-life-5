@@ -84,11 +84,28 @@
 				</view> -->
 
 			<view class="buy-info">
-				<view v-for="(item, index) in goodsInfoConfig" :key="index" class="item">
-					<image :src="item.icon" mode="" />
+				<view class="item">
+					<image src="../../static/images/detail/kuaidi.png" mode="" />
 					<view>
-						<view class="label">{{ item.label }}</view>
-						<view v-if="item.desc" class="desc">{{ item.desc }}</view>
+						<view class="label">广东佛山</view>
+						<view v-if="goodsDetail.brand.id === 1001081" class="desc">快递：运费自付</view>
+						<view v-else class="desc">快递：免运费</view>
+					</view>
+				</view>
+			</view>
+			<view class="buy-info">
+				<view class="item">
+					<image src="../../static/images/detail/heart.png" mode="" />
+					<view>
+						<view class="label">七天无理由退货·1次破损补寄</view>
+					</view>
+				</view>
+			</view>
+			<view class="buy-info">
+				<view class="item">
+					<image src="../../static/images/detail/guige.png" mode="" />
+					<view>
+						<view class="label">规格·颜色·尺寸选择...</view>
 					</view>
 				</view>
 			</view>
@@ -202,7 +219,7 @@
 </template>
 
 <script>
-import { subInfoConfig, goodsInfoConfig } from './config'
+import { subInfoConfig } from './config'
 import uParse from '../../components/u-parse/u-parse.vue'
 import { marked } from 'marked'
 import { J_ONE_PAY_GOODS, J_USER_ID } from '../../constant'
@@ -228,7 +245,6 @@ export default {
 		return {
 			isMoreFunction: false,
 			subInfoConfig,
-			goodsInfoConfig,
 			goodsId: null,
 			goodsDetail: null,
 			showSpecification: false,
@@ -448,20 +464,19 @@ export default {
 
 		// 获取移动的位置
 		initMovePosition() {
-			const _this = this
 			const query = uni.createSelectorQuery().in(this)
 			query
 				.select('.eval')
 				.boundingClientRect((data) => {
-					_this.evalPosition = data.top
+					this.evalPosition = data.top
 				})
 				.exec()
 			if (this.goodsDetail.info.detail) {
 				query
 					.select('#goods-detail')
 					.boundingClientRect((data) => {
-						console.log(_this.detailPosition, data)
-						_this.detailPosition = data.top
+						console.log(this.detailPosition, data)
+						this.detailPosition = data.top
 					})
 					.exec()
 			}

@@ -7,7 +7,7 @@
 			@change="handleChangeTab"
 		></tui-tabs>
 		<scroll-view
-			refresher-background="#3f3d3d" scroll-y="true" style="max-height: 85vh;min-height: 400rpx;"
+			refresher-background="#3f3d3d" scroll-y style="max-height: 85vh;min-height: 400rpx;"
 			@scrolltolower="handleScrolltolower"
 		>
 			<view v-if="currentTab === 0">

@@ -112,6 +112,10 @@
 				</view>
 			</template>
 		</tui-dialog>
+		<DragButton
+			text="客服" :icon-src="require('../../static/user-center/menus/lianxikefu.png')" is-dock
+			exist-tab-bar @btnClick="go('/user/sever/service-center/service-center')"
+		/>
 	</view>
 </template>
 
@@ -133,30 +137,9 @@ export default {
 	data() {
 		return {
 			orderTypesMall,
-			orderTypesStore: [
-				{
-					label: '待付款',
-					value: 8
-				},
-				{
-					label: '已付款',
-					value: 5
-				},
-				{
-					label: '已核销',
-					value: 6
-				},
-				{
-					label: '已过期',
-					value: 7
-				},
-				{
-					label: '已取消',
-					value: 9
-				}
-			],
-			currentStatus: 0,
-			currentType: 0,
+			orderTypesStore,
+			currentStatus: '',
+			currentType: '',
 			query: {
 				page: 1,
 				size: 10
@@ -176,6 +159,8 @@ export default {
 	},
 
 	onLoad(options) {
+		this.currentStatus = options.currentStatus * 1 || 0
+		this.currentType = options.currentType * 1 || 0
 		this.getOrderList()
 	},
 
@@ -336,14 +321,17 @@ export default {
 	}
 
 	.navs {
+		width: 100%;
 		display: flex;
-		justify-content: space-between;
 		margin: 34upx 0;
-		padding-bottom: 20upx;
-		padding: 0 32upx;
+		padding: 0 28upx;
 		box-sizing: border-box;
+		white-space: nowrap;
+		overflow-x: auto;
 
 		.nav-item {
+			width: fit-content;
+			padding: 0 6upx;
 			transition: all 350ms;
 
 			&.nav-item-active {

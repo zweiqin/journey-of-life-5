@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<scroll-view refresher-background="#3f3d3d" scroll-y="true" style="max-height: 85vh;min-height: 400rpx;">
+		<scroll-view refresher-background="#3f3d3d" :scroll-y="isOverflowY" style="max-height: 85vh;min-height: 400rpx;">
 			<view class="orders-container">
 				<!-- <view>
 					<tui-button
@@ -12,12 +12,12 @@
 					</tui-button>
 					</view> -->
 
-				<view v-if="appointmentList && appointmentList.length" style="font-size: 28upx;">
+				<view v-if="appointmentList && appointmentList.length" style="font-size: 30upx;">
 					<view v-if="appointmentList && appointmentList.length" style="display: flex;box-sizing: border-box;">
-						<view style="padding-bottom: 20upx;;background-color: #f3f3f3;">
+						<view style="padding-bottom: 20upx;background-color: #f3f3f3;">
 							<view
 								v-for="item in appointmentList" :key="item.serverNameOne"
-								style="max-width: 140upx;padding: 20upx 36upx;word-break: break-all;box-sizing: border-box;"
+								style="max-width: 144upx;padding: 20upx 28upx;word-break: break-all;box-sizing: border-box;"
 								:style="{ backgroundColor: item.id === currentTab ? '#ffffff' : 'transparent' }"
 								@click="handleClickAppointment(item)"
 							>
@@ -28,7 +28,8 @@
 							<view v-if="currentGoods && currentGoods.length">
 								<view v-for="item in currentGoods" :key="item.id">
 									<StoreGoods
-										:goods-data="item" :show-icon="false" :show-tag="false"
+										:goods-data="item" pic-height="210rpx" pic-mode="aspectFit"
+										:show-icon="false" :show-tag="false"
 										@click-content="(e) => go(`/pages/store/goods-detail/goods-detail?orderType=2&goodsId=${e.id}`)"
 									>
 										<template #button>
@@ -84,6 +85,10 @@ export default {
 			default() {
 				return {}
 			}
+		},
+		isOverflowY: {
+			type: Boolean,
+			default: true
 		}
 	},
 	data() {

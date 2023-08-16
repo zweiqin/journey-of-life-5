@@ -3,6 +3,28 @@
 		<view class="title">{{ title }}</view>
 		<view v-for="item in fields" :key="item.label">
 			<view v-if="item.field === 'id'"></view>
+			<view v-else-if="item.field === 'couponId'">
+				<view v-if="form.type === '5'" class="item">
+					<template>
+						<view
+							class="input-wrapper" :style="{
+								'flex-direction': item.type === 'textarea' ? 'column' : '',
+								'align-items': item.type === 'textarea' ? 'flex-start' : ''
+							}"
+						>
+							<view class="sub-title">{{ item.label }}</view>
+
+							<input
+								v-if="item.type === 'input'" :value="couponIdName" class="input" :disabled="true"
+								type="text"
+								:placeholder="item.placeholder" @click="brandId && (isShowCouponPopup = true)"
+							/>
+
+						</view>
+					</template>
+				</view>
+				<view v-else></view>
+			</view>
 			<view v-else class="item">
 				<template>
 					<view
@@ -21,11 +43,10 @@
 
 						<tui-radio-group
 							v-if="item.type === 'radio'" v-model="form[item.field]"
-							style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;"
-							@change="(e) => {}"
+							style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;" @change="(e) => { }"
 						>
 							<tui-label
-								v-for="(part, index) in [{ name: '红包', value: '1' }, { name: '积分', value: '2' }, { name: '体验金', value: '3' }, { name: '谢谢惠顾', value: '4' }]"
+								v-for="(part, index) in [{ name: '红包', value: '1' }, { name: '积分', value: '2' }, { name: '体验金', value: '3' }, { name: '谢谢惠顾', value: '4' }, { name: '优惠券', value: '5' }, { name: '自定义', value: '6' }]"
 								:key="index"
 							>
 								<tui-list-cell padding="16upx">
@@ -48,11 +69,18 @@
 				</template>
 			</view>
 		</view>
+
+		<!-- 优惠券选择 -->
+		<tui-bottom-popup :show="isShowCouponPopup" @close="isShowCouponPopup = false">
+			<BrandCouponList :brand-id="brandId" btn-text="选择" @click-btn="handleSelectCoupon">
+			</BrandCouponList>
+		</tui-bottom-popup>
+
 	</view>
 </template>
 
 <script>
-// import {  } from '.././../../../api/user'
+import { getBrandId } from '../../../../utils'
 
 export default {
 	name: 'FieldPaneSA',
@@ -70,7 +98,10 @@ export default {
 
 	data() {
 		return {
-			form: {}
+			form: {},
+			couponIdName: '',
+			isShowCouponPopup: false,
+			brandId: getBrandId()
 		}
 	},
 
@@ -98,10 +129,12 @@ export default {
 		}
 	},
 
-	mounted() {
-	},
-
 	methods: {
+		handleSelectCoupon(obj) {
+			this.isShowCouponPopup = false
+			this.form.couponId = obj.id
+			this.couponIdName = obj.name
+		},
 		handleInput(field, e) {
 			console.log(field, e)
 			if (field === 'name' || field === 'value' || field === 'phase') {
@@ -164,6 +197,10 @@ export default {
 				font-size: 24upx;
 			}
 		}
+	}
+
+	/deep/ .tui-popup-class.tui-bottom-popup {
+		height: 85vh !important;
 	}
 }
 </style>

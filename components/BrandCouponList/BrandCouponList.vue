@@ -2,7 +2,7 @@
 	<view class="brand-coupon-container">
 
 		<scroll-view
-			refresher-enabled refresher-background="#3f3d3d" :scroll-y="true" style="height: 100%;"
+			refresher-enabled refresher-background="#3f3d3d" scroll-y style="height: 100%;"
 			scroll-with-animation
 		>
 			<view class="main">
@@ -43,7 +43,6 @@
 
 <script>
 import { getBrandCouponListApi } from '../../api/user'
-import { getUserId } from '../../utils'
 
 export default {
 	name: 'BrandCouponList',

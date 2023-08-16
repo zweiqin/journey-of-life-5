@@ -57,7 +57,7 @@
 		</view>
 		<!-- 奖品选择 -->
 		<tui-bottom-popup :show="isShowPrizePopup" @close="isShowPrizePopup = false">
-			<view v-if="rafflePrizeList && rafflePrizeList.length" style="padding: 24upx;background-color: #eeeeee;">
+			<view v-if="rafflePrizeList && rafflePrizeList.length" style="height: 100%;padding: 24upx;overflow-y: auto;background-color: #eeeeee;">
 				<RafflePrizeAll show-select-btn :prize-data="rafflePrizeList" @select="handleSelect">
 				</RafflePrizeAll>
 			</view>

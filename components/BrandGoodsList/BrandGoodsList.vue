@@ -2,7 +2,7 @@
 	<view class="shop-car-container">
 
 		<scroll-view
-			refresher-enabled refresher-background="#3f3d3d" :scroll-y="true" style="height: 100%;"
+			refresher-enabled refresher-background="#3f3d3d" scroll-y style="height: 100%;"
 			scroll-with-animation
 		>
 			<!-- <view class="shop-list">
@@ -43,7 +43,7 @@
 					<view style="background-color: #f3f3f3;">
 						<view
 							v-for="item in brandDetail.categoryList" :key="item.serverNameOne"
-							style="max-width: 140upx;padding: 20upx 36upx;word-break: break-all;box-sizing: border-box;"
+							style="max-width: 144upx;padding: 20upx 28upx;word-break: break-all;box-sizing: border-box;"
 							:style="{ backgroundColor: item.id === currentTab ? '#ffffff' : 'transparent' }"
 							@click="(currentTab = item.id) && (currentGoods = brandDetail.categoryList.find(part => part.id === item.id).goodsList || [])"
 						>
@@ -225,6 +225,7 @@ export default {
 	// }
 	.store-goods-list-container {
 		width: 100%;
+		font-size: 32upx;
 
 		.no-data {
 			display: flex;

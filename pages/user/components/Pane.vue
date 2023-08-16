@@ -1,17 +1,34 @@
 <template>
-	<view class="pane-wrapper">
-		<view class="title-wrapper">
-			<view class="left">
-				<h3>{{ title }}</h3>
-				<slot name="title"></slot>
-			</view>
-
-			<view class="right">
-				<slot name="right"></slot>
+	<view style="margin-top: 24upx;">
+		<view>
+			<view v-for="menu in specialPane" :key="menu.name" style="margin-bottom: 24upx;">
+				<view v-if="menu.name === '我的订单'">
+					<OrderPane
+						:data="menu"
+						@menu-click="(e) => $emit('menu-click', { ...menu, url: `/user/orderForm/order-form?currentStatus=${e.value}&currentType=${e.type}` })"
+					>
+					</OrderPane>
+				</view>
+				<view v-else-if="menu.name === '客服中心'">
+					<DragButton
+						text="客服" :icon-src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon" is-dock
+						exist-tab-bar @btnClick="go(menu.url)"
+					/>
+				</view>
 			</view>
 		</view>
 
-		<view class="menu-wrapper">
+		<view class="pane-wrapper">
+			<view class="title-wrapper">
+				<view class="left">
+					<h3>{{ title }}</h3>
+					<slot name="title"></slot>
+				</view>
+				<view class="right">
+					<slot name="right"></slot>
+				</view>
+			</view>
+
 			<view class="row-wrapper">
 				<view v-for="menu in renderMenu" :key="menu.name" class="item" @click="$emit('menu-click', menu)">
 					<!-- 使用uniapp内置image组件渲染会经过很多的解析，在图片过大的情况下解析的过程会很长，造成很长时间的空白期 -->
@@ -19,8 +36,8 @@
 					<!-- <img v-if="menu.iconUrl" class="icons" :src="common.seamingImgUrl(menu.iconUrl)" alt=""> -->
 					<!-- <image v-else style="width: 64upx; height: 64upx"> </image> -->
 					<BeeIcon
-						v-if="menu.iconUrl || menu.url" :size="32"
-						:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : common.seamingImgUrl(menu.url)"
+						v-if="menu.iconUrl || menu.icon" :size="32"
+						:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
 					></BeeIcon>
 					<text class="menu-name">{{ menu.name }}</text>
 				</view>
@@ -30,9 +47,13 @@
 </template>
 
 <script>
+import OrderPane from './OrderPane.vue'
 import { J_USER_INFO } from '../../../constant'
 export default {
 	name: 'Pane',
+	components: {
+		OrderPane
+	},
 	props: {
 		title: {
 			type: String,
@@ -54,46 +75,62 @@ export default {
 	},
 	data() {
 		return {
-			userInfo: {}
+			userInfo: {},
+			specialPane: [],
+			renderMenu: []
 		}
 	},
 
 	computed: {
-		renderMenu() {
-			if (!this.menuData) {
-				return []
-			}
-			const haveMenuData = []
-			try {
+		// renderMenu() {
+		// 	const haveMenuCopyData = JSON.parse(JSON.stringify(this.menuData))
+		// 	const intRow = Math.floor(this.menuData.length / this.colum)
+		// 	if (intRow * this.colum - this.menuData.length !== 0) {
+		// 		const replenishNum = Math.ceil(this.menuData.length / this.colum) * this.colum - this.menuData.length
+		// 		const replenishMenu = new Array(replenishNum)
+		// 		replenishMenu.fill({})
+		// 		haveMenuCopyData.push(...replenishMenu)
+		// 	}
+		// 	return {
+		// 		rowNumber: haveMenuCopyData.length / this.colum,
+		// 		data: haveMenuCopyData
+		// 	}
+		// }
+	},
+	watch: {
+		permissionData: {
+			handler(newVal) {
+				if (!this.menuData) return this.renderMenu = this.specialPane = []
+				const haveSpecialData = []
+				const haveMenuData = []
 				this.menuData.forEach((item) => {
 					const tempIconObj = this.permissionData.find((i) => i.iconName === item.name)
 					if (tempIconObj) {
-						if (!item.showRole) {
+						if (item.name === '我的订单' || item.name === '客服中心') {
+							if (!item.showRole) {
+								haveSpecialData.push({ ...item, iconUrl: tempIconObj.iconUrl })
+							} else if (item.showRole && item.showRole.includes(this.userInfo.roleIds)) {
+								haveSpecialData.push({ ...item, iconUrl: tempIconObj.iconUrl })
+							}
+						} else if (!item.showRole) {
 							haveMenuData.push({ ...item, iconUrl: tempIconObj.iconUrl })
 						} else if (item.showRole && item.showRole.includes(this.userInfo.roleIds)) {
 							haveMenuData.push({ ...item, iconUrl: tempIconObj.iconUrl })
 						}
 					}
 				})
-			} catch (e) {
-				console.log(e)
-			}
-			// console.log(haveMenuData)
-			return haveMenuData
-			// const haveMenuCopyData = JSON.parse(JSON.stringify(this.menuData))
-			// const intRow = Math.floor(this.menuData.length / this.colum)
-			// if (intRow * this.colum - this.menuData.length !== 0) {
-			// 	const replenishNum = Math.ceil(this.menuData.length / this.colum) * this.colum - this.menuData.length
-			// 	const replenishMenu = new Array(replenishNum)
-			// 	replenishMenu.fill({})
-			// 	haveMenuCopyData.push(...replenishMenu)
-			// }
-			// return {
-			// 	rowNumber: haveMenuCopyData.length / this.colum,
-			// 	data: haveMenuCopyData
-			// }
+				this.specialPane = haveSpecialData
+				this.renderMenu = haveMenuData
+			},
+			immediate: true,
+			deep: true
+		},
+
+		number() {
+			this.getSpStr()
 		}
 	},
+
 	beforeMount() {
 		// console.log(this.menuData)
 	},
@@ -116,7 +153,6 @@ export default {
 	box-sizing: border-box;
 	background-color: #fff;
 	border-radius: 20rpx;
-	margin-top: 24upx;
 
 	.title-wrapper {
 		display: flex;

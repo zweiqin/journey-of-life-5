@@ -127,9 +127,9 @@ export default {
 				.then(({ data }) => {
 					// this.totalPages = data.totalPages
 					// if (isLoadmore) {
-					// 	this.distributionGoods.push(...data.brandList)
+					// 	this.distributionGoods.push(...data.goodsVoList)
 					// } else {
-					this.distributionGoods = data.brandList
+					this.distributionGoods = data.goodsVoList || []
 					// }
 					uni.hideLoading()
 					this.status = 'none'

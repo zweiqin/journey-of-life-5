@@ -77,13 +77,9 @@
 </template>
 
 <script>
-import {
-	getCategory
-} from '@/api/user'
-import tuiModal from '@/components/thorui/tui-modal/tui-modal.vue'
-import { addCategoryApi, updateCategoryNameApi } from '../../../api/user'
+import { getSelectCategoryApi, addCategoryApi, updateCategoryNameApi } from '../../../api/user'
 // import { J_USER_INFO } from '../../../constant'
-// import { getUserId, getBrandId } from '../../../utils'
+import { getBrandId } from '../../../utils'
 
 export default {
 	name: 'GoodsClassification',
@@ -103,8 +99,9 @@ export default {
 	},
 	methods: {
 		getDataList() {
-			getCategory().then((res) => {
-				this.CategoryList = res.data
+			if (!getBrandId()) return
+			getSelectCategoryApi({ brandId: getBrandId() }).then((res) => {
+				this.CategoryList = res.data || []
 				this.CategoryList.forEach((item) => {
 					item.timer = this.convertTimeString(item.addTime)
 				})

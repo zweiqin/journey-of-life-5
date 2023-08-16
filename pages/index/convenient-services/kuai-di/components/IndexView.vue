@@ -45,7 +45,7 @@
 				<view class="viewHeader" :class="{ 'sticky-fixed': isFixed }">
 					<span>我的快递</span> <span></span>
 				</view>
-				<scroll-view v-if="myExpressData.records.length > 0" class="RecordList" scroll-y="true">
+				<scroll-view v-if="myExpressData.records.length > 0" class="RecordList" scroll-y>
 					<view v-for="(item, index) in myExpressData.records" :key="item.sn" class="RecordItem">
 						<image :src="item.imgUrl" mode=""></image>
 						<span>订单编号:{{ item.sn }}</span>

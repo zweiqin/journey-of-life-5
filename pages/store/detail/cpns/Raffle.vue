@@ -1,7 +1,7 @@
 <template>
 	<view style="min-height: 200rpx;">
 		<view v-if="rafflePrizeList && rafflePrizeList.length">
-			<scroll-view refresher-background="#3f3d3d" scroll-y="true" style="max-height: 85vh;min-height: 400rpx;">
+			<scroll-view refresher-background="#3f3d3d" scroll-y style="max-height: 85vh;min-height: 400rpx;">
 				<view style="padding: 44upx;background-color: #e23d3d;border-radius: 28upx;">
 					<view
 						style="padding: 30upx;background-color: #fa5151;border-radius: 28upx;box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);"
@@ -266,8 +266,5 @@ export default {
 	color: #999999;
 	font-size: 36upx;
 	letter-spacing: 2px;
-}
-::-webkit-scrollbar {
-  height: 0 !important;
 }
 </style>

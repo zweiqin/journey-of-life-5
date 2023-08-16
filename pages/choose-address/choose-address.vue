@@ -27,8 +27,7 @@
 				<block v-for="(item, index) in hotCities" :key="index">
 					<tui-grid-item :cell="3" @click="confirmChooseAddress(item, true)">
 						<text class="tui-grid-label">
-							{{ item.level === 4 ? item.town : item.level === 3 ? item.distinguish : item.city
-							}}
+							{{ item.level === 4 ? item.town : item.level === 3 ? item.distinguish : item.city }}
 						</text>
 					</tui-grid-item>
 				</block>

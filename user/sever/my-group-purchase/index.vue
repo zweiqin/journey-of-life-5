@@ -147,7 +147,7 @@
 </template>
 
 <script>
-import { orderTypesMall, orderTypesStore, orderOpButtons } from '../../orderForm/config'
+import { orderOpButtons } from '../../orderForm/config'
 import { getGrouponMyApi, getGrouponQueryApi, getOrderRefundsReasonApi } from '../../../api/user'
 import {
 	getOrderListApi,

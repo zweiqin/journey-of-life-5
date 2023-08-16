@@ -89,28 +89,27 @@ export default {
 			orderTypesMall: [
 				{
 					label: '全部',
-					value: 0,
-					key: 'all'
+					value: 0
 				},
 				{
 					label: '待付款',
-					value: 1,
-					key: 'awaitPay'
+					value: 1
 				},
 				{
 					label: '待发货',
-					value: 2,
-					key: 'awaitShipped'
+					value: 2
 				},
 				{
 					label: '待收货',
-					value: 3,
-					key: 'awaitReceipt'
+					value: 3
 				},
 				{
 					label: '待评价',
-					value: 4,
-					key: 'awaitEvaluate'
+					value: 4
+				},
+				{
+					label: '已退款',
+					value: 10
 				}
 			],
 			orderTypesStore: [
@@ -133,6 +132,10 @@ export default {
 				{
 					label: '已取消',
 					value: 9
+				},
+				{
+					label: '已退款',
+					value: 10
 				}
 			],
 			currentStatus: 0,
@@ -209,25 +212,38 @@ export default {
 
 <style lang="less" scoped>
 .orders-container {
+	width: 100%;
 	font-size: 28upx;
 	color: #3d3d3d;
-	// padding: 60upx 0;
+	overflow: hidden;
 
 	.navs {
+		width: 100%;
 		display: flex;
-		justify-content: space-between;
 		margin: 34upx 0;
-		padding-bottom: 20upx;
-		padding: 0 32upx;
+		padding: 0 28upx;
 		box-sizing: border-box;
+		white-space: nowrap;
+		overflow-x: auto;
 
 		.nav-item {
+			width: fit-content;
+			padding: 0 6upx;
 			transition: all 350ms;
 
 			&.nav-item-active {
 				color: #ff8f1f;
 			}
 		}
+	}
+
+	::-webkit-scrollbar {
+		height: 12upx !important;
+	}
+
+	::-webkit-scrollbar-thumb {
+		border-radius: 6upx;
+		background-color: #d3d0d0;
 	}
 
 	.order-list-wrapper {

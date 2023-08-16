@@ -23,6 +23,44 @@ export const orderTypesMall = [
 		label: '待评价',
 		value: 4,
 		key: 'awaitEvaluate'
+	},
+	{
+		label: '已退款',
+		value: 10,
+		key: 'hasRefunded'
+	}
+]
+
+export const orderTypesStore = [
+	{
+		label: '待付款',
+		value: 8,
+		key: 'awaitPay'
+	},
+	{
+		label: '已付款',
+		value: 5,
+		key: 'hasPay'
+	},
+	{
+		label: '已核销',
+		value: 6,
+		key: 'hasWritten'
+	},
+	{
+		label: '已过期',
+		value: 7,
+		key: 'hasExpired'
+	},
+	{
+		label: '已取消',
+		value: 9,
+		key: 'hasCancel'
+	},
+	{
+		label: '已退款',
+		value: 10,
+		key: 'hasRefunded'
 	}
 ]
 
