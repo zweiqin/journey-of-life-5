@@ -30,15 +30,13 @@
 							<!-- <text class="old-price">￥987</text> -->
 						</view>
 						<view class="op">
-							<BeeIcon
-								:size="22" :src="require('../../../static/brand/order-detail/jian.png')"
-								@click="handleOpNumber(-1)"
-							></BeeIcon>
+							<view style="padding: 2upx;border: 4upx solid #d8d8d8;border-radius: 50%;line-height: 1;">
+								<tui-icon name="reduce" :size="16" color="#d8d8d8" bold @click="handleOpNumber(-1)"></tui-icon>
+							</view>
 							<text class="number">{{ orderInfo.number }}</text>
-							<BeeIcon
-								:size="22" :src="require('../../../static/brand/order-detail/add.png')"
-								@click="handleOpNumber(+1)"
-							></BeeIcon>
+							<view style="padding: 2upx;border: 4upx solid #fa5353;border-radius: 50%;line-height: 1;">
+								<tui-icon name="plus" :size="16" color="#fa5353" bold @click="handleOpNumber(+1)"></tui-icon>
+							</view>
 						</view>
 					</view>
 				</view>

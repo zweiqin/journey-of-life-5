@@ -3,7 +3,7 @@
 		<!-- <view class="header-container" :class="{ fixed: scrollTop > 100 }"> -->
 		<view class="header-container">
 			<view class="kefu-conatiner">
-				<image class="back-icon" src="../../../static/images/store/chevron-states.png" mode="" @click="handleBack" />
+				<image class="back-icon" src="../../../static/images/detail/top-back.png" mode="" @click="handleBack" />
 				<!-- <image class="avatar" src="/static/logo.png" mode="" /> -->
 				<image class="avatar" :src="common.seamingImgUrl(avatar)" mode="" />
 				<text class="kefu-name">{{ name }}</text>

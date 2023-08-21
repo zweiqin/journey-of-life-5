@@ -1,7 +1,7 @@
 <template>
 	<view class="coupons">
 		<view class="title-container">
-			<image src="../../../static/index/coupons/return.png" mode="" @click="handleBack" />
+			<image src="../../../static/index/convenient-services/return.png" mode="" @click="handleBack" />
 			<text>领券中心</text>
 		</view>
 		<view v-show="currentTab === 1">
@@ -100,9 +100,9 @@ export default {
 			// 	{ id: 4, text: '分享' }
 			// ],
 			// selects: [
-			// 	{ id: 1, name: '类型', icon: require('../../../static/index/coupons/eject-fill.png') },
-			// 	{ id: 2, name: '状态', icon: require('../../../static/index/coupons/eject-fill.png') },
-			// 	{ id: 3, name: '优惠', icon: require('../../../static/index/coupons/eject-fill.png') }
+			// 	{ id: 1, name: '类型', icon: require('../../../xxx') },
+			// 	{ id: 2, name: '状态', icon: require('../../../xxx') },
+			// 	{ id: 3, name: '优惠', icon: require('../../../xxx') }
 			// ],
 			// items: [
 			// 	{

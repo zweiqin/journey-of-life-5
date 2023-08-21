@@ -111,14 +111,14 @@ export default {
 				success: (res) => {
 					if (res.confirm) {
 						if (data.id) {
-							updateApplyDistributionApi(data).then((res) => {
+							updateBindDistributionApi(data).then((res) => {
 								this.$showToast('提交成功')
 								setTimeout(() => {
 									uni.navigateBack()
 								}, 2000)
 							})
 						} else {
-							updateBindDistributionApi(data).then((res) => {
+							updateApplyDistributionApi(data).then((res) => {
 								this.$showToast('提交成功')
 								setTimeout(() => {
 									uni.navigateBack()

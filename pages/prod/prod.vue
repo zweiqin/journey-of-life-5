@@ -110,10 +110,11 @@
 				</view>
 			</view>
 
-			<view class="eval" @click="go(`/user/otherServe/comment-list/index?valueId=${goodsDetail.info.id}`)">
+			<!-- <view class="eval" @click="go(`/user/otherServe/comment-list/index?valueId=${goodsDetail.info.id}`)">
 				<text>评价（{{ commentCount.allCount }}）</text>
 				<image src="../../static/images/detail/right-arrow.png" mode="" />
-			</view>
+				</view> -->
+			<CommentCard ref="refCommentCard" :goods-id="goodsId"></CommentCard>
 
 			<!-- 店铺信息 -->
 			<view v-if="goodsDetail.brand.name" class="brand-wrapper">
@@ -158,9 +159,7 @@
 						@click="go('/pages/prod/prod?goodsId=' + item.id)"
 					>
 						<image :src="common.seamingImgUrl(item.picUrl)" mode="" />
-
 						<view class="recommend-goods-name">{{ item.name }} </view>
-
 						<text class="recommend-goods-price">￥<text>{{ item.counterPrice }}</text></text>
 					</view>
 				</view>
@@ -200,7 +199,7 @@
 				<view class="item">
 					<image
 						:src="isCollect
-							? '../../static/images/detail/collection-active .png'
+							? '../../static/images/detail/collection-active.png'
 							: '../../static/images/detail/collection.png'
 						" mode="" @click="handleCollect"
 					/>
@@ -232,7 +231,7 @@ import {
 	getCarShopNumberApi,
 	goodsListApi
 } from '../../api/goods'
-import { getCommentCountApi } from '../../api/order'
+// import { getCommentCountApi } from '../../api/order'
 import { getUserId } from '../../utils'
 
 export default {
@@ -255,11 +254,11 @@ export default {
 			evalPosition: 0,
 			detailPosition: 0,
 			scrollTop: 0,
-			currentMoveTag: 0,
-			commentCount: {
-				allCount: '--',
-				hasPicCount: '--'
-			}
+			currentMoveTag: 0
+			// commentCount: {
+			// 	allCount: '--',
+			// 	hasPicCount: '--'
+			// },
 		}
 	},
 	onLoad(options) {
@@ -319,20 +318,24 @@ export default {
 				this.$nextTick(() => this.handleShareGoods(true))
 				// #endif
 				this.getBrandOtherGoods(res.data.brand.id)
-				this.getCommentCount(res.data.info.id)
+				// this.getCommentCount(res.data.info.id)
 				if (uni.getStorageSync(J_USER_ID)) {
 					this.getCarShopNumber()
 				}
 			}
 		},
-		getCommentCount(id) {
-			getCommentCountApi({
-				type: 0,
-				valueId: id
-			}).then(({ data }) => {
-				this.commentCount = data
-				console.log(data)
-			})
+		// getCommentCount(id) {
+		// 	getCommentCountApi({
+		// 		type: 0,
+		// 		valueId: id
+		// 	}).then(({ data }) => {
+		// 		this.commentCount = data
+		// 	})
+		// },
+		checkCommentStatus() {
+			if (this.$refs.refCommentCard.commentListDrawerVisible) {
+				this.$refs.refCommentCard.handleClose()
+			}
 		},
 
 		// 分享
@@ -352,6 +355,7 @@ export default {
 
 		// 加入购物车
 		async addShopCar() {
+			this.checkCommentStatus()
 			const goodsInfo = await this.getSpacification()
 			const data = {
 				userId: getUserId(),
@@ -377,6 +381,7 @@ export default {
 		},
 		// 立即购买
 		async fastBuy() {
+			this.checkCommentStatus()
 			const goodsInfo = await this.getSpacification()
 			uni.setStorageSync(J_ONE_PAY_GOODS, {
 				currentGoodsImg: goodsInfo.product.url || this.goodsDetail.info.picUrl,
@@ -741,22 +746,6 @@ export default {
 		}
 	}
 
-	.eval {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 26upx;
-		box-sizing: border-box;
-		background-color: #f9f9f9;
-		margin-top: 24upx;
-
-		image {
-			width: 32upx;
-			height: 32upx;
-			object-fit: cover;
-		}
-	}
-
 	.brand-wrapper {
 		margin-top: 24upx;
 		background-color: #f9f9f9;
@@ -944,7 +933,7 @@ export default {
 	box-sizing: border-box;
 	display: flex;
 	align-items: center;
-	z-index: 10000000;
+	z-index: 9999;
 
 	.icon-wrapper {
 		display: flex;

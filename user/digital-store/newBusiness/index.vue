@@ -56,46 +56,33 @@ export default {
 			this.value = tab
 			this.queryMsgSentryList()
 		},
-		async queryMsgSentryList() {
-			const res = await queryMsgSentryListApi({
+		queryMsgSentryList() {
+			queryMsgSentryListApi({
 				userId: getUserId(),
 				// userId: 269,
 				status: this.value
-			})
-			if (res.errno == 780) {
-				uni.showToast({
-					title: res.errmsg,
-					icon: 'none',
-					mask: true
-				})
-				setTimeout(() => {
-					this.$switchTab('/pages/user/user')
-				}, 2000)
-			} else {
+			}).then((res) => {
 				this.bussinessList = res.data
-			}
-			console.log(res)
+			})
+				.catch((e) => {
+					if (e.errno == 780) {
+						uni.showToast({
+							title: e.errmsg,
+							icon: 'none',
+							mask: true
+						})
+						setTimeout(() => {
+							this.$switchTab('/pages/user/user')
+						}, 2000)
+					}
+				})
 		}
 	},
 
 	// 页面周期函数--监听页面加载
 	onLoad() {
 		this.queryMsgSentryList()
-	},
-	// 页面周期函数--监听页面初次渲染完成
-	onReady() { },
-	// 页面周期函数--监听页面显示(not-nvue)
-	onShow() { },
-	// 页面周期函数--监听页面隐藏
-	onHide() { },
-	// 页面周期函数--监听页面卸载
-	onUnload() { }
-	// 页面处理函数--监听用户下拉动作
-	// onPullDownRefresh() { uni.stopPullDownRefresh(); },
-	// 页面处理函数--监听用户上拉触底
-	// onReachBottom() {},
-	// 页面处理函数--用户点击右上角分享
-	// onShareAppMessage(options) {},
+	}
 }
 </script>
 

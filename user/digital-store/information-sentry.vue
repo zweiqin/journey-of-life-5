@@ -51,7 +51,7 @@
 
 		<view v-if="!list.length">
 			<tui-no-data
-				:img-url="common.seamingImgUrl('ncs28ma9a3ac5ufebzsw.png')" img-width="400" :fixed="false"
+				:img-url="common.seamingImgUrl('ncs28ma9a3ac5ufebzsw.png')" :img-width="400" :fixed="false"
 				style="margin-top: 50upx;"
 			>
 				暂无数据
@@ -68,19 +68,18 @@
 </template>
 
 <script>
-import { informationSentryNavs } from './config'
 import CollectPane from './components/collect-pane.vue'
 import ConversionPane from './components/conversion-pane.vue'
 import PursueSalePane from './components/pursue-sale-pane.vue'
 import StanPane from './components/stan-pane.vue'
 import { getMsgSentryListApi, getWordsApi } from '../../api/user'
 import { getUserId } from '../../utils'
-import { WORDS_LIST, J_SELECT_WORDS } from '../../constant'
+import { J_SELECT_WORDS } from '../../constant'
 import AddPopup from './components/add-popup.vue'
 const { debounce } = require('../../utils/util')
 
 export default {
-
+	name: 'InformationSentry',
 	components: {
 		CollectPane,
 		ConversionPane,
@@ -91,7 +90,24 @@ export default {
 	data() {
 		return {
 			searchActive: false,
-			navs: informationSentryNavs,
+			navs: [
+				{
+					label: '收集',
+					value: 1
+				},
+				{
+					label: '转化',
+					value: 2
+				},
+				{
+					label: '追销',
+					value: 3
+				},
+				{
+					label: '铁粉',
+					value: 4
+				}
+			],
 			currentTab: 1,
 			query: {
 				userId: getUserId(),
@@ -108,6 +124,10 @@ export default {
 	created() {
 		this.getListData()
 		this.handleSearchFn = debounce(this.search, 500)
+	},
+
+	onShow() {
+		this.words = uni.getStorageSync(J_SELECT_WORDS)
 	},
 
 	methods: {
@@ -131,22 +151,22 @@ export default {
 		},
 
 		// 获取列表数据
-		async getListData() {
+		getListData() {
 			uni.showLoading({
 				title: '加载中'
 			})
-			const res = await getMsgSentryListApi(this.query)
-
-			if (res.errno && res.errmsg) {
-				this.$showToast('您还不是业务员，无法访问')
-				uni.hideLoading()
-				setTimeout(() => {
-					this.$switchTab('/pages/user/user')
-				}, 2000)
-			} else {
-				this.list = res
-				uni.hideLoading()
-			}
+			getMsgSentryListApi(this.query)
+				.then((res) => {
+					this.list = res.data
+					uni.hideLoading()
+				})
+				.catch((e) => {
+					this.$showToast('您还不是业务员，无法访问')
+					uni.hideLoading()
+					setTimeout(() => {
+						this.$switchTab('/pages/user/user')
+					}, 2000)
+				})
 		},
 
 		// 转化成功
@@ -157,7 +177,6 @@ export default {
 		// 获取话术列表
 		async getWordsList() {
 			const res = await getWordsApi(this.query.status)
-			uni.setStorageSync(WORDS_LIST, res)
 		},
 
 		handleToAdd() {
@@ -174,10 +193,6 @@ export default {
 			this.query.search = e.detail.value
 			this.getListData()
 		}
-	},
-
-	onShow() {
-		this.words = uni.getStorageSync(J_SELECT_WORDS)
 	}
 }
 </script>

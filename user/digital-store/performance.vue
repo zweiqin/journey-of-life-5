@@ -78,6 +78,7 @@ import {
 	getPerformanceInfoApi
 } from '../../api/user'
 export default {
+	name: 'Performance',
 	data() {
 		return {
 			single: '',
@@ -105,7 +106,7 @@ export default {
 			this.$switchTab('/pages/user/user')
 		},
 		getrepetitionMonth() {
-			var arr = this.timeList.data
+			var arr = this.timeList
 			var map = {}
 			var dest = []
 			for (var i = 0; i < arr.length; i++) {
@@ -132,7 +133,7 @@ export default {
 			this.monthList = dest
 		},
 		getrepetitionWeek() {
-			var arr1 = this.timeList.data
+			var arr1 = this.timeList
 			var map1 = {}
 			var dest1 = []
 
@@ -173,7 +174,7 @@ export default {
 
 		// 判断天----------------------------------------------------------------------------------
 		getrepetitionDay() {
-			var arr2 = this.timeList.data
+			var arr2 = this.timeList
 			var map1 = {}
 			var dest2 = []
 
@@ -287,8 +288,8 @@ export default {
 			})
 		},
 		// 查询业绩列表
-		async performanceList() {
-			const res = await performanceListApi({
+		performanceList() {
+			performanceListApi({
 				// userId: 219,
 				userId: getUserId(),
 				month: this.month * 1,
@@ -296,23 +297,22 @@ export default {
 				week: this.week * 1,
 				year: this.year * 1,
 				day: this.day * 1
+			}).then((res) => {
+				this.timeList = res.data
+				this.getrepetitionMonth()
 			})
-			this.timeList = res
-			console.log(res.errno)
-			if (res.errno == 780) {
-				uni.showToast({
-					title: '您还不是业务员',
-					duration: 1500,
-					icon: 'none'
+				.catch((e) => {
+					if (e.errno == 780) {
+						uni.showToast({
+							title: '您还不是业务员',
+							duration: 1500,
+							icon: 'none'
+						})
+						setTimeout(() => {
+							this.$switchTab('/pages/user/user')
+						}, 2000)
+					}
 				})
-
-				setTimeout(() => {
-					this.$switchTab('/pages/user/user')
-				}, 2000)
-			} else {
-				this.info = res.data
-			}
-			this.getrepetitionMonth()
 		},
 		// 查询业绩明细
 		async getPerformanceInfo() {

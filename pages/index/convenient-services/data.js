@@ -1,21 +1,3 @@
-export const coupons = [
-	{
-		id: 1,
-		icon: require('../../../static/index/one.png')
-	},
-	{
-		id: 2,
-		icon: require('../../../static/index/two.png')
-	},
-	{
-		id: 3,
-		icon: require('../../../static/index/three.png')
-	},
-	{
-		id: 4,
-		icon: require('../../../static/index/four.png')
-	}
-]
 export const tests = [
 	{
 		name: '去开卡',

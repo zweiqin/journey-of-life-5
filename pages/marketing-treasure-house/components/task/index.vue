@@ -26,7 +26,9 @@
 			</view>
 
 			<view class="join">
-				<img class="view" src="../../../../static/images/con-center/visited.png" alt="" />
+				<view class="view">
+					<tui-icon name="seen" :size="30" color="#a2a2a2"></tui-icon>
+				</view>
 				100+
 				<button class="uni-btn" :style="{ background: full ? '#4968F6' : '' }">
 					{{ full ? '已爆满' : '去报名' }}
@@ -160,7 +162,6 @@ export default {
 			color: #777777;
 
 			.view {
-				width: 30upx;
 				margin-right: 8upx;
 			}
 		}

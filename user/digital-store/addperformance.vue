@@ -88,12 +88,13 @@
 			</view>
 		</view>
 		<!-- <view class="performance-detail">
-			<view class="detail-title"
-			>业绩详情<text
+			<view class="detail-title">
+			业绩详情<text
 			style="font-size: 12px; font-weight: normal; color: #999999"
-			>(提交即可查看业绩)</text
-			></view
 			>
+			(提交即可查看业绩)
+			</text>
+			</view>
 			<view class="detail-background">
 			<view class="chose-time">选择日期：1月1周1日</view>
 			<view class="chose-time">负责人姓名：代亚腾</view>
@@ -101,12 +102,8 @@
 			<view class="chose-time">报警时间：2022-08-09 18:00</view>
 			<view class="chose-time">报警金额：5万</view>
 			<view class="close-window" @click="closeWindow">
-			<view>收起</view
-			><img
-			src="../../static/images/common/toggle.png"
-			alt=""
-			class="double-close"
-			/>
+			<view>收起</view>
+			<view class="double-close"><tui-icon name="up" :size="16" color="#767676"></tui-icon></view>
 			</view>
 			</view>
 			</view> -->

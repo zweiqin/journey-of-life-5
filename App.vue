@@ -33,11 +33,10 @@ export default {
 		}
 	},
 	mounted() {
-		// #ifdef APP
-		// #endif
 		updateToken()
 		const launchOptions = uni.getLaunchOptionsSync()
 		this.scene = launchOptions.scene
+		this.$store.dispatch('app/getUserSystermInfo')
 
 		// #ifdef H5
 		uni.onTabBarMidButtonTap(() => {

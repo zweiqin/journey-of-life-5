@@ -70,7 +70,7 @@
 						</l-painter-view>
 					</l-painter-view>
 
-					<!-- :src="require('../../static/images/user/code/line.png')" -->
+					<!-- :src="require('../../static/images/icon/line.png')" -->
 					<!-- <l-painter-view
 						css="padding: 10rpx;
 						display: flex;

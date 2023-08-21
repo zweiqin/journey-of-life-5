@@ -51,7 +51,6 @@
 <script>
 import loadData from '../../../../mixin/loadData'
 import { getSubMenuByPidApi, filterBrandByMenuIdApi } from '../../../../api/brand'
-import { menus, navs } from './data'
 export default {
 	name: 'FoodNearby',
 	mixins: [
@@ -70,8 +69,6 @@ export default {
 	],
 	data() {
 		return {
-			menus: Object.freeze(menus),
-			navs,
 			list: [],
 			title: '',
 			id: '',
@@ -184,36 +181,11 @@ export default {
 			.item {
 				height: 48upx;
 				position: relative;
-				// width: 120upx;
-				// height: 160upx;
-				// display: flex;
-				// align-items: center;
-				// justify-content: center;
-				// flex-direction: column;
 				font-size: 24upx;
-				// padding: 16upx 12upx;
 				box-sizing: border-box;
 				margin-right: 48upx;
 				border-radius: 10upx;
 				flex-shrink: 0;
-				// background-color: #fff;
-
-				// &.active {
-				//   border: 1upx solid #fa5151;
-
-				//   &::after {
-				//     content: '';
-				//     bottom: 0;
-				//     right: 0;
-				//     width: 28upx;
-				//     height: 22upx;
-				//     position: absolute;
-				//     display: block;
-				//     background: url('../../../../static/brand/find-food/food-nearby/menus/active.png')
-				//       no-repeat;
-				//     background-size: cover;
-				//   }
-				// }
 
 				&::after {
 					content: '';

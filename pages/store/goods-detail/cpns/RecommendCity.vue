@@ -6,7 +6,7 @@
 			<view v-for="item in data" :key="item.id" class="item">
 				<view class="title-wrapper">
 					<view class="brand-name" @click="go('/pages/store/detail/detail?brandId=' + item.id)">
-						<BeeIcon :src="require('../../../../static/brand/goods-detial/brand-icon.png')" :size="14"></BeeIcon>
+						<BeeIcon :src="require('../../../../static/images/icon/brand-icon.png')" :size="14"></BeeIcon>
 						<text class="brand-name-text">{{ item.name }}</text>
 					</view>
 					<view class="dist">距你{{ (item.distance / 1000).toFixed(2) }}km</view>

@@ -1,6 +1,6 @@
 <template>
 	<view class="businessSearch">
-		<image src="../../../../static/images/index/search.png" class="searchImg" mode="scaleToFill" />
+		<view class="searchImg"><tui-icon name="search" bold :size="22" color="#777777"></tui-icon></view>
 		<input class="searchInput" placeholder="输入手机号或昵称搜索" placeholder-class="input-placeholder" @input="importInput" />
 	</view>
 </template>
@@ -13,21 +13,9 @@ export default {
 	data() {
 		return { searchText: '', importInput: '' }
 	},
-
-	// 组件周期函数--监听组件挂载完毕
 	mounted() {
 		this.importInput = handleDebounce(this.search, 500)
 	},
-	// 组件周期函数--监听组件数据更新之前
-	beforeUpdate() { },
-	// 组件周期函数--监听组件数据更新之后
-	updated() { },
-	// 组件周期函数--监听组件激活(显示)
-	activated() { },
-	// 组件周期函数--监听组件停用(隐藏)
-	deactivated() { },
-	// 组件周期函数--监听组件销毁之前
-	beforeDestroy() { },
 	methods: {
 		search(e) {
 			console.log(e.detail.value)
@@ -47,8 +35,6 @@ export default {
 
 	.searchImg {
 		margin: 0 32upx;
-		height: 40upx;
-		width: 40upx;
 	}
 
 	.searchInput {

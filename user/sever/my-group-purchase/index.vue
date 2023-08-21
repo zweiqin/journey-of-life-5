@@ -1,24 +1,26 @@
 <template>
-	<view class="my-group-purchase-container">
+	<view class="my-group-purchase-container" :style="{ overflowY: isShowCommentOrder ? 'hidden' : 'auto' }">
 		<JHeader tabbar="/pages/user/user" width="50" height="50" title="我的拼团"></JHeader>
 
 		<view>
 			<tui-tabs
 				style="width: 702upx;padding: 0 0upx 0 0upx;overflow: hidden;" :slider-width="105" :padding="24"
 				item-width="351rpx" selected-color="#000000" bold slider-bg-color="#ff0000"
-				:tabs="[{ name: '开团' }, { name: '入团' }]" :current-tab="currentTab"
-				@change="handleChangeTab"
+				:tabs="[{ name: '开团' }, { name: '入团' }]" :current-tab="currentTab" @change="handleChangeTab"
 			></tui-tabs>
 		</view>
 
 		<view v-if="myGrouponList && myGrouponList.length" class="order-list-wrapper">
 			<view v-for="item in myGrouponList" :key="item.id" class="goods-pane">
-				<view class="order-no-status" @click="handleToViewOrderDetail(item)">
+				<view class="order-no-status" @click="go(`/user/sever/my-group-purchase/group-purchase-detail?id=${item.id}&isJoin=false`)">
 					<view class="order-no">订单号:{{ item.orderSn }}</view>
 					<view class="order-status">{{ item.orderStatusText }}</view>
 				</view>
 
-				<view style="padding: 16upx 24upx 26upx;font-size: 28upx;" @click="handleToViewOrderDetail(item)">
+				<view
+					style="padding: 16upx 24upx 26upx;font-size: 28upx;"
+					@click="go(`/user/sever/my-group-purchase/group-purchase-detail?id=${item.id}&isJoin=false`)"
+				>
 					<view>
 						<view style="display: flex;justify-content: space-between;">
 							<view>
@@ -58,30 +60,26 @@
 					</view>
 				</view>
 
-				<view class="goods-list" @click="handleToViewOrderDetail(item)">
+				<view class="goods-list" @click="go(`/user/sever/my-group-purchase/group-purchase-detail?id=${item.id}&isJoin=false`)">
 					<view v-for="goods in item.goodsList" :key="goods.id" class="goods-item">
 						<image class="goods-img" :src="common.seamingImgUrl(goods.picUrl)" mode="" />
-
 						<view class="info">
 							<view class="name">{{ goods.goodsName }}</view>
-
 							<view class="good-sp-pr">
 								<view class="sp">标准</view>
 								<!-- <view class="pr">￥{{ goods.price }}</view> -->
-								<view style="margin-top: 10upx;font-size: 28upx;color: #0000ff;" @click.stop="handleGrouponRules(goods.id)">查看团购规则</view>
+								<view
+									style="margin-top: 10upx;font-size: 28upx;color: #0000ff;"
+									@click.stop="handleGrouponRules(goods.id)"
+								>
+									查看团购规则
+								</view>
 							</view>
 						</view>
-
 						<view>
 							<view class="number" style="text-align: right">
 								共 {{ goods.number }} 件商品
 							</view>
-							<button
-								v-if="item.handleOption.comment && !goods.comment" class="ev-btn uni-btn"
-								@click.stop="handleOpOrder(item, 'comment', goods)"
-							>
-								去评论
-							</button>
 						</view>
 					</view>
 				</view>
@@ -90,11 +88,10 @@
 					<view class="actual-price">
 						实付：<text class="number">￥{{ item.actualPrice }}</text>
 					</view>
-
 					<view class="btns">
 						<view v-for="btn in orderOpButtons" :key="btn.label">
 							<button
-								v-if="item.handleOption[btn.key] && btn.label !== '去评论'" :style="{
+								v-if="item.handleOption[btn.key]" :style="{
 									background: btn.color
 								}" class="uni-btn" @click="handleOpOrder(item, btn.key)"
 							>
@@ -110,6 +107,7 @@
 			暂无拼团~
 		</view>
 
+		<CommentOrder ref="refCommentOrder" @close="isShowCommentOrder = false"></CommentOrder>
 		<!-- 申请退款dialog -->
 		<tui-dialog
 			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '提交', color: '#586c94' }]"
@@ -176,6 +174,7 @@ export default {
 			totalPages: 0,
 			status: 'none',
 			loadingStatus: 'noMore',
+			isShowCommentOrder: false,
 			isShowRefundDialog: false,
 			refundRadioItems: [],
 			tempRefund: {
@@ -220,11 +219,7 @@ export default {
 			this.getGrouponMyList()
 		},
 		// 点击操作按钮
-		handleOpOrder(goods, key, currentGoods) {
-			if (key === 'comment') {
-				this.handleToViewOrderDetail(goods, currentGoods)
-				return
-			}
+		handleOpOrder(order, key, currentGoods) {
 			const mapMethods = {
 				cancel: {
 					text: '确定要取消当前订单吗？',
@@ -240,7 +235,7 @@ export default {
 				}
 			}
 			if (
-				goods.handleOption[key] &&
+				order.handleOption[key] &&
 				['cancel', 'delete', 'confirm'].includes(key)
 			) {
 				uni.showModal({
@@ -251,7 +246,7 @@ export default {
 							mapMethods[key]
 								.api({
 									userId: getUserId(),
-									orderId: goods.orderId
+									orderId: order.orderId
 								})
 								.then(() => {
 									this.grouponQuery.page = 1
@@ -264,22 +259,16 @@ export default {
 				getOrderRefundsReasonApi({ type: 0 })
 					.then((res) => {
 						this.refundRadioItems = res.data
-						this.tempRefund.orderId = goods.orderId
+						this.tempRefund.orderId = order.orderId
 						this.isShowRefundDialog = true
 					})
 			} else if (key === 'pay') {
-				payFn({ ...goods }, goods.isAppoint ? 6 : 1)
+				payFn({ ...order }, order.isAppoint ? 6 : 1)
+			} else if (key === 'comment') {
+				// this.go(`/user/sever/my-group-purchase/group-purchase-detail?id=${order.id}${currentGoods ? '&goodsId=' + currentGoods.id : ''}&isJoin=false`)
+				this.$refs.refCommentOrder.showCommentOrder(order.id)
+				this.isShowCommentOrder = true
 			}
-		},
-
-		// 查看详情
-		handleToViewOrderDetail(goods, currentGoods) {
-			uni.navigateTo({
-				url:
-					'/user/sever/my-group-purchase/group-purchase-detail?id=' +
-					goods.id +
-					(currentGoods ? '&goodsId=' + currentGoods.id : '') + '&isJoin=false'
-			})
 		},
 
 		// 申请退款确认
@@ -329,7 +318,7 @@ export default {
 
 <style lang="less" scoped>
 .my-group-purchase-container {
-	min-height: 100vh;
+	height: 100vh;
 	padding: 40upx 24upx 140upx;
 	box-sizing: border-box;
 	background-color: #f6f6f6;
@@ -343,11 +332,13 @@ export default {
 		font-size: 36upx;
 		letter-spacing: 2px;
 	}
-.tui-tabs-view {
-	/deep/ .tui-tabs-slider {
-		margin-left: -24upx;
+
+	.tui-tabs-view {
+		/deep/ .tui-tabs-slider {
+			margin-left: -24upx;
+		}
 	}
-}
+
 	.order-list-wrapper {
 		background-color: #f6f6f6;
 		padding-top: 10px;

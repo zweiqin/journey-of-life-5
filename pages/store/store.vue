@@ -6,7 +6,6 @@
 				<SearchBar prevent background="#fff" @click="go('/pages/search-page/search-page')"></SearchBar>
 				<PhotoSearch></PhotoSearch>
 			</view>
-			<!-- <image class="banner-img" src="../../static/brand/banner.png" mode="" /> -->
 			<view class="menus-wrapper">
 				<BeeMenus :data="menusData" @click="handleTo"></BeeMenus>
 			</view>
@@ -268,11 +267,6 @@ export default {
 				flex: 1;
 				margin-right: 15upx;
 			}
-		}
-
-		.banner-img {
-			width: 100%;
-			height: 244upx;
 		}
 
 		.menus-wrapper {

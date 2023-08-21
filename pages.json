@@ -334,6 +334,12 @@
 					}
 				},
 				{
+					"path": "my-tools/my-comment/additional-evaluation",
+					"style": {
+						"navigationBarTitleText": "追加评价"
+					}
+				},
+				{
 					"path": "view",
 					"style": {
 						"navigationBarTitleText": ""
@@ -812,12 +818,12 @@
 						"navigationBarTitleText": "我的名片"
 					}
 				},
-				{
-					"path": "otherServe/comment-list/index",
-					"style": {
-						"navigationBarTitleText": "评论列表"
-					}
-				},
+				// {
+				// 	"path": "otherServe/comment-list/index",
+				// 	"style": {
+				// 		"navigationBarTitleText": "评论列表"
+				// 	}
+				// },
 				{
 					"path": "otherServe/payment-completed/index",
 					"style": {

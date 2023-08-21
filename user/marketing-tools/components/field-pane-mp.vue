@@ -176,7 +176,7 @@ export default {
 					this.branchList = res.data.map((item) => ({
 						...item,
 						value: item.id,
-						text: `${item.nickname}（区域编码：${item.areaId}）`
+						text: `${item.nickname}（${item.address}）`
 					}))
 					this.isShowBranchListSelect = true
 				})

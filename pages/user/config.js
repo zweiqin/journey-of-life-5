@@ -25,6 +25,11 @@ export const myTools = [
 		url: '/user/site/site-manage'
 	},
 	{
+		name: '我的评价',
+		icon: require('../../static/user-center/menus/address.png'),
+		url: '/user/my-tools/my-comment/index'
+	},
+	{
 		name: '我的券包',
 		icon: require('../../static/user-center/menus/shenqingjilu.png'),
 		url: '/pages/index/coupons/coupons?currentTab=2'

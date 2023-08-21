@@ -48,7 +48,8 @@
 
 		<view class="other-container">
 			<!-- 评价 -->
-			<Evaluate :data="goodsDetail"></Evaluate>
+			<!-- <Evaluate :data="goodsDetail"></Evaluate> -->
+			<CommentCard ref="refCommentCard" :goods-id="goodsId" background-color="#ffffff"></CommentCard>
 
 			<!-- 宝贝详情 -->
 			<view v-if="goodsDetail.info.detail" id="goods-detail" class="goods-detail">
@@ -80,7 +81,7 @@
 
 <script>
 import MoreFunctions from '@/components/MoreFunctions/MoreFunctions.vue'
-import Evaluate from './cpns/Evaluate.vue'
+// import Evaluate from './cpns/Evaluate.vue'
 import RecommendPane from './cpns/RecommendPane'
 import RecommendCity from './cpns/RecommendCity.vue'
 import OpFooter from './cpns/OpFooter.vue'
@@ -92,7 +93,7 @@ import { J_ONE_PAY_GOODS, J_RESERVATION_PAY_GOODS } from '../../../constant'
 
 export default {
 	name: 'GoodsDetail',
-	components: { Evaluate, RecommendPane, RecommendCity, OpFooter, UParse: uParse, MoreFunctions },
+	components: { RecommendPane, RecommendCity, OpFooter, UParse: uParse, MoreFunctions },
 	data() {
 		return {
 			orderType: '',

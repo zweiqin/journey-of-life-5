@@ -10,8 +10,6 @@
 			<image src="@/static/index/earn-money/wenjian.png" mode="" />
 		</view>
 
-		<!-- <image src="../../../static/index/sign/bg.png" mode="" class="bg" /> -->
-
 		<view class="middle">
 			<view class="date">
 				<view v-if="!todaySignL" class="getMorePoints" @click="getSign">

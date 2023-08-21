@@ -33,7 +33,7 @@
 					v-for="item in data.orderGoods" :key="item.id"
 					style="border-bottom: 1upx dotted #ccc; padding-bottom: 20upx"
 				>
-					<view v-if="commentGoodsId ? item.id == commentGoodsId : true" class="goods-item">
+					<view class="goods-item">
 						<image :src="common.seamingImgUrl(item.picUrl)" class="goods-img" mode="" />
 						<view class="goods-info-content">
 							<!-- <view class="goods-name">{{ item.goodsName }}</view>
@@ -46,29 +46,6 @@
 							</view>
 						</view>
 						<view class="goods-number">x{{ item.number }}</view>
-					</view>
-					<!-- 评论 -->
-					<view v-if="data.orderInfo.handleOption.comment && item.id == commentGoodsId" class="evaluate-info pane">
-						<view class="line">
-							<view style="margin-right: 12upx;">满意</view>
-							<uni-rate v-model="evForm.star"></uni-rate>
-						</view>
-						<view class="line">
-							<view style="margin-right: 12upx;">评论</view>
-							<textarea
-								v-model="evForm.content" placeholder="请输入商品评论" class="evaluate-textarea"
-								maxlength="200"
-							></textarea>
-						</view>
-						<view class="line">
-							<view>晒图/视频</view>
-							<view class="images">
-								<view v-for="item in evForm.picUrls" :key="item">
-									<image class="user-upload-img" :src="common.seamingImgUrl(item)" mode="" />
-								</view>
-								<view class="upload-icon" @click="handleUploadImg">+</view>
-							</view>
-						</view>
 					</view>
 				</view>
 			</view>
@@ -201,6 +178,7 @@
 			</tui-button>
 		</view>
 
+		<CommentOrder ref="refCommentOrder"></CommentOrder>
 		<!-- 申请退款dialog -->
 		<tui-dialog
 			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '提交', color: '#586c94' }]"
@@ -236,7 +214,6 @@ import {
 	getOrderDetailApi,
 	orderCancelApi,
 	orderDeleteApi,
-	addCommentPostApi,
 	orderRefundApi
 } from '../../../api/order'
 import { getOrderRefundsReasonApi, getGrouponDetailApi } from '../../../api/user'
@@ -262,14 +239,6 @@ export default {
 			orderId: null,
 			data: null,
 			orderOpButtons,
-			commentGoodsId: null,
-			evForm: {
-				userId: getUserId(),
-				star: 5,
-				content: '',
-				hasPicture: true,
-				picUrls: []
-			},
 			isShowRefundDialog: false,
 			refundRadioItems: [],
 			tempRefund: {
@@ -284,7 +253,6 @@ export default {
 	onLoad(options) {
 		this.orderId = options.id
 		this.isJoin = options.isJoin || 'true'
-		this.commentGoodsId = options.goodsId
 		this.getOrderDetail()
 	},
 
@@ -311,25 +279,8 @@ export default {
 			})
 		},
 
-		// 上传图片
-		handleUploadImg() {
-			const _this = this
-			uni.chooseImage({
-				success: (chooseImageRes) => {
-					uni.uploadFile({
-						url: 'https://appapi.jfcmei.com/wx/storage/upload',
-						filePath: chooseImageRes.tempFiles[0].path,
-						name: 'file',
-						success: (uploadFileRes) => {
-							_this.evForm.picUrls.push(JSON.parse(uploadFileRes.data).data.url)
-						}
-					})
-				}
-			})
-		},
-
 		// 点击操作按钮
-		handleOpOrder(goods, key) {
+		handleOpOrder(order, key) {
 			const mapMethods = {
 				cancel: {
 					text: '确定要取消当前订单吗？',
@@ -341,13 +292,8 @@ export default {
 					api: orderDeleteApi,
 					success: '删除成功'
 				}
-				// comment: {
-				//   text: "确定提交评价吗？",
-				//   api: addCommentPostApi,
-				//   success: "评论成功",
-				// },
 			}
-			if (goods.handleOption[key] && ['cancel', 'delete'].includes(key)) {
+			if (order.handleOption[key] && ['cancel', 'delete'].includes(key)) {
 				uni.showModal({
 					title: '提示',
 					content: mapMethods[key].text,
@@ -356,7 +302,7 @@ export default {
 							mapMethods[key]
 								.api({
 									userId: getUserId(),
-									orderId: goods.id
+									orderId: order.id
 								})
 								.then(() => {
 									this.$showToast(mapMethods[key].success, 'success')
@@ -375,40 +321,13 @@ export default {
 				getOrderRefundsReasonApi({ type: 0 })
 					.then((res) => {
 						this.refundRadioItems = res.data
-						this.tempRefund.orderId = goods.id
+						this.tempRefund.orderId = order.id
 						this.isShowRefundDialog = true
 					})
 			} else if (key === 'pay') {
-				payFn({ ...goods }, goods.isAppoint ? 6 : 1)
+				payFn({ ...order }, order.isAppoint ? 6 : 1)
 			} else if (key === 'comment') {
-				uni.showModal({
-					title: '提示',
-					content: '确定提交评价吗',
-					success: (res) => {
-						if (res.confirm) {
-							if (!this.evForm.star) return this.$showToast('请选择评分')
-							if (!this.evForm.content) return this.$showToast('请填写评价')
-							this.evForm.hasPicture = !!this.evForm.picUrls.length
-							this.evForm.picUrls = [ ...this.evForm.picUrls ]
-							const data = {
-								...this.evForm,
-								// orderGoodsId: this.commentGoodsId * 1,
-								type: 0,
-								valueId: this.commentGoodsId
-							}
-							addCommentPostApi(data).then(() => {
-								uni.showToast({
-									title: '评论成功',
-									duration: 2000
-								})
-								setTimeout(() => {
-									uni.navigateBack()
-								}, 1000)
-							})
-							this.getOrderDetail()
-						}
-					}
-				})
+				this.$refs.refCommentOrder.showCommentOrder(order.id)
 			}
 		},
 
@@ -513,67 +432,6 @@ export default {
 					}
 				}
 			}
-		}
-	}
-
-	.evaluate-info {
-		margin-top: 20upx;
-		padding: 0;
-
-		.line {
-			padding: 16upx 0;
-			display: flex;
-			align-items: flex-start;
-			justify-content: flex-start;
-
-			&:nth-child(3) {
-				display: block !important;
-
-				.title {
-					margin-bottom: 20upx;
-				}
-
-				.images {
-					display: flex;
-					flex-wrap: wrap;
-					margin-top: 16upx;
-
-					.user-upload-img {
-						width: 120upx;
-						height: 120upx;
-						border-radius: 6upx;
-						object-fit: cover;
-						margin-right: 10upx;
-						margin-bottom: 10upx;
-					}
-
-					.upload-icon {
-						width: 120upx;
-						height: 120upx;
-						border-radius: 6upx;
-						background-color: #d8d8d8;
-						color: #fff;
-						font-size: 54upx;
-						display: flex;
-						justify-content: center;
-						align-items: center;
-						padding: 0 6upx 6upx 0;
-						box-sizing: border-box;
-					}
-				}
-			}
-
-			.title {
-				margin-right: 30upx;
-				white-space: nowrap;
-				flex-shrink: 0;
-			}
-
-			.evaluate-textarea {
-				flex: 1;
-				height: 160upx;
-			}
-
 		}
 	}
 

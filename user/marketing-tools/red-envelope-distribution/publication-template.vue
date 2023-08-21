@@ -294,7 +294,7 @@ export default {
 		// 					filePath: imgFile.path,
 		// 					name: 'file',
 		// 					// formData: {
-		// 					// 	token: J_USER_TOKEN,
+		// 					// 	token: uni.getStorageSync(J_USER_TOKEN),
 		// 					// 	userId: getUserId()
 		// 					// },
 		// 					success: (uploadFileRes) => {
