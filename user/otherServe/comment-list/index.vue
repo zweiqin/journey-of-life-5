@@ -22,7 +22,7 @@
 			<view v-if="commentList && commentList.length" style="padding: 20upx;">
 				<view
 					v-for="(item, index) in commentList" :key="index"
-					style="margin-bottom: 28upx;padding-bottom: 10upx;;border-bottom: 1px solid #dddddd;"
+					style="margin-bottom: 28upx;padding-bottom: 10upx;border-bottom: 1px solid #dddddd;"
 				>
 					<view style="display: flex;justify-content: space-between;align-items: center;">
 						<view style="display: flex;justify-content: space-between;align-items: center;">

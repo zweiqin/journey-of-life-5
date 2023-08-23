@@ -14,11 +14,6 @@
 			</view>
 
 			<view class="values">
-				<!-- <view class="tag"> <tui-icon :size="12" name="agree-fill"></tui-icon>环境真棒(22)</view> -->
-				<!-- <view class="tag">服务热情(10)</view>
-					<view class="tag">口味超赞(22)</view>
-					<view class="tag">食物超赞(12)</view>
-					<view class="tag">性价比高(19)</view> -->
 				<view class="tag">有图评价（{{ commentCount.hasPicCount }}）</view>
 			</view>
 		</view>
@@ -56,7 +51,6 @@ export default {
 				valueId: this.data.info.id
 			}).then(({ data }) => {
 				this.commentCount = data
-				console.log(data)
 			})
 		}
 	}

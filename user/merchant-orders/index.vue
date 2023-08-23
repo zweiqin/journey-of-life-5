@@ -25,12 +25,12 @@
 
 		<view v-if="orderList && orderList.length" class="order-list-wrapper">
 			<view v-for="item in orderList" :key="item.id" class="goods-pane">
-				<view class="order-no-status" @click="handleToViewOrderDetail(item)">
+				<view class="order-no-status" @click="go(`/user/merchant-orders/order-form-detail?id=${item.id}`)">
 					<view class="order-no">订单号:{{ item.orderSn }}</view>
 					<view class="order-status">{{ item.orderStatusText }}</view>
 				</view>
 
-				<view class="goods-list" @click="handleToViewOrderDetail(item)">
+				<view class="goods-list" @click="go(`/user/merchant-orders/order-form-detail?id=${item.id}`)">
 					<view v-for="goods in item.goodsList" :key="goods.id" class="goods-item">
 						<image class="goods-img" :src="common.seamingImgUrl(goods.picUrl)" mode="" />
 
@@ -136,15 +136,6 @@ export default {
 			this.getOrderList()
 		},
 
-		// 查看详情
-		handleToViewOrderDetail(goods, currentGoods) {
-			uni.navigateTo({
-				url:
-					'/user/merchant-orders/order-form-detail?id=' +
-					goods.id +
-					(currentGoods ? '&goodsId=' + currentGoods.id : '')
-			})
-		},
 		async handleVerificationDialog(e) {
 			console.log(e)
 			if (e.index === 0) {

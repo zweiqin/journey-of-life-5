@@ -1,7 +1,10 @@
 <template>
 	<view class="info-detail-container">
 		<view class="op">
-			<img src="../../static/images/store/chevron-states.png" alt="" class="back" @click="handleBack" />
+			<image
+				src="../../static/images/detail/top-back.png"
+				class="back" mode="widthFix" @click="handleBack"
+			></image>
 			<view class="title">个人信息</view>
 		</view>
 
@@ -16,25 +19,25 @@
 			<view class="item" @click="showEditDialog">
 				<view class="title font-14 f-c-3d">昵称</view>
 				<view class="value font-14 f-c-3d">{{ userInfo.nickName }}</view>
-				<img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
+				<tui-icon name="arrowright" :size="20" color="#aaaaaa"></tui-icon>
 			</view>
 
 			<view class="item">
 				<view class="title font-14 f-c-3d">用户ID</view>
 				<view class="value font-14 f-c-3d">{{ userInfo.userId }}</view>
-				<img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
+				<tui-icon name="arrowright" :size="20" color="#aaaaaa"></tui-icon>
 			</view>
 
 			<view class="item">
 				<view class="title font-14 f-c-3d">账号密码</view>
 				<view class="value font-14 f-c-3d">**********</view>
-				<img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
+				<tui-icon name="arrowright" :size="20" color="#aaaaaa"></tui-icon>
 			</view>
 
 			<view class="item" @click="hanldeBindPhone">
 				<view class="title font-14 f-c-3d">手机号</view>
 				<view class="value font-14 f-c-3d">{{ userInfo.phone || '未绑定' }}</view>
-				<img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
+				<tui-icon name="arrowright" :size="20" color="#aaaaaa"></tui-icon>
 			</view>
 
 			<view class="item">
@@ -46,16 +49,12 @@
 			<!-- <view class="item" @click="$refs.WithdrawalPwdDialogRef.open()">
 				<view class="title font-14 f-c-3d">提现密码</view>
 				<view class="value font-14 f-c-3d">**********</view>
-				<img src="../../static/images/common/chevron-states.png" class="icon" alt="" />
+				<tui-icon name="arrowright" :size="20" color="#aaaaaa"></tui-icon>
 				</view> -->
 
 			<!-- <view class="item">
 				<view class="title font-14 f-c-3d">解绑账号</view>
-				<img
-				src="../../static/images/common/chevron-states.png"
-				class="icon"
-				alt=""
-				/>
+				<tui-icon name="arrowright" :size="20" color="#aaaaaa"></tui-icon>
 				</view> -->
 		</view>
 
@@ -311,7 +310,7 @@ export default {
 		color: #000;
 
 		.back {
-			width: 48upx;
+			width: 16upx;
 			margin-right: 32upx;
 		}
 	}

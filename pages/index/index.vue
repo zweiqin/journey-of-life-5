@@ -13,7 +13,6 @@
 			<!-- <view class="banner-wrapper">
 				<image src="../../static/index/banner.png" mode="" />
 				</view>
-
 				<Synthesize></Synthesize> -->
 
 			<view class="banner-wrapper" @click="go('/user/sever/userUp')">
@@ -30,7 +29,8 @@
 			<view class="pane">
 				<view class="menus-wrapper">
 					<view
-						v-for="(item,index) in menus" v-if="index < 7" :key="item.id" class="item" :class="{ active: currentFilterMenuId === item.id }"
+						v-for="(item, index) in menus" v-if="index < 7" :key="item.id" class="item"
+						:class="{ active: currentFilterMenuId === item.id }"
 						@click="handleChooseMenu(item)"
 					>
 						<BeeIcon :size="40" :src="item.icon"></BeeIcon>
@@ -41,17 +41,17 @@
 						<text>更多</text>
 					</view>
 				</view>
-			<!-- 	<scroll-view scroll-x="true">
+				<!-- 	<scroll-view scroll-x="true">
 					<view class="menus-wrapper">
-						<view
-							v-for="item in menus" :key="item.id" class="item" :class="{ active: currentFilterMenuId === item.id }"
-							@click="handleChooseMenu(item)"
-						>
-							<BeeIcon :size="40" :src="item.icon"></BeeIcon>
-							<text>{{ item.name }}</text>
-						</view>
+					<view
+					v-for="item in menus" :key="item.id" class="item" :class="{ active: currentFilterMenuId === item.id }"
+					@click="handleChooseMenu(item)"
+					>
+					<BeeIcon :size="40" :src="item.icon"></BeeIcon>
+					<text>{{ item.name }}</text>
 					</view>
-				</scroll-view> -->
+					</view>
+					</scroll-view> -->
 
 				<scroll-view scroll-x="true">
 					<view class="sub-menus">
@@ -63,7 +63,7 @@
 						</view>
 					</view>
 				</scroll-view>
-				
+
 				<!-- <GoodsFilter :scroll-top="scrollTop"></GoodsFilter> -->
 				<view class="goods-wrapper">
 					<NewGoods v-for="item in goodsList" :key="item.id" :data="item"></NewGoods>
@@ -81,16 +81,15 @@
 </template>
 
 <script>
-import tuiDropdownList from "@/components/thorui/tui-dropdown-list/tui-dropdown-list.vue"
-import { menusData } from './data'
+import { menusData, menus } from './data'
 import Menus from './cpns/Menus'
-import Synthesize from './cpns/Synthesize.vue'
+// import Synthesize from './cpns/Synthesize.vue'
 import { getTypeDetailList } from '../../api/home'
 import { goodsListApi } from '../../api/goods'
 
 export default {
 	name: 'Index',
-	components: { Menus, Synthesize, tuiDropdownList },
+	components: { Menus },
 	data() {
 		return {
 			menusData: Object.freeze(menusData),
@@ -107,93 +106,7 @@ export default {
 			totalPages: 2,
 			status: 'none',
 			currentFilterMenuId: 1001009,
-			menus: Object.freeze([
-				{
-					name: '日用百货',
-					icon: require('../../static/index/shop/baihuo.png'),
-					id: 1001009
-				},
-				{
-					name: '巨蜂特惠',
-					icon: require('../../static/index/shop/tehui.png'),
-					id: 1001002
-				},
-				{
-					name: '餐厅家具',
-					icon: require('../../static/index/shop/cantingjiaju.png'),
-					id: 100101595
-				},
-				{
-					name: '卧室家具',
-					icon: require('../../static/index/shop/woshijiaju.png'),
-					id: 100101582
-				},
-				{
-					name: '客厅家具',
-					icon: require('../../static/index/shop/ketingjiaju.png'),
-					id: 100101559
-				},
-				{
-					name: '箱包首饰',
-					icon: require('../../static/index/shop/xiangbao.png'),
-					id: 1001013
-				},
-				{
-					name: '家电',
-					icon: require('../../static/index/shop/el.png'),
-					id: 100101466
-				},
-				{
-					name: '功能家具',
-					icon: require('../../static/index/shop/gongnengjiaju.png'),
-					id: 100101685
-				},
-				{
-					name: '户外庭院',
-					icon: require('../../static/index/shop/huwaitingyuan.png'),
-					id: 100101676
-				},
-				{
-					name: '全屋组合',
-					icon: require('../../static/index/shop/quanwuzuhe.png'),
-					id: 100101668
-				},
-				{
-					name: '饰品专区',
-					icon: require('../../static/index/shop/shipingzhuanqu.png'),
-					id: 100101662
-				},
-				{
-					name: '书房家具',
-					icon: require('../../static/index/shop/shufangjiaju.png'),
-					id: 100101651
-				},
-				{
-					name: '壁画专区',
-					icon: require('../../static/index/shop/bihuazhuanqu.png'),
-					id: 100101643
-				},
-				{
-					name: '红木家具',
-					icon: require('../../static/index/shop/hongmujiaju.png'),
-					id: 100101638
-				},
-				{
-					name: '灯饰专区',
-					icon: require('../../static/index/shop/dengshizhuanqu.png'),
-					id: 100101627
-				},
-				{
-					name: '办公家具',
-					icon: require('../../static/index/shop/bangongjiaju.png'),
-					id: 100101614
-				},
-				{
-					name: '儿童专区',
-					icon: require('../../static/index/shop/ertongzhuanqu.png'),
-					id: 100101604
-				}
-			]),
+			menus: Object.freeze(menus),
 			currentMenu: null,
 			submenus: []
 		}

@@ -5,7 +5,7 @@
 			<text>积分商城</text>
 		</view>
 		<view class="head-image">
-			<image src="../../../static/index/sign/head-img.png" mode="" />
+			<image :src="userInfo.userId ? common.seamingImgUrl(userInfo.avatarUrl) : require('../../../static/user-center/default-avatar.png')" mode="" />
 			<text>谢芳菲</text>
 		</view>
 		<view class="heng"></view>
@@ -48,6 +48,7 @@
 </template>
 
 <script>
+import { J_USER_INFO } from '../../../constant'
 import { goods } from './data'
 export default {
 	name: 'PointsMall',
@@ -56,7 +57,8 @@ export default {
 	},
 	data() {
 		return {
-			goods
+			goods,
+			userInfo: uni.getStorageSync(J_USER_INFO) || {}
 		}
 	},
 	created() { },

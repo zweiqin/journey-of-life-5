@@ -14,7 +14,7 @@ const request = (base_url) => function (url, data = {}, method = 'post', cb) {
 				if (res.data.errno !== 0) {
 					if (
 						res.data.errno === 403 &&
-              res.data.errmsg === 'Token 校验失败'
+						res.data.errmsg === 'Token 校验失败'
 					) {
 						uni.showToast({
 							title: 'token 已过期， 请重新登录！即将跳转到登录页',

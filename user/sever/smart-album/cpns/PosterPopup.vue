@@ -57,7 +57,7 @@
 						></l-painter-text>
 
 						<l-painter-image
-							:src="require('../../../../static/images/user/code/line.png')"
+							:src="require('../../../../static/images/icon/line.png')"
 							css="width: 48rpx;
                       height: 48rpx"
 						></l-painter-image>

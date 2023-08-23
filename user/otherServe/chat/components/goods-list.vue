@@ -60,7 +60,6 @@ import {
 } from '../../../../api/cart'
 import { getUserId } from '../../../../utils'
 export default {
-	components: {},
 	data() {
 		return {
 			shopCarInfo: { brandCartgoods: [] },

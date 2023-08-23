@@ -100,7 +100,7 @@
 <script>
 import {
 	menus
-} from './data'
+} from '../data'
 import {
 	getTypeDetailList
 } from '@/api/home'

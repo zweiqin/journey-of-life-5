@@ -25,20 +25,11 @@
 					<view class="text">{{ item.name }}</view>
 				</view>
 			</view>
-			<!-- <view class="coupon-list">
-				<view class="coupon" v-for="item in coupons" :key="item.id">
-				<image :src="item.icon" mode="" />
-				</view>
-				</view> -->
 		</view>
 		<!-- <view class="text-list">
 			<view class="left">精选</view>
 			<view class="right">换一批</view>
-			</view>
-			<GasStation></GasStation>
-			<GasStation></GasStation>
-			<GasStation></GasStation>
-			<GasStation></GasStation> -->
+			</view> -->
 
 		<tui-modal
 			:show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
@@ -48,47 +39,24 @@
 </template>
 
 <script>
-import { coupons } from './data'
 import showModel from '../../../mixin/showModel'
 export default {
 	data() {
 		return {
 			items: [
-				// {
-				// 	name: '充话费',
-				// 	id: 1,
-				// 	icon: require('../../../static/index/item1.png'),
-
-				// },
-				// {
-				// 	name: '充燃气',
-				// 	id: 2,
-				// 	icon: require('../../../static/index/item2.png'),
-				// },
 				{
 					name: '加油',
 					id: 3,
-					icon: require('../../../static/index/item3.png'),
+					icon: require('../../../static/index/convenient-services/oil.png'),
 					url: '/pages/index/convenient-services/service-oil'
 				},
-				// {
-				// 	name: '特价票',
-				// 	id: 4,
-				// 	icon: require('../../../static/index/item4.png'),
-				// },
-				// {
-				// 	name: '防疫礼包',
-				// 	id: 5,
-				// 	icon: require('../../../static/index/item5.png'),
-				// },
 				{
 					name: '寄快递',
 					id: 6,
-					icon: require('../../../static/index/item2.png'),
+					icon: require('../../../static/index/convenient-services/charge.png'),
 					url: '/pages/index/convenient-services/kuai-di/index'
 				}
-			],
-			coupons
+			]
 		}
 	},
 	mixins: [ showModel() ],
@@ -175,18 +143,6 @@ export default {
 			}
 		}
 
-		.coupon-list {
-			display: flex;
-			justify-content: space-between;
-			padding-bottom: 30upx;
-
-			.coupon {
-				image {
-					width: 152upx;
-					height: 192upx;
-				}
-			}
-		}
 	}
 
 	.text-list {

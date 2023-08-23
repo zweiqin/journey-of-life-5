@@ -75,3 +75,18 @@ export const getCommentListApi = (data) => RuanRequest('/comment/list', data, 'g
 
 // 用户的评价列表
 export const getUserCommentApi = (data) => RuanRequest('/dtsComment/userComment', data, 'get')
+
+/**
+ * 评价
+ */
+
+export const postCommentApi = (data) => RuanRequest('/dtsCommentOrder/save', data)
+
+// 获取我的评价
+export const getMyCommentListApi = (data) => RuanRequest('/dtsCommentGoods/myEvaluation', data, 'get')
+
+// 输入评论
+export const sendCommentAgainApi = (data) => RuanRequest('/dtsCommentOrder/appendSave', data)
+
+// 查询商品的评价
+export const getGoodsCommentListApi = (data) => RuanRequest('/dtsCommentGoods/selectGoodsPj', data, 'get')

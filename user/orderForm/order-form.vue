@@ -1,5 +1,5 @@
 <template>
-	<view class="orders-container">
+	<view class="orders-container" :style="{ overflowY: isShowCommentOrder ? 'hidden' : 'auto' }">
 		<view class="header">
 			<JBack width="50" dark height="50" tabbar="/pages/user/user"></JBack>
 			<h2>我的订单</h2>
@@ -29,34 +29,31 @@
 
 		<view v-if="orderList && orderList.length" class="order-list-wrapper">
 			<view v-for="item in orderList" :key="item.id" class="goods-pane">
-				<view class="order-no-status" @click="handleToViewOrderDetail(item)">
+				<view class="order-no-status" @click="go(`/user/orderForm/order-form-detail?id=${item.id}`)">
 					<view class="order-no">订单号:{{ item.orderSn }}</view>
 					<view class="order-status">{{ item.orderStatusText }}</view>
 				</view>
 
-				<view class="goods-list" @click="handleToViewOrderDetail(item)">
+				<view class="goods-list" @click="go(`/user/orderForm/order-form-detail?id=${item.id}`)">
 					<view v-for="goods in item.goodsList" :key="goods.id" class="goods-item">
 						<image class="goods-img" :src="common.seamingImgUrl(goods.picUrl)" mode="" />
-
 						<view class="info">
 							<view class="name">{{ goods.goodsName }}</view>
-
 							<view class="good-sp-pr">
 								<view class="sp">标准</view>
 								<view class="pr">￥{{ goods.price }}</view>
 							</view>
 						</view>
-
 						<view>
 							<view class="number" style="text-align: right">
 								共 {{ goods.number }} 件商品
 							</view>
-							<button
+							<!-- <button
 								v-if="item.handleOption.comment && !goods.comment" class="ev-btn uni-btn"
 								@click.stop="handleOpOrder(item, 'comment', goods)"
-							>
+								>
 								去评论
-							</button>
+								</button> -->
 						</view>
 					</view>
 				</view>
@@ -65,11 +62,11 @@
 					<view class="actual-price">
 						实付：<text class="number">￥{{ item.actualPrice }}</text>
 					</view>
-
 					<view class="btns">
 						<view v-for="btn in orderOpButtons" :key="btn.label">
+							<!-- && btn.label !== '去评论' -->
 							<button
-								v-if="item.handleOption[btn.key] && btn.label !== '去评论'" :style="{
+								v-if="item.handleOption[btn.key]" :style="{
 									background: btn.color
 								}" class="uni-btn" @click="handleOpOrder(item, btn.key)"
 							>
@@ -85,6 +82,7 @@
 
 		<JNoData v-if="loadingStatus === 'hidden' && !orderList.length" text="无购物记录" type="order-shop"></JNoData>
 
+		<CommentOrder ref="refCommentOrder" @close="isShowCommentOrder = false"></CommentOrder>
 		<!-- 申请退款dialog -->
 		<tui-dialog
 			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '提交', color: '#586c94' }]"
@@ -113,8 +111,8 @@
 			</template>
 		</tui-dialog>
 		<DragButton
-			text="客服" :icon-src="require('../../static/user-center/menus/lianxikefu.png')" is-dock
-			exist-tab-bar @btnClick="go('/user/sever/service-center/service-center')"
+			text="客服" :icon-src="require('../../static/user-center/menus/lianxikefu.png')" is-dock exist-tab-bar
+			@btnClick="go('/user/sever/service-center/service-center')"
 		/>
 	</view>
 </template>
@@ -148,6 +146,7 @@ export default {
 			totalPages: 0,
 			orderList: [],
 			loadingStatus: 'loading',
+			isShowCommentOrder: false,
 			isShowRefundDialog: false,
 			refundRadioItems: [],
 			tempRefund: {
@@ -200,11 +199,7 @@ export default {
 		},
 
 		// 点击操作按钮
-		handleOpOrder(goods, key, currentGoods) {
-			if (key === 'comment') {
-				this.handleToViewOrderDetail(goods, currentGoods)
-				return
-			}
+		handleOpOrder(order, key, currentGoods) {
 			const mapMethods = {
 				cancel: {
 					text: '确定要取消当前订单吗？',
@@ -220,7 +215,7 @@ export default {
 				}
 			}
 			if (
-				goods.handleOption[key] &&
+				order.handleOption[key] &&
 				['cancel', 'delete', 'confirm'].includes(key)
 			) {
 				uni.showModal({
@@ -231,7 +226,7 @@ export default {
 							mapMethods[key]
 								.api({
 									userId: getUserId(),
-									orderId: goods.id
+									orderId: order.id
 								})
 								.then(() => {
 									this.query.page = 1
@@ -244,11 +239,15 @@ export default {
 				getOrderRefundsReasonApi({ type: 0 })
 					.then((res) => {
 						this.refundRadioItems = res.data
-						this.tempRefund.orderId = goods.id
+						this.tempRefund.orderId = order.id
 						this.isShowRefundDialog = true
 					})
 			} else if (key === 'pay') {
-				payFn({ ...goods }, goods.isAppoint ? 6 : 1)
+				payFn({ ...order }, order.isAppoint ? 6 : 1)
+			} else if (key === 'comment') {
+				// this.go(`/user/orderForm/order-form-detail?id=${order.id}${currentGoods ? '&goodsId=' + currentGoods.id : ''}`)
+				this.$refs.refCommentOrder.showCommentOrder(order.id)
+				this.isShowCommentOrder = true
 			}
 		},
 
@@ -271,16 +270,6 @@ export default {
 				refundRemark: ''
 			}
 			this.isShowRefundDialog = false
-		},
-
-		// 查看详情
-		handleToViewOrderDetail(goods, currentGoods) {
-			uni.navigateTo({
-				url:
-					'/user/orderForm/order-form-detail?id=' +
-					goods.id +
-					(currentGoods ? '&goodsId=' + currentGoods.id : '')
-			})
 		}
 	},
 
@@ -301,9 +290,11 @@ export default {
 
 <style lang="less" scoped>
 .orders-container {
+	height: 100vh;
+	padding: 60upx 0;
 	font-size: 28upx;
 	color: #3d3d3d;
-	padding: 60upx 0;
+	box-sizing: border-box;
 
 	.header {
 		display: flex;

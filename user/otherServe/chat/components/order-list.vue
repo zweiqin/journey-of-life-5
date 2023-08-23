@@ -155,7 +155,6 @@ export default {
 	},
 
 	methods: {
-
 		// 获取订单信息
 		getOrderList(loadMore) {
 			uni.showLoading()

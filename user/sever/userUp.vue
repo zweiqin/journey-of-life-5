@@ -4,7 +4,7 @@
 			<JHeader tabbar="/pages/user/user" title="会员升级" width="50" height="50"></JHeader>
 		</view>
 		<view class="head-wrapper">
-			<JAvatar :src="userInfo.avatarUrl" size="150" radius="50%" border="5upx solid #ffffff"></JAvatar>
+			<JAvatar :src="common.seamingImgUrl(userInfo.avatarUrl)" size="150" radius="50%" border="5upx solid #ffffff"></JAvatar>
 			<view style="margin-top: 10upx;">{{ userInfo.nickName || '--' }}</view>
 			<view style="margin-top: 10upx;">会员类别：{{ common.explainMembership(userInfo.roleIds) }}</view>
 		</view>
@@ -141,6 +141,12 @@ export default {
 				packageId: this.selectedPackageId
 			}).then(({ data: result }) => {
 				console.log(result)
+				if ((this.userInfo.roleIds === 10 || this.userInfo.roleIds === 5 || this.userInfo.roleIds === 4 || this.userInfo.roleIds === 3 || this.userInfo.roleIds === 2) && selectedPackage.roleIds === 6) {
+					if (result) return this.$showToast('已提交申请，请等待审核！')
+					this.go(`/user/marketing-tools/store-application?packageId=${this.selectedPackageId}`)
+				} else if ((this.userInfo.roleIds === 6 || this.userInfo.roleIds === 4 || this.userInfo.roleIds === 3 || this.userInfo.roleIds === 2) && (selectedPackage.roleIds === 4 || selectedPackage.roleIds === 3)) {
+					this.go(`/user/marketing-tools/marketing-planner?packageId=${this.selectedPackageId}`)
+				} else
 				if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 4) {
 					if (result) return this.$showToast('已提交申请，请等待审核！')
 					this.go(`/user/marketing-tools/marketing-planner?packageId=${this.selectedPackageId}`)
@@ -169,8 +175,7 @@ export default {
 					}
 				} else if ((this.userInfo.roleIds === 6 || this.userInfo.roleIds === 2) && (selectedPackage.roleIds === 4 || selectedPackage.roleIds === 3)) {
 					this.go(`/user/marketing-tools/marketing-planner?packageId=${this.selectedPackageId}`)
-				// } else if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 6) {
-				} else if ((this.userInfo.roleIds === 10 || this.userInfo.roleIds === 5 || this.userInfo.roleIds === 4 || this.userInfo.roleIds === 3 || this.userInfo.roleIds === 2) && selectedPackage.roleIds === 6) {
+				} else if (this.userInfo.roleIds === 10 && selectedPackage.roleIds === 6) {
 					if (result) return this.$showToast('已提交申请，请等待审核！')
 					this.go(`/user/marketing-tools/store-application?packageId=${this.selectedPackageId}`)
 				} else if (this.userInfo.roleIds === 7 && selectedPackage.roleIds === 6) {
