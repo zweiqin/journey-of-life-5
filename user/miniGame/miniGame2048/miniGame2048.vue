@@ -1,5 +1,11 @@
 <template>
 	<view class="container">
+		<view class="navgationTop">
+			<img class="back" @click="goBack" src="@/static/back.png" alt="">
+			<view class="defaultBody">
+				欢迎挑战2048!!!
+			</view>
+		</view>
 		<view class="game-body">
 			<view class="heading">
       	<text class="title">2048</text>
@@ -70,6 +76,9 @@
 			this.highscore = uni.getStorageSync('highScore') || 0
 		},
 		methods: {
+			goBack: function() {
+				uni.navigateBack()
+			},
 			restart: function(){
 				// 重置游戏参数
 				this.updateView({
@@ -147,6 +156,28 @@
 </script>
 
 <style>
+.navgationTop {
+	box-sizing: border-box;
+	width: 100vw;
+	height: 88rpx;
+	padding: 0 34rpx;
+	display: flex;
+	align-items: center;
+	background-color: none;
+	z-index: 999;
+	.back {
+		width: 60rpx;
+		height: 60rpx;
+	}
+	.defaultBody {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		font-size: 34rpx;
+		color: black;
+		font-weight: 550;
+	}
+}
 .container {
   height: 100vh;
   margin: 0;
