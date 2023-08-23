@@ -234,5 +234,10 @@ export const marketingTools = [
 		name: '区域代理',
 		icon: require('../../static/user-center/menus/quyudaili.png'),
 		url: '/user/sever/regional-agent'
+	},
+	{
+		name: '小游戏',
+		icon: require('../../static/user-center/menus/quyudaili.png'),
+		url: '/user/miniGame/miniGame2048/miniGame2048'
 	}
 ]
