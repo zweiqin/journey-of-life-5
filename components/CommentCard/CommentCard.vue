@@ -3,7 +3,7 @@
 		<view class="eval">
 			<text>评价（{{ commentInfo.count || 0 }}）</text>
 			<text v-if="commentInfo.data && commentInfo.data.length">
-				<text @click="show(JSON.parse(JSON.stringify(commentInfo.data)))">查看全部</text>
+				<text @click="show">查看全部</text>
 				<image style="margin-bottom: -4upx" src="../../static/images/detail/right-arrow.png" mode="" />
 			</text>
 			<text v-else-if="!commentInfo.data.length">暂无评价</text>
@@ -26,8 +26,8 @@
 				</view>
 				<view v-if="commentInfo.data[0].picList" class="pic-list">
 					<image
-						v-for="(img, index) in commentInfo.data[0].picList.split(',')" :key="index" class="img"
-						:src="common.seamingImgUrl(img)" @click="handlePreviewImg(index, commentInfo.data[0].picList.split(','))"
+						v-for="(img, index) in commentInfo.data[0].picList" :key="index" class="img"
+						:src="common.seamingImgUrl(img)" @click="handlePreviewImg(index, commentInfo.data[0].picList)"
 					>
 					</image>
 				</view>
@@ -38,52 +38,90 @@
 			<view class="comment-container">
 				<view class="wrapper">
 					<view class="comment-title">
-						<div>全部评论({{ originData.length }})</div>
+						<view class="comment-title-left">
+							<button
+								:style="{ borderBottom: !commentQuery.orPic ? '4upx solid #e34e4a' : '4upx solid #f9f9f9' }"
+								class="uni-btn uni-button" @click="handleFilter(0)"
+							>
+								全部评论({{ commentInfo.count }})
+							</button>
+							<button
+								:style="{ borderBottom: commentQuery.orPic ? '4upx solid #e34e4a' : '4upx solid #f9f9f9' }"
+								class="uni-btn uni-button" @click="handleFilter(1)"
+							>
+								有图
+							</button>
+						</view>
 						<tui-icon :size="24" name="shut" @click="commentListDrawerVisible = false"></tui-icon>
 					</view>
-					<div class="filter-btn-wrapper">
-						<button :class="{ active: isPic }" class="uni-btn" @click="handleFilter">有图({{ picCommentCount }})</button>
-						<!-- <button class="uni-btn">非系统默认</button> -->
-					</div>
-					<view v-for="item in commentList" :key="item.id" class="comment-item">
-						<view class="user-info">
-							<image
-								class="user-avatar"
-								:src="common.seamingImgUrl(item.avatar) || require('../../static/images/icon/head04.png')"
-							>
-							</image>
-							<view class="user-name">{{ item.nickname }}</view>
-						</view>
-						<view class="content-wrapper">
-							<view class="comment-info">
-								<view class="comment-time">{{ item.addTime }}</view>
-								<tui-rate :current="item.rate" :size="16" normal="#ccc" active="#ff7900"></tui-rate>
-							</view>
-							<view class="user-content">{{ item.content }}</view>
-							<view v-if="item.picList.length" class="image-list" :class="`image-list-${item.picList.length}`">
-								<block v-if="item.picList.length === 3">
-									<image class="img img-0" :src="common.seamingImgUrl(item.picList[0])" alt="" />
-									<view class="img-list-wrapper">
-										<image class="img img-1" :src="common.seamingImgUrl(item.picList[1])" alt="" />
-										<image class="img img-2" :src="common.seamingImgUrl(item.picList[2])" alt="" />
-									</view>
-								</block>
-								<block v-else>
-									<block v-for="(img, index) in item.picList" :key="img">
-										<image class="img" :class="`img-${index}`" :src="common.seamingImgUrl(img)" alt="" />
-									</block>
-								</block>
-							</view>
-						</view>
-						<view v-if="item.commentGoods1" class="additional-comment">
-							<view class="additional-time">用户追评：{{ item.commentGoods1.addTime }}</view>
-							<view class="user-content">{{ item.commentGoods1.content }}</view>
-						</view>
-						<view v-if="item.commentGoods2" class="additional-comment">
-							<view class="additional-time">商家回复：{{ item.commentGoods2.addTime }}</view>
-							<view class="user-content">{{ item.commentGoods2.content }}</view>
-						</view>
+					<view class="filter-btn-wrapper">
+						<button
+							:class="{ active: commentQuery.rate === 4 }" class="uni-btn uni-button"
+							@click="handleFilter(null, 4)"
+						>
+							五星好评
+						</button>
+						<button
+							:class="{ active: commentQuery.rate === 1 }" class="uni-btn uni-button"
+							@click="handleFilter(null, 1)"
+						>
+							好评
+						</button>
+						<button
+							:class="{ active: commentQuery.rate === 3 }" class="uni-btn uni-button"
+							@click="handleFilter(null, 3)"
+						>
+							中评
+						</button>
+						<button
+							:class="{ active: commentQuery.rate === 2 }" class="uni-btn uni-button"
+							@click="handleFilter(null, 2)"
+						>
+							差评
+						</button>
+						<!-- <button class="uni-button">非系统默认</button> -->
 					</view>
+					<scroll-view scroll-y="true" style="flex: 1;height: 0;" @scrolltolower="handleScrolltolower">
+						<view v-for="item in commentInfo.data" :key="item.id" class="comment-item">
+							<view class="user-info">
+								<image
+									class="user-avatar"
+									:src="common.seamingImgUrl(item.avatar) || require('../../static/images/icon/head04.png')"
+								>
+								</image>
+								<view class="user-name">{{ item.nickname }}</view>
+							</view>
+							<view class="content-wrapper">
+								<view class="comment-info">
+									<view class="comment-time">{{ item.addTime }}</view>
+									<tui-rate :current="item.rate" :size="16" normal="#ccc" active="#ff7900"></tui-rate>
+								</view>
+								<view class="user-content">{{ item.content }}</view>
+								<view v-if="item.picList.length" class="image-list" :class="`image-list-${item.picList.length}`">
+									<block v-if="item.picList.length === 3">
+										<image class="img img-0" :src="common.seamingImgUrl(item.picList[0])" alt="" />
+										<view class="img-list-wrapper">
+											<image class="img img-1" :src="common.seamingImgUrl(item.picList[1])" alt="" />
+											<image class="img img-2" :src="common.seamingImgUrl(item.picList[2])" alt="" />
+										</view>
+									</block>
+									<block v-else>
+										<block v-for="(img, index) in item.picList" :key="img">
+											<image class="img" :class="`img-${index}`" :src="common.seamingImgUrl(img)" alt="" />
+										</block>
+									</block>
+								</view>
+							</view>
+							<view v-if="item.commentGoods1" class="additional-comment">
+								<view class="additional-time">用户追评：{{ item.commentGoods1.addTime }}</view>
+								<view class="user-content">{{ item.commentGoods1.content }}</view>
+							</view>
+							<view v-if="item.commentGoods2" class="additional-comment">
+								<view class="additional-time">商家回复：{{ item.commentGoods2.addTime }}</view>
+								<view class="user-content">{{ item.commentGoods2.content }}</view>
+							</view>
+						</view>
+					</scroll-view>
 				</view>
 			</view>
 		</tui-drawer>
@@ -110,11 +148,16 @@ export default {
 			commentInfo: { count: 0, data: [] },
 
 			commentListDrawerVisible: false,
-			commentList: [],
-			originData: [],
-			isPic: false,
+			status: 'none',
+			loadingStatus: 'noMore',
+			commentQuery: {
+				page: 1,
+				size: 10,
+				gid: '',
+				rate: 4,
+				orPic: 0
+			},
 			unSys: false,
-			picCommentCount: 0,
 			sysCommentCount: 0
 		}
 	},
@@ -130,10 +173,10 @@ export default {
 			immediate: true
 		}
 	},
-	created() {
-		this.getOrderComment(this.goodsId)
-	},
 	// #endif
+	created() {
+		this.getOrderComment()
+	},
 	methods: {
 		// 预览图片
 		handlePreviewImg(index, imgList) {
@@ -143,23 +186,31 @@ export default {
 				indicator: 'count'
 			})
 		},
-		getOrderComment(id) {
-			getGoodsCommentListApi({ gid: id })
+		getOrderComment(isLoadmore) {
+			this.status = 'loading'
+			this.loadingStatus = 'loading'
+			getGoodsCommentListApi({ ...this.commentQuery, gid: this.goodsId })
 				.then(({ data }) => {
-					this.commentInfo = data || { count: 0, data: [] }
+					this.commentInfo.count = data.count
+					data.data = data.data.map((item) => {
+						item.picList = typeof item.picList === 'string' && !!item.picList ? item.picList.split(',') : ''
+						return item
+					})
+					if (isLoadmore) {
+						this.commentInfo.data.push(...data.data)
+					} else {
+						this.commentInfo.data = data.data
+					}
+					this.status = 'none'
+					this.loadingStatus = 'noMore'
+				})
+				.catch(() => {
+					this.status = 'none'
+					this.loadingStatus = 'noMore'
 				})
 		},
 
-		show(commentList) {
-			this.picCommentCount = 0
-			this.originData = commentList.map((item) => {
-				item.picList = typeof item.picList === 'string' && !!item.picList ? item.picList.split(',') : ''
-				if (item.picList) {
-					this.picCommentCount++
-				}
-				return item
-			})
-			this.commentList = this.originData
+		show() {
 			this.commentListDrawerVisible = true
 			// #ifdef H5
 			window.history.pushState(null, null, document.URL)
@@ -169,17 +220,25 @@ export default {
 		handleClose() {
 			this.commentListDrawerVisible = false
 		},
-		handleFilter() {
-			this.isPic = !this.isPic
-			this.filterCommentData()
-		},
-		filterCommentData() {
-			if (this.isPic) {
-				this.commentList = this.originData.filter((item) => !!item.picList === this.isPic)
-			} else {
-				this.commentList = this.originData
+		handleFilter(orPic, rate) {
+			let isChange
+			if (typeof orPic === 'number' && this.commentQuery.orPic !== orPic) {
+				this.commentQuery.orPic = orPic
+				isChange = true
 			}
+			if (typeof rate === 'number' && this.commentQuery.rate !== rate) {
+				isChange = true
+			}
+			if (isChange) this.getOrderComment()
+			// this.filterCommentData()
 		},
+		// filterCommentData() {
+		// 	if (this.commentQuery.orPic) {
+		// 		this.commentList = this.originData.filter((item) => !!item.picList === this.commentQuery.orPic)
+		// 	} else {
+		// 		this.commentList = this.originData
+		// 	}
+		// },
 		// #ifdef H5
 		prohibitWindowScroll(tag) {
 			document.body.style.overflow = tag ? 'hidden' : 'auto'
@@ -188,8 +247,19 @@ export default {
 		// #ifdef H5
 		back() {
 			this.commentListDrawerVisible = false
-		}
+		},
 		// #endif
+		handleScrolltolower() {
+			if (this.commentQuery.page >= this.commentInfo.count) {
+				this.status = 'no-more'
+				return
+			}
+			if (this.commentQuery.size > this.commentInfo.data.length) {
+				return
+			}
+			this.commentQuery.page++
+			this.getOrderComment(true)
+		}
 	}
 }
 </script>
@@ -267,8 +337,10 @@ export default {
 		box-sizing: border-box;
 
 		.wrapper {
-			background-color: #f9f9f9;
+			display: flex;
+			flex-direction: column;
 			height: calc(100vh - 100upx);
+			background-color: #f9f9f9;
 			overflow: auto;
 		}
 
@@ -278,8 +350,9 @@ export default {
 			align-items: center;
 			margin-bottom: 40upx;
 
-			.uni-btn {
-				padding: 8upx 10upx;
+			.uni-button {
+				padding: 12upx 16upx;
+				margin-right: 20upx;
 				font-size: 24upx;
 				background-color: #ccc;
 				color: #fff;
@@ -298,6 +371,18 @@ export default {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
+
+			.comment-title-left {
+				display: flex;
+				align-items: center;
+
+				.uni-button {
+					border-radius: 0;
+					padding: 12upx 0upx;
+					margin: 0 18upx;
+					font-size: 30upx;
+				}
+			}
 		}
 
 		.comment-item {
