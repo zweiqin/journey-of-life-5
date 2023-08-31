@@ -15,7 +15,7 @@ export default {
 		}
 	},
 	onLoad(val) {
-		console.log(val);
+		console.log('val',val);
 		this.url = val.url + "&token=" + val.token + "&timestamp=" + val.timestamp + "&sign=" + val.sign;
 
 		// #ifdef H5
