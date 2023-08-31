@@ -3,7 +3,9 @@
 		<view v-if="seckillList && seckillList.length">
 			<view v-if="seckillList && seckillList.length">
 				<view style="font-weight: bold;">最近秒杀活动：</view>
-				<view style="display: flex;flex-wrap: wrap;margin-top: 20upx;max-height: 14vh;border: 1upx solid #bcbcbc;overflow-y: auto;">
+				<view
+					style="display: flex;flex-wrap: wrap;margin-top: 20upx;max-height: 14vh;border: 1upx solid #bcbcbc;overflow-y: auto;"
+				>
 					<view v-for="item in seckillList" :key="item.id">
 						<view
 							style="padding: 0 28upx;margin: 10upx;border: 4upx solid #ee8d05;color: #fa5151;"
@@ -17,10 +19,7 @@
 				</view>
 			</view>
 			<view v-if="currentGoods && currentGoods.length" style="margin-top: 20upx;">
-				<scroll-view
-					refresher-background="#3f3d3d" scroll-y style="max-height: 85vh;min-height: 400rpx;"
-					@scrolltolower="handleScrolltolower"
-				>
+				<scroll-view refresher-background="#3f3d3d" scroll-y style="max-height: 85vh;min-height: 400rpx;">
 					<tui-waterfall :list-data="currentGoods" :type="2">
 						<template #left="{ entity }">
 							<BrandGoods
@@ -50,7 +49,10 @@
 			该店铺暂无秒杀活动~
 		</view>
 
-		<JSpecificationScreen ref="refJSpecificationScreen" :max-number="1" show-select-btn btn-text="秒杀" @select="handleSeckill"></JSpecificationScreen>
+		<JSpecificationScreen
+			ref="refJSpecificationScreen" :max-number="1" show-select-btn btn-text="秒杀"
+			@select="handleSeckill"
+		></JSpecificationScreen>
 	</view>
 </template>
 
@@ -90,11 +92,13 @@ export default {
 			if (!this.brandDetail.id) return this.$showToast('缺少商家信息')
 			this.status = 'loading'
 			this.loadingStatus = 'loading'
-			getSeckillListActivitiesApi({ brandId: this.brandDetail.id,
+			getSeckillListActivitiesApi({
+				brandId: this.brandDetail.id,
 				startTime: `${new Date().toJSON()
 					.substring(0, 10)} 00:00:00`,
 				endTime: `${new Date(Date.now() + 259200000).toJSON()
-					.substring(0, 10)} 00:00:00` })
+					.substring(0, 10)} 00:00:00`
+			})
 				.then(({ data }) => {
 					console.log(data)
 					this.seckillList = data
@@ -155,8 +159,7 @@ export default {
 						uni.hideLoading()
 					})
 			}, 1500)
-		},
-		handleScrolltolower() { }
+		}
 	}
 }
 </script>
