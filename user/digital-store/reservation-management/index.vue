@@ -55,8 +55,6 @@ import { getUserId, getBrandId } from '../../../utils'
 
 export default {
 	name: 'ReservationManagement',
-	components: {},
-	onLoad(options) { },
 	data() {
 		return {
 			reservationList: [],
@@ -102,8 +100,7 @@ export default {
 				}
 			})
 		}
-	},
-	onReachBottom() { }
+	}
 }
 </script>
 

@@ -817,3 +817,32 @@ export const getCustomerPopularApi = (data) => RuanRequest('/dtsCustomerCategory
 // 用户发送消息的客服接口
 export const getcustomerSendingApi = (data) => RuanRequest('/dtsCustomerCategory/customerSending', data, 'get')
 
+/**
+ * 积分商品
+ */
+
+// 查询积分商品
+export const getIntegralGoodsListApi = (data) => RuanRequest('/dtsIntegralGoods/getIntegralGoodsList', data, 'get')
+
+// 查询积分商品详情
+export const getIntegralGoodsDetailApi = (data) => RuanRequest('/dtsIntegralGoods/getIntegralGoodsDetail', data, 'get')
+
+/**
+ * 申请审核
+ */
+
+// 商家申请列表
+export const getUpgradeRequestListyApi = (data) => RuanRequest('/dtsUpgradeRequest/list', data, 'get')
+
+// // 商家申请审核内容
+// export const getUpgradeRequestListOneApi = (data) => RuanRequest('/dtsUpgradeRequest/listOne', data, 'get')
+
+// 商家入驻审核
+export const UpgradeRequestCarefulApi = (data) => RuanRequest('/dtsUpgradeRequest/careful', data)
+
+// 营销师入驻审核
+export const UpgradeRequestMarketingApi = (data) => RuanRequest('/dtsUpgradeRequest/marketing', data)
+
+// 区域代理入驻审核
+export const UpgradeRequestRegionalAgentApi = (data) => RuanRequest('/dtsUpgradeRequest/regionalAgent', data)
+

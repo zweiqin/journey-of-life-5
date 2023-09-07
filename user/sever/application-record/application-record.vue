@@ -99,9 +99,7 @@ export default {
 				payFn({ orderSn: data }, 4, J_PAY_TYPE.VIP.value)
 			})
 		}
-	},
-
-	onReachBottom() { }
+	}
 }
 </script>
 

@@ -837,6 +837,12 @@
 					}
 				},
 				{
+					"path": "otherServe/application-review/index",
+					"style": {
+						"navigationBarTitleText": "申请审核"
+					}
+				},
+				{
 					"path": "marketing-tools/contact-guide/share-card",
 					"style": {
 						"navigationBarTitleText": "分享名片"
@@ -848,17 +854,15 @@
 						"navigationBarTitleText": "",
 						"enablePullDownRefresh": false
 					}
+				},
+				{
+					"path": "miniGame/miniGame2048/miniGame2048",
+					"style": {
+						"navigationBarTitleText": "",
+						"enablePullDownRefresh": false
+					}
 				}
-			    ,{
-                    "path" : "miniGame/miniGame2048/miniGame2048",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-            ]
+			]
 		},
 		// {
 		// 	"root": "goods",

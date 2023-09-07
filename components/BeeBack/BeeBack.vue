@@ -5,40 +5,43 @@
 </template>
 
 <script>
-import { tabbarList } from '../../common/globalData'
+// import { tabbarList } from '../../common/globalData'
 
 export default {
+	name: 'BeeBack',
 	props: {
 		url: {
 			type: String,
 			default: ''
 		},
-
+		tab: {
+			type: String,
+			default: ''
+		},
 		redirect: {
-			type: Boolean,
-			default: false
+			type: String,
+			default: ''
+		},
+		successCb: {
+			type: Function,
+			default: () => {}
 		}
 	},
 	methods: {
 		handleBack() {
-			if (this.url) {
-				if (tabbarList.includes(this.url)) {
-					this.$switchTab(this.url)
-				} else if (this.redirect) {
-					uni.redirectTo({
-						url: this.url
-					})
-				} else {
-					uni.navigateTo({
-						url: this.url
-					})
-				}
-
-				return
+			if (this.tab) {
+				this.$switchTab(this.url)
+			} else if (this.redirect) {
+				uni.redirectTo({
+					url: this.url
+				})
+			} else if (this.url) {
+				uni.navigateTo({
+					url: this.url
+				})
 			}
 
 			const pages = getCurrentPages()
-			console.log(pages)
 			const pagesLength = pages.length
 			let backLevel = 1
 			if (pages.length === 1) {
@@ -56,9 +59,9 @@ export default {
 						break
 					}
 				}
-
 				uni.navigateBack({
-					delta: backLevel - 1
+					delta: backLevel - 1,
+					success: this.successCb
 				})
 			}
 		},

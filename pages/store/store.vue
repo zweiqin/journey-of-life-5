@@ -2,7 +2,7 @@
 	<view class="brand-page-container">
 		<view class="top-container">
 			<view class="search-header">
-				<BeeLocale></BeeLocale>
+				<BeeLocale event-name="sendChooseAddressSuccessMsg"></BeeLocale>
 				<SearchBar prevent background="#fff" @click="go('/pages/search-page/search-page')"></SearchBar>
 				<PhotoSearch></PhotoSearch>
 			</view>
@@ -80,27 +80,6 @@ export default {
 			}
 		})
 	],
-	onShow() {
-		if (!this.isPositioning) {
-			// uni.showLoading()
-			getHomeBrandListApi({
-				page: 1,
-				size: this.$data._query.page * this.$data._query.size,
-				...this.queryParam,
-				areaId: this.$store.state.location.locationInfo.adcode,
-				longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
-				latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
-			})
-				.then(({ data }) => {
-					console.log(data)
-					this.$data._list = data.brandList || []
-					// uni.hideLoading()
-				})
-				.catch(() => {
-					// uni.hideLoading()
-				})
-		}
-	},
 	onLoad(options) {
 		if (options.miniProgram) {
 			// getApp().globalData.isInMiniprogram = true;
@@ -113,6 +92,32 @@ export default {
 		// // #endif
 		this.getBrandList()
 		this.getCategoryList()
+		uni.$on('sendStoreDetailMsg', (data) => {
+			if (data.data.meaning === 'refreshCurrentData') {
+				if (!this.isPositioning) {
+					// uni.showLoading()
+					getHomeBrandListApi({
+						page: 1,
+						size: this.$data._query.page * this.$data._query.size,
+						...this.queryParam,
+						areaId: this.$store.state.location.locationInfo.adcode,
+						longitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[0],
+						latitude: this.$store.state.location.locationInfo.streetNumber.location.split(',')[1]
+					})
+						.then(({ data }) => {
+							console.log(data)
+							this.$data._list = data.brandList || []
+							// uni.hideLoading()
+						})
+						.catch(() => {
+							// uni.hideLoading()
+						})
+				}
+			}
+		})
+		uni.$on('sendChooseAddressSuccessMsg', (data) => {
+			this.getBrandList()
+		})
 	},
 	onUnload() {
 		// this.loopTimer && clearInterval(this.loopTimer)
@@ -122,7 +127,8 @@ export default {
 	},
 	watch: {
 		obtainLocationCount(val, oldVal) {
-			this.getBrandList()
+			const pages = getCurrentPages()
+			if (pages[pages.length - 1].route === 'pages/store/store') this.getBrandList()
 		}
 	},
 	methods: {

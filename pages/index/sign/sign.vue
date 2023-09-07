@@ -62,7 +62,6 @@
 <script>
 
 import youlanSignIn from '../../../components/youlan-SignIn/youlan-SignIn.vue'
-import { subs, items } from './data'
 export default {
 	name: 'Sign',
 	components: {
@@ -73,8 +72,44 @@ export default {
 	},
 	data() {
 		return {
-			subs,
-			items
+			subs: [
+				{
+					id: 1,
+					icon: require('../../../static/index/sign/goods.png'),
+					name: '惠普多用途办公电脑...'
+				},
+				{
+					id: 2,
+					icon: require('../../../static/index/sign/goods.png'),
+					name: '惠普多用途办公电脑...'
+				}
+			],
+			items: [
+				{
+					id: 1,
+					icon: require('../../../static/index/sign/goods.png'),
+					name: '惠普多用途办公电脑...',
+					number: 1520
+				},
+				{
+					id: 2,
+					icon: require('../../../static/index/sign/goods.png'),
+					name: '惠普多用途办公电脑...',
+					number: 1520
+				},
+				{
+					id: 3,
+					icon: require('../../../static/index/sign/goods.png'),
+					name: '惠普多用途办公电脑...',
+					number: 1520
+				},
+				{
+					id: 4,
+					icon: require('../../../static/index/sign/goods.png'),
+					name: '惠普多用途办公电脑...',
+					number: 1520
+				}
+			]
 		}
 	},
 	created() { },

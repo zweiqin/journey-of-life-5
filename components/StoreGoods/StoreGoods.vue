@@ -21,6 +21,12 @@
 					<text>销量 {{ goodsData.sales }}</text>
 				</view>
 				<view v-if="showSn">商品编号：{{ goodsData.goodsSn }}</view>
+				<view
+					v-if="showVoucher && goodsData.supportVoucher"
+					style="width: fit-content;margin-top: 8upx;margin-right: 8upx;padding: 4upx 8upx;border: 0.25px solid #51cc46;border-radius: 12upx;font-size: 28upx;font-weight: bold;color: #51cc46;"
+				>
+					支持代金券
+				</view>
 			</view>
 
 			<view class="time">
@@ -77,6 +83,10 @@ export default {
 		showSn: {
 			type: Boolean,
 			default: false
+		},
+		showVoucher: {
+			type: Boolean,
+			default: false
 		}
 	},
 
@@ -108,7 +118,7 @@ export default {
 		align-items: center;
 		justify-content: space-between;
 		flex-wrap: wrap;
-		margin: 18upx 0;
+		margin: 10upx 0 18upx;
 
 		.wrapper {
 			.price-text {

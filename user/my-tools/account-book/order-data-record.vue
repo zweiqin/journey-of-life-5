@@ -11,7 +11,9 @@
 				>
 					<view style="max-width: 33%;">
 						<view>订单总数</view>
-						<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+						<view
+							style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+						>
 							{{ typeof orderNumber.orderTotal === 'number' ? orderNumber.orderTotal : '--' }}
 						</view>
 					</view>
@@ -25,7 +27,9 @@
 					</view>
 					<view style="max-width: 33%;">
 						<view>待核销</view>
-						<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+						<view
+							style="margin-top: 10upx;font-size: 36upx;font-weight: bold;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+						>
 							{{ typeof orderNumber.orderWritten === 'number' ? orderNumber.orderWritten : '--' }}
 						</view>
 					</view>
@@ -38,9 +42,7 @@
 				>
 					<view>
 						<view>订单收益</view>
-						<view
-							style="margin-top: 10upx;font-size: 36upx;font-weight: bold;"
-						>
+						<view style="margin-top: 10upx;font-size: 36upx;font-weight: bold;">
 							{{ typeof orderRecords.toDaysRecords === 'number' ? orderRecords.toDaysRecords : '--' }}
 						</view>
 					</view>
@@ -59,7 +61,10 @@
 				</view>
 			</view>
 		</view>
-		<view class="order-data-record" style="padding-bottom: 40upx;background-color: #ffffff;border-radius: 25upx;overflow: hidden;">
+		<view
+			class="order-data-record"
+			style="padding-bottom: 40upx;background-color: #ffffff;border-radius: 25upx;overflow: hidden;"
+		>
 			<tui-tabs
 				item-width="50%" selected-color="#000000" bold slider-bg-color="#ff0000"
 				:tabs="[{ name: '入账出账' }, { name: '订单' }]" :current-tab="currentTab" @change="handleChangeTab"
@@ -209,6 +214,5 @@ export default {
 	min-height: 100vh;
 	width: 100%;
 	background: #f6f6f6;
-
 }
 </style>

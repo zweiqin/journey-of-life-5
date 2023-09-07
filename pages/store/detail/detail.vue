@@ -5,7 +5,7 @@
 			:class="isNavGaFixed ? 'isFixed' : 'isAbsolute'"
 		>
 			<view class="imgbg">
-				<BeeBack>
+				<BeeBack :success-cb="successCb">
 					<BeeIcon name="arrowleft" :size="24" color="#fff"></BeeIcon>
 				</BeeBack>
 			</view>
@@ -142,6 +142,10 @@ export default {
 
 	data() {
 		return {
+			successCb: () => {
+				const pages = getCurrentPages()
+				if (pages[pages.length - 2].route === 'pages/store/store') uni.$emit('sendStoreDetailMsg', { data: { meaning: 'refreshCurrentData' } })
+			},
 			yuanH: uni.upx2px(816), // 用于tabNav判定初始位置的值。455-47
 			isNavGaFixed: false, // 是否定位顶部导航栏
 			isTabFixed: false, // tab切换栏是否固定定位

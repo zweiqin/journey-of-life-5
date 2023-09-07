@@ -123,9 +123,6 @@ export default {
 		this.initGoods()
 	},
 
-	onShow() {
-	},
-
 	data() {
 		return {
 			brandInfo: {},

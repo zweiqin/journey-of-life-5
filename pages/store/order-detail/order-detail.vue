@@ -134,7 +134,6 @@ export default {
 				if (address.isDefault) this.startAddress = address
 			})
 			if (!this.startAddress) this.startAddress = data[0]
-			this.startAddress = data[0] || {}
 		},
 
 		// 获取订单信息

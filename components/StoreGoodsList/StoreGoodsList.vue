@@ -18,9 +18,8 @@
 				<view v-if="currentGoods && currentGoods.length">
 					<view v-for="item in currentGoods" :key="item.id">
 						<StoreGoods
-							:goods-data="item" pic-height="210rpx" pic-mode="aspectFit"
-							@click-content="(e) => $emit('click-content', e)"
-							@add-car="(e) => $emit('add-car', e)"
+							:goods-data="item" pic-height="210rpx" pic-mode="aspectFit" show-voucher
+							@click-content="(e) => $emit('click-content', e)" @add-car="(e) => $emit('add-car', e)"
 						></StoreGoods>
 					</view>
 				</view>

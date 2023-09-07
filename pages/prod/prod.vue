@@ -344,7 +344,7 @@ export default {
 				data: {
 					title: this.goodsDetail.info.name,
 					desc: this.goodsDetail.productList.map((item) => item.specifications.join(',')).join(','),
-					link: 'https://www.tuanfengkeji.cn/TFShop_Uni_H5/#/pages/prod/prod?goodsId=' + this.goodsId,
+					link: 'https://h5.jfcmei.com/#/pages/prod/prod?goodsId=' + this.goodsId,
 					imageUrl: (this.goodsDetail.shareImage && this.common.seamingImgUrl(this.goodsDetail.shareImage)) || (this.goodsDetail.info.picUrl && this.common.seamingImgUrl(this.goodsDetail.shareImage))
 				},
 				successCb: () => { },

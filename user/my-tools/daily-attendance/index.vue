@@ -4,7 +4,7 @@
 			<image src="../../../static/index/earn-money/back.png" mode="" @click="handleBack" />
 			<view class="points_buttom" @click="go('/pages/index/sign/points-mall')">
 				<image src="@/static/index/earn-money/jifen.png" mode="" />
-				<text>{{ SignDetails.totalNum }}</text>
+				<text>{{ signDetails.totalNum }}</text>
 				<image class="goToPointsMall" src="@/static/index/earn-money/youjiantou.png" mode="" />
 			</view>
 			<image src="@/static/index/earn-money/wenjian.png" mode="" />
@@ -21,7 +21,7 @@
 				<view class="SignIn">
 					<view class="SignIn_heade">
 						<view class="SignIn_headeText">
-							已连续签到<text>{{ SignDetails.days }}</text>天，明天签到加{{ SignDetails.number }}分
+							已连续签到<text>{{ signDetails.days }}</text>天，明天签到加{{ signDetails.number }}分
 						</view>
 						<view class="SignIn_warn">
 							<image class="goToPointsMall" src="@/static/index/earn-money/qiandao.png" mode="" />提醒我
@@ -46,7 +46,7 @@
 					<view class="i-left">
 						<view class="i-name">当前积分</view>
 						<view class="i-list">
-							<text>{{ SignDetails.totalNum }}</text>
+							<text>{{ signDetails.totalNum }}</text>
 							<image src="../../../static/index/sign/go.png" mode="" />
 						</view>
 					</view>
@@ -80,7 +80,7 @@ export default {
 			today: new Date().toISOString()
 				.slice(0, 10),
 			lastSignIndex: 0,
-			SignDetails: {},
+			signDetails: {},
 			weekName: ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期日'],
 			weekList: [ {} ]
 		}
@@ -136,7 +136,7 @@ export default {
 			getUserSigninContinuousApi({
 				userId: getUserId()
 			}).then((res) => {
-				this.SignDetails = res.data
+				this.signDetails = res.data
 				console.log(res.data)
 			})
 			// 获取当前签到的信息，一个星期签到了多少天等等。。。。,并将这些数据整合到一个数组里面

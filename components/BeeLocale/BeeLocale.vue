@@ -1,5 +1,5 @@
 <template>
-	<view class="bee-locale-container" @click="go('/pages/choose-address/choose-address')">
+	<view class="bee-locale-container" @click="go(`/pages/choose-address/choose-address?eventName=${eventName}`)">
 		<slot>
 			<tui-icon v-if="isIcon" :size="size" name="gps" color="#ffffff"></tui-icon>
 			<BeeIcon v-else :src="require('./locale.png')" :size="size"></BeeIcon>
@@ -25,6 +25,10 @@ export default {
 		field: {
 			type: String,
 			default: 'currentCity'
+		},
+		eventName: {
+			type: String,
+			default: ''
 		}
 	}
 }

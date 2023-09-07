@@ -168,7 +168,6 @@ export default {
 	},
 
 	onShow() {
-		console.log('sb')
 		this.getAddressList()
 	}
 }

@@ -34,6 +34,15 @@
 			</tui-grid>
 		</view>
 
+		<view v-if="currentTab === 1 && currentTownData" style="text-align: right;">
+			<tui-button
+				style="display: inline-block;" margin="0 10rpx 8upx 0" width="120rpx" height="50rpx"
+				type="warning" shape="circle" @click="confirmChooseAddress({ name: '' })"
+			>
+				选择
+			</tui-button>
+		</view>
+
 		<!-- tabs 标签页 -->
 		<tui-tabs
 			:tabs="tabs" selected-color="#e95d20" slider-bg-color="#e95d20" item-width="30%"
@@ -68,7 +77,7 @@
 								<tui-grid-item
 									class="grid-item" :class="{
 										active: tabs[1].name === item.name.slice(0, 3) + '...'
-									}" :cell="3" @click="handleChooseTown(item)"
+									}" :cell="3" @click="handleChooseDistinguish(item)"
 								>
 									<text class="tui-grid-label">{{ item.name }}</text>
 								</tui-grid-item>
@@ -179,7 +188,8 @@ export default {
 			searchCity: '',
 			allCityData: {},
 			hotCities: Object.freeze(hotCities),
-			backUrl: null
+			backUrl: null,
+			eventName: ''
 		}
 	},
 
@@ -227,12 +237,15 @@ export default {
 			this.cityList = data
 		},
 
-		handleBack() {
+		handleBack(mean) {
 			if (this.backUrl) {
 				this.$switchTab('/')
 				return
 			}
-			uni.navigateBack()
+			uni.navigateBack({
+				delta: 1,
+				success: mean === 'success' && this.eventName ? uni.$emit(this.eventName) : () => { }
+			})
 		},
 
 		handleClearSearch() {
@@ -295,21 +308,21 @@ export default {
 		},
 
 		// 选择区县
-		handleChooseTown(data) {
+		handleChooseDistinguish(data) {
 			this.currentTownData = data.children
-			this.currentTab = 2
+			// this.currentTab = 2
 			this.tabs[1].name = data.name.slice(0, 3) + '...'
 			this.tabs[1].select = data.name
 		},
 
 		// 选择定位
-		confirmChooseAddress(data, isHot) {
+		async confirmChooseAddress(data, isHot) {
 			uni.showLoading()
 			if (isHot) {
-				this.$store.dispatch('location/getDetailAddress', data)
+				await this.$store.dispatch('location/getDetailAddress', data)
 			} else {
-				console.log(this.tabs)
-				this.$store.dispatch('location/getDetailAddress', {
+				// console.log(this.tabs)
+				await this.$store.dispatch('location/getDetailAddress', {
 					city: this.tabs[0].select,
 					distinguish: this.tabs[1].select,
 					town: data.name
@@ -323,16 +336,16 @@ export default {
 						url: this.backUrl
 					})
 				} else {
-					this.handleBack()
+					this.handleBack('success')
 				}
 			}, 1000)
 		}
 	},
 
 	onLoad(params) {
-		const backUrl = params.backUrl
-		if (backUrl) {
-			this.backUrl = backUrl.replaceAll('_', '?').replaceAll('|', '/')
+		this.eventName = params.eventName || ''
+		if (params.backUrl) {
+			this.backUrl = params.backUrl.replaceAll('_', '?').replaceAll('|', '/')
 		}
 	}
 }
