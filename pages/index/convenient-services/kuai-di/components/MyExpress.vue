@@ -5,7 +5,7 @@
 				<image src="../image/touxiang.png" mode=""></image>
 				<view class="msg">
 					<p class="myMessage"><span>微信用户</span> <span><image src="../image/pre_icon_shimingrenzheng.png" mode=""></image>未实名</span> </p>
-					<p>13286520927</p>
+					<p>{{ phone }}</p>
 				</view>
 				<image class="userInfoBtn" src="../image/youjiantou.png" mode=""></image>
 			</view>
@@ -72,11 +72,21 @@
 	export default {
 		data() {
 			return {
-				
+				phone: ''
 			}
 		},
 		methods: {
 
+		},
+		created() {
+			let that = this
+			uni.getStorage({
+				key: 'user_INFO',
+				success(value) {
+					that.phone = value.data.phone
+					// console.log(that)
+				}
+			})
 		}
 	}
 </script>

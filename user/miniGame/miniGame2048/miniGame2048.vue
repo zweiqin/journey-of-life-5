@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<view class="navgationTop">
-			<img class="back" @click="goBack" src="@/static/back.png" alt="">
+			<image class="backBtn" @click="goBack" src="@/static/back.png" mode=""></image>
 			<view class="defaultBody">
 				欢迎挑战2048!!!
 			</view>
@@ -165,10 +165,12 @@
 	align-items: center;
 	background-color: none;
 	z-index: 999;
-	.back {
+	
+	.backBtn {
 		width: 60rpx;
 		height: 60rpx;
 	}
+	
 	.defaultBody {
 		position: absolute;
 		left: 50%;
