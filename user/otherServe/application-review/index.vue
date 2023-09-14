@@ -137,12 +137,12 @@ export default {
 					if (res.confirm) {
 						const mapMethods = {
 							0: {
-								api: UpgradeRequestCarefulApi,
-								reason: ''
-							},
-							1: {
 								api: UpgradeRequestMarketingApi,
 								reason: '审核通过'
+							},
+							1: {
+								api: UpgradeRequestCarefulApi,
+								reason: ''
 							},
 							2: {
 								api: UpgradeRequestRegionalAgentApi,
