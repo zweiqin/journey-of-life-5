@@ -32,6 +32,12 @@ export default {
 		return {
 			seckillActivityInfo: [
 				{
+					label: 'ID：',
+					field: 'id',
+					type: 'input',
+					placeholder: '请输入ID'
+				},
+				{
 					label: '秒杀活动名称：',
 					field: 'name',
 					type: 'input',

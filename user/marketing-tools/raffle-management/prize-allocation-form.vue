@@ -35,6 +35,12 @@ export default {
 		return {
 			rafflePrize: [
 				{
+					label: 'ID：',
+					field: 'id',
+					type: 'input',
+					placeholder: '请输入ID'
+				},
+				{
 					label: '关联奖品：',
 					field: 'pointsPrizeId',
 					type: 'picker',

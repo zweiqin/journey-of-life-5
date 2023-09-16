@@ -37,6 +37,12 @@ export default {
 		return {
 			reservationInfo: [
 				{
+					label: 'ID：',
+					field: 'id',
+					type: 'input',
+					placeholder: '请输入ID'
+				},
+				{
 					label: '预约项目名称：',
 					field: 'name',
 					type: 'input',

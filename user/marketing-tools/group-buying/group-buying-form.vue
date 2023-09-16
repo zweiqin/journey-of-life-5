@@ -32,6 +32,12 @@ export default {
 		return {
 			groupBuyingForm: [
 				{
+					label: 'ID：',
+					field: 'id',
+					type: 'input',
+					placeholder: '请输入ID'
+				},
+				{
 					label: '商品名称：',
 					field: 'goodsName',
 					type: 'input',

@@ -39,6 +39,12 @@ export default {
 		return {
 			rafflePrize: [
 				{
+					label: 'ID：',
+					field: 'id',
+					type: 'input',
+					placeholder: '请输入ID'
+				},
+				{
 					label: '奖品类型：',
 					field: 'type',
 					type: 'radio',
