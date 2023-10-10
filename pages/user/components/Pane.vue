@@ -11,7 +11,7 @@
 				</view>
 				<view v-else-if="menu.name === '客服中心'">
 					<DragButton
-						text="客服" :icon-src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon" is-dock
+						text="客服在线" :icon-src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon" is-dock
 						exist-tab-bar @btnClick="go(menu.url)"
 					/>
 				</view>
@@ -31,10 +31,6 @@
 
 			<view class="row-wrapper">
 				<view v-for="menu in renderMenu" :key="menu.name" class="item" @click="$emit('menu-click', menu)">
-					<!-- 使用uniapp内置image组件渲染会经过很多的解析，在图片过大的情况下解析的过程会很长，造成很长时间的空白期 -->
-					<!-- <image class="icons" v-if="menu.iconUrl" :src="common.seamingImgUrl(menu.iconUrl)" mode=""></image> -->
-					<!-- <img v-if="menu.iconUrl" class="icons" :src="common.seamingImgUrl(menu.iconUrl)" alt=""> -->
-					<!-- <image v-else style="width: 64upx; height: 64upx"> </image> -->
 					<BeeIcon
 						v-if="menu.iconUrl || menu.icon" :size="32"
 						:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon"
@@ -42,6 +38,64 @@
 					<text class="menu-name">{{ menu.name }}</text>
 				</view>
 			</view>
+
+			<view style="display: flex;flex-wrap: wrap;">
+				<view v-for="menu in specialPane" :key="menu.name" @click="$emit('menu-click', menu)">
+					<view
+						v-if="menu.name === '小账本'"
+						style="display: flex;justify-content: space-between;align-items: center;width: 272upx;margin: 12upx 10upx 0;padding: 20upx 14upx;background-color: #f8f5ed;border-radius: 10upx;"
+					>
+						<view>
+							<view style="margin-bottom: 6upx;font-size: 32upx;color: #8E6251;">我的账户</view>
+							<view style="font-size: 22upx;color: #A29898;">账本收益实时更新</view>
+						</view>
+						<image
+							style="width: 82upx;height: 82upx;"
+							:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon" mode="widthFix"
+						></image>
+					</view>
+					<view
+						v-else-if="menu.name === '每日签到'"
+						style="display: flex;justify-content: space-between;align-items: center;width: 272upx;margin: 12upx 10upx 0;padding: 20upx 14upx;background-color: #f8f5ed;border-radius: 10upx;"
+					>
+						<view>
+							<view style="margin-bottom: 6upx;font-size: 32upx;color: #8E6251;">签到</view>
+							<view style="font-size: 22upx;color: #A29898;">每日签到惊喜不断</view>
+						</view>
+						<image
+							style="width: 82upx;height: 82upx;"
+							:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon" mode="widthFix"
+						></image>
+					</view>
+					<view
+						v-else-if="menu.name === '我的收藏'"
+						style="display: flex;justify-content: space-between;align-items: center;width: 272upx;margin: 12upx 10upx 0;padding: 20upx 14upx;background-color: #f8f5ed;border-radius: 10upx;"
+					>
+						<view>
+							<view style="margin-bottom: 6upx;font-size: 32upx;color: #8E6251;">我的收藏</view>
+							<view style="font-size: 22upx;color: #A29898;">收藏商品和店铺</view>
+						</view>
+						<image
+							style="width: 82upx;height: 82upx;"
+							:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon" mode="widthFix"
+						></image>
+					</view>
+					<view
+						v-else-if="menu.name === '我的券包'"
+						style="display: flex;justify-content: space-between;align-items: center;width: 272upx;margin: 12upx 10upx 0;padding: 20upx 14upx;background-color: #f8f5ed;border-radius: 10upx;"
+					>
+						<view>
+							<view style="margin-bottom: 6upx;font-size: 32upx;color: #8E6251;">我的卡券</view>
+							<view style="font-size: 22upx;color: #A29898;">天天抢兑5折券</view>
+						</view>
+						<image
+							style="width: 82upx;height: 82upx;"
+							:src="menu.iconUrl ? common.seamingImgUrl(menu.iconUrl) : menu.icon" mode="widthFix"
+						></image>
+					</view>
+				</view>
+			</view>
+
 		</view>
 	</view>
 </template>
@@ -106,7 +160,7 @@ export default {
 				this.menuData.forEach((item) => {
 					const tempIconObj = this.permissionData.find((i) => i.iconName === item.name)
 					if (tempIconObj) {
-						if (item.name === '我的订单' || item.name === '客服中心') {
+						if (item.name === '我的订单' || item.name === '客服中心' || item.name === '小账本' || item.name === '每日签到' || item.name === '我的券包' || item.name === '我的收藏') {
 							if (!item.showRole) {
 								haveSpecialData.push({ ...item, iconUrl: tempIconObj.iconUrl })
 							} else if (item.showRole && item.showRole.includes(this.userInfo.roleIds)) {
@@ -142,16 +196,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.icons {
-	width: 66rpx;
-	height: 66rpx;
-}
-
 .pane-wrapper {
-	padding: 30upx 48upx 40upx 24upx;
+	padding: 30upx 24upx 40upx;
 	width: 100%;
 	box-sizing: border-box;
-	background-color: #fff;
+	background-color: #ffffff;
 	border-radius: 20rpx;
 
 	.title-wrapper {

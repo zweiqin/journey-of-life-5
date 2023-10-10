@@ -1,16 +1,86 @@
 <template>
 	<view class="brand-page-container">
-		<view class="top-container">
-			<view class="search-header">
-				<BeeLocale event-name="sendChooseAddressSuccessMsg"></BeeLocale>
-				<SearchBar prevent background="#fff" @click="go('/pages/search-page/search-page')"></SearchBar>
-				<PhotoSearch></PhotoSearch>
+		<view style="background: linear-gradient(180deg, #EF530E 23%, #FAC894 43%, #fcfbf9 103%);">
+			<view class="top-container">
+				<view style="padding: 28upx 28upx 24upx;color: #ffffff;">
+					巨蜂本地生活
+				</view>
+				<view class="search-header">
+					<BeeLocale event-name="sendChooseAddressSuccessMsg"></BeeLocale>
+					<SearchBar prevent background="#fff" @click="go('/pages/search-page/search-page')"></SearchBar>
+					<CategoryIcon></CategoryIcon>
+				</view>
+				<view class="menus-wrapper">
+					<BeeMenus :data="menusData" @click="handleTo"></BeeMenus>
+				</view>
+				<view style="display: flex;justify-content: space-between;padding: 0 28upx;">
+					<view
+						style="width: 130upx;height: 168upx;background: url('../../static/images/index/tab-png1.png') no-repeat center/contain;"
+						@click="go('/user/my-tools/daily-attendance/index')"
+					>
+						<view style="padding: 20upx 0 0;font-weight: bold;font-size: 28upx;text-align: center;">签到赚钱</view>
+					</view>
+					<view
+						style="width: 130upx;height: 168upx;background: url('../../static/images/index/tab-png2.png') no-repeat center/contain;"
+						@click="go('/pages/index/coupons/coupons?currentTab=2')"
+					>
+						<view style="padding: 20upx 0 0;font-weight: bold;font-size: 28upx;text-align: center;">我的卡券</view>
+					</view>
+					<view
+						style="width: 130upx;height: 168upx;background: url('../../static/images/index/tab-png3.png') no-repeat center/contain;"
+						@click="go('/user/sever/userUp')"
+					>
+						<view style="padding: 20upx 0 0;font-weight: bold;font-size: 28upx;text-align: center;">会员中心</view>
+					</view>
+					<view
+						style="width: 130upx;height: 168upx;background: url('../../static/images/index/tab-png4.png') no-repeat center/contain;"
+						@click="go('/user/my-tools/account-book/index')"
+					>
+						<view style="padding: 20upx 0 0;font-weight: bold;font-size: 28upx;text-align: center;">我的收益</view>
+					</view>
+					<view
+						style="width: 130upx;height: 168upx;background: url('../../static/images/index/tab-png5.png') no-repeat center/contain;"
+						@click="go('/user/sever/my-distribution/index')"
+					>
+						<view style="padding: 20upx 0 0;font-weight: bold;font-size: 28upx;text-align: center;">分销中心</view>
+					</view>
+				</view>
+				<view class="banner-wrapper" @click="go('/user/sever/userUp')">
+					<image src="../../static/images/index/banner2.png" mode="" />
+				</view>
 			</view>
-			<view class="menus-wrapper">
-				<BeeMenus :data="menusData" @click="handleTo"></BeeMenus>
+		</view>
+		<view style="width: 100%;">
+			<view style="display: flex;justify-content: space-between;margin-top: 20upx;padding: 0 28upx;">
+				<view style="width: 48%;position: relative;" @click="go('/pages/red-envelope/red-envelope')">
+					<image style="width: 100%;" src="../../static/images/index/card-png1.png" mode="widthFix" />
+					<view style="position: absolute;top: 5upx;left: 10upx;">
+						<view style="font-size: 26upx;color: #ffffff;">地图红包</view>
+						<view style="margin: 80upx 0 0 68upx;font-size: 38upx;color: #eb2006;font-weight: bold;">立抢红包 ></view>
+					</view>
+				</view>
+				<view style="width: 48%;display: flex;flex-direction: column;justify-content: space-between;">
+					<view @click="go('/pages/index/convenient-services/service-oil')">
+						<image style="width: 100%;" src="../../static/images/index/card-png2.png" mode="widthFix" />
+					</view>
+					<view style="position: relative;" @click="go('/user/marketing-tools/red-envelope-distribution/index')">
+						<image style="width: 100%;" src="../../static/images/index/card-png3.png" mode="widthFix" />
+						<view style="position: absolute;top: 5upx;left: 26upx;">
+							<view style="font-size: 26upx;color: #ffffff;">发红包</view>
+							<view style="margin: 30upx 0 0 -12upx;font-size: 34upx;color: #0f0f0f;">红包推广宣传</view>
+						</view>
+					</view>
+				</view>
 			</view>
-			<view class="banner-wrapper" @click="go('/user/sever/userUp')">
-				<image src="../../static/index/banner2.png" mode="" />
+			<view
+				style="position: relative;margin-top: 20upx;background-color: #ffedd9;"
+				@click="go('/user/otherServe/chat/chat')"
+			>
+				<image style="width: 100%;height: 245upx;" src="../../static/images/index/banner3.png" mode="" />
+				<view style="position: absolute;top: 45upx;left: 106upx;">
+					<view style="font-size: 36upx;font-weight: bold;">消息中心 ></view>
+					<view style="margin-top: 10upx;font-size: 26upx;color: #959392;">订单、商品等通知提示</view>
+				</view>
 			</view>
 		</view>
 
@@ -247,13 +317,14 @@ export default {
 .brand-page-container {
 	width: 100vw;
 	min-height: 100vh;
-	background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 3%, #f6f6f6 8%);
+	background: #f5f5f7;
+	// background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 3%, #f6f6f6 8%);
+	box-sizing: border-box;
 
 	.top-container {
 		width: 100%;
-		background: #f6f6f6;
+		background: url('../../static/images/index/top-background.png') no-repeat center top/contain;
 		// min-height: 826upx;
-
 		// background: linear-gradient(
 		//   0deg,
 		//   rgba(246, 246, 246, 0.87) -3%,
@@ -266,8 +337,7 @@ export default {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			padding: 44upx 22upx 10upx;
-			box-sizing: border-box;
+			padding: 44upx 28upx 10upx;
 
 			/deep/ .search-bar-container {
 				flex: 1;
@@ -276,7 +346,7 @@ export default {
 		}
 
 		.menus-wrapper {
-			padding: 0 22upx 20upx;
+			padding: 0 28upx 20upx;
 			box-sizing: border-box;
 
 			/deep/ .menus-container {
@@ -286,22 +356,24 @@ export default {
 
 		.banner-wrapper {
 			margin-top: 20upx;
-			padding: 0 20upx;
+			padding: 0 28upx;
 			box-sizing: border-box;
 
 			image {
 				width: 100%;
-				height: 200upx;
+				height: 225upx;
 				border-radius: 20upx;
 			}
 		}
 	}
 
 	.brand {
-		margin-top: 20upx;
+		position: relative;
+		z-index: 1;
+		margin-top: -40upx;
 
 		.brand-list-wrapper {
-			padding: 0 20upx;
+			padding: 0 28upx;
 			box-sizing: border-box;
 			padding-bottom: 140upx;
 		}

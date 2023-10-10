@@ -5,33 +5,18 @@
 			<view class="search-header">
 				<BeeLocale></BeeLocale>
 				<SearchBar prevent @click="go('/pages/search-page/search-page')"></SearchBar>
-				<PhotoSearch></PhotoSearch>
+				<CategoryIcon></CategoryIcon>
 			</view>
 
 			<Menus :data="menusData" @handleNavigate="handleNavigate"></Menus>
 
-			<!-- <view class="banner-wrapper">
-				<image src="../../static/index/banner.png" mode="" />
-				</view>
-				<Synthesize></Synthesize> -->
-
-			<view class="banner-wrapper" @click="go('/user/sever/userUp')">
-				<image src="../../static/index/banner2.png" mode="" />
-			</view>
-
-			<view class="title">
-				<text class="left-bar"></text>
-				<text>好物推荐</text>
-				<text class="right-bar"></text>
-			</view>
 		</view>
 		<view class="goods-list">
 			<view class="pane">
 				<view class="menus-wrapper">
 					<view
 						v-for="(item, index) in menus" v-if="index < 7" :key="item.id" class="item"
-						:class="{ active: currentFilterMenuId === item.id }"
-						@click="handleChooseMenu(item)"
+						:class="{ active: currentFilterMenuId === item.id }" @click="handleChooseMenu(item)"
 					>
 						<BeeIcon :size="40" :src="item.icon"></BeeIcon>
 						<text>{{ item.name }}</text>
@@ -52,7 +37,6 @@
 					</view>
 					</view>
 					</scroll-view> -->
-
 				<scroll-view scroll-x="true">
 					<view class="sub-menus">
 						<view
@@ -64,13 +48,101 @@
 					</view>
 				</scroll-view>
 
-				<!-- <GoodsFilter :scroll-top="scrollTop"></GoodsFilter> -->
-				<view class="goods-wrapper">
-					<NewGoods v-for="item in goodsList" :key="item.id" :data="item"></NewGoods>
+				<view
+					style="display: flex;justify-content: space-between;align-items: flex-start;flex-wrap: nowrap;min-height: 360upx;padding: 92upx 34upx 0;background: url('../../static/images/index/bg-product-card.png') no-repeat center top/contain;"
+				>
+					<view
+						v-for="item in goodsList.slice(0, 3)" :key="item.id"
+						style="position: relative;width: 32%;background-color: #ffffff;"
+						@click="go('/pages/prod/prod?goodsId=' + item.id)"
+					>
+						<tui-lazyload-img
+							width="100%" height="216upx" mode="aspectFill" radius="2rpx 2rpx 2rpx 2rpx"
+							:src="common.seamingImgUrl(item.picUrl)"
+						>
+						</tui-lazyload-img>
+						<tui-lazyload-img
+							width="62upx" height="auto" mode="widthFix" src="../../static/images/index/new-tag.png"
+							background-color="transparent" style="position: absolute;top: 0;left: 0;"
+						>
+						</tui-lazyload-img>
+						<view>
+							<view
+								style="padding: 6upx 10upx 4upx;font-size: 26upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+							>
+								{{ item.name }}
+							</view>
+							<view style="display: flex;justify-content: center;align-items: center;padding: 0 0 12upx;">
+								<tui-lazyload-img
+									width="64upx" height="auto" mode="widthFix"
+									src="../../static/images/index/miaoshajia.png" background-color="transparent"
+								>
+								</tui-lazyload-img>
+								<view style="padding-left: 12upx;font-size: 26upx;color: #c83732;">
+									￥<text>{{ item.counterPrice }}</text>
+								</view>
+							</view>
+						</view>
+					</view>
 				</view>
 
-				<LoadMore v-show="goodsList.length" :status="status"></LoadMore>
+				<view class="title">
+					<!-- <text class="left-bar"></text>
+						<text>商品推荐</text>
+						<text class="right-bar"></text> -->
+					<BeeIcon width="228upx" height="34upx" :src="require('../../static/images/index/goods-img-title.png')">
+					</BeeIcon>
+				</view>
 
+				<!-- <view class="goods-wrapper">
+					<NewGoods v-for="item in goodsList" :key="item.id" :data="item"></NewGoods>
+					</view> -->
+				<view class="goods-wrapper">
+					<view
+						v-for="item in goodsList.slice(3)" :key="item.id" style="width: 49%;padding-bottom: 28upx;"
+						@click="go('/pages/prod/prod?goodsId=' + item.id)"
+					>
+						<tui-lazyload-img
+							width="100%" height="354upx" mode="aspectFill" radius="2rpx 2rpx 2rpx 2rpx"
+							:src="common.seamingImgUrl(item.picUrl)"
+						>
+						</tui-lazyload-img>
+						<view>
+							<view
+								style="padding: 8upx 10upx 4upx;font-size: 26upx;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;"
+							>
+								{{ item.name }}
+							</view>
+							<view style="display: flex;align-items: center;padding: 0 0 6upx;">
+								<view
+									style="display: flex;align-items: center;padding: 6upx;background-color: #333333;border-radius: 0 34upx 34upx 0;"
+								>
+									<text style="font-size: 26upx;color: #FFEBC4;">巨蜂自营</text>
+									<BeeIcon
+										:size="18" :src="require('../../static/user-center/ju-icon.png')"
+										style="width: fit-content;margin-left: 8upx;background-color: #ffffff;border-radius: 50%;line-height: 0;"
+									>
+									</BeeIcon>
+								</view>
+								<view
+									v-if="item.sales"
+									style="margin-left: 8upx;padding: 4upx;color: #C5AA7B;font-size: 26upx;border: 1px solid #E4E5E6;"
+								>
+									已售{{ item.sales }}件
+								</view>
+							</view>
+							<view style="font-size: 36upx;font-weight: bold;color: #c83732;">
+								￥<text style="padding-left: 8upx;">{{ item.counterPrice }}</text>
+							</view>
+							<div
+								style="width: fit-content;margin-top: -2upx;padding: 2upx 12upx 6upx 2upx;background-color: #f0f0f0;font-size: 28upx;color: #fa5151;border-radius: 0 22upx 22upx 0;vertical-align: middle;"
+							>
+								可使用{{ Math.ceil(Number(item.counterPrice || 0)) }}代金券抵扣
+							</div>
+						</view>
+					</view>
+				</view>
+				<LoadMore v-show="goodsList.length" :status="status"></LoadMore>
 				<GoodsSkeleton
 					v-if="status === 'loading' && !goodsList.length"
 					background="linear-gradient(180deg, #ffffff 0%, #f6f6f6 6%)" padding="20upx"
@@ -93,7 +165,6 @@ export default {
 	data() {
 		return {
 			menusData: Object.freeze(menusData),
-			scrollTop: 0,
 			query: {
 				page: 1,
 				size: 20,
@@ -111,7 +182,7 @@ export default {
 			submenus: []
 		}
 	},
-	onLoad() {},
+	onLoad() { },
 	mounted() {
 		this.getSubMenus()
 	},
@@ -166,9 +237,6 @@ export default {
 			this.getGoodsList()
 		}
 	},
-	onPageScroll(e) {
-		this.scrollTop = e.scrollTop
-	},
 	onReachBottom() {
 		if (this.query.page >= this.totalPages) {
 			this.$showToast('没有更多了')
@@ -187,7 +255,7 @@ export default {
 .index-container {
 	width: 100%;
 	min-height: 100vh;
-	background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 3%, #f6f6f6 8%);
+	// background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 3%, #f6f6f6 8%);
 
 	.search-header {
 		display: flex;
@@ -204,48 +272,8 @@ export default {
 	.container {
 		padding: 10upx 22.5upx 0 22.5upx;
 		box-sizing: border-box;
-		// background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 3%, #f6f6f6 8%);
-		background-color: #f6f6f6;
+		// background-color: #f6f6f6;
 
-		.banner-wrapper {
-			margin-top: 20upx;
-
-			image {
-				width: 100%;
-				height: 200upx;
-				border-radius: 20upx;
-			}
-		}
-
-		.title {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			text-align: center;
-			font-weight: 500;
-			margin-bottom: 20upx;
-			margin-top: 20upx;
-
-			.left-bar {
-				margin-right: 10upx;
-				display: block;
-				width: 25upx;
-				height: 6upx;
-				background: linear-gradient(270deg,
-						#07b9b9 0%,
-						rgba(7, 185, 185, 0) 100%);
-			}
-
-			.right-bar {
-				display: block;
-				width: 25upx;
-				height: 6upx;
-				margin-left: 10upx;
-				background: linear-gradient(to right,
-						#07b9b9 0%,
-						rgba(7, 185, 185, 0) 100%);
-			}
-		}
 	}
 
 	.goods-list {
@@ -258,6 +286,36 @@ export default {
 
 		.pane {
 			padding-bottom: 48upx;
+
+			.title {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+				font-weight: 500;
+				margin-bottom: 20upx;
+				margin-top: 20upx;
+
+				.left-bar {
+					margin-right: 10upx;
+					display: block;
+					width: 25upx;
+					height: 6upx;
+					background: linear-gradient(270deg,
+							#07b9b9 0%,
+							rgba(7, 185, 185, 0) 100%);
+				}
+
+				.right-bar {
+					display: block;
+					width: 25upx;
+					height: 6upx;
+					margin-left: 10upx;
+					background: linear-gradient(to right,
+							#07b9b9 0%,
+							rgba(7, 185, 185, 0) 100%);
+				}
+			}
 
 			.goods-wrapper {
 				margin-top: 32upx;

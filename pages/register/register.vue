@@ -1,29 +1,96 @@
 <template>
-	<view class="register-container">
-		<view style="padding: 30upx 20upx;color: #000000;">
-			<JHeader width="50" height="50" title="返回"></JHeader>
+	<view class="container flex-column">
+		<view class="register" @click="$redirectTo('/pages/login/login')">
+			登录
 		</view>
-		<view class="register-wrapper">
-			<h2>{{ pageInfo.title }}</h2>
-			<JField
-				v-for="item in registerFields" :key="item.label" v-model="formData[item.field]" :label="item.label"
-				:type="item.type" :placeholder="item.placeholder"
-			></JField>
+		<view class="PhoneAuthentication">
+			<text class="textRL">{{ pageInfo.title }}</text>
+			<text class="textTips">{{ pageInfo.subTitle }}</text>
+		</view>
+		<view class="LoginForm">
+			<view class="iphoneNum-box">
+				<text class="labels">手机号</text>
+				<input v-model="formData.mobile" type="text" placeholder="请输入手机号">
+			</view>
+			<view class="iphoneNum-box">
+				<text class="labels">设置密码</text>
+				<input v-model="formData.password" type="text" password placeholder="请设置密码">
+			</view>
+			<view class="iphoneNum-box">
+				<text class="labels">再次输入密码</text>
+				<input v-model="formData.validatePdw" type="text" password placeholder="请设置密码">
+			</view>
+			<view class="ReadingAgreement">
+				<radio style="transform:scale(0.8)" color="#CE2601" :checked="agreement" @click="agreement = !agreement" />
+				<view class="Agreement">
+					我已阅读并同意<text class="redText">
+						《巨蜂商城用户服务协议》
+					</text>以及<text class="redText">
+						《隐私政策》
+					</text>
+				</view>
+			</view>
+		</view>
+		<tui-button
+			:disabled="!agreement" type="danger" width="650rpx" margin="0 auto"
+			height="82rpx"
+			style="margin-top: 60rpx;" @click="handleSubmit"
+		>
+			{{ pageInfo.btnTxt }}
+		</tui-button>
+		<view class="problem">
+			<text @click="$redirectTo('/pages/login/login')">
+				已有账号<text class="redText">
+					去登录
+				</text>
+			</text>
+			<text>无法接收验证码？</text>
+		</view>
 
-			<JAuthButton :text="pageInfo.btnTxt" @click="handleSubmit"></JAuthButton>
-		</view>
 	</view>
 </template>
 
 <script>
-import { registerFields, mapText } from './config'
 import { resetPasswodApi, userRegisterApi } from '../../api/auth'
+const mapText = {
+	register: {
+		title: '手机号快捷注册',
+		subTitle: '注册完后可用于登录',
+		btnTxt: '立即注册'
+	},
+	forgetPwd: {
+		title: '找回密码',
+		subTitle: '找回密码后可用于登录',
+		btnTxt: '重置密码'
+	}
+}
 
 export default {
 	name: 'Register',
 	data() {
 		return {
-			registerFields,
+			registerFields: [
+				{
+					label: '手机号',
+					field: 'mobile',
+					type: 'text'
+				},
+				{
+					label: '新密码',
+					field: 'password',
+					type: 'pwd'
+				},
+				{
+					label: '确认密码',
+					field: 'validatePdw',
+					type: 'pwd'
+				}
+				// {
+				//   label: "验证码",
+				//   field: "code",
+				//   type: "code",
+				// },
+			],
 			type: '',
 			formData: {
 				mobile: '',
@@ -31,7 +98,8 @@ export default {
 				password: '',
 				validatePdw: ''
 			},
-			pageInfo: {}
+			pageInfo: {},
+			agreement: false
 		}
 	},
 
@@ -52,7 +120,6 @@ export default {
 					duration: 2000,
 					icon: 'none'
 				})
-
 				return
 			}
 
@@ -64,7 +131,6 @@ export default {
 					duration: 2000,
 					icon: 'none'
 				})
-
 				return
 			}
 
@@ -74,7 +140,6 @@ export default {
 					duration: 2000,
 					icon: 'none'
 				})
-
 				return
 			}
 
@@ -84,7 +149,6 @@ export default {
 					duration: 2000,
 					icon: 'none'
 				})
-
 				return
 			}
 
@@ -100,62 +164,106 @@ export default {
 						mobile,
 						password
 					}
-
-			try {
-				await api(data)
-
-				uni.showToast({
-					title: this.type === 'register' ? '注册成功' : '密码重置成功',
-					duration: 2000
-				})
-
-				uni.navigateTo({
-					url: `/pages/login/login?type=${this.type === 'register' ? 'register' : 'forget'}&redirect=/pages/index/index&tabbar=1`
-				})
-			} catch (error) { }
+			await api(data)
+			uni.showToast({
+				title: this.type === 'register' ? '注册成功' : '密码重置成功',
+				duration: 2000
+			})
+			this.$redirectTo(`/pages/login/login?type=${this.type === 'register' ? 'register' : 'forget'}&redirect=/pages/index/index&tabbar=1`)
 		}
 	}
 }
 </script>
 
 <style lang="less" scoped>
-@import "../../style/mixin.less";
-.register-container{
-	/deep/ .j-header-container{
-		.title {
-			margin-left: 0;
-			text-align: left;
+.container {
+	background-color: #FFFFFF;
+
+	.redText {
+		color: #CE2601;
+	}
+
+	.register {
+		margin-top: 50rpx;
+		position: relative;
+		text-align: right;
+		padding-right: 40rpx;
+	}
+
+	.PhoneAuthentication {
+		margin-top: 15rpx;
+		font-family: Source Han Sans CN;
+		width: 466rpx;
+		height: 100rpx;
+		display: flex;
+		flex-direction: column;
+		padding: 0px 30rpx;
+		gap: 8rpx;
+
+		.textRL {
+			font-size: 44rpx;
+			font-weight: 600;
+			line-height: 60rpx;
+			color: #222229;
+		}
+
+		.textTips {
+			font-size: 24rpx;
+			font-weight: 350;
+			line-height: 32rpx;
+			color: #888889;
 		}
 	}
 
-.register-wrapper {
-	position: relative;
-	color: #3d3d3d;
-	.flex(center, center);
-	flex-direction: column;
-	padding: 192upx 60upx 0 60upx;
-	overflow: hidden;
+	.LoginForm {
+		margin-top: 50rpx;
+		width: 750rpx;
 
-	&::after {
-		content: "";
-		display: block;
-		background: url("https://adminapi.jfcmei.com/admin/storage/fetch/720ysa3uh3ynjg10htcv.png") no-repeat;
-		background-size: cover;
-		width: 172%;
-		height: 200upx;
-		margin-top: 100upx;
+		.iphoneNum-box {
+			/* 自动布局 */
+			margin: 0 auto;
+			height: 114rpx;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			gap: 32rpx;
+			border-bottom: 2rpx solid #E6E6E8;
+			width: 690rpx;
+			color: #222229;
+
+			.labels {
+				font-size: 32rpx;
+				font-weight: normal;
+				line-height: 48rpx;
+			}
+		}
+
+		.ReadingAgreement {
+			width: 710rpx;
+			margin: 0 auto;
+			margin-top: 33rpx;
+			gap: 32rpx;
+			display: flex;
+			align-items: center;
+			font-size: 24rpx;
+
+			.Agreement {
+				margin-left: -15rpx;
+			}
+		}
 	}
 
-	h2 {
-		font-size: 36upx;
-		font-weight: normal;
-		margin-bottom: 100upx;
+	.problem {
+		margin: 0 auto;
+		margin-top: 30rpx;
+		width: 654rpx;
+		display: flex;
+		justify-content: space-between;
+		font-size: 24rpx;
+		font-weight: 350;
+		line-height: 32rpx;
+		color: #878788;
 	}
 
-	.j-auth-button {
-		border-radius: 20upx;
-		margin-top: 120upx;
-	}
-}
 }
 </style>

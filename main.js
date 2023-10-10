@@ -102,10 +102,7 @@ Vue.mixin({
 		},
 
 		go(url) {
-			if (!url) {
-				return
-			}
-
+			if (!url) return
 			uni.navigateTo({
 				url
 			})
@@ -120,6 +117,11 @@ Vue.mixin({
 					})
 				}
 			})
+		},
+
+		$redirectTo(url) {
+			if (!url) return
+			uni.redirectTo({ url })
 		},
 
 		$switchTab(url) {

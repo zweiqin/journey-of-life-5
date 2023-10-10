@@ -7,7 +7,7 @@
 			></image>
 			<BeeLocale style="margin-right: 30rpx;"></BeeLocale>
 			<SearchBar prevent @click="go('/pages/search-page/search-page')"></SearchBar>
-			<!-- <PhotoSearch></PhotoSearch> -->
+			<!-- <CategoryIcon></CategoryIcon> -->
 		</view>
 		<view class="selectScollView">
 			<scroll-view scroll-y class="superSelect">

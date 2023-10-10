@@ -91,7 +91,7 @@
 			<view class="line-item">
 				<text>红包金额</text>
 				<tui-radio-group
-					v-model="redForm.wrapType"
+					v-model="redForm.type"
 					style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;"
 					@change="(e) => {}"
 				>

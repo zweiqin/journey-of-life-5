@@ -3,7 +3,7 @@
 		<view class="search-header">
 			<tui-icon name="arrowleft" @click="handleBack"></tui-icon>
 			<SearchBar prevent @click="go('/pages/search-page/search-page')"></SearchBar>
-			<PhotoSearch></PhotoSearch>
+			<CategoryIcon></CategoryIcon>
 		</view>
 		<scroll-view scroll-x="true" class="menus-wrapper" scroll-with-animation :scroll-into-view="menusItemId">
 			<view

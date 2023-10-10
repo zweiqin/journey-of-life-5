@@ -5,9 +5,9 @@
 		@touchend="touchend" @click.stop.prevent="click"
 	>
 		<view class="drag-icon">
-			<BeeIcon :size="24" :src="iconSrc"></BeeIcon>
+			<BeeIcon :size="42" :src="iconSrc"></BeeIcon>
 		</view>
-		<view>{{ text }}</view>
+		<view class="drag-text">{{ text }}</view>
 	</view>
 </template>
 
@@ -114,7 +114,7 @@ export default {
 
 <style lang="scss">
 $uni-font-size-sm: 24upx;
-$uni-text-color-inverse: #5adfa8;
+$uni-text-color-inverse: #979797;
 
 .drag {
 	position: fixed;
@@ -123,18 +123,26 @@ $uni-text-color-inverse: #5adfa8;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: 6upx 50upx;
-	background-color: #f9fdf3;
-	border: 1upx solid #a6f8d6;
+	padding: 6upx 20upx;
+	background-color: transparent;
+	// border: 1upx solid #a6f8d6;
 	border-radius: 60upx;
 	font-size: $uni-font-size-sm;
 	color: $uni-text-color-inverse;
 	box-sizing: border-box;
 
 	.drag-icon {
-		// background-color: rgba(0, 0, 0, 0.5);
+		padding: 6upx;
+		background-color: #ffffff;
 		// box-shadow: 0 0 6upx rgba(0, 0, 0, 0.4);
 		border-radius: 50%;
+	}
+
+	.drag-text {
+		padding: 8upx;
+		background-color: #ffffff;
+		border-radius: 28upx;
+		box-shadow: 0px 4px 10px 0px rgba(4, 10, 19, 0.2);
 	}
 
 	&.transition {
