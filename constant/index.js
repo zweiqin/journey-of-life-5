@@ -20,7 +20,7 @@ export const J_RESERVATION_PAY_GOODS = 'J_RESERVATION_PAY_GOODS'
 // export const J_STORE_INFO = 'J_STORE_INFO'
 // export const J_MARKETING_PLANNER = 'J_MARKETING_PLANNER'
 
-// vip
+// 绑定
 export const J_NEW_BIND_TYPE = 'J_NEW_BIND_TYPE'
 export const J_NEW_BIND_CODE = 'J_NEW_BIND_CODE'
 export const J_NEW_BIND_ID = 'J_NEW_BIND_ID'

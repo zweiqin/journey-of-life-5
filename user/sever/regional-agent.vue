@@ -9,7 +9,7 @@
 				<view class="item-title">区域</view>
 				<view class="field-wrapper">
 					<!-- <input disabled readonly type="text" placeholder="请选择代理区域" /> -->
-					<JAnyCity :control="false" :text="cityText" @confirm="handleChooseCity"></JAnyCity>
+					<JAnyCity :text="cityText" @confirm="handleChooseCity"></JAnyCity>
 					<tui-icon name="arrowdown" :size="24"></tui-icon>
 				</view>
 			</view>

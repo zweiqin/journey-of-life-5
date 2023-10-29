@@ -48,7 +48,7 @@
 
 							<view v-if="item.type === 'subregion'" style="flex: 1">
 								<JAnyArea
-									:code="form.area" :text="areaUserNameTwo" :placeholder="item.placeholder"
+									:text="areaUserNameTwo" :placeholder="item.placeholder"
 									@confirm="handleInput(item.field, $event)"
 								></JAnyArea>
 							</view>

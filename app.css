@@ -29,6 +29,10 @@ page {
   height: 100%;
 }
 
+input :disabled {
+  pointer-events: none;
+}
+
 .price {
   font-family: Arial;
   display: inline-block;

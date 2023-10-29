@@ -833,7 +833,7 @@
 				{
 					"path": "otherServe/payment-completed/index",
 					"style": {
-						"navigationBarTitleText": "评论列表"
+						"navigationBarTitleText": "支付完成"
 					}
 				},
 				{

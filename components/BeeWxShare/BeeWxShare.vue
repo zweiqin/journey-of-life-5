@@ -4,9 +4,7 @@
 			<slot></slot>
 		</view>
 		<tui-bottom-popup
-			background-color="transparent"
-			:z-index="100000033"
-			:show="showSharePopupVisible"
+			background-color="transparent" :z-index="100000033" :show="showSharePopupVisible"
 			@close="showSharePopupVisible = false"
 		>
 			<view class="main-wrapper">
@@ -14,20 +12,14 @@
 
 				<view class="container">
 					<view class="item">
-						<view
-							class="icon-wrapper"
-							@click="handleShareApp('WXSceneSession')"
-						>
+						<view class="icon-wrapper" @click="handleShareApp('WXSceneSession')">
 							<tui-icon color="#80d640" :size="34" name="wechat"></tui-icon>
 						</view>
 						<text>微信</text>
 					</view>
 
 					<view class="item">
-						<view
-							class="icon-wrapper"
-							@click="handleShareApp('WXSceneTimeline')"
-						>
+						<view class="icon-wrapper" @click="handleShareApp('WXSceneTimeline')">
 							<tui-icon color="#80d640" :size="34" name="moments"></tui-icon>
 						</view>
 						<text>朋友圈</text>
@@ -41,18 +33,13 @@
 		</tui-bottom-popup>
 
 		<!-- #ifdef H5 -->
-		<PointShare
-			:show="showPointVisible"
-			@close="showPointVisible = false"
-		></PointShare>
+		<PointShare :show="showPointVisible" @close="showPointVisible = false"></PointShare>
 		<!-- #endif -->
 
 		<tui-toast ref="toast"></tui-toast>
 
 		<tui-modal
-			:show="$data._isShowTuiModel"
-			title="提示"
-			content="您还未登录，是否先去登录？"
+			:show="$data._isShowTuiModel" title="提示" content="您还未登录，是否先去登录？"
 			@click="_handleClickTuiModel($event, 'login', backUrl)"
 		></tui-modal>
 	</view>
@@ -82,7 +69,7 @@ export default {
 	mixins: [ showModal() ],
 
 	methods: {
-		share(data, quiet, backUrl) {
+		async share(data, quiet, backUrl) {
 			this.shareData = data
 			this.backUrl = backUrl
 			if (!uni.getStorageSync(J_USER_TOKEN)) {
@@ -94,12 +81,12 @@ export default {
 
 			// #ifdef H5
 			if (quiet) {
-				share(data)
+				await share(data)
 				return
 			}
 			if (isInWx()) {
 				this.showPointVisible = true
-				share(data)
+				await share(data)
 				return
 			}
 			this.ttoast({
@@ -110,7 +97,9 @@ export default {
 			// #endif
 
 			// #ifdef APP
-			this.showSharePopupVisible = true
+			if (!quiet) {
+				this.showSharePopupVisible = true
+			}
 			// #endif
 		},
 

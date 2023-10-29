@@ -42,7 +42,7 @@
 					</view>
 					<button
 						class="confirm" :style="{
-							color: areaInfo.township.text ? '#fa5151' : '#8b8b8b'
+							color: areaInfo.province.text ? '#fa5151' : '#8b8b8b'
 						}" @click="handleConfirmArea"
 					>
 						确定
@@ -223,7 +223,7 @@ export default {
 
 		// 点击确定按钮
 		handleConfirmArea() {
-			if (!this.areaInfo.township.text) {
+			if (!this.areaInfo.province.text) {
 				return
 			}
 			this.areaString =

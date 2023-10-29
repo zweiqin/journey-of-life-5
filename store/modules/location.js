@@ -83,116 +83,105 @@ export default {
 
 	actions: {
 		getCurrentLocation({ commit }, onSuccess) {
-			// #ifdef APP
-			uni.getLocation({
-				type: 'gcj02',
-				altitude: true,
-				geocode: false,
-				timeout: 5,
-				cacheTimeout: 4000,
-				accuracy: 'high',
-				isHighAccuracy: true,
-				success(res) {
-					getAdressDetailByLngLat(res.latitude, res.longitude)
-						.then((res) => {
-							if (res.status === '1') {
-								commit(CHANGE_LOCATION_INFO, res.regeocode)
-							}
+			return new Promise(async (resolve, reject) => {
+				try {
+					// MapLoader(
+					//   (res) => {
+					//     getAdressDetailByLngLat(res.latitude, res.longitude)
+					//       .then((res) => {
+					//         if (res.status === "1") {
+					//           commit(CHANGE_LOCATION_INFO, res.regeocode);
+					//           const addressDetail = res.regeocode;
+					//           onSuccess &&
+					//             typeof onSuccess === "function" &&
+					//             onSuccess(
+					//               addressDetail.addressComponent.province +
+					//                 addressDetail.addressComponent.city +
+					//                 addressDetail.addressComponent.district +
+					//                 addressDetail.addressComponent.township
+					//             );
+					//         }
+					//       })
+					//       .catch(() => {
+					//         // _this.address = '定位失败'
+					//       });
+					//   },
+					//   () => {
+					//     uni.getLocation({
+					//       type: "gcj02",
+					//       success(res) {
+					//         getAdressDetailByLngLat(res.latitude, res.longitude)
+					//           .then((res) => {
+					//             if (res.status === "1") {
+					//               commit(CHANGE_LOCATION_INFO, res.regeocode);
+					//               const addressDetail = res.regeocode;
+					//               onSuccess &&
+					//                 typeof onSuccess === "function" &&
+					//                 onSuccess(
+					//                   addressDetail.addressComponent.province +
+					//                     addressDetail.addressComponent.city +
+					//                     addressDetail.addressComponent.district +
+					//                     addressDetail.addressComponent.township
+					//                 );
+					//             }
+					//           })
+					//           .catch(() => {
+					//             // _this.address = '定位失败'
+					//           });
+					//       },
+					//     });
+					//   }
+					// );
+
+					uni.getLocation({
+						type: 'gcj02',
+						// altitude: true,
+						// geocode: false,
+						// highAccuracyExpireTime: 4000,
+						// timeout: 5,
+						// cacheTimeout: 4000,
+						// accuracy: 'high',
+						// isHighAccuracy: true,
+						success(res) {
+							// console.log(res)
+							getAdressDetailByLngLat(res.latitude, res.longitude)
+								.then((res) => {
+									if (res.status === '1') {
+										commit(CHANGE_LOCATION_INFO, res.regeocode)
+										const addressDetail = res.regeocode
+										onSuccess &&
+											typeof onSuccess === 'function' &&
+											onSuccess({
+												detail:
+													addressDetail.addressComponent.province +
+													addressDetail.addressComponent.city +
+													addressDetail.addressComponent.district +
+													addressDetail.addressComponent.township,
+												town: addressDetail.addressComponent.township
+											})
+									}
+								})
+								.catch((e) => {
+									console.log('获取位置失败', e)
+								})
+						},
+						fail: (e) => {
+							console.log('定位失败', e)
+						}
+						// complete: (e) => {
+						// 	console.log('bbbb', e)
+						// }
+					})
+				} catch (error) {
+					if (error === 'prompt') {
+						uni.showToast({
+							title: '为了精准为您服务，请授权访问您的位置',
+							icon: 'none'
 						})
-						.catch(() => {})
+					}
+					reject(false)
 				}
 			})
-			// #endif
-
-			// #ifdef H5
-			// MapLoader(
-			//   (res) => {
-			//     getAdressDetailByLngLat(res.latitude, res.longitude)
-			//       .then((res) => {
-			//         if (res.status === "1") {
-			//           commit(CHANGE_LOCATION_INFO, res.regeocode);
-			//           const addressDetail = res.regeocode;
-			//           onSuccess &&
-			//             typeof onSuccess === "function" &&
-			//             onSuccess(
-			//               addressDetail.addressComponent.province +
-			//                 addressDetail.addressComponent.city +
-			//                 addressDetail.addressComponent.district +
-			//                 addressDetail.addressComponent.township
-			//             );
-			//         }
-			//       })
-			//       .catch(() => {
-			//         // _this.address = '定位失败'
-			//       });
-			//   },
-			//   () => {
-			//     uni.getLocation({
-			//       type: "gcj02",
-			//       success(res) {
-			//         getAdressDetailByLngLat(res.latitude, res.longitude)
-			//           .then((res) => {
-			//             if (res.status === "1") {
-			//               commit(CHANGE_LOCATION_INFO, res.regeocode);
-			//               const addressDetail = res.regeocode;
-			//               onSuccess &&
-			//                 typeof onSuccess === "function" &&
-			//                 onSuccess(
-			//                   addressDetail.addressComponent.province +
-			//                     addressDetail.addressComponent.city +
-			//                     addressDetail.addressComponent.district +
-			//                     addressDetail.addressComponent.township
-			//                 );
-			//             }
-			//           })
-			//           .catch(() => {
-			//             // _this.address = '定位失败'
-			//           });
-			//       },
-			//     });
-			//   }
-			// );
-
-			uni.getLocation({
-				type: 'gcj02',
-				// altitude: true,
-				// geocode: false,
-				// highAccuracyExpireTime: 4000,
-				// timeout: 5,
-				// cacheTimeout: 4000,
-				// accuracy: 'high',
-				// isHighAccuracy: true,
-				success(res) {
-					// console.log(res)
-					getAdressDetailByLngLat(res.latitude, res.longitude)
-						.then((res) => {
-							if (res.status === '1') {
-								commit(CHANGE_LOCATION_INFO, res.regeocode)
-								const addressDetail = res.regeocode
-								onSuccess &&
-                  typeof onSuccess === 'function' &&
-                  onSuccess({
-                  	detail:
-                      addressDetail.addressComponent.province +
-                      addressDetail.addressComponent.city +
-                      addressDetail.addressComponent.district +
-                      addressDetail.addressComponent.township,
-                  	town: addressDetail.addressComponent.township
-                  })
-							}
-						})
-						.catch(() => {
-							// _this.address = '定位失败'
-						})
-				}
-				// fail: (e) => {
-				// 	console.log('aaaa', e)
-				// },
-				// complete: (e) => {
-				// 	console.log('bbbb', e)
-				// }
-			})
-			// #endif
 		},
 
 		async getDetailAddress({ commit, dispatch }, data) {
