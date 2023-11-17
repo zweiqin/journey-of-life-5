@@ -19,8 +19,7 @@
 <script>
 import FieldPaneRF from './components/field-pane-rf.vue'
 import { addBrandAppointmentCategoryApi, updateBrandAppointmentCategoryApi, getBrandAppointmentIdApi } from '../../../api/user'
-import { J_USER_INFO } from '../../../constant'
-import { getUserId, getBrandId } from '../../../utils'
+import { getBrandId } from '../../../utils'
 // import { getAddressLongitudeAndLatitude } from '../../utils'
 
 export default {

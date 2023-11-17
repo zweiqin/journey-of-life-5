@@ -463,7 +463,7 @@
 <script>
 import { getGoodsTypeApi, getBrandCouponListApi } from '.././../../../api/user'
 // import { getIndexCategoryListApi } from '.././../../../api/goods'
-import { getUserId, getBrandId } from '../../../../utils'
+import { getBrandId } from '../../../../utils'
 
 export default {
 	name: 'FieldPaneGF',

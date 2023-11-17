@@ -21,8 +21,7 @@
 <script>
 import FieldPaneRP from './components/field-pane-rp.vue'
 import { addPrizeLotteryDrawApi, updatePrizeLotteryDrawApi, getPrizeLotteryDrawSelectApi } from '../../../api/user'
-import { J_USER_INFO } from '../../../constant'
-import { getUserId, getBrandId } from '../../../utils'
+import { getBrandId } from '../../../utils'
 // import { getAddressLongitudeAndLatitude } from '../../utils'
 
 export default {

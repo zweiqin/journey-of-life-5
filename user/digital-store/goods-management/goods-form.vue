@@ -12,7 +12,7 @@
 
 		<JMoreUpload
 			:title="uploadFields[1].label" :imgs="form.imgs[uploadFields[1].field]"
-			@upload="handleSaveImg(uploadFields[1].field, $event)" @delete="handleDeleteImg(uploadFields[1].field)"
+			@upload="handleSaveImg(uploadFields[1].field, $event)" @delete="handleDeleteImg(uploadFields[1].field, $event)"
 		></JMoreUpload>
 		<!-- <tui-upload :value="form.imgs[uploadFields[1].field]" :serverUrl="serverUrl" :limit="5" @complete="result" @remove="remove"></tui-upload> -->
 		<view class="buts">
@@ -27,9 +27,7 @@
 import FieldPaneGF from './components/field-pane-gf.vue'
 import { createGoodsBrandApi, updateGoodsBrandApi } from '../../../api/user'
 import { getGoodsDetailApi } from '../../../api/goods'
-import { J_USER_INFO } from '../../../constant'
-import { getUserId, getBrandId } from '../../../utils'
-// import { getAddressLongitudeAndLatitude } from '../../utils'
+import { getBrandId } from '../../../utils'
 
 export default {
 	name: 'GoodsForm',
