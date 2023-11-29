@@ -43,12 +43,12 @@
 							@change="handleInput(item.field, $event)"
 						></tui-numberbox>
 
-						<view v-if="item.type === 'picker' && item.field === 'pointsPrizeId'" style="flex: 1;">
-							<input
-								:value="tempPrizeName" class="input" :disabled="true" type="text"
-								:placeholder="item.placeholder"
-								@click="isShowPrizePopup = true"
-							/>
+						<view
+							v-if="item.type === 'picker' && item.field === 'pointsPrizeId'" style="flex: 1" :style="{
+								color: form.pointsPrizeId ? '' : '#999'
+							}" @click="isShowPrizePopup = true"
+						>
+							{{ tempPrizeName || (form.pointsPrizeId ? `已选 ID：${form.pointsPrizeId}` : "请选择关联奖品") }}
 						</view>
 
 					</view>

@@ -17,7 +17,6 @@
 <script>
 import FieldPanePA from './components/field-pane-pa.vue'
 import { addPrizeConfigurationApi, updatePrizeConfigurationApi, getPrizeSelectConfigurationApi } from '../../../api/user'
-import { J_USER_INFO } from '../../../constant'
 import { getUserId, getBrandId } from '../../../utils'
 // import { getAddressLongitudeAndLatitude } from '../../utils'
 
@@ -43,8 +42,7 @@ export default {
 				{
 					label: '关联奖品：',
 					field: 'pointsPrizeId',
-					type: 'picker',
-					placeholder: '请选择关联奖品'
+					type: 'picker'
 				},
 				{
 					label: '奖品期数：',

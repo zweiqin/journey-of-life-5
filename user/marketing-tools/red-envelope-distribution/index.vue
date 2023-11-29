@@ -17,8 +17,7 @@
 				<text>红包类型</text>
 				<tui-radio-group
 					v-model="redForm.wrapType"
-					style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;"
-					@change="(e) => {}"
+					style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;" @change="(e) => { }"
 				>
 					<block v-if="userInfo.roleIds === 6 && brandId">
 						<tui-label
@@ -35,10 +34,7 @@
 						</tui-label>
 					</block>
 					<block v-else>
-						<tui-label
-							v-for="(part, index) in [ { name: '普通红包', value: '0' } ]"
-							:key="index"
-						>
+						<tui-label v-for="(part, index) in [ { name: '普通红包', value: '0' } ]" :key="index">
 							<tui-list-cell padding="16upx">
 								<view>
 									<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
@@ -57,7 +53,7 @@
 			>
 				<view>红包关联优惠券</view>
 				<input
-					v-model="redForm.couponName" disabled placeholder="请选择发布类型" class="input-el"
+					v-model="redForm.couponName" disabled placeholder="请选择关联优惠券" class="input-el"
 					placeholder-style="color:#9F9F9F"
 				/>
 			</view>
@@ -65,7 +61,7 @@
 			<view v-if="userInfo.roleIds === 6 && brandId" class="line-item" @click="isShowStoreGoodsPopup = true">
 				<view>红包关联商品</view>
 				<input
-					v-model="redForm.goodsName" disabled placeholder="请选择发布类型" class="input-el"
+					v-model="redForm.goodsName" disabled placeholder="请选择关联商品" class="input-el"
 					placeholder-style="color:#9F9F9F"
 				/>
 			</view>
@@ -91,14 +87,10 @@
 			<view class="line-item">
 				<text>红包金额</text>
 				<tui-radio-group
-					v-model="redForm.type"
-					style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;"
-					@change="(e) => {}"
+					v-model="redForm.type" style="flex: 1;display: flex;justify-content: flex-end;flex-wrap: wrap;"
+					@change="(e) => { }"
 				>
-					<tui-label
-						v-for="(part, index) in [{ name: '随机', value: '1' }, { name: '等额', value: '0' }]"
-						:key="index"
-					>
+					<tui-label v-for="(part, index) in [{ name: '随机', value: '1' }, { name: '等额', value: '0' }]" :key="index">
 						<tui-list-cell padding="16upx">
 							<view>
 								<tui-radio :checked="false" :value="part.value" color="#07c160" border-color="#999">
@@ -159,8 +151,8 @@
 
 		<view ref="previewWrapperRef" class="preview-wrapper">
 			<JRedEnvelope
-				:is-show="showRedPackage" :show-type="redEnvelopeType" :desc="redForm.publisherText"
-				:src="redForm.picUrl" :name="userInfo.nickName" :avatar="common.seamingImgUrl(userInfo.avatarUrl)"
+				:is-show="showRedPackage" :show-type="redEnvelopeType"
+				:data="{ userAvatar: userInfo.avatarUrl, username: userInfo.nickName, wrapRedText: redForm }"
 				@click-red="redEnvelopeType = 1" @close="(showRedPackage = false) || (redEnvelopeType = 0) || closePreview()"
 			>
 			</JRedEnvelope>

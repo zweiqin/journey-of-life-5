@@ -562,13 +562,11 @@ export default {
 				getBranchOfficeIncomeApi({
 					userId: getUserId()
 				}).then(({ data }) => {
-					console.log(data)
 					this.branchIncome = data || {}
 				})
 				getBranchOfficeFansNumApi({
 					userId: getUserId()
 				}).then(({ data }) => {
-					console.log(data)
 					this.branchFans = data || {}
 				})
 				if (this.currentIncomeOrFansTab === 0) {
@@ -580,13 +578,11 @@ export default {
 				getPlannerBenefitsApi({
 					userId: getUserId()
 				}).then(({ data }) => {
-					console.log(data)
 					this.plannerIncome = data || {}
 				})
 				getPlannerFansApi({
 					userId: getUserId()
 				}).then(({ data }) => {
-					console.log(data)
 					this.plannerFans = data || {}
 				})
 				if (this.currentIncomeOrFansTab === 0) {
@@ -601,27 +597,23 @@ export default {
 					brandId: getBrandId(),
 					userId: getUserId()
 				}).then(({ data }) => {
-					console.log(data)
 					this.brandIncome = data || {}
 				})
 				getBrandFansNumApi({
 					userId: getUserId()
 				}).then(({ data }) => {
-					console.log(data)
 					this.brandFans = data || {}
 				})
 				getBrandVoucherApi({
 					brandId: getBrandId(),
 					userId: getUserId()
 				}).then(({ data }) => {
-					console.log(data)
 					this.brandVoucherIncome = data || {}
 				})
 				getBrandAccountBookApi({
 					brandId: getBrandId(),
 					userId: getUserId()
 				}).then(({ data }) => {
-					console.log(data)
 					this.brandOrderIncome = data || {}
 				})
 				if (this.currentIncomeOrFansTab === 0) {
@@ -638,7 +630,6 @@ export default {
 				getRevenueRecordsApi({
 					userId: getUserId()
 				}).then(({ data }) => {
-					console.log(data)
 					this.userRevenueRecords = data || []
 				})
 			}

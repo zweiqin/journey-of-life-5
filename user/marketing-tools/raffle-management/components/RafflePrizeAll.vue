@@ -37,7 +37,7 @@
 						>
 							选择
 						</tui-button>
-						<slot></slot>
+						<slot :data="item"></slot>
 					</view>
 				</template>
 			</tui-card>

@@ -145,7 +145,7 @@ export default {
 			name: '',
 			price: '',
 			id: '',
-			imagesFace: [ 'w0swlakzfjkgljk60bpx.png' ],
+			imagesFace: [],
 			images: [],
 			imagesEnd: [],
 			length: '',

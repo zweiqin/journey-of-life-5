@@ -11,7 +11,7 @@
 				</button>
 			</view>
 			<view v-if="giveUserInfo" class="user" style="margin-bottom: 36upx">
-				<JAvatar :size="80" :src="giveUserInfo.avatar"></JAvatar>
+				<JAvatar :size="80" :src="common.seamingImgUrl(giveUserInfo.avatar)"></JAvatar>
 
 				<view class="info">
 					<view class="name">{{ giveUserInfo.nickname }}</view>

@@ -18,29 +18,31 @@
 		</view>
 		<view v-if="rafflePrizeList && rafflePrizeList.length">
 			<RafflePrizeAll :prize-data="rafflePrizeList">
-				<view style="padding: 0 20rpx 20rpx 0;text-align: right;">
-					<tui-button
-						type="warning" width="120rpx" height="50rpx" margin="0 20upx 0 0"
-						shape="circle" style="display: inline-block;"
-						@click="go(`/user/marketing-tools/raffle-management/raffle-prize-form?id=${item.id}`)"
-					>
-						编辑
-					</tui-button>
-					<tui-button
-						type="green" width="120rpx" height="50rpx" margin="0 20upx 0 0"
-						shape="circle" style="display: inline-block;"
-						@click="go(`/user/marketing-tools/raffle-management/prize-allocation-form?id=${item.id}`)"
-					>
-						配置
-					</tui-button>
-					<tui-button
-						shape="circle" type="danger" width="120rpx" height="50rpx"
-						style="display: inline-block;"
-						@click="handleRafflePrizeDelete(item)"
-					>
-						删除
-					</tui-button>
-				</view>
+				<template #default="obj">
+					<view style="padding: 0 20rpx 20rpx 0;text-align: right;">
+						<tui-button
+							type="warning" width="120rpx" height="50rpx" margin="0 20upx 0 0"
+							shape="circle" style="display: inline-block;"
+							@click="go(`/user/marketing-tools/raffle-management/raffle-prize-form?id=${obj.data.id}`)"
+						>
+							编辑
+						</tui-button>
+						<tui-button
+							type="green" width="120rpx" height="50rpx" margin="0 20upx 0 0"
+							shape="circle" style="display: inline-block;"
+							@click="go(`/user/marketing-tools/raffle-management/prize-allocation-form?id=${obj.data.id}`)"
+						>
+							配置
+						</tui-button>
+						<tui-button
+							shape="circle" type="danger" width="120rpx" height="50rpx"
+							style="display: inline-block;"
+							@click="handleRafflePrizeDelete(obj.data)"
+						>
+							删除
+						</tui-button>
+					</view>
+				</template>
 			</RafflePrizeAll>
 		</view>
 		<view v-else>
@@ -52,14 +54,12 @@
 
 <script>
 import { getPrizeLotteryDrawListApi, deletePrizeLotteryDrawApi } from '../../../api/user'
-import { J_USER_INFO } from '../../../constant'
-import { getUserId, getBrandId } from '../../../utils'
+import { getBrandId } from '../../../utils'
 import RafflePrizeAll from './components/RafflePrizeAll.vue'
 
 export default {
 	name: 'RaffleManagement',
 	components: { RafflePrizeAll },
-	onLoad(options) { },
 	data() {
 		return {
 			rafflePrizeList: [],
@@ -80,6 +80,128 @@ export default {
 			getPrizeLotteryDrawListApi({ brandId: getBrandId() })
 				.then(({ data }) => {
 					this.rafflePrizeList = data || []
+					this.rafflePrizeList = [
+						{
+							'id': 179,
+							'name': '积分',
+							'url': '8paklzxc5l9zflhpmv3t.png',
+							'value': '5',
+							'type': 2,
+							'brandId': 1001230,
+							'status': 0,
+							'couponId': null,
+							'isDel': 0,
+							'position': 1,
+							'phase': 10,
+							'createTime': '2023-08-14T07:04:48.000+0000',
+							'updateTime': '2023-08-14T07:04:48.000+0000'
+						},
+						{
+							'id': 180,
+							'name': '代金券',
+							'url': 'qqqh4wwjtgrv11rbu6a1.png',
+							'value': '10',
+							'type': 3,
+							'brandId': 1001230,
+							'status': 0,
+							'couponId': null,
+							'isDel': 0,
+							'position': 2,
+							'phase': 10,
+							'createTime': '2023-08-14T07:05:18.000+0000',
+							'updateTime': '2023-08-14T07:05:18.000+0000'
+						},
+						{
+							'id': 181,
+							'name': '谢谢惠顾',
+							'url': 'hyaivanlf34f49746jhw.png',
+							'value': '100',
+							'type': 4,
+							'brandId': 1001230,
+							'status': 0,
+							'couponId': null,
+							'isDel': 0,
+							'position': 3,
+							'phase': 100,
+							'createTime': '2023-08-14T07:05:46.000+0000',
+							'updateTime': '2023-08-14T07:05:46.000+0000'
+						},
+						{
+							'id': 182,
+							'name': '积分',
+							'url': 'mbhno8v5h4yv8ed92th7.png',
+							'value': '10',
+							'type': 2,
+							'brandId': 1001230,
+							'status': 0,
+							'couponId': null,
+							'isDel': 0,
+							'position': 3,
+							'phase': 21343,
+							'createTime': '2023-08-14T07:10:14.000+0000',
+							'updateTime': '2023-08-14T07:10:14.000+0000'
+						},
+						{
+							'id': 183,
+							'name': '积分',
+							'url': 'we46u9380ochf6dzoc0k.png',
+							'value': '15',
+							'type': 3,
+							'brandId': 1001230,
+							'status': 0,
+							'couponId': null,
+							'isDel': 0,
+							'position': 5,
+							'phase': 32,
+							'createTime': '2023-08-14T07:14:11.000+0000',
+							'updateTime': '2023-08-14T07:14:11.000+0000'
+						},
+						{
+							'id': 184,
+							'name': '谢谢惠顾',
+							'url': 'awu5khyqoqn5n0zgpsux.jpg',
+							'value': '121',
+							'type': 4,
+							'brandId': 1001230,
+							'status': 0,
+							'couponId': null,
+							'isDel': 0,
+							'position': 6,
+							'phase': 144,
+							'createTime': '2023-08-14T07:15:05.000+0000',
+							'updateTime': '2023-08-14T07:15:05.000+0000'
+						},
+						{
+							'id': 185,
+							'name': '谢谢惠顾',
+							'url': 'v3p1iitl78gxmezv73a7.jpg',
+							'value': '123',
+							'type': 4,
+							'brandId': 1001230,
+							'status': 0,
+							'couponId': null,
+							'isDel': 0,
+							'position': 8,
+							'phase': 324,
+							'createTime': '2023-08-14T07:15:48.000+0000',
+							'updateTime': '2023-08-14T07:15:48.000+0000'
+						},
+						{
+							'id': 186,
+							'name': '代金券',
+							'url': 'r5pdn3g66bvay007k8m8.png',
+							'value': '12',
+							'type': 3,
+							'brandId': 1001230,
+							'status': 0,
+							'couponId': null,
+							'isDel': 0,
+							'position': 8,
+							'phase': 213,
+							'createTime': '2023-08-14T07:16:24.000+0000',
+							'updateTime': '2023-08-14T07:16:24.000+0000'
+						}
+					]
 					uni.hideLoading()
 					this.status = 'none'
 				})

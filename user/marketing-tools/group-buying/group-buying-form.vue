@@ -14,9 +14,6 @@
 <script>
 import FieldPaneGB from './components/field-pane-gb.vue'
 import { addGrouponCreateRuleApi, updateGrouponRuleApi, getGrouponRuleByIdApi } from '../../../api/user'
-import { J_USER_INFO } from '../../../constant'
-import { getUserId, getBrandId } from '../../../utils'
-// import { getAddressLongitudeAndLatitude } from '../../utils'
 
 export default {
 	name: 'GroupBuyingForm',

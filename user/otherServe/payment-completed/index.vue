@@ -21,8 +21,6 @@
 </template>
 
 <script>
-// import { } from '../../../api/user'
-// import { getUserId, getBrandId } from '../../../utils'
 import { J_PAY_ORDER } from '../../../constant'
 
 export default {

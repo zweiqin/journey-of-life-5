@@ -1,6 +1,6 @@
 <template>
 	<view v-if="data" class="order-detail">
-		<JHeader width="50" height="50" title="订单详情"></JHeader>
+		<JHeader width="50" height="50" title="拼团详情"></JHeader>
 
 		<!-- 订单信息 -->
 		<view class="order-info">
@@ -40,10 +40,10 @@
 								<view class="sp">{{ item.specifications | fomatSp }}</view> -->
 							<view class="sp">{{ item.goodsSpecificationValues | fomatSp }}</view>
 							<view class="goods-price"> ￥{{ item.retailPrice }}</view>
-							<view class="goods-price">
+							<!-- <view class="goods-price">
 								<text style="font-size: 24upx;">￥</text>
 								<text>{{ item.price }}</text>
-							</view>
+								</view> -->
 						</view>
 						<view class="goods-number">x{{ item.number }}</view>
 					</view>
@@ -211,7 +211,6 @@
 
 <script>
 import {
-	getOrderDetailApi,
 	orderCancelApi,
 	orderDeleteApi,
 	orderRefundApi
@@ -379,6 +378,7 @@ export default {
 
 		.view-order-status {
 			display: flex;
+			justify-content: space-between;
 			align-items: center;
 			margin-bottom: 20upx;
 			box-sizing: border-box;

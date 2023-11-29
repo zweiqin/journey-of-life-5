@@ -336,12 +336,6 @@ export default {
 				this.$showToast('缺少商品规格')
 				return
 			}
-			if (
-				!/^1[3456789]\d{9}$/.test(data.phone)
-			) {
-				this.$showToast('联系电话格式错误')
-				return
-			}
 			uni.showModal({
 				title: '提示',
 				content: '确认提交商品表单？',

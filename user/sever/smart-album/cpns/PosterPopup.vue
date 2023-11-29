@@ -10,7 +10,7 @@
 				v-show="posterImage"
 				class="poster-iamge"
 				:src="posterImage"
-				mode=""
+				mode="widthFix"
 			/>
 			<l-painter
 				v-show="!posterImage"
@@ -32,14 +32,13 @@
 				<l-painter-view
 					css="padding: 32rpx;
               display: flex;
-              justifyContent: space-between;
+              justifyContent: flex-start;
                width: 622rpx;"
 				>
 					<l-painter-view css="width: 350rpx">
 						<l-painter-text
 							text="图册简介"
-							css=" marginTop: 500upx;
-                      display: inline-block;
+							css=" display: inline-block;
                       color: #000;
                       fontSize: 32rpx;
                       fontWeight: bold"
@@ -63,7 +62,7 @@
 						></l-painter-image>
 					</l-painter-view>
 
-					<l-painter-view css="width: 160rpx;textAlign:center;marginLeft:48rpx">
+					<l-painter-view css="width: 160rpx;textAlign:center;marginLeft:18rpx">
 						<l-painter-image
 							:src="shareCode"
 							css="width: 160rpx;
@@ -217,7 +216,7 @@ export default {
 
   .poster-iamge {
     width: 622upx;
-    height: 888upx;
+    // height: 888upx;
     border-radius: 32upx;
   }
 }

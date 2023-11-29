@@ -39,14 +39,12 @@
 
 <script>
 import { getGrouponListRuleApi, deleteGrouponRuleApi } from '../../../api/user'
-import { J_USER_INFO } from '../../../constant'
 import { getUserId, getBrandId } from '../../../utils'
 import GrouponRules from './components/GrouponRules.vue'
 
 export default {
 	name: 'GroupBuying',
 	components: { GrouponRules },
-	onLoad(options) { },
 	data() {
 		return {
 			grouponList: [],

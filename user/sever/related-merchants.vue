@@ -91,7 +91,6 @@ export default {
 			getBePendingApi({ userId: getUserId() })
 				.then(({ data }) => {
 					console.log(data)
-					this.merchantsBePendingList = data
 					uni.hideLoading()
 				})
 				.catch(() => {

@@ -81,7 +81,7 @@ export default {
 			form: {
 				basicInfo: {
 					id: '',
-					name: '预约项目',
+					name: '',
 					desc: '',
 					pid: '',
 					gooIds: [],

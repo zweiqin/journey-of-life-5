@@ -412,6 +412,7 @@ export default {
 					ref: this,
 					wsHandle: ''
 				})
+				console.log(this.groupMessages)
 			})
 		},
 		// onOpenInfo() {

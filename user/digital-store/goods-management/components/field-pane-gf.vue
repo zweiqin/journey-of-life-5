@@ -352,7 +352,7 @@
 				<tui-input v-model="specForm.specification" label="规格名" placeholder="请输入规格名" clearable></tui-input>
 				<tui-input v-model="specForm.value" label="规格值" placeholder="请输入规格值" clearable></tui-input>
 				<JUpload
-					title="规格图片" :img-url="common.seamingImgUrl(specForm.picUrl)" @upload="handleSaveSpecificationsImg(e)"
+					title="规格图片" :img-url="common.seamingImgUrl(specForm.picUrl)" @upload="handleSaveSpecificationsImg"
 					@delete="specForm.picUrl = '' || $forceUpdate()"
 				></JUpload>
 				<!-- (e) => specForm.picUrl = e && $forceUpdate() -->
@@ -361,7 +361,7 @@
 		<!-- 商品库存dialog -->
 		<tui-dialog
 			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
-			:show="productVisiable" title="设置规格" @click="handleClickProductDialog"
+			:show="productVisiable" title="设置货品" @click="handleClickProductDialog"
 		>
 			<template #content>
 				<view style="display: flex;flex-wrap: wrap;">
@@ -375,7 +375,7 @@
 				<tui-input v-model="productForm.price" label="货品售价" placeholder="请输入货品售价" clearable></tui-input>
 				<tui-input v-model="productForm.number" label="货品数量" placeholder="请输入货品数量" clearable></tui-input>
 				<JUpload
-					title="货品图片" :img-url="common.seamingImgUrl(productForm.url)" @upload="handleSaveProductImg(e)"
+					title="货品图片" :img-url="common.seamingImgUrl(productForm.url)" @upload="handleSaveProductImg"
 					@delete="productForm.url = '' || $forceUpdate()"
 				></JUpload>
 			</template>
@@ -383,7 +383,7 @@
 		<!-- 商品参数dialog -->
 		<tui-dialog
 			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
-			:show="attributeVisiable" title="设置规格" @click="handleClickAttributeDialog"
+			:show="attributeVisiable" title="设置参数" @click="handleClickAttributeDialog"
 		>
 			<template #content>
 				<tui-input v-model="attributeForm.attribute" label="商品参数名称" placeholder="请输入参数名称" clearable></tui-input>
@@ -401,7 +401,7 @@
 		></tui-select>
 		<tui-dialog
 			style="position: relative;z-index: 888;" :buttons="[{ text: '取消' }, { text: '确定', color: '#586c94' }]"
-			:show="goodsCouponsVisiable" title="设置规格" @click="handleClickGoodsCouponsDialog"
+			:show="goodsCouponsVisiable" title="设置优惠券" @click="handleClickGoodsCouponsDialog"
 		>
 			<template #content>
 				<tui-input

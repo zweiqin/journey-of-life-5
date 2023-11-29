@@ -37,7 +37,7 @@
 					@click="(userInfo.roleIds !== 11) && (userInfo.roleIds !== 10) && go('/user/otherServe/voucher/index')"
 				>
 					<p>{{ userInfo.voucherNumber ? transformNumber(userInfo.voucherNumber) : '0.00' }}</p>
-					<view style="margin-top: 15rpx;font-size: 26rpx;color: #979797;">代金券 ></view>
+					<view style="margin-top: 15rpx;font-size: 26rpx;color: #979797;">代金券{{ (userInfo.roleIds !== 11) && (userInfo.roleIds !== 10) ? ' >' : '' }}</view>
 				</view>
 				<view class="item" @click="go('/user/otherServe/withdrawal/index?type=1')">
 					<p>{{ userInfo.commission || '0.00' }}</p>

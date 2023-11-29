@@ -19,7 +19,6 @@
 						<text v-if="ruleId">{{ goodsData.counterPrice - grouponPrice }}</text>
 						<text v-else-if="seckillGoodId">{{ seckillPrice }}</text>
 						<text v-else>{{ goodsData.counterPrice }}</text>
-						{{ ruleId ? goodsData.counterPrice + grouponPrice : goodsData.counterPrice }}
 					</text>
 					<text v-if="goodsData.isHot" class="price-tag">热卖</text>
 				</view>

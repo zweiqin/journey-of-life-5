@@ -88,7 +88,7 @@
 
 									<view v-else class="img-list">
 										<view v-for="(img, imgIndex) in rateForm.commentGoods[index].pic" :key="img" class="img-item">
-											<image class="img" :src="img" @click="handlePreview(rateForm.commentGoods[index].pic, imgIndex)">
+											<image class="img" :src="common.seamingImgUrl(img)" @click="handlePreview(rateForm.commentGoods[index].pic, imgIndex)">
 											</image>
 											<view class="close-wrapper">
 												<tui-icon

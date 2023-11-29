@@ -14,8 +14,8 @@
 						></JAvatar>
 						<view style="padding-left: 40upx;">
 							<view>粉丝ID：{{ item.id }}</view>
-							<view>名称：{{ item.nickName || '--' }}</view>
-							<view>性别：{{ item.gender === 1 ? '男' : item.gender === 2 ? '女' : '--' }}</view>
+							<view>名称：{{ item.nickName || item.nickname || '--' }}</view>
+							<view>性别：{{ item.gender === 0 ? '男' : item.gender === 1 ? '女' : '--' }}</view>
 							<view>会员类型：{{ common.explainMembership(item.roleIds) }}</view>
 						</view>
 					</view>

@@ -52,14 +52,12 @@
 
 <script>
 import { getGrouponListRecordApi } from '../../../api/user'
-import { J_USER_INFO } from '../../../constant'
 import { getUserId, getBrandId } from '../../../utils'
 import GrouponRules from '../group-buying/components/GrouponRules.vue'
 
 export default {
 	name: 'GroupList',
 	components: { GrouponRules },
-	onLoad(options) { },
 	data() {
 		return {
 			grouponRecordList: [],

@@ -3,7 +3,7 @@
 		<view style="display: flex;justify-content: space-between;align-items: center;font-size: 26upx;color: #999999;">
 			<view>
 				类型：
-				<text v-if="showType === 1">
+				<text v-if="Number(showType) === 1">
 					<text v-if="data.type === 1">用户余额</text>
 					<text v-else-if="data.type === 2">代金券</text>
 					<text v-else-if="data.type === 3">积分</text>
@@ -11,7 +11,7 @@
 					<text v-else-if="data.type === 5">提现</text>
 					<text v-else-if="data.type === 6">分销</text>
 				</text>
-				<text v-else-if="showType === 2">
+				<text v-else-if="Number(showType) === 2">
 					<text v-if="data.type === 1">代金券转赠</text>
 					<text v-else-if="data.type === 2">代金券充值</text>
 					<text v-else-if="data.type === 3">订单收入</text>

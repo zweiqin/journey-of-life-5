@@ -1,6 +1,5 @@
 <template>
 	<view class="container flex-column">
-		<global-loading />
 		<view style="padding: 30upx 20upx 0;color: #000000;">
 			<JHeader width="50" height="50" title=""></JHeader>
 		</view>

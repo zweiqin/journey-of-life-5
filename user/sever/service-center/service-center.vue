@@ -88,7 +88,6 @@
 
 <script>
 import { getCustomerCategoryApi, getCustomerSelectAnswerApi, getCustomerAnswerStatisticsApi } from '../../../api/user'
-import { getUserId } from '../../../utils'
 
 export default {
 	name: 'ServiceCenter',

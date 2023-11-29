@@ -37,13 +37,13 @@
 		{
 			"path": "user/digital-store/newBusiness/index",
 			"style": {
-				"navigationBarTitleText": ""
+				"navigationBarTitleText": "业务管理"
 			}
 		},
 		{
 			"path": "user/digital-store/newBusiness/addUser/index",
 			"style": {
-				"navigationBarTitleText": ""
+				"navigationBarTitleText": "添加客户信息"
 			}
 		},
 		{
@@ -67,7 +67,7 @@
 		{
 			"path": "pages/pre-order/pre-order",
 			"style": {
-				"navigationBarTitleText": "订单详情",
+				"navigationBarTitleText": "订单结算",
 				"usingComponents": {
 					"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
 					"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
@@ -150,7 +150,10 @@
 			}
 		},
 		{
-			"path": "pages/register/register"
+			"path": "pages/register/register",
+			"style": {
+				"navigationBarTitleText": "注册"
+			}
 		},
 		// {
 		// 	"path": "pages/store/store",
@@ -312,7 +315,7 @@
 				{
 					"path": "my-tools/account-book/order-data-record",
 					"style": {
-						"navigationBarTitleText": "订单数据记录"
+						"navigationBarTitleText": "订单数据统计"
 					}
 				},
 				{
@@ -420,7 +423,7 @@
 				{
 					"path": "info/detail",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "用户详情",
 						"usingComponents": {
 							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
 							"uni-popup-dialog": "/uni_modules/uni-popup/components/uni-popup-dialog/uni-popup-dialog"
@@ -443,14 +446,14 @@
 				{
 					"path": "site/site-manage",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "地址管理",
 						"usingComponents": {}
 					}
 				},
 				{
 					"path": "site/add-site",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "设置地址",
 						"usingComponents": {}
 					}
 				},
@@ -464,21 +467,21 @@
 				{
 					"path": "orderForm/order-form",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "订单列表",
 						"usingComponents": {}
 					}
 				},
 				{
 					"path": "orderForm/order-form-detail",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "订单详情",
 						"usingComponents": {}
 					}
 				},
 				{
 					"path": "merchant-orders/index",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "商家订单",
 						"usingComponents": {}
 					}
 				},
@@ -545,7 +548,7 @@
 				{
 					"path": "sever/my-distribution/distributor-application-form",
 					"style": {
-						"navigationBarTitleText": "分销员申请表单"
+						"navigationBarTitleText": "分销商申请表单"
 					}
 				},
 				{
@@ -643,7 +646,10 @@
 					}
 				},
 				{
-					"path": "sever/pay-shop-card"
+					"path": "sever/pay-shop-card",
+					"style": {
+						"navigationBarTitleText": "购物车结算"
+					}
 				},
 				{
 					"path": "sever/view-history"
@@ -651,7 +657,7 @@
 				{
 					"path": "digital-store/information-sentry",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "信息哨兵",
 						"usingComponents": {
 							"uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup"
 						}
@@ -660,13 +666,13 @@
 				{
 					"path": "digital-store/marketing-portrait",
 					"style": {
-						"navigationBarTitleText": ""
+						"navigationBarTitleText": "营销画像"
 					}
 				},
 				{
 					"path": "digital-store/add",
 					"style": {
-						"navigationBarTitleText": ""
+						"navigationBarTitleText": "客户信息添加"
 					}
 				},
 				{
@@ -689,14 +695,14 @@
 				{
 					"path": "digital-store/performance",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "业绩哨兵",
 						"usingComponents": {}
 					}
 				},
 				{
 					"path": "digital-store/addperformance",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "业绩设置",
 						"usingComponents": {}
 					}
 				},
@@ -750,13 +756,19 @@
 					}
 				},
 				{
-					"path": "marketing-tools/store-application"
+					"path": "marketing-tools/store-application",
+					"style": {
+						"navigationBarTitleText": "商家信息填写"
+					}
 				},
 				// {
 				// 	"path": "marketing-tools/apply-vip-history"
 				// },
 				{
-					"path": "marketing-tools/marketing-planner"
+					"path": "marketing-tools/marketing-planner",
+					"style": {
+						"navigationBarTitleText": "营销策划师升级信息填写"
+					}
 				},
 				{
 					"path": "marketing-tools/contact-guide/index"
@@ -794,13 +806,13 @@
 				{
 					"path": "otherServe/voucher/recharge",
 					"style": {
-						"navigationBarTitleText": "充值"
+						"navigationBarTitleText": "代金券充值"
 					}
 				},
 				{
 					"path": "otherServe/voucher/recharge-give",
 					"style": {
-						"navigationBarTitleText": "代金劵转增"
+						"navigationBarTitleText": "代金劵转赠"
 					}
 				},
 				{
@@ -816,7 +828,10 @@
 					}
 				},
 				{
-					"path": "otherServe/chat/chat-detail"
+					"path": "otherServe/chat/chat-detail",
+					"style": {
+						"navigationBarTitleText": "聊天详情"
+					}
 				},
 				{
 					"path": "marketing-tools/contact-guide/name-card-detail",
@@ -857,14 +872,14 @@
 				{
 					"path": "complaintRecord/complaintRecord",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "投诉记录",
 						"enablePullDownRefresh": false
 					}
 				},
 				{
 					"path": "miniGame/miniGame2048/miniGame2048",
 					"style": {
-						"navigationBarTitleText": "",
+						"navigationBarTitleText": "小游戏",
 						"enablePullDownRefresh": false
 					}
 				}
@@ -914,7 +929,7 @@
 				{
 					"path": "talent-list/talent-list",
 					"style": {
-						"navigationBarTitleText": "巨蜂认证营销策划师"
+						"navigationBarTitleText": "达人列表"
 					}
 				},
 				{

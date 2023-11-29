@@ -130,7 +130,6 @@ export default {
 					// 	this.distributionGoods.push(...data.goodsVoList)
 					// } else {
 					this.distributionGoods = data.goodsVoList || []
-					// }
 					uni.hideLoading()
 					this.status = 'none'
 				})

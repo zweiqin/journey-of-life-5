@@ -27,8 +27,7 @@
 						<template #body>
 							<view style="padding: 10upx 12upx;">
 								<view v-if="item.brief" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-									{{
-										item.brief }}
+									{{ item.brief }}
 								</view>
 							</view>
 							<view style="display: flex;flex-wrap: wrap;padding: 10upx 12upx;">

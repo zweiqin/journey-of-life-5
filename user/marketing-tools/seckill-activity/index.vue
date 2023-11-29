@@ -26,7 +26,7 @@
 							</view>
 							<view>活动创建时间：{{ item.addTime }}</view>
 							<view>开始时间：{{ item.startTime }}</view>
-							<view>开始时间：{{ item.endTime }}</view>
+							<view>结束时间：{{ item.endTime }}</view>
 						</view>
 					</template>
 					<template #footer>
@@ -89,13 +89,10 @@
 
 <script>
 import { getSeckillListActivitiesApi, getSeckillListGoodsApi } from '../../../api/user'
-import { J_USER_INFO } from '../../../constant'
 import { getUserId, getBrandId } from '../../../utils'
 
 export default {
 	name: 'SeckillActivity',
-	components: { },
-	onLoad(options) { },
 	data() {
 		return {
 			seckillList: [],

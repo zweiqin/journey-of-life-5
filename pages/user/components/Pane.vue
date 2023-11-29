@@ -178,10 +178,6 @@ export default {
 			},
 			immediate: true,
 			deep: true
-		},
-
-		number() {
-			this.getSpStr()
 		}
 	},
 

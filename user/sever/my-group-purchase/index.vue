@@ -37,7 +37,7 @@
 								<text>{{ item.creator || '--' }}</text>
 							</view>
 							<view>
-								<text>{{ item.isCreator ? '本人' : '非本人' }}</text>
+								<text>{{ item.isCreator ? '本人' : '非本人' }}开团</text>
 							</view>
 						</view>
 						<view>
@@ -148,7 +148,6 @@
 import { orderOpButtons } from '../../orderForm/config'
 import { getGrouponMyApi, getGrouponQueryApi, getOrderRefundsReasonApi } from '../../../api/user'
 import {
-	getOrderListApi,
 	orderCancelApi,
 	orderDeleteApi,
 	receiveGoodsApi,
@@ -187,7 +186,7 @@ export default {
 		}
 	},
 	onShow() {
-		// this.getGrouponMyList()
+		this.getGrouponMyList()
 	},
 
 	methods: {

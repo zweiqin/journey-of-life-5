@@ -43,7 +43,6 @@
 
 <script>
 import { getDistributionPerformanceApi } from '../../../api/user'
-import { J_USER_INFO } from '../../../constant'
 import { getUserId } from '../../../utils'
 
 export default {

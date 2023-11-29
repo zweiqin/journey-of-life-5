@@ -35,14 +35,12 @@
 </template>
 
 <script>
-import { getPwdSelectBankApi, deleteWithdrawalBankApi, createGoodsBrandApi, updateGoodsBrandApi } from '../../../api/user'
-import { J_USER_INFO } from '../../../constant'
-import { getUserId, getBrandId } from '../../../utils'
+import { getPwdSelectBankApi, deleteWithdrawalBankApi } from '../../../api/user'
+import { getUserId } from '../../../utils'
 
 export default {
 	name: 'BankCard',
 	components: {},
-	onLoad(options) { },
 	data() {
 		return {
 			bankCardList: []

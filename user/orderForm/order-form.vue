@@ -1,5 +1,5 @@
 <template>
-	<view class="orders-container" :style="{ overflowY: isShowCommentOrder ? 'hidden' : 'auto' }">
+	<view class="orders-container" :style="{ height: isShowCommentOrder ? '100vh' : 'auto' }">
 		<view class="header">
 			<JBack width="50" dark height="50" tabbar="/pages/user/user"></JBack>
 			<h2>我的订单</h2>
@@ -290,11 +290,12 @@ export default {
 
 <style lang="less" scoped>
 .orders-container {
-	height: 100vh;
+	// height: 100vh;
 	padding: 60upx 0;
 	font-size: 28upx;
 	color: #3d3d3d;
 	box-sizing: border-box;
+	overflow-y: hidden;
 
 	.header {
 		display: flex;

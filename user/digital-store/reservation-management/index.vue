@@ -1,7 +1,7 @@
 <template>
 	<view class="reservation-management-container">
 		<JHeader tabbar="/pages/user/user" width="50" height="50" title="预约项目列表"></JHeader>
-		<view style="width: 70%;margin: 14rpx auto 14rpx;">
+		<view style="width: 70%;margin: 14upx auto;">
 			<tui-button
 				type="blue" bold shape="circle" width="100%"
 				@click="go(`/user/digital-store/reservation-management/reservation-form`)"
